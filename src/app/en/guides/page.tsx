@@ -28,7 +28,7 @@ export const metadata: Metadata = {
 export default function EnglishGuidesPage() {
     return (
         <div className="min-h-screen bg-[#FAF7F2] text-slate-900 flex flex-col font-sans">
-            <Header />
+            <Header locale="en" />
 
             <SchemaJSON
                 schema={{
@@ -147,7 +147,7 @@ export default function EnglishGuidesPage() {
                 </section>
             </main>
 
-            <Footer />
+            <Footer locale="en" />
         </div>
     );
 }
