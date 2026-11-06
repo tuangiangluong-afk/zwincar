@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import PwaRegistrar from "@/components/PwaRegistrar";
+import CookieBanner from "@/components/CookieBanner";
 import "./globals.css";
 
 const jakartaSans = Plus_Jakarta_Sans({
@@ -76,6 +77,7 @@ export default function RootLayout({
       <body className={`${jakartaSans.variable} font-sans antialiased bg-[#FAF7F2] text-[#12161E]`}>
         {children}
         <PwaRegistrar />
+        <CookieBanner />
       </body>
     </html>
   );

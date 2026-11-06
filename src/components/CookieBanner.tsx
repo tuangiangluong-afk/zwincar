@@ -1,81 +1,140 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { Cookie } from 'lucide-react';
-import { getTheme } from "@/lib/theme"; // Deterministic theme based on slug
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Cookie, ShieldCheck } from "lucide-react";
 
-interface CookieBannerProps {
-    slug: string;
-    cityName: string;
+interface CookieI18n {
+    title: string;
+    text: string;
+    accept: string;
+    reject: string;
+    learnMore: string;
+    policyUrl: string;
 }
 
-const CookieBanner = ({ slug, cityName }: CookieBannerProps) => {
-    const [showBanner, setShowBanner] = useState(false);
+const COOKIE_TRANSLATIONS: Record<string, CookieI18n> = {
+    fr: {
+        title: "Respect de votre vie privée",
+        text: "ZwinCar utilise des cookies techniques essentiels pour sécuriser votre réservation et analyser anonymement la navigation. Zéro revente de données ni pistage intrusif.",
+        accept: "Tout accepter",
+        reject: "Continuer sans accepter",
+        learnMore: "En savoir plus",
+        policyUrl: "/cgv",
+    },
+    en: {
+        title: "Privacy & Cookie Preferences",
+        text: "ZwinCar uses essential cookies to secure your car rental booking and measure anonymous traffic. No intrusive tracking or data reselling.",
+        accept: "Accept all",
+        reject: "Decline non-essential",
+        learnMore: "Learn more",
+        policyUrl: "/en/guides",
+    },
+    es: {
+        title: "Privacidad y Cookies",
+        text: "ZwinCar utiliza cookies esenciales para proteger su reserva de alquiler y analizar el tráfico de forma anónima. Sin rastreo publicitario intrusivo.",
+        accept: "Aceptar todo",
+        reject: "Rechazar no esenciales",
+        learnMore: "Más información",
+        policyUrl: "/es",
+    },
+    nl: {
+        title: "Privacy & Cookies",
+        text: "ZwinCar gebruikt essentiële cookies om uw autoverhuur te beveiligen en anonieme analyses uit te voeren. Geen opdringerige advertenties.",
+        accept: "Alles accepteren",
+        reject: "Weigeren",
+        learnMore: "Meer informatie",
+        policyUrl: "/nl",
+    },
+};
 
-    // Deterministic theme
-    const theme = getTheme(slug);
-    const classes = theme.classes;
+export default function CookieBanner() {
+    const [mounted, setMounted] = useState(false);
+    const [showBanner, setShowBanner] = useState(false);
+    const pathname = usePathname() || "";
+
+    // Détection de la langue depuis l'URL
+    let lang = "fr";
+    if (pathname.startsWith("/en")) lang = "en";
+    else if (pathname.startsWith("/es")) lang = "es";
+    else if (pathname.startsWith("/nl")) lang = "nl";
+
+    const t = COOKIE_TRANSLATIONS[lang] || COOKIE_TRANSLATIONS.fr;
 
     useEffect(() => {
-        // Check if user has already explicitly accepted or rejected
-        const consent = localStorage.getItem('cookie-consent');
-        if (!consent) {
-            // Small delay for animation entrance
-            const timer = setTimeout(() => setShowBanner(true), 1000);
-            return () => clearTimeout(timer);
+        setMounted(true);
+        try {
+            const consent = localStorage.getItem("zwincar-cookie-consent");
+            if (!consent) {
+                const timer = setTimeout(() => setShowBanner(true), 1200);
+                return () => clearTimeout(timer);
+            }
+        } catch {
+            // Environnement sans localStorage (ex: SSR / iframe restreint)
         }
     }, []);
 
-    const acceptAll = () => {
-        localStorage.setItem('cookie-consent', 'accepted');
-        setShowBanner(false);
-        // Optional: Trigger GTM or extra tracking activation here if we had complex consent mode
-    };
-
-    const rejectAll = () => {
-        localStorage.setItem('cookie-consent', 'rejected');
+    const handleAccept = () => {
+        try {
+            localStorage.setItem("zwincar-cookie-consent", "accepted");
+        } catch {}
         setShowBanner(false);
     };
 
-    if (!showBanner) return null;
+    const handleReject = () => {
+        try {
+            localStorage.setItem("zwincar-cookie-consent", "rejected");
+        } catch {}
+        setShowBanner(false);
+    };
+
+    if (!mounted || !showBanner) return null;
 
     return (
-        <div className={`fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-96 bg-neutral-900/95 backdrop-blur-md border ${classes.border.replace('/30', '/50')} rounded-2xl p-6 shadow-2xl ${classes.shadow} z-50 animate-in fade-in slide-in-from-bottom-4 duration-500`}>
-            <div className="flex items-start gap-4">
-                <div className={`p-2 rounded-lg shrink-0 ${classes.bg} bg-opacity-20`}>
-                    <Cookie className={`w-6 h-6 ${theme.text}`} />
+        <aside
+            aria-label={t.title}
+            className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:max-w-md bg-white/95 backdrop-blur-md border border-[#E7DFD5] rounded-2xl p-5 shadow-2xl z-50 animate-in fade-in slide-in-from-bottom-4 duration-500 text-[#12161E]"
+        >
+            <div className="flex items-start gap-3.5">
+                <div className="p-2.5 rounded-xl bg-[#C9572C]/10 text-[#C9572C] shrink-0 mt-0.5">
+                    <Cookie className="w-5 h-5" />
                 </div>
-                <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-white mb-2">
-                        Confidentialité
-                    </h3>
-                    <p className="text-sm text-neutral-400 mb-4 leading-relaxed">
-                        Nous utilisons des cookies pour améliorer votre expérience sur le site de {cityName}. Pas de pistage intrusif, promis.
-                        {' '}
-                        <Link href="/mentions-legales" className={`underline hover:opacity-80 transition ${theme.text}`}>
-                            En savoir plus
+                <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-1.5 mb-1">
+                        <h3 className="text-sm sm:text-base font-black text-slate-900 tracking-tight">
+                            {t.title}
+                        </h3>
+                        <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+                    </div>
+                    <p className="text-xs text-slate-600 leading-relaxed mb-4">
+                        {t.text}{" "}
+                        <Link
+                            href={t.policyUrl}
+                            className="text-[#C9572C] font-semibold underline underline-offset-2 hover:text-[#B34922] transition-colors"
+                        >
+                            {t.learnMore}
                         </Link>
                     </p>
 
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-col sm:flex-row items-center gap-2">
                         <button
-                            onClick={acceptAll}
-                            className={`w-full py-2 font-bold rounded-lg transition-colors ${classes.bg} ${theme.text} ${classes.bgHover}`}
+                            type="button"
+                            onClick={handleAccept}
+                            className="w-full sm:flex-1 py-2 px-3.5 bg-[#C9572C] hover:bg-[#B34922] text-white font-bold rounded-xl text-xs transition-all shadow-xs active:scale-[0.98]"
                         >
-                            Tout accepter
+                            {t.accept}
                         </button>
                         <button
-                            onClick={rejectAll}
-                            className="w-full py-2 bg-white/5 text-white font-medium rounded-lg hover:bg-white/10 transition-colors"
+                            type="button"
+                            onClick={handleReject}
+                            className="w-full sm:w-auto py-2 px-3.5 bg-[#FAF7F2] hover:bg-[#EAE4DC] text-slate-700 font-semibold rounded-xl text-xs transition-colors border border-[#E7DFD5]"
                         >
-                            Continuer sans accepter
+                            {t.reject}
                         </button>
                     </div>
                 </div>
             </div>
-        </div>
+        </aside>
     );
-};
-
-export default CookieBanner;
+}

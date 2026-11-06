@@ -40,9 +40,15 @@ export default function HomePage() {
 
             {/* HERO SECTION */}
             <section className="relative pt-12 pb-24 md:pt-16 md:pb-32 overflow-hidden">
-                {/* Subtle warm desert architectural ambience */}
-                <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[600px] bg-gradient-to-b from-[#E7DFD5]/40 via-[#FAF7F2]/60 to-transparent blur-3xl"></div>
+                {/* Authentic Moroccan Roadtrip Backdrop (Atlas Mountains & Golden Hour) */}
+                <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+                    <img
+                        src="https://images.unsplash.com/photo-1509099836639-18ba1795216d?auto=format&fit=crop&w=2000&q=85"
+                        alt="Route panoramique du Haut-Atlas Maroc au coucher de soleil"
+                        className="w-full h-[680px] md:h-[780px] object-cover object-center opacity-20 filter saturate-125"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-b from-[#FAF7F2]/40 via-[#FAF7F2]/80 to-[#FAF7F2]"></div>
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[600px] bg-gradient-to-b from-[#C9572C]/10 via-[#FAF7F2]/30 to-transparent blur-3xl"></div>
                 </div>
 
                 <div className="container mx-auto px-4 max-w-6xl relative z-10">
