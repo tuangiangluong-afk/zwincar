@@ -1,0 +1,390 @@
+import { Metadata } from "next";
+import { notFound } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
+import {
+    Clock,
+    User,
+    ArrowLeft,
+    CheckCircle2,
+    AlertTriangle,
+    Info,
+    ChevronRight,
+    HelpCircle,
+    Car,
+    MapPin,
+    ShieldCheck,
+    Share2,
+} from "lucide-react";
+import Header from "@/components/Header";
+import { Footer } from "@/components/Footer";
+import { MOROCCO_GUIDES, getGuideBySlug } from "@/data/morocco-guides";
+import { MOROCCAN_HUBS, VEHICLE_FLEET } from "@/lib/morocco-data";
+import { clampTitle, clampDescription } from "@/lib/seo-meta";
+import SchemaJSON from "@/components/SchemaJSON";
+
+export const revalidate = 3600;
+
+export async function generateStaticParams() {
+    return MOROCCO_GUIDES.map((guide) => ({
+        slug: guide.slug,
+    }));
+}
+
+export async function generateMetadata({
+    params,
+}: {
+    params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+    const { slug } = await params;
+    const guide = getGuideBySlug(slug);
+
+    if (!guide) {
+        return { title: "Guide Introuvable | ZwinCar" };
+    }
+
+    return {
+        title: clampTitle(`${guide.shortTitle} : Conseils Conduite Maroc 2026 | ZwinCar`),
+        description: clampDescription(guide.metaDescription),
+        alternates: {
+            canonical: `https://zwincar.com/guides/${guide.slug}`,
+        },
+        openGraph: {
+            title: guide.title,
+            description: guide.metaDescription,
+            url: `https://zwincar.com/guides/${guide.slug}`,
+            images: [{ url: guide.heroImage, width: 1200, height: 630 }],
+            type: "article",
+            publishedTime: guide.publishedAt,
+            modifiedTime: guide.updatedAt,
+            authors: [guide.author.name],
+        },
+    };
+}
+
+export default async function GuideDetailPage({
+    params,
+}: {
+    params: Promise<{ slug: string }>;
+}) {
+    const { slug } = await params;
+    const guide = getGuideBySlug(slug);
+
+    if (!guide) {
+        notFound();
+    }
+
+    const relatedHubsData = MOROCCAN_HUBS.filter((h) => guide.relatedHubs.includes(h.slug));
+    const relatedVehiclesData = VEHICLE_FLEET.filter((v) => guide.relatedVehicles.includes(v.id));
+
+    return (
+        <div className="min-h-screen bg-[#FAF7F2] text-slate-900 flex flex-col font-sans">
+            <Header />
+
+            {/* Structured Data: Article & BreadcrumbList & FAQPage */}
+            <SchemaJSON
+                schema={{
+                    "@context": "https://schema.org",
+                    "@type": "Article",
+                    headline: guide.title,
+                    description: guide.metaDescription,
+                    image: guide.heroImage,
+                    datePublished: guide.publishedAt,
+                    dateModified: guide.updatedAt,
+                    author: {
+                        "@type": "Person",
+                        name: guide.author.name,
+                        jobTitle: guide.author.role,
+                    },
+                    publisher: {
+                        "@type": "Organization",
+                        name: "ZwinCar Maroc",
+                        url: "https://zwincar.com",
+                    },
+                    mainEntityOfPage: {
+                        "@type": "WebPage",
+                        "@id": `https://zwincar.com/guides/${guide.slug}`,
+                    },
+                }}
+            />
+
+            <SchemaJSON
+                schema={{
+                    "@context": "https://schema.org",
+                    "@type": "BreadcrumbList",
+                    itemListElement: [
+                        {
+                            "@type": "ListItem",
+                            position: 1,
+                            name: "Accueil",
+                            item: "https://zwincar.com",
+                        },
+                        {
+                            "@type": "ListItem",
+                            position: 2,
+                            name: "Guides Maroc",
+                            item: "https://zwincar.com/guides",
+                        },
+                        {
+                            "@type": "ListItem",
+                            position: 3,
+                            name: guide.shortTitle,
+                            item: `https://zwincar.com/guides/${guide.slug}`,
+                        },
+                    ],
+                }}
+            />
+
+            {guide.faqs && guide.faqs.length > 0 && (
+                <SchemaJSON
+                    schema={{
+                        "@context": "https://schema.org",
+                        "@type": "FAQPage",
+                        mainEntity: guide.faqs.map((faq) => ({
+                            "@type": "Question",
+                            name: faq.question,
+                            acceptedAnswer: {
+                                "@type": "Answer",
+                                text: faq.answer,
+                            },
+                        })),
+                    }}
+                />
+            )}
+
+            <main className="flex-1 pb-16">
+                {/* Hero / Header */}
+                <article className="container mx-auto px-4 max-w-4xl pt-8 sm:pt-12">
+                    {/* Breadcrumbs Navigation */}
+                    <nav className="flex items-center gap-2 text-xs font-semibold text-slate-500 mb-6">
+                        <Link href="/" className="hover:text-slate-900">
+                            Accueil
+                        </Link>
+                        <ChevronRight size={12} />
+                        <Link href="/guides" className="hover:text-slate-900">
+                            Guides
+                        </Link>
+                        <ChevronRight size={12} />
+                        <span className="text-[#C9572C] truncate">{guide.shortTitle}</span>
+                    </nav>
+
+                    <div className="space-y-4">
+                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 text-white text-xs font-bold uppercase tracking-wider">
+                            <span>{guide.category}</span>
+                            <span>•</span>
+                            <span className="font-normal">{guide.readTimeMinutes} min</span>
+                        </div>
+
+                        <h1 className="text-2xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">
+                            {guide.title}
+                        </h1>
+
+                        {/* Author line */}
+                        <div className="flex items-center gap-3 pt-2 pb-6 border-b border-slate-200">
+                            <div className="w-10 h-10 rounded-full overflow-hidden relative shrink-0">
+                                <Image
+                                    src={guide.author.avatar}
+                                    alt={guide.author.name}
+                                    fill
+                                    className="object-cover"
+                                />
+                            </div>
+                            <div>
+                                <div className="text-xs font-bold text-slate-900">
+                                    {guide.author.name}
+                                </div>
+                                <div className="text-[11px] text-slate-500">
+                                    {guide.author.role} • Vérifié pour 2026
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Featured Image */}
+                    <div className="relative h-64 sm:h-96 rounded-3xl overflow-hidden my-8 shadow-md border border-slate-200">
+                        <Image
+                            src={guide.heroImage}
+                            alt={guide.title}
+                            fill
+                            priority
+                            className="object-cover"
+                        />
+                    </div>
+
+                    {/* Direct Answer Summary Box (AEO & LLM Snapshot) */}
+                    <div className="rounded-3xl bg-white border-2 border-[#C9572C]/30 p-6 sm:p-7 shadow-sm my-8 space-y-3">
+                        <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-[#C9572C]">
+                            <CheckCircle2 size={18} />
+                            <span>L'Essentiel en 30 Secondes</span>
+                        </div>
+                        <p className="text-sm sm:text-base text-slate-800 leading-relaxed font-medium">
+                            {guide.summaryDirectAnswer}
+                        </p>
+                    </div>
+
+                    {/* Table of Contents */}
+                    <div className="rounded-2xl bg-[#F0EBE1] p-5 my-8 space-y-2.5">
+                        <div className="text-xs font-bold uppercase tracking-wider text-slate-600">
+                            Sommaire du Guide
+                        </div>
+                        <ul className="space-y-1.5 text-xs font-semibold text-slate-800">
+                            {guide.sections.map((section, idx) => (
+                                <li key={section.id}>
+                                    <a
+                                        href={`#${section.id}`}
+                                        className="hover:text-[#C9572C] transition-colors flex items-center gap-2"
+                                    >
+                                        <span className="text-slate-400 font-mono">{idx + 1}.</span>
+                                        <span>{section.heading.replace(/^\d+\.\s*/, "")}</span>
+                                    </a>
+                                </li>
+                            ))}
+                            {guide.faqs && guide.faqs.length > 0 && (
+                                <li>
+                                    <a
+                                        href="#faq-guide"
+                                        className="hover:text-[#C9572C] transition-colors flex items-center gap-2"
+                                    >
+                                        <span className="text-slate-400 font-mono">FAQ</span>
+                                        <span>Questions fréquentes</span>
+                                    </a>
+                                </li>
+                            )}
+                        </ul>
+                    </div>
+
+                    {/* Content Sections */}
+                    <div className="space-y-10 text-slate-800 leading-relaxed text-sm sm:text-base">
+                        {guide.sections.map((sec) => (
+                            <section key={sec.id} id={sec.id} className="space-y-4 pt-4">
+                                <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+                                    {sec.heading}
+                                </h2>
+                                <div className="space-y-3 whitespace-pre-line text-slate-700">
+                                    {sec.content}
+                                </div>
+
+                                {sec.callout && (
+                                    <div
+                                        className={`rounded-2xl p-4.5 border flex items-start gap-3 my-4 text-xs sm:text-sm font-medium ${
+                                            sec.callout.type === "warning"
+                                                ? "bg-amber-50 border-amber-200 text-amber-900"
+                                                : sec.callout.type === "tip"
+                                                ? "bg-emerald-50 border-emerald-200 text-emerald-950"
+                                                : "bg-blue-50 border-blue-200 text-blue-900"
+                                        }`}
+                                    >
+                                        {sec.callout.type === "warning" && (
+                                            <AlertTriangle size={18} className="text-amber-600 shrink-0 mt-0.5" />
+                                        )}
+                                        {sec.callout.type === "tip" && (
+                                            <CheckCircle2 size={18} className="text-emerald-600 shrink-0 mt-0.5" />
+                                        )}
+                                        {sec.callout.type === "info" && (
+                                            <Info size={18} className="text-blue-600 shrink-0 mt-0.5" />
+                                        )}
+                                        <div>{sec.callout.text}</div>
+                                    </div>
+                                )}
+                            </section>
+                        ))}
+                    </div>
+
+                    {/* FAQs */}
+                    {guide.faqs && guide.faqs.length > 0 && (
+                        <section id="faq-guide" className="pt-12 mt-12 border-t border-slate-200 space-y-6">
+                            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#C9572C]">
+                                <HelpCircle size={18} />
+                                <span>Foire Aux Questions</span>
+                            </div>
+                            <h3 className="text-xl sm:text-2xl font-black text-slate-900">
+                                Questions Fréquentes sur le Sujet
+                            </h3>
+
+                            <div className="space-y-4">
+                                {guide.faqs.map((faq, idx) => (
+                                    <div
+                                        key={idx}
+                                        className="rounded-2xl bg-white border border-[#ECE5D9] p-5 shadow-2xs space-y-2"
+                                    >
+                                        <div className="text-sm sm:text-base font-bold text-slate-900">
+                                            {faq.question}
+                                        </div>
+                                        <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                                            {faq.answer}
+                                        </p>
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+                    )}
+
+                    {/* Related Hubs & Vehicles Section (SEO Cross-Linking) */}
+                    <div className="pt-12 mt-12 border-t border-slate-200 space-y-8">
+                        {relatedHubsData.length > 0 && (
+                            <div>
+                                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3 flex items-center gap-1.5">
+                                    <MapPin size={14} className="text-[#C9572C]" />
+                                    <span>Villes & Aéroports Recommandés</span>
+                                </h4>
+                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                                    {relatedHubsData.map((hub) => (
+                                        <Link
+                                            key={hub.slug}
+                                            href={`/maroc/${hub.slug}`}
+                                            className="p-3.5 rounded-2xl bg-white border border-[#E7DFD5] hover:border-[#C9572C] transition-all flex flex-col justify-between"
+                                        >
+                                            <div className="font-bold text-xs sm:text-sm text-slate-900">
+                                                {hub.name} ({hub.airportCode})
+                                            </div>
+                                            <div className="text-[11px] text-slate-500 mt-1">
+                                                Dès {hub.avgDailyPriceEur} €/j • 0€ Caution
+                                            </div>
+                                        </Link>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {relatedVehiclesData.length > 0 && (
+                            <div>
+                                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3 flex items-center gap-1.5">
+                                    <Car size={14} className="text-emerald-600" />
+                                    <span>Véhicules Adaptés pour ce Trajet</span>
+                                </h4>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    {relatedVehiclesData.map((veh) => (
+                                        <Link
+                                            key={veh.id}
+                                            href={`/vehicules/${veh.id}`}
+                                            className="p-4 rounded-2xl bg-white border border-[#E7DFD5] hover:border-emerald-500 transition-all flex items-center gap-4 group"
+                                        >
+                                            <div className="w-20 h-14 relative shrink-0 overflow-hidden rounded-xl bg-slate-50">
+                                                <Image
+                                                    src={veh.image}
+                                                    alt={veh.name}
+                                                    fill
+                                                    className="object-cover group-hover:scale-105 transition-transform"
+                                                />
+                                            </div>
+                                            <div>
+                                                <div className="text-xs sm:text-sm font-bold text-slate-900">
+                                                    {veh.name}
+                                                </div>
+                                                <div className="text-[11px] text-emerald-700 font-semibold">
+                                                    {veh.dailyPriceEur} €/j • {veh.depositPolicy}
+                                                </div>
+                                            </div>
+                                        </Link>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </article>
+            </main>
+
+            <Footer />
+        </div>
+    );
+}

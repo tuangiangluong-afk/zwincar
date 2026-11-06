@@ -1,0 +1,14 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="48" height="48" rx="12" fill="#0E1420"/>
+  <rect x="0.75" y="0.75" width="46.5" height="46.5" rx="11.25" stroke="rgba(255,255,255,0.08)" stroke-width="1.5"/>
+  <path d="M13 15.5C13 14.6716 13.6716 14 14.5 14H33.5C34.3284 14 35 14.6716 35 15.5C35 16.3284 34.3284 17 33.5 17H19.2L34.1 30.6C34.68 31.13 35 31.88 35 32.66V33.5C35 34.33 34.33 35 33.5 35H14.5C13.67 35 13 34.33 13 33.5C13 32.67 13.67 32 14.5 32H28.9L13.9 18.3C13.33 17.78 13 17.04 13 16.27V15.5Z" fill="url(#zwincar-terracotta-grad)"/>
+  <circle cx="34" cy="15.5" r="2.2" fill="#E58B24"/>
+  <circle cx="14" cy="33.5" r="2.2" fill="#E58B24"/>
+  <defs>
+    <linearGradient id="zwincar-terracotta-grad" x1="13" y1="14" x2="35" y2="35" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stopColor="#E56A38"/>
+      <stop offset="60%" stopColor="#C9572C"/>
+      <stop offset="100%" stopColor="#A83E16"/>
+    </linearGradient>
+  </defs>
+</svg>

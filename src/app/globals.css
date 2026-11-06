@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #FAF7F2;
+  --color-foreground: #12161E;
+
+  --color-primary: #C9572C;
+  --color-primary-hover: #B24922;
+
+  --color-secondary: #12161E;
+  --color-accent: #E58B24;
+
+  --color-card: #FFFFFF;
+  --color-border: #E7DFD5;
+
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-2xl: 2rem;
+}
+
+/* Custom Utilities */
+@utility glass-warm {
+  background-color: rgba(250, 247, 242, 0.85);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(231, 223, 213, 0.7);
+}
+
+@utility glass-card {
+  background-color: #FFFFFF;
+  border: 1px solid #E7DFD5;
+  box-shadow: 0 10px 30px -10px rgba(18, 22, 30, 0.05);
+}
+
+@utility text-terracotta {
+  color: #C9572C;
+}
+
+@utility bg-terracotta {
+  background-color: #C9572C;
+}
+
+@utility border-warm {
+  border-color: #E7DFD5;
+}
+
+/* Base styles */
+@layer base {
+  body {
+    background-color: #FAF7F2;
+    color: #12161E;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  ::selection {
+    background-color: #C9572C;
+    color: #FFFFFF;
+  }
+}
