@@ -32,11 +32,11 @@ export default function PseoGuidesCrossLinks({
                             <BookOpen size={14} />
                             <span>{isEn ? "Authoritative Driving Intelligence" : "Guides d'Autorité & Conseils Conduite"}</span>
                         </div>
-                        <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+                        <h3 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
                             {isEn
                                 ? `Essential Driving & Car Rental Guides for ${hubName}`
                                 : `Guides Essentiels pour Conduire à ${hubName} & au Maroc`}
-                        </h2>
+                        </h3>
                         <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                             {isEn
                                 ? `Avoid deposit disputes, airport terminal confusion, and radar fines with our forensic Moroccan road guides.`

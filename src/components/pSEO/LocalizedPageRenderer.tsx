@@ -71,6 +71,10 @@ export default function LocalizedPageRenderer({
     // 2. Check if vehicle
     const vehicle = VEHICLE_FLEET.find((v) => v.id === subslug);
     if (vehicle) {
+        const vehicleShortName = vehicle.id === "toyota-prado-tx-7places"
+            ? (locale === "en" ? "Toyota Prado 7-Seater" : locale === "es" ? "Toyota Prado 7 Plazas" : "Toyota Prado 7 Places")
+            : vehicle.name;
+
         return (
             <div className="min-h-screen bg-[#FAF7F2] text-[#12161E]">
                 <SchemaJSON
@@ -201,7 +205,7 @@ export default function LocalizedPageRenderer({
                         {/* Cross-linking to other models in this city */}
                         <div className="mt-16 pt-10 border-t border-[#E7DFD5] space-y-6">
                             <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-                                {locale === "en" ? `Alternatives to ${vehicle.name} in ${hub.name}` : locale === "es" ? `Alternativas a ${vehicle.name} en ${hub.name}` : locale === "nl" ? `Alternatieven voor ${vehicle.name} in ${hub.name}` : `Alternatives au ${vehicle.name} à ${hub.name}`}
+                                {locale === "en" ? `Alternatives to ${vehicleShortName} in ${hub.name}` : locale === "es" ? `Alternativas a ${vehicleShortName} en ${hub.name}` : locale === "nl" ? `Alternatieven voor ${vehicleShortName} in ${hub.name}` : `Alternatives au ${vehicleShortName} à ${hub.name}`}
                             </h2>
                             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5">
                                 {VEHICLE_FLEET.filter((v) => v.id !== vehicle.id).map((v) => (

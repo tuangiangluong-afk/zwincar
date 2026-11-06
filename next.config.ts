@@ -82,6 +82,26 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: '/es/guides/:path*',
+        destination: '/en/guides/:path*',
+        permanent: true,
+      },
+      {
+        source: '/nl/guides/:path*',
+        destination: '/en/guides/:path*',
+        permanent: true,
+      },
+      {
+        source: '/es/guides',
+        destination: '/en/guides',
+        permanent: true,
+      },
+      {
+        source: '/nl/guides',
+        destination: '/en/guides',
+        permanent: true,
+      },
+      {
         source: '/home/cgv',
         destination: '/cgv',
         permanent: true,

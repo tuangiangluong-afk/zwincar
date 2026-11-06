@@ -85,6 +85,7 @@ export default async function middleware(req: NextRequest) {
         }
 
         if (
+            path === "/" ||
             path.startsWith("/admin") ||
             path.startsWith("/home") ||
             path.startsWith("/login") ||

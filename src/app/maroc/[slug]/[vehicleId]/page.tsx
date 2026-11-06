@@ -159,6 +159,8 @@ export default async function CityVehicleDetailPage({ params }: CityVehiclePageP
     const vehicle = VEHICLE_FLEET.find((v) => v.id === vehicleId);
     if (!vehicle) notFound();
 
+    const vehicleShortName = vehicle.id === "toyota-prado-tx-7places" ? "Toyota Prado 7 Places" : vehicle.name;
+
     return (
         <div className="min-h-screen bg-[#FAF7F2] text-[#12161E]">
             {/* Structured Data AutoRental & Vehicle */}
@@ -280,7 +282,7 @@ export default async function CityVehicleDetailPage({ params }: CityVehiclePageP
                                     <span>Procédure de Réception à {hub.name} ({hub.airportCode})</span>
                                 </div>
                                 <h2 className="text-lg font-bold text-slate-900">
-                                    Remise des clés du {vehicle.name} à {hub.name}
+                                    Remise des clés du {vehicleShortName} à {hub.name}
                                 </h2>
                                 <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                                     <strong>Point de rendez-vous : </strong>{hub.meetingPointDetail}. Un agent de notre agence partenaire locale vous attend avec une pancarte nominative à votre nom. Le tour du véhicule prend 5 minutes, vous signez le contrat sur smartphone et partez directement sans passer par un guichet.
@@ -305,7 +307,7 @@ export default async function CityVehicleDetailPage({ params }: CityVehiclePageP
                                     Flotte Locale {hub.name}
                                 </div>
                                 <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight mt-0.5">
-                                    Alternatives au {vehicle.name} à {hub.name}
+                                    Alternatives au {vehicleShortName} à {hub.name}
                                 </h2>
                             </div>
                             <Link
@@ -357,7 +359,7 @@ export default async function CityVehicleDetailPage({ params }: CityVehiclePageP
                                     Réseau National Aéroports
                                 </div>
                                 <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight mt-0.5">
-                                    {vehicle.name} dans les autres villes du Maroc
+                                    {vehicleShortName} dans les autres villes du Maroc
                                 </h2>
                             </div>
                             <Link

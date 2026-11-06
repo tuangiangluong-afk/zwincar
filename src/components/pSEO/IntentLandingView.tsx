@@ -139,7 +139,7 @@ export default function IntentLandingView({ hub, intent, locale }: IntentLanding
                     <div className="flex items-baseline justify-between mb-8 pb-4 border-b border-slate-200">
                         <div>
                             <h2 className="text-xl md:text-2xl font-black text-slate-900 tracking-tight">
-                                {locale === "fr" ? `Véhicules recommandés à ${hub.name}` : `Recommended Cars in ${hub.name}`}
+                                {locale === "fr" ? `Flotte ${intent.badge.fr} à ${hub.name}` : `${intent.badge[locale]} Fleet in ${hub.name}`}
                             </h2>
                             <p className="text-xs text-slate-500 mt-1">
                                 {locale === "fr" ? "Disponibilités réelles certifiées auprès des agences partenaires locales." : "Guaranteed fleet availability with verified local partners."}
@@ -315,7 +315,7 @@ export default function IntentLandingView({ hub, intent, locale }: IntentLanding
                             {locale === "fr" ? "Points de Retrait & Restitution" : "Pick-up & Drop-off Points"}
                         </span>
                         <h2 className="text-xl md:text-2xl font-black text-slate-900 tracking-tight">
-                            {locale === "fr" ? `Où récupérer votre voiture à ${hub.name} ?` : `Where to collect your car in ${hub.name}?`}
+                            {locale === "fr" ? `Retrait ${intent.badge.fr} à ${hub.name}` : `Pick-up for ${intent.badge[locale]} in ${hub.name}`}
                         </h2>
                     </div>
 

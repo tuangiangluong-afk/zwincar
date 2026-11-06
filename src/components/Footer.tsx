@@ -200,7 +200,7 @@ export default function Footer({ config, locale: propLocale }: FooterProps = {})
                         <ul className="space-y-2 text-slate-400">
                             <li>
                                 <Link
-                                    href={activeLocale === "fr" ? "/guides" : `/${activeLocale}/guides`}
+                                    href={activeLocale === "fr" ? "/guides" : "/en/guides"}
                                     className="hover:text-white transition flex items-center gap-1.5"
                                 >
                                     <span>{t.guidesLink}</span>

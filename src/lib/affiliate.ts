@@ -92,9 +92,16 @@ export function buildAffiliateRentalUrl({
     const cleanMarker = marker || "zwincar";
 
     if (provider === "localrent") {
-        // Format Localrent direct affiliate link (ID 18961)
-        const localrentId = process.env.NEXT_PUBLIC_LOCALRENT_AFFILIATE_ID || "18961";
-        return `https://localrent.com/fr/morocco/${citySlug}/?r=${localrentId}&date_from=${pickupDate}&date_to=${returnDate}`;
+        // Deep-link Localrent via Travelpayouts ou direct
+        const targetUrl = `https://localrent.com/fr/morocco/${citySlug}/?date_from=${pickupDate}&date_to=${returnDate}`;
+        // Priorité Travelpayouts si configuré (permet de centraliser les revenus sur un seul compte)
+        if (process.env.NEXT_PUBLIC_LOCALRENT_TPX_URL) {
+            return process.env.NEXT_PUBLIC_LOCALRENT_TPX_URL;
+        }
+        // Deep link Travelpayouts avec campagne 87 et marker utilisateur
+        const tpxMarker = process.env.NEXT_PUBLIC_TRAVELPAYOUTS_MARKER || "801682";
+        const tpxTrs = process.env.NEXT_PUBLIC_TRAVELPAYOUTS_TRS || "596733";
+        return `https://tp.media/r?campaign_id=87&marker=${tpxMarker}&p=2043&trs=${tpxTrs}&u=${encodeURIComponent(targetUrl)}`;
     }
 
     if (provider === "economybookings") {
@@ -107,12 +114,21 @@ export function buildAffiliateRentalUrl({
 }
 
 /**
- * Génère le lien affilié pour l'eSIM Maroc (Airalo / MobiMatter)
+ * Génère le lien affilié pour l'eSIM Maroc (Airalo via Travelpayouts / MobiMatter)
  */
 export function buildAffiliateEsimUrl(partner: "airalo" | "mobimatter" = "airalo"): string {
-    const airaloRef = process.env.NEXT_PUBLIC_AIRALO_AFFILIATE_CODE || "ZWINCAR";
     if (partner === "mobimatter") {
-        return `https://mobimatter.com/travel-esim/morocco?affiliate=${airaloRef}`;
+        const mobiRef = process.env.NEXT_PUBLIC_MOBIMATTER_AFFILIATE_CODE || "ZWINCAR";
+        return `https://mobimatter.com/travel-esim/morocco?affiliate=${mobiRef}`;
     }
-    return `https://www.airalo.com/morocco-esim?referral=${airaloRef}`;
+
+    // Priorité lien court Travelpayouts Airalo
+    if (process.env.NEXT_PUBLIC_AIRALO_TPX_URL) {
+        return process.env.NEXT_PUBLIC_AIRALO_TPX_URL;
+    }
+    // Deep-link Travelpayouts Airalo Maroc (Campagne 541)
+    const tpxMarker = process.env.NEXT_PUBLIC_TRAVELPAYOUTS_MARKER || "801682";
+    const tpxTrs = process.env.NEXT_PUBLIC_TRAVELPAYOUTS_TRS || "596733";
+    const airaloMoroccoUrl = "https://www.airalo.com/morocco-esim";
+    return `https://tp.media/r?campaign_id=541&marker=${tpxMarker}&p=8310&trs=${tpxTrs}&u=${encodeURIComponent(airaloMoroccoUrl)}`;
 }

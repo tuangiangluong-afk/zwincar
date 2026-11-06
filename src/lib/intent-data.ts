@@ -107,10 +107,10 @@ export const PURCHASE_INTENTS: PurchaseIntent[] = [
             nl: "De grootste valkuil in Marokko: autoverhuurders op de luchthaven eisen een fysieke CREDITCARD en blokkeren €1.500 tot €2.500. ZwinCar biedt geverifieerde lokale partners: kies voor 0 € borg of een lichte borg van €300 in contanten/betaalpas, direct terugbetaald.",
         },
         analysisTitle: {
-            fr: "Pourquoi l'aéroport refuse votre carte de débit au Maroc ?",
-            en: "Why airport desks reject European debit cards in Morocco",
-            es: "¿Por qué el aeropuerto rechaza su tarjeta de débito en Marruecos?",
-            nl: "Waarom weigeren traditionele verhuurders uw debetkaart in Marokko?",
+            fr: "Pourquoi l'aéroport de {hub} refuse votre carte de débit ?",
+            en: "Why airport desks in {hub} reject European debit cards",
+            es: "¿Por qué el aeropuerto de {hub} rechaza su tarjeta de débito?",
+            nl: "Waarom traditionele verhuurders in {hub} uw debetkaart weigeren",
         },
         analysisPoints: [
             {
@@ -233,10 +233,10 @@ export const PURCHASE_INTENTS: PurchaseIntent[] = [
             nl: "In Marokko heeft 90% van de huurauto's een handgeschakelde versnellingsbak. Bij grote brokers krijgt u vaak 'of vergelijkbaar'. Bij ZwinCar is de automatische transmissie contractueel gegarandeerd.",
         },
         analysisTitle: {
-            fr: "Pourquoi la boîte automatique change tout pour rouler au Maroc ?",
-            en: "Why is an automatic transmission essential for driving in Morocco?",
-            es: "¿Por qué un coche automático marca la diferencia en Marruecos?",
-            nl: "Waarom maakt een automaat een enorm verschil in Marokko?",
+            fr: "Pourquoi l'automatique change tout pour rouler à {hub} ?",
+            en: "Why an automatic car is essential for driving in {hub}",
+            es: "¿Por qué un coche automático marca la diferencia en {hub}?",
+            nl: "Waarom een automaat een enorm verschil maakt in {hub}",
         },
         analysisPoints: [
             {
@@ -331,10 +331,10 @@ export const PURCHASE_INTENTS: PurchaseIntent[] = [
             nl: "De mooiste plekken in Marokko (Agafay woestijnkampen, Atlas kasba's, rustige stranden) liggen aan grindwegen. Veel verhuurders verbieden onverharde wegen stiekem. Bij ZwinCar zijn toegankelijke pistes officieel toegestaan.",
         },
         analysisTitle: {
-            fr: "Pourquoi le Duster 4x4 est le roi du roadtrip au Maroc ?",
-            en: "Why the Dacia Duster 4x4 is king of Moroccan road trips",
-            es: "¿Por qué el Duster 4x4 es el rey del roadtrip en Marruecos?",
-            nl: "Waarom is de Dacia Duster 4x4 de koning van de Marokkaanse roadtrip?",
+            fr: "Pourquoi le Duster 4x4 est roi des roadtrips depuis {hub} ?",
+            en: "Why the Duster 4x4 is king of road trips from {hub}",
+            es: "¿Por qué el Duster 4x4 es el rey del roadtrip desde {hub}?",
+            nl: "Waarom de Dacia Duster 4x4 koning is voor trips vanuit {hub}",
         },
         analysisPoints: [
             {
@@ -429,10 +429,10 @@ export const PURCHASE_INTENTS: PurchaseIntent[] = [
             nl: "In Marokko verbiedt de wet stadstaxi's om meer dan 3 passagiers te vervoeren. Een gezin van 4 of 5 moet telkens twee taxi's nemen! Een 7-persoons Dacia Jogger houdt het hele gezin gezellig bij elkaar.",
         },
         analysisTitle: {
-            fr: "Configuration bagages & modularité pour votre séjour en famille",
-            en: "Luggage space & modular seating for family road trips",
-            es: "Espacio de equipaje y modularidad para viajes familiares",
-            nl: "Bagageruimte en flexibele zitplaatsen voor gezinnen",
+            fr: "Configuration bagages & modularité pour votre séjour à {hub}",
+            en: "Luggage space & modular seating for family trips in {hub}",
+            es: "Espacio de equipaje y modularidad para familias en {hub}",
+            nl: "Bagageruimte en flexibele zitplaatsen in {hub}",
         },
         analysisPoints: [
             {
@@ -527,10 +527,10 @@ export const PURCHASE_INTENTS: PurchaseIntent[] = [
             nl: "Veel reizigers verkennen eerst de autovrije medina van {hub} te voet. In plaats van een taxi terug naar het vliegveld te nemen, bezorgt onze lokale agent de auto bij de dichtstbijzijnde toegangspoort van uw riad.",
         },
         analysisTitle: {
-            fr: "Comment gérer le stationnement et la livraison en Médina ?",
-            en: "How to handle Medina delivery and secure overnight parking",
-            es: "Cómo gestionar el aparcamiento y la entrega en la Medina",
-            nl: "Hoe werkt de bezorging en veilig parkeren bij de medina?",
+            fr: "Gestion du stationnement et livraison en Médina à {hub}",
+            en: "Medina car delivery & secure overnight parking in {hub}",
+            es: "Gestión de aparcamiento y entrega en la Medina en {hub}",
+            nl: "Bezorging en veilig parkeren bij de medina in {hub}",
         },
         analysisPoints: [
             {

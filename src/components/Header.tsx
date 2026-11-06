@@ -38,7 +38,7 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
     const homeHref = currentLocale === "fr" ? "/" : `/${currentLocale}`;
     const catalogHref = `${homeHref}#vehicle-catalog`;
     const zeroCautionHref = `${homeHref}#zero-caution`;
-    const guidesHref = currentLocale === "fr" ? "/guides" : `/${currentLocale}/guides`;
+    const guidesHref = currentLocale === "fr" ? "/guides" : "/en/guides";
 
     const handleLocaleSwitch = (newLocale: Locale) => {
         if (!pathname) return;
