@@ -8,6 +8,7 @@ import { PURCHASE_INTENTS, PurchaseIntent } from "@/lib/intent-data";
 import { Locale, getTranslation } from "@/lib/i18n";
 import IntentLandingView from "@/components/pSEO/IntentLandingView";
 import VehicleBookingCard from "@/components/VehicleBookingCard";
+import PseoGuidesCrossLinks from "@/components/pSEO/PseoGuidesCrossLinks";
 import {
     ShieldCheck,
     CheckCircle2,
@@ -226,6 +227,9 @@ export default function LocalizedPageRenderer({
                         </div>
                     </div>
                 </main>
+
+                {/* Skyscraper Authority Guides Inbound Cross-Links */}
+                <PseoGuidesCrossLinks hubSlug={hub.slug} hubName={hub.name} locale={locale} />
 
                 <Footer locale={locale} />
             </div>

@@ -9,6 +9,7 @@ import { PURCHASE_INTENTS, getPurchaseIntent } from "@/lib/intent-data";
 import { clampTitle, clampDescription } from "@/lib/seo-meta";
 import VehicleBookingCard from "@/components/VehicleBookingCard";
 import IntentLandingView from "@/components/pSEO/IntentLandingView";
+import PseoGuidesCrossLinks from "@/components/pSEO/PseoGuidesCrossLinks";
 import {
     ShieldCheck,
     CheckCircle2,
@@ -385,6 +386,9 @@ export default async function CityVehicleDetailPage({ params }: CityVehiclePageP
                     </div>
                 </div>
             </main>
+
+            {/* Skyscraper Authority Guides Inbound Cross-Links */}
+            <PseoGuidesCrossLinks hubSlug={hub.slug} hubName={hub.name} locale="fr" />
 
             {/* Footer */}
             <Footer />

@@ -246,8 +246,8 @@ export function BookingWidget({
                         <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">
                             {t.search.pickupDate}
                         </label>
-                        <div className="flex items-center h-[54px] rounded-2xl bg-[#FAF7F2] border border-[#E7DFD5] px-3 gap-2 overflow-hidden">
-                            <Calendar size={16} className="text-slate-400 shrink-0" />
+                        <div className="flex items-center h-[54px] rounded-2xl bg-[#FAF7F2] border border-[#E7DFD5] px-2.5 sm:px-3 gap-1.5 sm:gap-2">
+                            <Calendar size={15} className="text-[#C9572C] shrink-0" />
                             <input
                                 type="date"
                                 value={state.pickupDate}
@@ -255,7 +255,7 @@ export function BookingWidget({
                                 onChange={(e) =>
                                     setState((prev) => ({ ...prev, pickupDate: e.target.value }))
                                 }
-                                className="w-full min-w-0 bg-transparent text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none"
+                                className="w-full min-w-0 bg-transparent text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-60 [&::-webkit-calendar-picker-indicator]:p-0"
                             />
                             <input
                                 type="time"
@@ -263,7 +263,7 @@ export function BookingWidget({
                                 onChange={(e) =>
                                     setState((prev) => ({ ...prev, pickupTime: e.target.value }))
                                 }
-                                className="w-[66px] shrink-0 bg-transparent text-xs font-mono text-slate-700 focus:outline-none border-l border-slate-200 pl-2 text-center"
+                                className="w-[58px] sm:w-[64px] shrink-0 bg-transparent text-xs font-mono font-medium text-slate-700 focus:outline-none border-l border-slate-200/90 pl-1.5 text-center"
                             />
                         </div>
                     </div>
@@ -277,8 +277,8 @@ export function BookingWidget({
                         <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">
                             {t.search.returnDate}
                         </label>
-                        <div className="flex items-center h-[54px] rounded-2xl bg-[#FAF7F2] border border-[#E7DFD5] px-3 gap-2 overflow-hidden">
-                            <Calendar size={16} className="text-slate-400 shrink-0" />
+                        <div className="flex items-center h-[54px] rounded-2xl bg-[#FAF7F2] border border-[#E7DFD5] px-2.5 sm:px-3 gap-1.5 sm:gap-2">
+                            <Calendar size={15} className="text-[#C9572C] shrink-0" />
                             <input
                                 type="date"
                                 value={state.returnDate}
@@ -286,7 +286,7 @@ export function BookingWidget({
                                 onChange={(e) =>
                                     setState((prev) => ({ ...prev, returnDate: e.target.value }))
                                 }
-                                className="w-full min-w-0 bg-transparent text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none"
+                                className="w-full min-w-0 bg-transparent text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-60 [&::-webkit-calendar-picker-indicator]:p-0"
                             />
                             <input
                                 type="time"
@@ -294,7 +294,7 @@ export function BookingWidget({
                                 onChange={(e) =>
                                     setState((prev) => ({ ...prev, returnTime: e.target.value }))
                                 }
-                                className="w-[66px] shrink-0 bg-transparent text-xs font-mono text-slate-700 focus:outline-none border-l border-slate-200 pl-2 text-center"
+                                className="w-[58px] sm:w-[64px] shrink-0 bg-transparent text-xs font-mono font-medium text-slate-700 focus:outline-none border-l border-slate-200/90 pl-1.5 text-center"
                             />
                         </div>
                     </div>

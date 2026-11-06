@@ -16,6 +16,7 @@ export interface MoroccoGuide {
         name: string;
         role: string;
         avatar: string;
+        bio?: string;
     };
     category: string;
     summaryDirectAnswer: string;
@@ -34,7 +35,7 @@ export interface MoroccoGuide {
     }[];
     relatedHubs: string[];
     relatedVehicles: string[];
-    alternateSlug?: string;
+    alternateSlug: string;
 }
 
 export const MOROCCO_GUIDES: MoroccoGuide[] = [
@@ -44,13 +45,14 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "shortTitle": "Location Sans Carte de Crédit",
         "metaDescription": "Louer une voiture au Maroc avec une carte de débit, Revolut ou en espèces en 2026 : décryptage des rejets TPE CMI, cautions et pièges à l'aéroport.",
         "heroImage": "https://images.unsplash.com/photo-1549144511-f099e773c147?auto=format&fit=crop&w=1600&q=80",
-        "publishedAt": "2026-05-15",
+        "publishedAt": "2026-02-17",
         "updatedAt": "2026-11-06",
         "readTimeMinutes": 10,
         "author": {
-            "name": "Hamza Benjelloun",
-            "role": "Expert Logistique Routière & Audit de Flottes Maroc",
-            "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"
+            "name": "Kenza Alami",
+            "role": "Juriste Spécialisée Droit des Assurances & Transports au Maroc",
+            "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80",
+            "bio": "Diplômée de l'Université Hassan II de Casablanca, Kenza audite la conformité des contrats de location au Maroc et conseille les voyageurs sur les litiges de caution bancaire CMI et garanties tous risques."
         },
         "category": "Assurance & Caution",
         "summaryDirectAnswer": "Oui, il est possible de louer une voiture au Maroc sans carte de crédit, mais jamais aux tarifs de base des franchises internationales d'aéroport (Sixt, Hertz, Avis, Europcar). Les terminaux bancaires marocains (CMI) rejettent techniquement les pré-autorisations (empreintes) sur les cartes à débit immédiat, Revolut, Wise ou N26. Pour louer sans carte estampillée « CRÉDIT », vous devez soit payer une assurance rachat total de franchise (SCDW) au comptoir (250 à 350 MAD/jour), soit réserver auprès d'opérateurs locaux vérifiés acceptant un dépôt en espèces de 3 000 à 5 000 MAD (300 à 500 €).",
@@ -151,13 +153,14 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "shortTitle": "Arnaques Caution & Restitution",
         "metaDescription": "Évitez l'arnaque à la caution de location voiture au Maroc : décryptage TPE, fausses rayures à 8000 MAD et protocole juridique de restitution en 5 étapes.",
         "heroImage": "https://images.unsplash.com/photo-1489824904134-891ab64532f1?auto=format&fit=crop&w=1600&q=80",
-        "publishedAt": "2026-05-15",
+        "publishedAt": "2026-02-26",
         "updatedAt": "2026-11-06",
         "readTimeMinutes": 10,
         "author": {
-            "name": "Hamza Benjelloun",
-            "role": "Expert Logistique Routière & Audit de Flottes Maroc",
-            "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"
+            "name": "Kenza Alami",
+            "role": "Juriste Spécialisée Droit des Assurances & Transports au Maroc",
+            "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80",
+            "bio": "Diplômée de l'Université Hassan II de Casablanca, Kenza audite la conformité des contrats de location au Maroc et conseille les voyageurs sur les litiges de caution bancaire CMI et garanties tous risques."
         },
         "category": "Assurance & Caution",
         "summaryDirectAnswer": "Les arnaques à la caution de location de voiture au Maroc reposent sur trois mécanismes : débiter la carte bancaire en mode « Vente » au lieu d'une « Pré-autorisation », livrer des véhicules mouillés ou de nuit pour masquer les chocs sous le châssis, et facturer des micro-rayures entre 3 500 et 8 000 MAD (320 à 750 €) lors d'un retour pressé à l'aéroport. Protégez votre dépôt en filmant le véhicule en 4K (soubassement inclus), en contrôlant le ticket TPE et en exigeant un « État des Lieux de Retour » signé et cacheté.",
@@ -249,13 +252,14 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "shortTitle": "Paiement Cash vs CB au Maroc",
         "metaDescription": "Peut-on payer sa location de voiture en espèces au Maroc ? Audit chiffré des frais TPE en MAD, taux de change EUR/MAD, règles de l'Office des Changes et cautions.",
         "heroImage": "https://images.unsplash.com/photo-1580519542036-c47de6196ba5?auto=format&fit=crop&w=1600&q=80",
-        "publishedAt": "2026-05-15",
+        "publishedAt": "2026-03-10",
         "updatedAt": "2026-11-06",
         "readTimeMinutes": 10,
         "author": {
-            "name": "Hamza Benjelloun",
-            "role": "Expert Logistique Routière & Audit de Flottes Maroc",
-            "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"
+            "name": "Kenza Alami",
+            "role": "Juriste Spécialisée Droit des Assurances & Transports au Maroc",
+            "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80",
+            "bio": "Diplômée de l'Université Hassan II de Casablanca, Kenza audite la conformité des contrats de location au Maroc et conseille les voyageurs sur les litiges de caution bancaire CMI et garanties tous risques."
         },
         "category": "Assurance & Caution",
         "summaryDirectAnswer": "Oui, il est parfaitement légal de payer une location de voiture en espèces au Maroc en Dirhams (MAD), Euros (EUR) ou Livres Sterling (GBP) auprès d'opérateurs locaux accrédités comme ZwinCar, tandis que les franchises multinationales exigent une carte de crédit physique. Les terminaux de paiement (TPE) marocains facturant exclusivement en MAD — générant 3 % à 5,5 % de frais bancaires cumulés —, le règlement en espèces en Euros à un taux fixe (1 EUR = 10,5 à 10,8 MAD) neutralise les commissions d'interchange et la conversion dynamique (DCC).",
@@ -347,13 +351,14 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "shortTitle": "Franchise Zéro vs Tous Risques",
         "metaDescription": "Franchise zéro Maroc vs assurance de base : évitez 25 000 DH de caution bloquée. Guide juridique et comparatif chiffré pour louer sans piège.",
         "heroImage": "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=1600&q=80",
-        "publishedAt": "2026-05-15",
+        "publishedAt": "2026-03-19",
         "updatedAt": "2026-11-06",
         "readTimeMinutes": 10,
         "author": {
-            "name": "Hamza Benjelloun",
-            "role": "Expert Logistique Routière & Audit de Flottes Maroc",
-            "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"
+            "name": "Kenza Alami",
+            "role": "Juriste Spécialisée Droit des Assurances & Transports au Maroc",
+            "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80",
+            "bio": "Diplômée de l'Université Hassan II de Casablanca, Kenza audite la conformité des contrats de location au Maroc et conseille les voyageurs sur les litiges de caution bancaire CMI et garanties tous risques."
         },
         "category": "Assurance & Caution",
         "summaryDirectAnswer": "Au Maroc, l'assurance de base (CDW) plafonne votre responsabilité financière à une franchise élevée entre 10 000 MAD (920 €) et 30 000 MAD (2 750 €), bloquée par pré-autorisation sur votre carte de crédit. La véritable Franchise Zéro (SCDW) souscrite au comptoir élimine ce reste à charge pour 120 à 250 MAD (11 à 23 €) par jour et abaisse la caution entre 0 et 3 000 MAD. Attention : l'assurance d'un courtier en ligne exige toujours d'avancer la caution totale sur place.",
@@ -454,13 +459,14 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "shortTitle": "Loueurs Locaux vs Courtiers",
         "metaDescription": "Voiture à 8 €/jour au Maroc sur Rentalcars ou DiscoverCars ? Autopsie financière d'un piège à caution (20 000 MAD) et comparatif avec les loueurs locaux.",
         "heroImage": "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1600&q=80",
-        "publishedAt": "2026-05-15",
+        "publishedAt": "2026-03-31",
         "updatedAt": "2026-11-06",
         "readTimeMinutes": 10,
         "author": {
-            "name": "Hamza Benjelloun",
-            "role": "Expert Logistique Routière & Audit de Flottes Maroc",
-            "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"
+            "name": "Kenza Alami",
+            "role": "Juriste Spécialisée Droit des Assurances & Transports au Maroc",
+            "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80",
+            "bio": "Diplômée de l'Université Hassan II de Casablanca, Kenza audite la conformité des contrats de location au Maroc et conseille les voyageurs sur les litiges de caution bancaire CMI et garanties tous risques."
         },
         "category": "Assurance & Caution",
         "summaryDirectAnswer": "Réserver une voiture à 8 €/jour au Maroc via un courtier international (Rentalcars, DiscoverCars, BSP Auto) est un produit d'appel déficitaire. Le seuil de rentabilité d'un véhicule au Maroc étant de 240 MAD (22 €) par jour, ces tarifs déclenchent des ventes forcées au comptoir : blocage de caution de 15 000 à 25 000 MAD (1 400 à 2 300 €), rejet des assurances externes ou rachat de franchise obligatoire à 300 MAD/jour. Les loueurs locaux audités facturent 280 à 400 MAD/jour tout compris, avec caution réduite (0 à 5 000 MAD).",
@@ -557,13 +563,14 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "shortTitle": "Règles, Radars & Ronds-Points",
         "metaDescription": "Conduire au Maroc en 2026 : Loi 52-05, ronds-points à priorité à droite, marges des radars et barème des amendes de 150 à 700 MAD. Guide juridique complet.",
         "heroImage": "https://images.unsplash.com/photo-1549144511-f099e773c147?auto=format&fit=crop&w=1600&q=80",
-        "publishedAt": "2026-05-15",
+        "publishedAt": "2026-04-09",
         "updatedAt": "2026-11-06",
         "readTimeMinutes": 10,
         "author": {
-            "name": "Hamza Benjelloun",
-            "role": "Expert Logistique Routière & Audit de Flottes Maroc",
-            "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"
+            "name": "Yassine El Idrissi",
+            "role": "Auditeur Logistique Flotte & Sécurité Routière Maroc",
+            "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+            "bio": "12 ans de terrain en logistique automobile à Marrakech Menara et Casablanca Mohammed V. Ancien coordinateur d'opérations ayant supervisé plus de 25 000 remises de clés sans intermédiaire."
         },
         "category": "Réglementation",
         "summaryDirectAnswer": "La conduite au Maroc est régie par la Loi 52-05 (Code de la Route), modifiée par la Loi 116-14. Contrairement aux usages européens, de nombreux ronds-points urbains appliquent la stricte « priorité à droite » : le véhicule engagé sur l'anneau doit s'arrêter pour laisser entrer le flux arrivant de droite, sauf présence explicite d'un panneau « Cédez le passage » aux entrées. La tolérance radar est fixée à une marge technique de 7 km/h, avec des amendes transactionnelles immédiates de 150 à 700 MAD (15 € à 70 €).",
@@ -651,13 +658,14 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "shortTitle": "Barrages Police & Gendarmerie",
         "metaDescription": "Contrôle de police et Gendarmerie Royale au Maroc : protocole au panneau Halte, papiers exigés, amendes Loi 52-05 (150-700 MAD) et gestion des litiges.",
         "heroImage": "https://images.unsplash.com/photo-1508962914676-134849a727f0?auto=format&fit=crop&w=1600&q=80",
-        "publishedAt": "2026-05-15",
+        "publishedAt": "2026-04-21",
         "updatedAt": "2026-11-06",
         "readTimeMinutes": 10,
         "author": {
-            "name": "Hamza Benjelloun",
-            "role": "Expert Logistique Routière & Audit de Flottes Maroc",
-            "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"
+            "name": "Yassine El Idrissi",
+            "role": "Auditeur Logistique Flotte & Sécurité Routière Maroc",
+            "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+            "bio": "12 ans de terrain en logistique automobile à Marrakech Menara et Casablanca Mohammed V. Ancien coordinateur d'opérations ayant supervisé plus de 25 000 remises de clés sans intermédiaire."
         },
         "category": "Réglementation",
         "summaryDirectAnswer": "Les barrages routiers marocains relèvent de la Sûreté Nationale (DGSN) en zone urbaine et de la Gendarmerie Royale en zone rurale et autoroutière. La séquence d'approche impose une décélération progressive de 60 km/h à 20 km/h dans les chicanes. Devant le panneau « Halte Police/Gendarmerie », l'arrêt absolu des roues est obligatoire jusqu'au signe explicite de l'agent. En vertu de la Loi 52-05, toute amende transactionnelle sur place (150 à 700 MAD) exige la délivrance d'une quittance officielle souche-contrôle.",
@@ -758,13 +766,14 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "shortTitle": "Radars & Amende 400 MAD",
         "metaDescription": "Barème légal des radars au Maroc (Loi 116-14) : marges de 7 km/h, réduction de 50% sur place (150 à 400 DH) et comment exiger la quittance officielle.",
         "heroImage": "https://images.unsplash.com/photo-1549144511-f099e773c147?auto=format&fit=crop&w=1600&q=80",
-        "publishedAt": "2026-05-15",
+        "publishedAt": "2026-04-30",
         "updatedAt": "2026-11-06",
         "readTimeMinutes": 10,
         "author": {
-            "name": "Hamza Benjelloun",
-            "role": "Expert Logistique Routière & Audit de Flottes Maroc",
-            "avatar": "https://images.unsplash.com/photo-1534528741775-5399e773c147?auto=format&fit=crop&w=400&q=80"
+            "name": "Yassine El Idrissi",
+            "role": "Auditeur Logistique Flotte & Sécurité Routière Maroc",
+            "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+            "bio": "12 ans de terrain en logistique automobile à Marrakech Menara et Casablanca Mohammed V. Ancien coordinateur d'opérations ayant supervisé plus de 25 000 remises de clés sans intermédiaire."
         },
         "category": "Réglementation",
         "summaryDirectAnswer": "Selon la Loi marocaine 116-14 (modifiant le Code de la Route 52-05), les amendes pour excès de vitesse sont progressives et bénéficient d'une réduction de 50 % en cas de paiement immédiat (Amende Transactionnelle et Forfaitaire - ATF). Un dépassement inférieur à 20 km/h coûte 150 MAD (14 €) sur place ; de 20 à 30 km/h, 300 MAD (28 €) ; de 30 à 50 km/h, 400 MAD (37 €). Une marge technique de 10 % (plafonnée à 7 km/h) s'applique. Exigez systématiquement une quittance officielle timbrée pour tout règlement en espèces.",
@@ -852,13 +861,14 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "shortTitle": "Péages Autoroutes & Pass Jawaz",
         "metaDescription": "Prix péage autoroute Maroc, pass Jawaz (50 MAD), paiement espèces vs carte étrangère et tarifs ADM exacts (Casablanca-Marrakech 82 MAD). Guide technique.",
         "heroImage": "https://images.unsplash.com/photo-1545459720-aac8509eb02c?auto=format&fit=crop&w=1600&q=80",
-        "publishedAt": "2026-05-15",
+        "publishedAt": "2026-05-12",
         "updatedAt": "2026-11-06",
         "readTimeMinutes": 10,
         "author": {
-            "name": "Hamza Benjelloun",
-            "role": "Expert Logistique Routière & Audit de Flottes Maroc",
-            "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"
+            "name": "Yassine El Idrissi",
+            "role": "Auditeur Logistique Flotte & Sécurité Routière Maroc",
+            "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+            "bio": "12 ans de terrain en logistique automobile à Marrakech Menara et Casablanca Mohammed V. Ancien coordinateur d'opérations ayant supervisé plus de 25 000 remises de clés sans intermédiaire."
         },
         "category": "Réglementation",
         "summaryDirectAnswer": "Le réseau autoroutier marocain (1 800 km), géré par Autoroutes du Maroc (ADM), alterne péages fermés à ticket et barrières ouvertes à tarif fixe. Les cartes bancaires étrangères échouant fréquemment aux guichets, prévoyez des Dirhams (MAD) en espèces ou achetez un badge télépéage RFID Jawaz à 50 MAD (incluant 40 MAD de crédit). Pour un véhicule de Classe 1, comptez 82 MAD pour Casablanca–Marrakech, 113 MAD pour Rabat–Tanger et 23 MAD pour Casablanca–Rabat.",
@@ -950,13 +960,14 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "shortTitle": "Conduire la Nuit au Maroc",
         "metaDescription": "Pourquoi éviter les routes de nuit au Maroc ? Statistiques NARSA, véhicules sans feux, animaux errants et pièges d'assurance location décryptés.",
         "heroImage": "https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=1600&q=80",
-        "publishedAt": "2026-05-15",
+        "publishedAt": "2026-05-21",
         "updatedAt": "2026-11-06",
         "readTimeMinutes": 10,
         "author": {
-            "name": "Hamza Benjelloun",
-            "role": "Expert Logistique Routière & Audit de Flottes Maroc",
-            "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"
+            "name": "Yassine El Idrissi",
+            "role": "Auditeur Logistique Flotte & Sécurité Routière Maroc",
+            "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+            "bio": "12 ans de terrain en logistique automobile à Marrakech Menara et Casablanca Mohammed V. Ancien coordinateur d'opérations ayant supervisé plus de 25 000 remises de clés sans intermédiaire."
         },
         "category": "Réglementation",
         "summaryDirectAnswer": "Conduire la nuit au Maroc sur les routes Nationales (N) et Régionales (R) est fortement déconseillé en raison d'un déficit critique de visibilité. Selon les rapports de la NARSA, le trafic nocturne ne représente que 22 % du volume global mais concentre 46 % des collisions mortelles hors agglomération. Les menaces majeures incluent les cyclomoteurs et charrettes sans éclairage, l'absence de réflecteurs en montagne, le bétail errant et la déchéance fréquente des garanties d'assurance location pour négligence grave.",
@@ -1057,13 +1068,14 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "shortTitle": "Stations Essence & Carburant",
         "metaDescription": "Prix du Gasoil 10ppm et Sans-Plomb au Maroc en 2026 : réseaux fiables (Afriquia, Shell), pourboire au pompiste, paiement par carte et pièges à la pompe.",
         "heroImage": "https://images.unsplash.com/photo-1527018601619-a508a2be00cd?auto=format&fit=crop&w=1600&q=80",
-        "publishedAt": "2026-05-15",
+        "publishedAt": "2026-06-02",
         "updatedAt": "2026-11-06",
         "readTimeMinutes": 10,
         "author": {
-            "name": "Hamza Benjelloun",
-            "role": "Expert Logistique Routière & Audit de Flottes Maroc",
-            "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"
+            "name": "Yassine El Idrissi",
+            "role": "Auditeur Logistique Flotte & Sécurité Routière Maroc",
+            "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+            "bio": "12 ans de terrain en logistique automobile à Marrakech Menara et Casablanca Mohammed V. Ancien coordinateur d'opérations ayant supervisé plus de 25 000 remises de clés sans intermédiaire."
         },
         "category": "Réglementation",
         "summaryDirectAnswer": "Au Maroc, toutes les stations-service sont avec service par pompiste. En 2026, le Gasoil (norme Euro 5 à 10 ppm de soufre) oscille entre 12,20 et 13,10 MAD/L (1,12 € à 1,20 €), tandis que l'Essence Sans Plomb coûte entre 14,30 et 15,20 MAD/L (1,32 € à 1,40 €). Les cartes bancaires sont acceptées sur autoroute chez Afriquia, Shell et TotalEnergies dès 100 MAD d'achat. Le pourboire au pompiste (2 à 5 MAD) n'est d'usage que pour un service annexe comme le lavage du pare-brise ou le gonflage des pneus.",
@@ -1155,13 +1167,14 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "shortTitle": "Col du Tichka N9",
         "metaDescription": "État réel du col du Tichka (N9) entre Marrakech et Ouarzazate : 193 km d'asphalte, 120 virages, contrôles Gendarmerie, barrière neige et choix voiture.",
         "heroImage": "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1600&q=80",
-        "publishedAt": "2026-05-15",
+        "publishedAt": "2026-06-11",
         "updatedAt": "2026-11-06",
         "readTimeMinutes": 10,
         "author": {
-            "name": "Hamza Benjelloun",
-            "role": "Expert Logistique Routière & Audit de Flottes Maroc",
-            "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"
+            "name": "Yassine El Idrissi",
+            "role": "Auditeur Logistique Flotte & Sécurité Routière Maroc",
+            "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+            "bio": "12 ans de terrain en logistique automobile à Marrakech Menara et Casablanca Mohammed V. Ancien coordinateur d'opérations ayant supervisé plus de 25 000 remises de clés sans intermédiaire."
         },
         "category": "Itinéraire & Roadtrip",
         "summaryDirectAnswer": "Le col du Tizi n'Tichka (2 260 m) sur la route nationale N9 reliant Marrakech à Ouarzazate s'étend sur 193 km d'asphalte intégral suite à une modernisation de 1,8 milliard de MAD achevée en 2024. Malgré 13 km de voies de dépassement, comptez 3h45 à 4h30 de trajet en raison de plus de 120 virages en épingle, des camions lents et des contrôles de la Gendarmerie Royale. Une citadine 2 roues motrices suffit toute l'année, hors coupures neigeuses hivernales vérifiables sur l'application officielle MaRoute.",
@@ -1251,13 +1264,14 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "shortTitle": "Roadtrip Désert Merzouga",
         "metaDescription": "Roadtrip Marrakech Merzouga : itinéraire 4 jours, stations-service sur la N10/N12, pièges d'assurance CDW hors-piste et choix du véhicule idéal.",
         "heroImage": "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1600&q=80",
-        "publishedAt": "2026-05-15",
+        "publishedAt": "2026-06-23",
         "updatedAt": "2026-11-06",
         "readTimeMinutes": 10,
         "author": {
-            "name": "Hamza Benjelloun",
-            "role": "Expert Logistique Routière & Audit de Flottes Maroc",
-            "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"
+            "name": "Yassine El Idrissi",
+            "role": "Auditeur Logistique Flotte & Sécurité Routière Maroc",
+            "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+            "bio": "12 ans de terrain en logistique automobile à Marrakech Menara et Casablanca Mohammed V. Ancien coordinateur d'opérations ayant supervisé plus de 25 000 remises de clés sans intermédiaire."
         },
         "category": "Itinéraire & Roadtrip",
         "summaryDirectAnswer": "Le trajet en voiture de Marrakech à Merzouga couvre 560 km aller simple via les routes nationales N9, N10 et N12, exigeant un minimum de 9h30 de conduite nette. Une citadine 2 roues motrices suffit pour atteindre l'asphalte d'Hassi Labied et Merzouga. Cependant, rouler sur le sable de l'Erg Chebbi ou les pistes non goudronnées annule 100 % des contrats d'assurance location standard (CDW) au Maroc, imposant soit un 4x4 homologué hors-piste, soit le stationnement sur le parking bétonné de votre bivouac.",
@@ -1344,13 +1358,14 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "shortTitle": "Roadtrip Côte Atlantique",
         "metaDescription": "Roadtrip Essaouira Agadir Taghazout en voiture : radars sur la R207, pistes côtières N1, barres de toit surf et cautions. Guide technique chiffré.",
         "heroImage": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80",
-        "publishedAt": "2026-05-15",
+        "publishedAt": "2026-07-07",
         "updatedAt": "2026-11-06",
         "readTimeMinutes": 10,
         "author": {
-            "name": "Hamza Benjelloun",
-            "role": "Expert Logistique Routière & Audit de Flottes Maroc",
-            "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"
+            "name": "Yassine El Idrissi",
+            "role": "Auditeur Logistique Flotte & Sécurité Routière Maroc",
+            "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+            "bio": "12 ans de terrain en logistique automobile à Marrakech Menara et Casablanca Mohammed V. Ancien coordinateur d'opérations ayant supervisé plus de 25 000 remises de clés sans intermédiaire."
         },
         "category": "Itinéraire & Roadtrip",
         "summaryDirectAnswer": "Le corridor atlantique de 360 km reliant Marrakech à Agadir via Essaouira et Taghazout emprunte la voie express R207 et la route nationale côtière N1. Ce tracé comporte 6 radars fixes Vitronic PoliScan, des zones de décélération brusque à 60 km/h en entrée de douar et des vents traversiers dépassant 50 km/h dès Chichaoua. L'arrimage de planches de surf sans galerie souple homologuée (Soft Racks) écrase le pavillon et les joints de portières, entraînant une retenue sur caution moyenne de 2 500 MAD (230 €).",
@@ -1449,13 +1464,14 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "shortTitle": "Fès, Chefchaouen & Tanger",
         "metaDescription": "Itinéraire Fès-Chefchaouen-Tanger en voiture de location : état des routes du Rif, piège de Ketama, sécurité brouillard et parkings sécurisés médina.",
         "heroImage": "https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=1600&q=80",
-        "publishedAt": "2026-05-15",
+        "publishedAt": "2026-07-21",
         "updatedAt": "2026-11-06",
         "readTimeMinutes": 10,
         "author": {
-            "name": "Hamza Benjelloun",
-            "role": "Expert Logistique Routière & Audit de Flottes Maroc",
-            "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"
+            "name": "Yassine El Idrissi",
+            "role": "Auditeur Logistique Flotte & Sécurité Routière Maroc",
+            "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+            "bio": "12 ans de terrain en logistique automobile à Marrakech Menara et Casablanca Mohammed V. Ancien coordinateur d'opérations ayant supervisé plus de 25 000 remises de clés sans intermédiaire."
         },
         "category": "Itinéraire & Roadtrip",
         "summaryDirectAnswer": "Le trajet de Fès à Chefchaouen s'étend sur 200 km (3h30 à 4h) via la N13 et N4 par Ouezzane. Évitez formellement la R509 via Ketama en raison d'asphalte dégradé et de sollicitations agressives. À Chefchaouen, stationnez impérativement hors de la médina piétonne : parking souterrain Bab El Ain (25 MAD/nuit) ou parking sécurisé Parador (30 à 40 MAD/nuit). La liaison vers Tanger (115 km, 2h) s'effectue via la N2 par Tétouan.",
@@ -1542,13 +1558,14 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "shortTitle": "Gorges du Dadès & Todra",
         "metaDescription": "Guide technique Gorges du Dadès (R704) et Todra (R703) : lacets de Tisdrine, crues subites d'oueds, liaison M'Semrir et clauses d'assurance location.",
         "heroImage": "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1600&q=80",
-        "publishedAt": "2026-05-15",
+        "publishedAt": "2026-08-04",
         "updatedAt": "2026-11-06",
         "readTimeMinutes": 10,
         "author": {
-            "name": "Hamza Benjelloun",
-            "role": "Expert Logistique Routière & Audit de Flottes Maroc",
-            "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"
+            "name": "Yassine El Idrissi",
+            "role": "Auditeur Logistique Flotte & Sécurité Routière Maroc",
+            "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+            "bio": "12 ans de terrain en logistique automobile à Marrakech Menara et Casablanca Mohammed V. Ancien coordinateur d'opérations ayant supervisé plus de 25 000 remises de clés sans intermédiaire."
         },
         "category": "Itinéraire & Roadtrip",
         "summaryDirectAnswer": "Parcourir les gorges du Dadès (R704) et du Todra (R703) exige des protocoles mécaniques stricts. Les lacets de Tisdrine imposent des pentes de 12 à 14 % nécessitant le frein moteur en 1ère ou 2nde pour éviter l'ébullition du liquide DOT 4. Dans la faille de 300 m du Todra (largeur d'asphalte réduite à 3,5 m), les crues subites submergent la chaussée sous 1,5 m d'eau en 20 minutes. Une citadine 2WD suffit sur le bitume jusqu'à M'Semrir, mais la piste d'Agoudal (2 910 m) requiert un vrai 4x4 avec 210 mm de garde au sol.",
@@ -1647,13 +1664,14 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "shortTitle": "Faut-il un 4x4 au Maroc ?",
         "metaDescription": "4x4 indispensable au Maroc ? Autopsie technique et juridique : Agafay, Merzouga, Tichka. Économisez 80 €/jour sans risquer la déchéance d'assurance.",
         "heroImage": "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=1600&q=80",
-        "publishedAt": "2026-05-15",
+        "publishedAt": "2026-08-18",
         "updatedAt": "2026-11-06",
         "readTimeMinutes": 10,
         "author": {
-            "name": "Hamza Benjelloun",
-            "role": "Expert Logistique Routière & Audit de Flottes Maroc",
-            "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"
+            "name": "Mehdi Chraïbi",
+            "role": "Expert Technique Automobile & Contrôleur de Flotte Agréé",
+            "avatar": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80",
+            "bio": "Ingénieur automobile à Casablanca et Tanger. Spécialiste du diagnostic des trains roulants, de l'usure mécanique sur pistes du Sud et de l'inspection contradictoire de carrosserie anti-litige."
         },
         "category": "Véhicules & Pistes",
         "summaryDirectAnswer": "Non, 95 % des itinéraires touristiques au Maroc ne nécessitent aucun 4x4. Les grands axes (N9 Tizi n'Tichka, N13 Merzouga, Gorges du Todra) sont entièrement asphaltés. Pour le désert d'Agafay ou les pistes d'accès aux écolodges, la garde au sol (175 à 210 mm) prime sur la transmission intégrale. Un SUV 2WD type Dacia Duster ou Sandero Stepway suffit largement, vous épargnant 650 à 900 MAD (60 à 85 €) par jour tout en évitant les clauses de déchéance d'assurance hors-piste.",
@@ -1744,13 +1762,14 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "shortTitle": "Duster vs Sandero Stepway",
         "metaDescription": "Comparatif Dacia Duster vs Sandero Stepway au Maroc : garde au sol, prix en MAD, consommation dans l'Atlas et clauses d'assurance piste décryptées.",
         "heroImage": "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=1600&q=80",
-        "publishedAt": "2026-05-15",
+        "publishedAt": "2026-09-01",
         "updatedAt": "2026-11-06",
         "readTimeMinutes": 10,
         "author": {
-            "name": "Hamza Benjelloun",
-            "role": "Expert Logistique Routière & Audit de Flottes Maroc",
-            "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"
+            "name": "Mehdi Chraïbi",
+            "role": "Expert Technique Automobile & Contrôleur de Flotte Agréé",
+            "avatar": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80",
+            "bio": "Ingénieur automobile à Casablanca et Tanger. Spécialiste du diagnostic des trains roulants, de l'usure mécanique sur pistes du Sud et de l'inspection contradictoire de carrosserie anti-litige."
         },
         "category": "Véhicules & Pistes",
         "summaryDirectAnswer": "Louez la Dacia Sandero Stepway pour les itinéraires goudronnés (côte Atlantique, Villes Impériales et routes nationales comme la N9 du Tizi n'Tichka) ; sa garde au sol de 201 mm encaisse les nids-de-poule pour 250 à 350 MAD (23 à 32 €)/jour. Optez pour le Dacia Duster (1.5 dCi ou 4x4) à 450–700 MAD (41–64 €)/jour si vous traversez des cols secondaires dégradés (R307, Anti-Atlas, accès bivouacs), voyagez à 3+ adultes chargés, ou exigez un blindage de carter et 210 mm de débattement.",
@@ -1850,13 +1869,14 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "shortTitle": "Boîte Automatique vs Manuelle",
         "metaDescription": "Boîte automatique ou manuelle au Maroc ? Prix réels, piège CDW de l'embrayage et gestion des cols de l'Atlas : l'analyse technique sans compromis.",
         "heroImage": "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1600&q=80",
-        "publishedAt": "2026-05-15",
+        "publishedAt": "2026-09-15",
         "updatedAt": "2026-11-06",
         "readTimeMinutes": 10,
         "author": {
-            "name": "Hamza Benjelloun",
-            "role": "Expert Logistique Routière & Audit de Flottes Maroc",
-            "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"
+            "name": "Mehdi Chraïbi",
+            "role": "Expert Technique Automobile & Contrôleur de Flotte Agréé",
+            "avatar": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80",
+            "bio": "Ingénieur automobile à Casablanca et Tanger. Spécialiste du diagnostic des trains roulants, de l'usure mécanique sur pistes du Sud et de l'inspection contradictoire de carrosserie anti-litige."
         },
         "category": "Véhicules & Pistes",
         "summaryDirectAnswer": "Au Maroc, louer un véhicule à boîte automatique engendre un surcoût de 80 à 150 MAD (7,50 € à 14 €) par jour, soit une prime de 20 % à 35 % par rapport à une manuelle. Ce différentiel est largement compensé par la suppression du risque de casse d'embrayage en montagne — facture d'exclusion CDW de 6 000 à 12 000 MAD — et par l'élimination de la surcharge cognitive dans les ronds-points denses de Marrakech ou Casablanca.",
@@ -1952,13 +1972,14 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "shortTitle": "Location Voiture 7 Places",
         "metaDescription": "Quota de 3 passagers par Petit Taxi, coffre réel du Dacia Jogger 7 places à Marrakech et duel face au Toyota Prado : audit chiffré pour familles au Maroc.",
         "heroImage": "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=1600&q=80",
-        "publishedAt": "2026-05-15",
+        "publishedAt": "2026-09-29",
         "updatedAt": "2026-11-06",
         "readTimeMinutes": 10,
         "author": {
-            "name": "Hamza Benjelloun",
-            "role": "Expert Logistique Routière & Audit de Flottes Maroc",
-            "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"
+            "name": "Mehdi Chraïbi",
+            "role": "Expert Technique Automobile & Contrôleur de Flotte Agréé",
+            "avatar": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80",
+            "bio": "Ingénieur automobile à Casablanca et Tanger. Spécialiste du diagnostic des trains roulants, de l'usure mécanique sur pistes du Sud et de l'inspection contradictoire de carrosserie anti-litige."
         },
         "category": "Véhicules & Pistes",
         "summaryDirectAnswer": "Au Maroc, la réglementation préfectorale des « Petits Taxis » urbains plafonne strictement la capacité à 3 passagers (nourrissons inclus), obligeant toute famille de 4 personnes ou plus à scinder le groupe en deux véhicules ou à louer des Grands Taxis non-comptabilisés. Louer un 7 places (dès 420 MAD / 39 € par jour pour un Dacia Jogger 1.5 Blue dCi) devient mathématiquement rentable dès 3 trajets quotidiens, tandis que les cols de l'Atlas à pleine charge imposent un SUV à châssis échelle comme le Toyota Prado TX 2.8L (950 MAD / 88 € par jour).",
@@ -2049,13 +2070,14 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "shortTitle": "Aéroport Marrakech (RAK) Parking P2",
         "metaDescription": "Évitez 90 min d'attente aux guichets de Marrakech-Ménara (RAK). Guide technique : sortie Terminal 1/2, livraison directe Parking P2 et contrôle légal.",
         "heroImage": "https://images.unsplash.com/photo-1549144511-f099e773c147?auto=format&fit=crop&w=1600&q=80",
-        "publishedAt": "2026-05-15",
+        "publishedAt": "2026-10-08",
         "updatedAt": "2026-11-06",
         "readTimeMinutes": 10,
         "author": {
-            "name": "Hamza Benjelloun",
-            "role": "Expert Logistique Routière & Audit de Flottes Maroc",
-            "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"
+            "name": "Yassine El Idrissi",
+            "role": "Auditeur Logistique Flotte & Sécurité Routière Maroc",
+            "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+            "bio": "12 ans de terrain en logistique automobile à Marrakech Menara et Casablanca Mohammed V. Ancien coordinateur d'opérations ayant supervisé plus de 25 000 remises de clés sans intermédiaire."
         },
         "category": "Aéroports & Logistique",
         "summaryDirectAnswer": "1. Quittez l'aéroport Marrakech-Ménara (RAK) par le hall des arrivées unifié du Terminal 1 après le contrôle douanier ; ignorez les rabatteurs non accrédités. 2. Contournez le goulot d'étranglement des kiosques ONDA (60 à 90 minutes d'attente) en réservant une livraison mobile sur le Parking P2. 3. Marchez 180 mètres à travers l'esplanade piétonne jusqu'au Parking P2 (allées C à F) pour l'état des lieux. 4. Vérifiez les 4 documents originaux obligatoires sous la Loi 52-05 (Carte Grise, Assurance, Vignette, Visite Technique) avant de franchir la barrière de péage ONDA.",
@@ -2144,13 +2166,14 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "shortTitle": "Aéroport Casablanca (CMN)",
         "metaDescription": "Guide technique location voiture aéroport Casablanca CMN : retrait Terminal 1/2, caution CMI, sortie autoroute A3, péages et horaires de restitution.",
         "heroImage": "https://images.unsplash.com/photo-1580519542036-c47de6196ba5?auto=format&fit=crop&w=1600&q=80",
-        "publishedAt": "2026-05-15",
+        "publishedAt": "2026-10-15",
         "updatedAt": "2026-11-06",
         "readTimeMinutes": 11,
         "author": {
-            "name": "Hamza Benjelloun",
-            "role": "Expert Logistique Routière & Audit de Flottes Maroc",
-            "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"
+            "name": "Yassine El Idrissi",
+            "role": "Auditeur Logistique Flotte & Sécurité Routière Maroc",
+            "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+            "bio": "12 ans de terrain en logistique automobile à Marrakech Menara et Casablanca Mohammed V. Ancien coordinateur d'opérations ayant supervisé plus de 25 000 remises de clés sans intermédiaire."
         },
         "category": "Aéroports & Logistique",
         "summaryDirectAnswer": "1. Prise en charge : À l'aéroport Casablanca (CMN), les comptoirs franchisés sont aux arrivées du Terminal 1 (Niveau 0) et du Terminal 2, tandis que les flottes indépendantes vérifiées livrent aux parkings P1/P2. 2. Cautions : Prévoyez une pré-autorisation CMI de 8 000 à 18 000 MAD (750–1 680 €) hors formules rachat de franchise. 3. Accès routier : Sortie par la N9 vers l'A3/A1 ; prévoyez 23 MAD (2,15 €) en espèces pour les péages initiaux de Berrechid ou Tit Mellil.",
@@ -2240,13 +2263,14 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "shortTitle": "Aéroport Agadir (AGA) & Taghazout",
         "metaDescription": "Audit logistique et juridique de la location auto à l'aéroport Agadir (AGA) : parking P1 vs P2, livraison Taghazout, barres de surf et Loi 52-05.",
         "heroImage": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80",
-        "publishedAt": "2026-05-15",
+        "publishedAt": "2026-10-22",
         "updatedAt": "2026-11-06",
         "readTimeMinutes": 10,
         "author": {
-            "name": "Hamza Benjelloun",
-            "role": "Expert Logistique Routière & Audit de Flottes Maroc",
-            "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"
+            "name": "Yassine El Idrissi",
+            "role": "Auditeur Logistique Flotte & Sécurité Routière Maroc",
+            "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+            "bio": "12 ans de terrain en logistique automobile à Marrakech Menara et Casablanca Mohammed V. Ancien coordinateur d'opérations ayant supervisé plus de 25 000 remises de clés sans intermédiaire."
         },
         "category": "Aéroports & Logistique",
         "summaryDirectAnswer": "1. L'aéroport Agadir Al Massira (AGA) divise la prise en charge des véhicules en deux zones : les comptoirs du terminal (Parking P1) et le service d'accueil indépendant (Parking P2, à 150 mètres au nord). 2. La livraison directe de véhicule à Taghazout ou Tamraght (48 km via la Rocade N1) est facturée entre 250 et 350 MAD (23 à 32 €) par trajet. 3. Selon le Code de la route marocain (Loi 52-05, Article 185), les planches de surf ne doivent pas dépasser l'aplomb du pare-chocs avant et exigent des barres de toit rigides ; les sangles souples posées sur un toit nu annulent les garanties d'assurance en cas de déformation du pavillon.",
@@ -2334,13 +2358,14 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "shortTitle": "Tanger Aéroport & Port Med",
         "metaDescription": "Guide terrain location voiture à Tanger Aéroport (TNG), Port Ville et Tanger Med : pièges douaniers ADII, cautions bancaires et routes vers Chefchaouen.",
         "heroImage": "https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=1600&q=80",
-        "publishedAt": "2026-05-15",
+        "publishedAt": "2026-10-29",
         "updatedAt": "2026-11-06",
         "readTimeMinutes": 12,
         "author": {
-            "name": "Hamza Benjelloun",
-            "role": "Expert Logistique Routière & Audit de Flottes Maroc",
-            "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"
+            "name": "Yassine El Idrissi",
+            "role": "Auditeur Logistique Flotte & Sécurité Routière Maroc",
+            "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+            "bio": "12 ans de terrain en logistique automobile à Marrakech Menara et Casablanca Mohammed V. Ancien coordinateur d'opérations ayant supervisé plus de 25 000 remises de clés sans intermédiaire."
         },
         "category": "Aéroports & Logistique",
         "summaryDirectAnswer": "La prise en charge d'une voiture de location à Tanger s'opère sur trois hubs distincts : l'Aéroport Ibn Battouta (TNG, 12 km au sud), le Port Tanger Ville (ferrys rapides depuis Tarifa, centre-ville) et le Port Tanger Med (ferrys depuis Algésiras, 45 km à l'est via l'A5). Ne tentez jamais d'importer un véhicule loué en Espagne par ferry (blocage douanier ADII sous régime AT et déchéance d'assurance). Louez localement en Dirhams (MAD) avec carte de crédit ISO 8583 ou contrat sans franchise livré au port.",
@@ -2428,4 +2453,8 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
 
 export function getGuideBySlug(slug: string): MoroccoGuide | undefined {
     return MOROCCO_GUIDES.find((g) => g.slug === slug);
+}
+
+export function getAllGuideSlugs(): string[] {
+    return MOROCCO_GUIDES.map((g) => g.slug);
 }

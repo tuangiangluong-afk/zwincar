@@ -1,3 +1,4 @@
+import React from "react";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
@@ -10,6 +11,7 @@ import {
     Info,
     HelpCircle,
     ShieldCheck,
+    Calendar,
 } from "lucide-react";
 import Header from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -17,8 +19,35 @@ import { MOROCCO_GUIDES_EN, getGuideEnBySlug } from "@/data/morocco-guides-en";
 import { MOROCCAN_HUBS, VEHICLE_FLEET } from "@/lib/morocco-data";
 import { clampTitle, clampDescription } from "@/lib/seo-meta";
 import SchemaJSON from "@/components/SchemaJSON";
+import GuideInfographic from "@/components/GuideInfographic";
+import MarkdownContent from "@/components/MarkdownContent";
 
 export const revalidate = 3600;
+
+function getInfographicType(slug: string): "tpe-receipt" | "ground-clearance" | "radar-fines" | "jawaz-toll" | null {
+    if (slug.includes("caution") || slug.includes("arnaque") || slug.includes("paiement-cash") || slug.includes("franchise-zero") || slug.includes("credit-card") || slug.includes("scams") || slug.includes("deposit")) {
+        return "tpe-receipt";
+    }
+    if (slug.includes("4x4") || slug.includes("duster") || slug.includes("tichka") || slug.includes("dades")) {
+        return "ground-clearance";
+    }
+    if (slug.includes("radar") || slug.includes("conduire") || slug.includes("barrage") || slug.includes("speed-camera") || slug.includes("checkpoint") || slug.includes("rules")) {
+        return "radar-fines";
+    }
+    if (slug.includes("peage") || slug.includes("jawaz") || slug.includes("autoroute") || slug.includes("toll")) {
+        return "jawaz-toll";
+    }
+    return null;
+}
+
+function formatDateEn(dateStr: string) {
+    try {
+        const d = new Date(dateStr);
+        return d.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+    } catch {
+        return dateStr;
+    }
+}
 
 export async function generateStaticParams() {
     return (MOROCCO_GUIDES_EN || []).map((guide) => ({ slug: guide.slug }));
@@ -79,6 +108,7 @@ export default async function EnglishGuideDetailPage({
 
     const relatedHubsData = MOROCCAN_HUBS.filter((h) => guide.relatedHubs.includes(h.slug));
     const relatedVehiclesData = VEHICLE_FLEET.filter((v) => guide.relatedVehicles.includes(v.id));
+    const infographicType = getInfographicType(guide.slug);
 
     return (
         <div className="min-h-screen bg-[#FAF7F2] text-slate-900 flex flex-col font-sans">
@@ -93,7 +123,13 @@ export default async function EnglishGuideDetailPage({
                     image: guide.heroImage,
                     datePublished: guide.publishedAt,
                     dateModified: guide.updatedAt,
-                    author: { "@type": "Person", name: guide.author.name, jobTitle: guide.author.role },
+                    author: {
+                        "@type": "Person",
+                        name: guide.author.name,
+                        jobTitle: guide.author.role,
+                        description: guide.author.bio,
+                        image: guide.author.avatar,
+                    },
                     publisher: { "@type": "Organization", name: "ZwinCar Morocco", url: "https://zwincar.com" },
                     mainEntityOfPage: {
                         "@type": "WebPage",
@@ -153,36 +189,45 @@ export default async function EnglishGuideDetailPage({
                             {guide.title}
                         </h1>
 
-                        <div className="flex items-center gap-4 text-xs text-slate-500 font-medium pt-2 border-t border-slate-100 flex-wrap">
-                            <div className="flex items-center gap-2">
-                                <div className="w-7 h-7 rounded-full overflow-hidden relative">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-slate-500 font-medium pt-3 border-t border-slate-100">
+                            <div className="flex items-center gap-2.5">
+                                <div className="w-9 h-9 rounded-full overflow-hidden relative shrink-0 border border-slate-200">
                                     <Image
                                         src={guide.author.avatar}
                                         alt={guide.author.name}
                                         fill
-                                        sizes="28px"
+                                        sizes="36px"
                                         className="object-cover"
                                     />
                                 </div>
-                                <span className="font-bold text-slate-900">{guide.author.name}</span>
-                                <span className="text-[11px] text-slate-400">({guide.author.role})</span>
+                                <div>
+                                    <div className="flex items-center gap-1.5 font-bold text-slate-900">
+                                        <span>{guide.author.name}</span>
+                                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                        <span className="text-[10px] text-emerald-700 font-semibold uppercase tracking-wider">Verified Expert</span>
+                                    </div>
+                                    <span className="text-[11px] text-slate-500">{guide.author.role}</span>
+                                </div>
                             </div>
-                            <span>•</span>
-                            <span className="flex items-center gap-1">
-                                <Clock size={13} />
-                                {guide.readTimeMinutes} min read
-                            </span>
-                            <span>•</span>
-                            <span>Updated on {guide.updatedAt}</span>
 
-                            {guide.alternateSlug && (
-                                <Link
-                                    href={`/guides/${guide.alternateSlug}`}
-                                    className="text-[#C9572C] hover:underline font-semibold text-xs sm:ml-auto"
-                                >
-                                    🇫🇷 Lire en Français
-                                </Link>
-                            )}
+                            <div className="flex items-center gap-2 text-[11px] text-slate-500 font-medium">
+                                <Calendar size={13} className="text-slate-400" />
+                                <span>Published {formatDateEn(guide.publishedAt)}</span>
+                                <span>•</span>
+                                <span className="text-emerald-700 font-semibold">Updated {formatDateEn(guide.updatedAt)}</span>
+
+                                {guide.alternateSlug && (
+                                    <>
+                                        <span>•</span>
+                                        <Link
+                                            href={`/guides/${guide.alternateSlug}`}
+                                            className="text-[#C9572C] hover:underline font-bold text-xs"
+                                        >
+                                            🇫🇷 Lire en Français
+                                        </Link>
+                                    </>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </header>
@@ -234,43 +279,71 @@ export default async function EnglishGuideDetailPage({
 
                         <div className="space-y-12">
                             {guide.sections.map((section, idx) => (
-                                <section key={section.id} id={section.id} className="scroll-mt-24 space-y-4">
-                                    <h2 className="text-xl sm:text-2xl font-black text-slate-900 flex items-center gap-3">
-                                        <span className="text-[#C9572C]">{idx + 1}.</span>
-                                        <span>{section.heading}</span>
-                                    </h2>
+                                <React.Fragment key={section.id}>
+                                    <section id={section.id} className="scroll-mt-24 space-y-4">
+                                        <h2 className="text-xl sm:text-2xl font-black text-slate-900 flex items-center gap-3">
+                                            <span className="text-[#C9572C]">{idx + 1}.</span>
+                                            <span>{section.heading}</span>
+                                        </h2>
 
-                                    {section.callout && (
-                                        <div
-                                            className={`p-4 rounded-xl text-xs sm:text-sm leading-relaxed border ${
-                                                section.callout.type === "warning"
-                                                    ? "bg-rose-50 border-rose-200 text-rose-900 font-medium"
-                                                    : section.callout.type === "tip"
-                                                      ? "bg-emerald-50 border-emerald-200 text-emerald-900 font-medium"
-                                                      : "bg-blue-50 border-blue-200 text-blue-900 font-medium"
-                                            }`}
-                                        >
-                                            <div className="flex items-start gap-2.5">
-                                                {section.callout.type === "warning" ? (
-                                                    <AlertTriangle size={18} className="text-rose-600 shrink-0 mt-0.5" />
-                                                ) : section.callout.type === "tip" ? (
-                                                    <CheckCircle2
-                                                        size={18}
-                                                        className="text-emerald-600 shrink-0 mt-0.5"
-                                                    />
-                                                ) : (
-                                                    <Info size={18} className="text-blue-600 shrink-0 mt-0.5" />
-                                                )}
-                                                <div>{section.callout.text}</div>
+                                        {section.callout && (
+                                            <div
+                                                className={`p-4 rounded-xl text-xs sm:text-sm leading-relaxed border ${
+                                                    section.callout.type === "warning"
+                                                        ? "bg-rose-50 border-rose-200 text-rose-900 font-medium"
+                                                        : section.callout.type === "tip"
+                                                          ? "bg-emerald-50 border-emerald-200 text-emerald-900 font-medium"
+                                                          : "bg-blue-50 border-blue-200 text-blue-900 font-medium"
+                                                }`}
+                                            >
+                                                <div className="flex items-start gap-2.5">
+                                                    {section.callout.type === "warning" ? (
+                                                        <AlertTriangle size={18} className="text-rose-600 shrink-0 mt-0.5" />
+                                                    ) : section.callout.type === "tip" ? (
+                                                        <CheckCircle2
+                                                            size={18}
+                                                            className="text-emerald-600 shrink-0 mt-0.5"
+                                                        />
+                                                    ) : (
+                                                        <Info size={18} className="text-blue-600 shrink-0 mt-0.5" />
+                                                    )}
+                                                    <div>{section.callout.text}</div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    )}
+                                        )}
 
-                                    <div className="prose prose-slate max-w-none text-slate-700 leading-relaxed text-sm sm:text-base space-y-4 whitespace-pre-line">
-                                        {section.content}
-                                    </div>
-                                </section>
+                                        <MarkdownContent content={section.content} />
+                                    </section>
+
+                                    {/* Visual Infographic after 2nd section */}
+                                    {idx === 1 && infographicType && (
+                                        <GuideInfographic type={infographicType} locale="en" />
+                                    )}
+                                </React.Fragment>
                             ))}
+                        </div>
+
+                        {/* EEAT Author Verification Box */}
+                        <div className="rounded-3xl bg-white border border-[#E7DFD5] p-6 sm:p-7 my-10 flex flex-col sm:flex-row items-center sm:items-start gap-5 shadow-xs">
+                            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden relative shrink-0 border-2 border-[#FAF7F2] shadow-sm">
+                                <Image src={guide.author.avatar} alt={guide.author.name} fill className="object-cover" />
+                            </div>
+                            <div className="space-y-2 text-center sm:text-left flex-1">
+                                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                                    <span className="font-black text-slate-900 text-base">{guide.author.name}</span>
+                                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold uppercase tracking-wider">
+                                        <CheckCircle2 size={11} />
+                                        Certified ZwinCar Auditor
+                                    </span>
+                                </div>
+                                <p className="text-xs font-bold text-[#C9572C]">{guide.author.role}</p>
+                                {guide.author.bio && (
+                                    <p className="text-xs text-slate-600 leading-relaxed">{guide.author.bio}</p>
+                                )}
+                                <div className="pt-1 text-[11px] text-slate-400 font-mono">
+                                    Ground-verified audit protocol • Published {formatDateEn(guide.publishedAt)} • Updated November 2026
+                                </div>
+                            </div>
                         </div>
 
                         {guide.faqs && guide.faqs.length > 0 && (

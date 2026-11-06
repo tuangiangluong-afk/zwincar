@@ -7,6 +7,7 @@ import { Footer } from "@/components/Footer";
 import { MOROCCO_GUIDES } from "@/data/morocco-guides";
 import { clampTitle, clampDescription } from "@/lib/seo-meta";
 import SchemaJSON from "@/components/SchemaJSON";
+import GuidesGridWithPagination from "@/components/GuidesGridWithPagination";
 
 export const revalidate = 3600;
 
@@ -80,86 +81,10 @@ export default function GuidesPage() {
                     </div>
                 </section>
 
-                {/* Guides Grid */}
+                {/* Guides Grid with Category Filters & Pagination */}
                 <section className="py-12 sm:py-16">
                     <div className="container mx-auto px-4 max-w-5xl">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            {MOROCCO_GUIDES.map((guide) => (
-                                <article
-                                    key={guide.slug}
-                                    className="group rounded-3xl bg-white border border-[#ECE5D9] overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
-                                >
-                                    <div>
-                                        {/* Image */}
-                                        <div className="relative h-52 w-full overflow-hidden bg-slate-100">
-                                            <Image
-                                                src={guide.heroImage}
-                                                alt={guide.title}
-                                                fill
-                                                className="object-cover group-hover:scale-105 transition-transform duration-500"
-                                            />
-                                            <div className="absolute top-4 left-4">
-                                                <span className="px-3 py-1 rounded-full bg-slate-900/80 backdrop-blur-xs text-white text-[11px] font-bold uppercase tracking-wider">
-                                                    {guide.category}
-                                                </span>
-                                            </div>
-                                        </div>
-
-                                        {/* Body */}
-                                        <div className="p-6 sm:p-7 space-y-3">
-                                            <div className="flex items-center gap-3 text-xs text-slate-500 font-medium">
-                                                <span className="flex items-center gap-1">
-                                                    <Clock size={13} />
-                                                    {guide.readTimeMinutes} min de lecture
-                                                </span>
-                                                <span>•</span>
-                                                <span>Mis à jour en 2026</span>
-                                            </div>
-
-                                            <h2 className="text-xl font-black text-slate-900 group-hover:text-[#C9572C] transition-colors line-clamp-2">
-                                                <Link href={`/guides/${guide.slug}`}>
-                                                    {guide.title}
-                                                </Link>
-                                            </h2>
-
-                                            <p className="text-xs sm:text-sm text-slate-600 line-clamp-3 leading-relaxed">
-                                                {guide.metaDescription}
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    {/* Author & CTA */}
-                                    <div className="p-6 pt-0 border-t border-slate-100 mt-4 flex items-center justify-between">
-                                        <div className="flex items-center gap-2.5">
-                                            <div className="w-8 h-8 rounded-full overflow-hidden relative">
-                                                <Image
-                                                    src={guide.author.avatar}
-                                                    alt={guide.author.name}
-                                                    fill
-                                                    className="object-cover"
-                                                />
-                                            </div>
-                                            <div className="text-left">
-                                                <div className="text-xs font-bold text-slate-900">
-                                                    {guide.author.name}
-                                                </div>
-                                                <div className="text-[10px] text-slate-500">
-                                                    ZwinCar Maroc
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <Link
-                                            href={`/guides/${guide.slug}`}
-                                            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#C9572C] group-hover:translate-x-1 transition-transform"
-                                        >
-                                            <span>Lire le guide</span>
-                                            <ArrowRight size={14} />
-                                        </Link>
-                                    </div>
-                                </article>
-                            ))}
-                        </div>
+                        <GuidesGridWithPagination guides={MOROCCO_GUIDES} locale="fr" itemsPerPage={8} />
                     </div>
                 </section>
             </main>

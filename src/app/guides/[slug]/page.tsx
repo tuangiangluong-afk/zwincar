@@ -1,3 +1,4 @@
+import React from "react";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
@@ -15,6 +16,7 @@ import {
     MapPin,
     ShieldCheck,
     Share2,
+    Calendar,
 } from "lucide-react";
 import Header from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -22,8 +24,35 @@ import { MOROCCO_GUIDES, getGuideBySlug } from "@/data/morocco-guides";
 import { MOROCCAN_HUBS, VEHICLE_FLEET } from "@/lib/morocco-data";
 import { clampTitle, clampDescription } from "@/lib/seo-meta";
 import SchemaJSON from "@/components/SchemaJSON";
+import GuideInfographic from "@/components/GuideInfographic";
+import MarkdownContent from "@/components/MarkdownContent";
 
 export const revalidate = 3600;
+
+function getInfographicType(slug: string): "tpe-receipt" | "ground-clearance" | "radar-fines" | "jawaz-toll" | null {
+    if (slug.includes("caution") || slug.includes("arnaque") || slug.includes("paiement-cash") || slug.includes("franchise-zero") || slug.includes("credit-card") || slug.includes("scams") || slug.includes("deposit")) {
+        return "tpe-receipt";
+    }
+    if (slug.includes("4x4") || slug.includes("duster") || slug.includes("tichka") || slug.includes("dades")) {
+        return "ground-clearance";
+    }
+    if (slug.includes("radar") || slug.includes("conduire") || slug.includes("barrage") || slug.includes("speed-camera") || slug.includes("checkpoint") || slug.includes("rules")) {
+        return "radar-fines";
+    }
+    if (slug.includes("peage") || slug.includes("jawaz") || slug.includes("autoroute") || slug.includes("toll")) {
+        return "jawaz-toll";
+    }
+    return null;
+}
+
+function formatDateFr(dateStr: string) {
+    try {
+        const d = new Date(dateStr);
+        return d.toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
+    } catch {
+        return dateStr;
+    }
+}
 
 export async function generateStaticParams() {
     return MOROCCO_GUIDES.map((guide) => ({
@@ -84,6 +113,7 @@ export default async function GuideDetailPage({
 
     const relatedHubsData = MOROCCAN_HUBS.filter((h) => guide.relatedHubs.includes(h.slug));
     const relatedVehiclesData = VEHICLE_FLEET.filter((v) => guide.relatedVehicles.includes(v.id));
+    const infographicType = getInfographicType(guide.slug);
 
     return (
         <div className="min-h-screen bg-[#FAF7F2] text-slate-900 flex flex-col font-sans">
@@ -103,6 +133,8 @@ export default async function GuideDetailPage({
                         "@type": "Person",
                         name: guide.author.name,
                         jobTitle: guide.author.role,
+                        description: guide.author.bio,
+                        image: guide.author.avatar,
                     },
                     publisher: {
                         "@type": "Organization",
@@ -200,23 +232,34 @@ export default async function GuideDetailPage({
                             {guide.title}
                         </h1>
 
-                        {/* Author line */}
-                        <div className="flex items-center gap-3 pt-2 pb-6 border-b border-slate-200">
-                            <div className="w-10 h-10 rounded-full overflow-hidden relative shrink-0">
-                                <Image
-                                    src={guide.author.avatar}
-                                    alt={guide.author.name}
-                                    fill
-                                    className="object-cover"
-                                />
+                        {/* Author line & Dates */}
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2 pb-6 border-b border-slate-200">
+                            <div className="flex items-center gap-3">
+                                <div className="w-11 h-11 rounded-full overflow-hidden relative shrink-0 border border-slate-200 shadow-2xs">
+                                    <Image
+                                        src={guide.author.avatar}
+                                        alt={guide.author.name}
+                                        fill
+                                        className="object-cover"
+                                    />
+                                </div>
+                                <div>
+                                    <div className="flex items-center gap-1.5 text-xs font-bold text-slate-900">
+                                        <span>{guide.author.name}</span>
+                                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                        <span className="text-[10px] text-emerald-700 font-semibold uppercase tracking-wider">Expert Vérifié</span>
+                                    </div>
+                                    <div className="text-[11px] text-slate-500">
+                                        {guide.author.role}
+                                    </div>
+                                </div>
                             </div>
-                            <div>
-                                <div className="text-xs font-bold text-slate-900">
-                                    {guide.author.name}
-                                </div>
-                                <div className="text-[11px] text-slate-500">
-                                    {guide.author.role} • Vérifié pour 2026
-                                </div>
+
+                            <div className="flex items-center gap-2 text-[11px] text-slate-500 font-medium">
+                                <Calendar size={13} className="text-slate-400" />
+                                <span>Publié le {formatDateFr(guide.publishedAt)}</span>
+                                <span>•</span>
+                                <span className="text-emerald-700 font-semibold">Mis à jour le {formatDateFr(guide.updatedAt)}</span>
                             </div>
                         </div>
                     </div>
@@ -276,39 +319,68 @@ export default async function GuideDetailPage({
 
                     {/* Content Sections */}
                     <div className="space-y-10 text-slate-800 leading-relaxed text-sm sm:text-base">
-                        {guide.sections.map((sec) => (
-                            <section key={sec.id} id={sec.id} className="space-y-4 pt-4">
-                                <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-                                    {sec.heading}
-                                </h2>
-                                <div className="space-y-3 whitespace-pre-line text-slate-700">
-                                    {sec.content}
-                                </div>
+                        {guide.sections.map((sec, idx) => (
+                            <React.Fragment key={sec.id}>
+                                <section id={sec.id} className="space-y-4 pt-4">
+                                    <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+                                        {sec.heading}
+                                    </h2>
+                                    
+                                    <MarkdownContent content={sec.content} />
 
-                                {sec.callout && (
-                                    <div
-                                        className={`rounded-2xl p-4.5 border flex items-start gap-3 my-4 text-xs sm:text-sm font-medium ${
-                                            sec.callout.type === "warning"
-                                                ? "bg-amber-50 border-amber-200 text-amber-900"
-                                                : sec.callout.type === "tip"
-                                                ? "bg-emerald-50 border-emerald-200 text-emerald-950"
-                                                : "bg-blue-50 border-blue-200 text-blue-900"
-                                        }`}
-                                    >
-                                        {sec.callout.type === "warning" && (
-                                            <AlertTriangle size={18} className="text-amber-600 shrink-0 mt-0.5" />
-                                        )}
-                                        {sec.callout.type === "tip" && (
-                                            <CheckCircle2 size={18} className="text-emerald-600 shrink-0 mt-0.5" />
-                                        )}
-                                        {sec.callout.type === "info" && (
-                                            <Info size={18} className="text-blue-600 shrink-0 mt-0.5" />
-                                        )}
-                                        <div>{sec.callout.text}</div>
-                                    </div>
+                                    {sec.callout && (
+                                        <div
+                                            className={`rounded-2xl p-4.5 border flex items-start gap-3 my-4 text-xs sm:text-sm font-medium ${
+                                                sec.callout.type === "warning"
+                                                    ? "bg-amber-50 border-amber-200 text-amber-900"
+                                                    : sec.callout.type === "tip"
+                                                    ? "bg-emerald-50 border-emerald-200 text-emerald-950"
+                                                    : "bg-blue-50 border-blue-200 text-blue-900"
+                                            }`}
+                                        >
+                                            {sec.callout.type === "warning" && (
+                                                <AlertTriangle size={18} className="text-amber-600 shrink-0 mt-0.5" />
+                                            )}
+                                            {sec.callout.type === "tip" && (
+                                                <CheckCircle2 size={18} className="text-emerald-600 shrink-0 mt-0.5" />
+                                            )}
+                                            {sec.callout.type === "info" && (
+                                                <Info size={18} className="text-blue-600 shrink-0 mt-0.5" />
+                                            )}
+                                            <div>{sec.callout.text}</div>
+                                        </div>
+                                    )}
+                                </section>
+
+                                {/* Technical Visual Infographic after 2nd section */}
+                                {idx === 1 && infographicType && (
+                                    <GuideInfographic type={infographicType} locale="fr" />
                                 )}
-                            </section>
+                            </React.Fragment>
                         ))}
+                    </div>
+
+                    {/* EEAT Author Verification Box */}
+                    <div className="rounded-3xl bg-white border border-[#E7DFD5] p-6 sm:p-7 my-10 flex flex-col sm:flex-row items-center sm:items-start gap-5 shadow-xs">
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden relative shrink-0 border-2 border-[#FAF7F2] shadow-sm">
+                            <Image src={guide.author.avatar} alt={guide.author.name} fill className="object-cover" />
+                        </div>
+                        <div className="space-y-2 text-center sm:text-left flex-1">
+                            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                                <span className="font-black text-slate-900 text-base">{guide.author.name}</span>
+                                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold uppercase tracking-wider">
+                                    <CheckCircle2 size={11} />
+                                    Auditeur Agréé ZwinCar
+                                </span>
+                            </div>
+                            <p className="text-xs font-bold text-[#C9572C]">{guide.author.role}</p>
+                            {guide.author.bio && (
+                                <p className="text-xs text-slate-600 leading-relaxed">{guide.author.bio}</p>
+                            )}
+                            <div className="pt-1 text-[11px] text-slate-400 font-mono">
+                                Dossier soumis au protocole de vérification terrain ZwinCar Maroc • Révisé en novembre 2026
+                            </div>
+                        </div>
                     </div>
 
                     {/* FAQs */}

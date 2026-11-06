@@ -167,11 +167,11 @@ export default function HomePage({ locale = "fr" }: HomePageProps = {}) {
                         </div>
 
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-                            {/* Photo 1: Col du Tichka */}
+                            {/* Photo 1: Col du Tichka & Gorges du Dadès */}
                             <div className="group relative h-48 sm:h-64 rounded-2xl sm:rounded-3xl overflow-hidden border border-[#E7DFD5] shadow-xs">
                                 <img
-                                    src="https://images.unsplash.com/photo-1509099836639-18ba1795216d?auto=format&fit=crop&w=800&q=80"
-                                    alt="Col du Tichka Haut Atlas Maroc"
+                                    src="/images/hero-morocco.webp"
+                                    alt="Col du Tichka et Gorges du Dadès Haut Atlas Maroc"
                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
@@ -180,7 +180,7 @@ export default function HomePage({ locale = "fr" }: HomePageProps = {}) {
                                         Haut-Atlas • N9
                                     </div>
                                     <div className="text-xs sm:text-sm font-black leading-tight">
-                                        Col du Tichka (2 260 m)
+                                        Col du Tichka & Dadès
                                     </div>
                                     <div className="text-[10px] text-white/80 mt-0.5">
                                         {isEn ? "Hairpins & scenic summits" : isEs ? "Curvas y puertos espectaculares" : isNl ? "Haarspeldbochten & bergpassen" : "Lacets & panoramas spectaculaires"}
