@@ -241,8 +241,20 @@ export default function Footer({ config, locale: propLocale }: FooterProps = {})
 
                 {/* Bottom Bar */}
                 <div className="pt-8 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-500">
-                    <div>
-                        {t.copyright}
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 text-center sm:text-left">
+                        <span>{t.copyright}</span>
+                        <span className="hidden sm:inline text-slate-700">•</span>
+                        <span>
+                            Créé par{" "}
+                            <a
+                                href="https://propulselab.fr"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-slate-400 hover:text-white underline underline-offset-2 transition"
+                            >
+                                Propulse (propulselab.fr)
+                            </a>
+                        </span>
                     </div>
                     <div className="flex items-center gap-4">
                         <span>{t.stripeSecure}</span>

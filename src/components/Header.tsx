@@ -118,14 +118,14 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
             <header className="sticky top-0 z-40 bg-[#FAF7F2]/90 backdrop-blur-md border-b border-[#EAE3D6] transition-colors">
                 <div className="container mx-auto px-4 max-w-6xl h-20 flex items-center justify-between">
                     {/* Logo */}
-                    <div className="flex items-center gap-8">
+                    <div className="flex items-center gap-7">
                         <Logo variant="full" theme="dark" size="md" locale={currentLocale} />
 
                         {/* Desktop Navigation */}
-                        <nav className="hidden md:flex items-center gap-6 text-sm font-semibold text-slate-700">
+                        <nav className="hidden lg:flex items-center gap-5 text-sm font-semibold text-slate-700 whitespace-nowrap">
                             <Link
                                 href={catalogHref}
-                                className="hover:text-[#C9572C] transition-colors"
+                                className="hover:text-[#C9572C] transition-colors whitespace-nowrap"
                             >
                                 {t.nav.vehicles}
                             </Link>
@@ -135,7 +135,7 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
                                 <button
                                     type="button"
                                     onClick={() => setHubsDropdownOpen(!hubsDropdownOpen)}
-                                    className="flex items-center gap-1 hover:text-[#C9572C] transition-colors cursor-pointer"
+                                    className="flex items-center gap-1 hover:text-[#C9572C] transition-colors cursor-pointer whitespace-nowrap"
                                 >
                                     <span>{t.nav.airports}</span>
                                     <ChevronDown size={14} className="text-slate-400" />
@@ -169,7 +169,7 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
 
                             <Link
                                 href={guidesHref}
-                                className="hover:text-[#C9572C] transition-colors flex items-center gap-1.5"
+                                className="hover:text-[#C9572C] transition-colors flex items-center gap-1.5 whitespace-nowrap"
                             >
                                 <BookOpen size={15} className="text-[#C9572C]" />
                                 <span>{t.nav.guides}</span>
@@ -177,44 +177,36 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
 
                             <Link
                                 href={zeroCautionHref}
-                                className="hover:text-[#C9572C] transition-colors flex items-center gap-1.5"
+                                className="hover:text-[#C9572C] transition-colors flex items-center gap-1.5 whitespace-nowrap"
                             >
                                 <ShieldCheck size={15} className="text-emerald-600" />
                                 <span>{t.nav.zeroDeposit}</span>
-                            </Link>
-
-                            <Link
-                                href="/vendor/login"
-                                className="hover:text-slate-900 text-slate-500 transition-colors text-xs font-bold uppercase tracking-wider"
-                            >
-                                {t.nav.vendorSpace}
                             </Link>
                         </nav>
                     </div>
 
                     {/* Right controls: Language, SOS & WhatsApp VIP */}
-                    <div className="hidden sm:flex items-center gap-3">
+                    <div className="hidden sm:flex items-center gap-2.5">
                         {/* SOS Urgence Button */}
                         <button
                             type="button"
                             onClick={() => setSosModalOpen(true)}
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-red-50 hover:bg-red-100 text-red-700 border border-red-200/80 text-xs font-bold transition cursor-pointer"
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-red-50 hover:bg-red-100 text-red-700 border border-red-200/80 text-xs font-bold transition cursor-pointer whitespace-nowrap"
                         >
                             <ShieldAlert size={14} className="text-red-600" />
                             <span>SOS 24/7</span>
                         </button>
 
-                        {/* Language Switch */}
-                        <div className="inline-flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded-full bg-white border border-[#E7DFD5] text-slate-700 shadow-2xs">
-                            <Globe size={13} className="text-slate-400 ml-1" />
+                        {/* Language Switch - Compact, clean, zero overflow */}
+                        <div className="inline-flex items-center p-0.5 rounded-full bg-slate-100 border border-slate-200/80 text-slate-700">
                             {(["fr", "en", "es", "nl"] as const).map((l) => (
                                 <button
                                     key={l}
                                     type="button"
                                     onClick={() => handleLocaleSwitch(l)}
-                                    className={`px-1.5 py-0.5 rounded cursor-pointer transition uppercase text-[11px] font-bold ${
+                                    className={`px-2 py-0.5 rounded-full cursor-pointer transition uppercase text-[10px] font-bold ${
                                         currentLocale === l
-                                            ? "bg-[#C9572C]/15 text-[#C9572C]"
+                                            ? "bg-[#C9572C] text-white shadow-2xs"
                                             : "hover:text-slate-900 text-slate-500"
                                     }`}
                                 >
@@ -228,7 +220,7 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
                             href={`https://wa.me/212600000000?text=${waText}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-slate-900 hover:bg-[#C9572C] text-white text-xs font-bold tracking-wide transition-all shadow-xs cursor-pointer active:scale-95"
+                            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-2xl bg-slate-900 hover:bg-[#C9572C] text-white text-xs font-bold tracking-wide transition-all shadow-xs cursor-pointer active:scale-95 whitespace-nowrap"
                         >
                             <MessageCircle size={15} className="text-emerald-400" />
                             <span>WhatsApp VIP</span>
