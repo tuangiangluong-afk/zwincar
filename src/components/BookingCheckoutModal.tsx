@@ -36,6 +36,9 @@ interface BookingCheckoutModalProps {
     balanceOnSiteEur: number;
     balanceOnSiteMad: number;
     currency: "EUR" | "MAD";
+    pickupTime?: string;
+    returnTime?: string;
+    locale?: "fr" | "en" | "es" | "nl";
 }
 
 export function BookingCheckoutModal({
@@ -56,6 +59,9 @@ export function BookingCheckoutModal({
     balanceOnSiteEur,
     balanceOnSiteMad,
     currency,
+    pickupTime = "10:00",
+    returnTime = "10:00",
+    locale = "fr",
 }: BookingCheckoutModalProps) {
     const router = useRouter();
     const [fullName, setFullName] = useState("");
@@ -64,6 +70,7 @@ export function BookingCheckoutModal({
     const [flightNumber, setFlightNumber] = useState("");
     const [notes, setNotes] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     if (!isOpen) return null;
 
@@ -75,125 +82,92 @@ export function BookingCheckoutModal({
         e.preventDefault();
         setIsSubmitting(true);
 
-        // Generate high-entropy booking reference
-        const bookingRef = `ZW-${Math.floor(10000 + Math.random() * 90000)}`;
-
-        // Save booking data into localStorage for /booking/[ref]
-        const bookingPayload = {
-            ref: bookingRef,
-            createdAt: new Date().toISOString(),
-            client: {
-                fullName: fullName || "Voyageur ZwinCar",
-                phone: phone || "+33 6 00 00 00 00",
-                email: email || "contact@voyageur.com",
-                flightNumber: flightNumber || "À préciser",
-                notes: notes,
-            },
-            rental: {
-                vehicleId: vehicle.id,
-                vehicleName: vehicle.name,
-                vehicleCategory: vehicle.category,
-                vehicleImage: vehicle.image,
-                pickupHub: currentHub.slug,
-                hubName: currentHub.name,
-                airportName: currentHub.airportName,
-                airportCode: currentHub.airportCode,
-                meetingPointDetail: currentHub.meetingPointDetail,
-                pickupDate,
-                returnDate,
-                days,
-                fuelPolicy: vehicle.fuelPolicy,
-                depositPolicy: vehicle.depositPolicy,
-            },
-            financials: {
-                currency,
-                dailyPriceEur: vehicle.dailyPriceEur,
-                dailyPriceMad: vehicle.dailyPriceMad,
-                vendorUpsellsEur,
-                vendorUpsellsMad,
-                platformUpsellsEur,
-                platformUpsellsMad,
-                depositAcompteEur,
-                depositAcompteMad,
-                balanceOnSiteEur,
-                balanceOnSiteMad,
-                selectedUpsells,
-            },
-            status: "confirmed",
-            kycStatus: "pending",
-        };
+        setErrorMessage(null);
 
         try {
-            if (typeof window !== "undefined") {
-                localStorage.setItem(`zwincar_booking_${bookingRef}`, JSON.stringify(bookingPayload));
-                localStorage.setItem("zwincar_last_booking_ref", bookingRef);
+            // 1. Le dossier est créé côté serveur : le prix est recalculé par le
+            //    moteur de réservation, jamais envoyé par le navigateur.
+            const createRes = await fetch("/api/bookings", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    vehicleId: vehicle.id,
+                    pickupHub: currentHub.slug,
+                    returnHub: currentHub.slug,
+                    pickupDate,
+                    pickupTime,
+                    returnDate,
+                    returnTime,
+                    upsells: selectedUpsells,
+                    currency,
+                    locale,
+                    client: { fullName, email, phone, flightNumber, notes },
+                }),
+            });
+
+            const created = await createRes.json();
+            if (!createRes.ok || !created?.booking) {
+                setErrorMessage(
+                    created?.error ??
+                        "Réservation impossible. Vérifiez vos informations et réessayez."
+                );
+                setIsSubmitting(false);
+                return;
             }
-        } catch {
-            // storage quota fallback
-        }
 
-        // 1. Send confirmation email asynchronously
-        try {
+            const bookingRef = created.booking.ref as string;
+            const voucher = created.voucher;
+
+            try {
+                localStorage.setItem(`zwincar_booking_${bookingRef}`, JSON.stringify(voucher));
+                localStorage.setItem(`zwincar_booking_token_${bookingRef}`, created.accessToken);
+                localStorage.setItem("zwincar_last_booking_ref", bookingRef);
+            } catch {
+                // quota navigateur
+            }
+
+            // 2. Email de confirmation (non bloquant).
             fetch("/api/booking/send-confirmation", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     bookingRef,
-                    clientEmail: email || "contact@voyageur.com",
-                    clientName: fullName || "Voyageur",
-                    clientPhone: phone,
-                    vehicleName: vehicle.name,
-                    hubName: currentHub.name,
-                    airportCode: currentHub.airportCode,
-                    meetingPointDetail: currentHub.meetingPointDetail,
-                    pickupDate,
-                    returnDate,
-                    days,
-                    depositAcompteEur,
-                    balanceOnSiteEur,
-                    balanceOnSiteMad,
-                    hasFranchiseZero,
+                    clientEmail: voucher.client.email,
+                    clientName: voucher.client.fullName,
+                    clientPhone: voucher.client.phone,
+                    vehicleName: voucher.rental.vehicleName,
+                    hubName: voucher.rental.hubName,
+                    airportCode: voucher.rental.airportCode,
+                    meetingPointDetail: voucher.rental.meetingPointDetail,
+                    pickupDate: voucher.rental.pickupDate,
+                    returnDate: voucher.rental.returnDate,
+                    days: voucher.rental.days,
+                    depositAcompteEur: voucher.financials.depositAcompteEur,
+                    balanceOnSiteEur: voucher.financials.balanceOnSiteEur,
+                    balanceOnSiteMad: voucher.financials.balanceOnSiteMad,
+                    hasFranchiseZero: voucher.financials.cautionEur === 0,
                 }),
             }).catch(() => {});
-        } catch {
-            // ignore
-        }
 
-        // 2. Call Stripe Checkout API
-        try {
-            const res = await fetch("/api/stripe/checkout", {
+            // 3. Paiement : la route Stripe relit le montant dans le dossier.
+            const payRes = await fetch("/api/stripe/checkout", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    bookingRef,
-                    amountEur: depositAcompteEur,
-                    vehicleName: vehicle.name,
-                    hubName: currentHub.name,
-                    customerEmail: email,
-                    customerName: fullName,
-                    days,
-                    pickupDate,
-                    returnDate,
-                }),
+                body: JSON.stringify({ ref: bookingRef, token: created.accessToken }),
             });
+            const pay = await payRes.json();
 
-            const data = await res.json();
             setIsSubmitting(false);
             onClose();
 
-            if (data?.url) {
-                if (data.url.startsWith("http")) {
-                    window.location.href = data.url;
-                } else {
-                    router.push(data.url);
-                }
+            if (pay?.url && typeof pay.url === "string" && pay.url.startsWith("http")) {
+                window.location.href = pay.url;
             } else {
-                router.push(`/booking/${bookingRef}`);
+                router.push(`/booking/${bookingRef}?t=${created.accessToken}`);
             }
         } catch {
             setIsSubmitting(false);
-            onClose();
-            router.push(`/booking/${bookingRef}`);
+            setErrorMessage("Connexion interrompue. Réessayez dans un instant.");
         }
     };
 
@@ -364,6 +338,12 @@ export function BookingCheckoutModal({
                             </span>
                         </div>
                     </div>
+
+                    {errorMessage && (
+                        <div className="rounded-xl border border-red-200 bg-red-50 px-3.5 py-2.5 text-xs font-semibold text-red-700">
+                            {errorMessage}
+                        </div>
+                    )}
 
                     {/* Submit Button */}
                     <div className="space-y-2.5 pt-1">

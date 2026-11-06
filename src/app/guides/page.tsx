@@ -17,6 +17,11 @@ export const metadata: Metadata = {
     ),
     alternates: {
         canonical: "https://zwincar.com/guides",
+        languages: {
+            "fr-FR": "https://zwincar.com/guides",
+            "en-US": "https://zwincar.com/en/guides",
+            "x-default": "https://zwincar.com/en/guides",
+        },
     },
 };
 
@@ -62,6 +67,16 @@ export default function GuidesPage() {
                         <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
                             Évitez les pièges de caution à l'aéroport, comprenez les priorités aux carrefours giratoires et préparez vos roadtrips dans l'Atlas en toute sérénité.
                         </p>
+                        <div className="pt-2">
+                            <Link
+                                href="/en/guides"
+                                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-slate-200 text-xs font-semibold text-slate-700 hover:text-emerald-700 hover:border-emerald-300 transition-colors shadow-2xs"
+                            >
+                                <span className="text-base">🇬🇧</span>
+                                <span>Looking for English driving guides? Read all 24 guides in English</span>
+                                <ArrowRight size={12} />
+                            </Link>
+                        </div>
                     </div>
                 </section>
 

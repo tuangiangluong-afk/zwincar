@@ -4,7 +4,10 @@ import { supabase } from "@/lib/supabase";
 import { getCity } from "@/lib/db";
 import { createLeadAndRequestConfirmation } from "@/lib/lead-dispatch";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
+const resend = new Resend(process.env.RESEND_API_KEY || "re_dummy_build_fallback");
 
 export async function POST(req: Request) {
     try {

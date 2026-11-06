@@ -43,11 +43,19 @@ export async function generateMetadata({
         return { title: "Guide Introuvable | ZwinCar" };
     }
 
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://zwincar.com";
+    const enUrl = guide.alternateSlug ? `${baseUrl}/en/guides/${guide.alternateSlug}` : `${baseUrl}/en/guides`;
+
     return {
         title: clampTitle(`${guide.shortTitle} : Conseils Conduite Maroc 2026 | ZwinCar`),
         description: clampDescription(guide.metaDescription),
         alternates: {
-            canonical: `https://zwincar.com/guides/${guide.slug}`,
+            canonical: `${baseUrl}/guides/${guide.slug}`,
+            languages: {
+                "fr-FR": `${baseUrl}/guides/${guide.slug}`,
+                "en-US": enUrl,
+                "x-default": enUrl,
+            },
         },
         openGraph: {
             title: guide.title,
@@ -155,18 +163,31 @@ export default async function GuideDetailPage({
             <main className="flex-1 pb-16">
                 {/* Hero / Header */}
                 <article className="container mx-auto px-4 max-w-4xl pt-8 sm:pt-12">
-                    {/* Breadcrumbs Navigation */}
-                    <nav className="flex items-center gap-2 text-xs font-semibold text-slate-500 mb-6">
-                        <Link href="/" className="hover:text-slate-900">
-                            Accueil
-                        </Link>
-                        <ChevronRight size={12} />
-                        <Link href="/guides" className="hover:text-slate-900">
-                            Guides
-                        </Link>
-                        <ChevronRight size={12} />
-                        <span className="text-[#C9572C] truncate">{guide.shortTitle}</span>
-                    </nav>
+                    {/* Breadcrumbs Navigation & Language Switcher */}
+                    <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+                        <nav className="flex items-center gap-2 text-xs font-semibold text-slate-500">
+                            <Link href="/" className="hover:text-slate-900">
+                                Accueil
+                            </Link>
+                            <ChevronRight size={12} />
+                            <Link href="/guides" className="hover:text-slate-900">
+                                Guides
+                            </Link>
+                            <ChevronRight size={12} />
+                            <span className="text-[#C9572C] truncate max-w-[200px] sm:max-w-xs">{guide.shortTitle}</span>
+                        </nav>
+
+                        {guide.alternateSlug && (
+                            <Link
+                                href={`/en/guides/${guide.alternateSlug}`}
+                                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-slate-200 text-xs font-semibold text-slate-700 hover:text-emerald-700 hover:border-emerald-300 transition-colors shadow-2xs"
+                                title="Read this guide in English"
+                            >
+                                <span className="text-sm">🇬🇧</span>
+                                <span>Read in English</span>
+                            </Link>
+                        )}
+                    </div>
 
                     <div className="space-y-4">
                         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 text-white text-xs font-bold uppercase tracking-wider">

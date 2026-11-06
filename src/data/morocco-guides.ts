@@ -34,6 +34,7 @@ export interface MoroccoGuide {
     }[];
     relatedHubs: string[];
     relatedVehicles: string[];
+    alternateSlug?: string;
 }
 
 export const MOROCCO_GUIDES: MoroccoGuide[] = [

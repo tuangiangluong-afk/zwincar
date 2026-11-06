@@ -2,6 +2,7 @@ import { MetadataRoute } from "next";
 import { MOROCCAN_HUBS, VEHICLE_FLEET } from "@/lib/morocco-data";
 import { PURCHASE_INTENTS } from "@/lib/intent-data";
 import { MOROCCO_GUIDES } from "@/data/morocco-guides";
+import { MOROCCO_GUIDES_EN } from "@/data/morocco-guides-en";
 import { SUPPORTED_LOCALES } from "@/lib/i18n";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -17,6 +18,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
         },
         {
             url: `${baseUrl}/guides`,
+            lastModified: now,
+            changeFrequency: "weekly",
+            priority: 0.8,
+        },
+        {
+            url: `${baseUrl}/en/guides`,
             lastModified: now,
             changeFrequency: "weekly",
             priority: 0.8,
@@ -113,9 +120,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
         });
     });
 
-    // 5. Roadtrip & Driving Guides (/guides/[slug])
+    // 5. Roadtrip & Driving Guides (/guides/[slug] & /en/guides/[slug])
     const guideRoutes: MetadataRoute.Sitemap = MOROCCO_GUIDES.map((guide) => ({
         url: `${baseUrl}/guides/${guide.slug}`,
+        lastModified: now,
+        changeFrequency: "monthly",
+        priority: 0.75,
+    }));
+
+    const guideEnRoutes: MetadataRoute.Sitemap = (MOROCCO_GUIDES_EN || []).map((guide) => ({
+        url: `${baseUrl}/en/guides/${guide.slug}`,
         lastModified: now,
         changeFrequency: "monthly",
         priority: 0.75,
@@ -128,5 +142,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
         ...cityVehicleRoutes,
         ...cityIntentRoutes,
         ...guideRoutes,
+        ...guideEnRoutes,
     ];
 }

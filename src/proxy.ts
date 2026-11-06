@@ -47,6 +47,19 @@ export default async function middleware(req: NextRequest) {
         return NextResponse.next();
     }
 
+    // A bis. Assets PWA et page hors ligne : ne doivent jamais être réécrits
+    // vers /home (sinon 404 sur les icônes et le fallback offline).
+    if (
+        path.startsWith("/icons/") ||
+        path.startsWith("/offline") ||
+        path.startsWith("/favicon") ||
+        path.startsWith("/apple-touch-icon") ||
+        path.startsWith("/manifest") ||
+        path === "/sw.js"
+    ) {
+        return NextResponse.next();
+    }
+
     // B. LLMs.txt Rewrite
     if (path === "/llms.txt") {
         return NextResponse.rewrite(new URL("/llms.txt", req.url));

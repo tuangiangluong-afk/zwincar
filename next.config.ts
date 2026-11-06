@@ -40,7 +40,8 @@ const nextConfig: NextConfig = {
 
     // Generate permanent redirects for all legacy patterns
     // These redirect to homepage with 301 - tells Google to stop crawling
-    return legacyTenantSlugs.flatMap(slug => [
+    return [
+      ...legacyTenantSlugs.flatMap(slug => [
       // Pattern: /:slug/guides/:path*
       {
         source: `/${slug}/guides/:path*`,
@@ -59,7 +60,8 @@ const nextConfig: NextConfig = {
         destination: '/',
         permanent: true,
       },
-    ]);
+    ]),
+    ];
   },
   images: {
     unoptimized: true,
@@ -77,13 +79,27 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
-        source: "/((?!api|admin|login|_next).*)",
+        source: "/((?!api|admin|login|_next|sw\.js|manifest\.webmanifest).*)",
         headers: [
           {
             key: "Cache-Control",
             value: "public, max-age=3600, s-maxage=86400, stale-while-revalidate=604800",
           },
         ],
+      },
+      {
+        // Le service worker doit toujours être revalidé, sinon les clients
+        // restent bloqués sur une ancienne version du cache.
+        source: '/sw.js',
+        headers: [
+          { key: 'Cache-Control', value: 'no-cache, no-store, must-revalidate' },
+          { key: 'Service-Worker-Allowed', value: '/' },
+          { key: 'Content-Type', value: 'application/javascript; charset=utf-8' },
+        ],
+      },
+      {
+        source: '/icons/:path*',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
       },
       {
         source: '/:path*',

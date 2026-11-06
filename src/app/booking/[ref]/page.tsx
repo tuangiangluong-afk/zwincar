@@ -28,6 +28,7 @@ import {
 import Header from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { SosModal } from "@/components/SosModal";
+import BookingManager from "@/components/BookingManager";
 import { MOROCCAN_HUBS, VEHICLE_FLEET } from "@/lib/morocco-data";
 
 export default function BookingVoucherPage() {
@@ -217,6 +218,9 @@ export default function BookingVoucherPage() {
                             {emailResent ? "Email renvoyé avec succès !" : "Renvoyer l'email de confirmation"}
                         </button>
                     </div>
+
+                    {/* Gestion du dossier : statut réel, modification de dates, annulation */}
+                    <BookingManager refId={ref} />
 
                     {/* Main Voucher Card */}
                     <div className="rounded-3xl bg-white border border-[#ECE5D9] p-6 sm:p-8 shadow-sm space-y-6">
