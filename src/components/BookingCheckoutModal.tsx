@@ -159,6 +159,7 @@ export function BookingCheckoutModal({
                     balanceOnSiteEur: voucher.financials.balanceOnSiteEur,
                     balanceOnSiteMad: voucher.financials.balanceOnSiteMad,
                     hasFranchiseZero: voucher.financials.cautionEur === 0,
+                    locale: locale || "fr",
                 }),
             }).catch(() => {});
 

@@ -103,6 +103,7 @@ export default function BookingVoucherPage() {
                     hasFranchiseZero: bookingData.financials.selectedUpsells?.some((u: string) =>
                         u.toLowerCase().includes("franchise")
                     ),
+                    locale: bookingData.locale || "fr",
                 }),
             });
             setEmailResent(true);
@@ -248,11 +249,13 @@ export default function BookingVoucherPage() {
 
     return (
         <div className="min-h-screen bg-[#FAF7F2] text-slate-900 flex flex-col font-sans">
-            <Header />
+            <div className="print:hidden">
+                <Header />
+            </div>
 
-            <main className="flex-1 pb-20">
+            <main className="flex-1 pb-20 print:p-0 print:pb-0">
                 {/* Top Success Banner */}
-                <div className="bg-[#12161E] text-white py-8 border-b border-slate-800">
+                <div className="bg-[#12161E] text-white py-8 border-b border-slate-800 print:hidden">
                     <div className="container mx-auto px-4 max-w-4xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div className="flex items-center gap-3.5">
                             <div className="w-12 h-12 rounded-2xl bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-lg">
@@ -268,8 +271,19 @@ export default function BookingVoucherPage() {
                             </div>
                         </div>
 
-                        {/* Print & SOS buttons */}
+                        {/* Download PDF, Print & SOS buttons */}
                         <div className="flex items-center gap-2.5">
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    if (typeof window !== "undefined") window.print();
+                                }}
+                                className="px-4 py-2 rounded-xl bg-[#C9572C] hover:bg-[#B24922] text-white text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-95"
+                                title="Télécharger le bon de réservation officiel en format PDF"
+                            >
+                                <Download size={15} />
+                                <span>Télécharger en PDF</span>
+                            </button>
                             <button
                                 type="button"
                                 onClick={() => {
@@ -278,7 +292,7 @@ export default function BookingVoucherPage() {
                                 className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
                             >
                                 <Printer size={15} />
-                                <span>Imprimer</span>
+                                <span className="hidden sm:inline">Imprimer</span>
                             </button>
                             <button
                                 type="button"
@@ -292,9 +306,9 @@ export default function BookingVoucherPage() {
                     </div>
                 </div>
 
-                <div className="container mx-auto px-4 max-w-4xl mt-8 space-y-6">
+                <div className="container mx-auto px-4 max-w-4xl mt-8 space-y-6 print:m-0 print:p-0 print:max-w-none">
                     {/* Confirmation Email Notice Banner */}
-                    <div className="rounded-2xl bg-white border border-[#E7DFD5] p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shadow-2xs">
+                    <div className="rounded-2xl bg-white border border-[#E7DFD5] p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shadow-2xs print:hidden">
                         <div className="flex items-center gap-2.5 text-slate-700">
                             <Mail size={16} className="text-[#C9572C] shrink-0" />
                             <span>
@@ -311,7 +325,9 @@ export default function BookingVoucherPage() {
                     </div>
 
                     {/* Gestion du dossier : statut réel, modification de dates, annulation */}
-                    <BookingManager refId={ref} />
+                    <div className="print:hidden">
+                        <BookingManager refId={ref} />
+                    </div>
 
                     {/* Main Voucher Card */}
                     <div className="rounded-3xl bg-white border border-[#ECE5D9] p-6 sm:p-8 shadow-sm space-y-6">
