@@ -16,7 +16,7 @@ import {
     ArrowRight,
     Sparkles,
 } from "lucide-react";
-import { VehicleModel, CityHub, MOROCCAN_HUBS } from "@/lib/morocco-data";
+import { VehicleModel, CityHub, MOROCCAN_HUBS, getLocalizedAirportName } from "@/lib/morocco-data";
 import { Locale, getTranslation } from "@/lib/i18n";
 
 interface BookingCheckoutModalProps {
@@ -79,6 +79,17 @@ export function BookingCheckoutModal({
         MOROCCAN_HUBS.find((h) => h.slug === pickupHubSlug) || MOROCCAN_HUBS[0];
     const hasFranchiseZero = selectedUpsells.includes("franchise-zero");
     const t = getTranslation(locale);
+
+    React.useEffect(() => {
+        if (!isOpen) return;
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === "Escape") {
+                onClose();
+            }
+        };
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, [isOpen, onClose]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -217,7 +228,7 @@ export function BookingCheckoutModal({
                                 {t.checkoutModal.pickupLabel}
                             </span>
                             <span className="font-bold text-slate-900 block truncate">
-                                {currentHub.airportName} ({currentHub.airportCode})
+                                {getLocalizedAirportName(currentHub, locale)} ({currentHub.airportCode})
                             </span>
                             <span className="text-[11px] text-slate-500">{pickupDate}</span>
                         </div>

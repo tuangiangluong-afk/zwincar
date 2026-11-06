@@ -107,32 +107,41 @@ export default function LocalAeoSection({ hubSlug }: LocalAeoSectionProps) {
                             </span>
                         </div>
 
-                        <div className="overflow-x-auto rounded-2xl border border-slate-200">
-                            <table className="w-full text-left text-sm">
+                        <div className="overflow-x-auto rounded-3xl border-2 border-[#E7DFD5] shadow-xs bg-white">
+                            <table className="w-full text-left text-sm border-collapse">
                                 <thead>
-                                    <tr className="bg-slate-50/80 border-b border-slate-200 text-xs font-semibold uppercase tracking-wider text-slate-600">
-                                        <th className="py-3 px-4">Critère de Réservation</th>
-                                        <th className="py-3 px-4 text-[#C9572C] bg-[#C9572C]/5 font-bold">
-                                            ZwinCar (Agences Locales Vérifiées)
+                                    <tr className="border-b border-[#E7DFD5]">
+                                        <th className="py-4 px-5 text-xs font-bold uppercase tracking-wider text-slate-500 bg-slate-50/90 w-1/3">
+                                            Critère de Réservation
                                         </th>
-                                        <th className="py-3 px-4 text-slate-500">
+                                        <th className="py-4 px-5 text-xs font-black uppercase tracking-wider text-[#C9572C] bg-[#C9572C]/10 border-x-2 border-[#C9572C]/30 w-1/3">
+                                            <div className="inline-flex items-center gap-1.5">
+                                                <span className="w-2 h-2 rounded-full bg-[#C9572C]"></span>
+                                                <span>ZwinCar (Agences Vérifiées)</span>
+                                            </div>
+                                        </th>
+                                        <th className="py-4 px-5 text-xs font-bold uppercase tracking-wider text-slate-400 bg-slate-50/50 w-1/3">
                                             Grands Courtiers & Franchises
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-slate-100">
                                     {comparisonRows.map((row, i) => (
-                                        <tr key={i} className="hover:bg-slate-50/50 transition">
-                                            <td className="py-3.5 px-4 font-medium text-slate-900">
+                                        <tr key={i} className="hover:bg-slate-50/40 transition">
+                                            <td className="py-4 px-5 font-bold text-slate-900 bg-slate-50/30">
                                                 {row.feature}
                                             </td>
-                                            <td className="py-3.5 px-4 bg-[#C9572C]/5 font-semibold text-emerald-800 flex items-center gap-2">
-                                                <CheckCircle2 size={16} className="text-emerald-600 shrink-0" />
-                                                <span>{row.zwincar}</span>
+                                            <td className="py-4 px-5 bg-[#C9572C]/5 border-x-2 border-[#C9572C]/20 font-bold text-slate-900">
+                                                <div className="flex items-center gap-2">
+                                                    <CheckCircle2 size={16} className="text-emerald-600 shrink-0" />
+                                                    <span>{row.zwincar}</span>
+                                                </div>
                                             </td>
-                                            <td className="py-3.5 px-4 text-slate-500 flex items-center gap-2">
-                                                <AlertTriangle size={15} className="text-amber-500 shrink-0" />
-                                                <span>{row.competitors}</span>
+                                            <td className="py-4 px-5 text-slate-500">
+                                                <div className="flex items-center gap-2">
+                                                    <AlertTriangle size={15} className="text-amber-500 shrink-0" />
+                                                    <span>{row.competitors}</span>
+                                                </div>
                                             </td>
                                         </tr>
                                     ))}
