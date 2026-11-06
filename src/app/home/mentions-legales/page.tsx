@@ -4,84 +4,84 @@ import { ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Mentions Légales - Taxi de France",
-    description: "Mentions légales, éditeur, hébergement et politique de confidentialité du réseau Taxi de France.",
+    title: "Mentions Légales • ZwinCar.com",
+    description: "Mentions légales, éditeur, hébergement et politique de confidentialité de la plateforme ZwinCar.",
     alternates: {
-        canonical: "https://taxifrance.fr/mentions-legales",
+        canonical: "https://zwincar.com/mentions-legales",
     },
 };
 
 export default function MentionsLegales() {
     return (
-        <div className="min-h-screen bg-slate-50 font-sans text-neutral-900">
+        <div className="min-h-screen bg-[#FAF7F2] font-sans text-slate-900 selection:bg-[#C9572C] selection:text-white">
             {/* Header */}
-            <nav className="sticky top-0 z-50 w-full border-b border-white/10 bg-slate-900/90 px-4 py-3 backdrop-blur-md text-white">
-                <div className="container mx-auto flex items-center justify-between">
+            <nav className="sticky top-0 z-50 w-full border-b border-[#E7DFD5] bg-white/90 px-4 py-3 backdrop-blur-md">
+                <div className="container mx-auto max-w-4xl flex items-center justify-between">
                     <Link
-                        href="/home"
-                        className="flex items-center gap-2 text-sm font-bold hover:text-blue-400 transition"
+                        href="/"
+                        className="flex items-center gap-2 text-sm font-bold text-slate-700 hover:text-[#C9572C] transition"
                     >
                         <ArrowLeft size={16} />
                         Retour Accueil
                     </Link>
-                    <span className="text-sm font-bold">
-                        Taxi de France<span className="text-blue-500">.</span>
+                    <span className="text-sm font-black tracking-tight text-slate-900">
+                        Zwin<span className="text-[#C9572C]">Car</span>.com
                     </span>
                 </div>
             </nav>
 
-            <main className="container mx-auto max-w-3xl px-4 py-12 lg:py-20">
-                <h1 className="mb-8 text-4xl font-extrabold tracking-tight text-neutral-900 sm:text-5xl">
+            <main className="container mx-auto max-w-3xl px-4 py-12 lg:py-16">
+                <h1 className="mb-8 text-3xl sm:text-5xl font-black tracking-tight text-slate-900">
                     Mentions Légales
                 </h1>
 
-                <div className="prose prose-neutral prose-lg max-w-none">
-                    <div className="mb-8 rounded-2xl border border-neutral-200 bg-white p-8 shadow-sm">
-                        <h2 className="mb-4 text-2xl font-bold text-blue-900">1. Éditeur du Site</h2>
-                        <p>
-                            Le site <strong>Taxi de France</strong> (taxifrance.fr) est édité par la société <strong>MEDIASHMAN</strong>.
+                <div className="space-y-6">
+                    <div className="rounded-3xl border border-[#E7DFD5] bg-white p-6 sm:p-8 shadow-xs">
+                        <h2 className="mb-4 text-xl font-bold text-slate-900">1. Éditeur de la Plateforme</h2>
+                        <p className="text-sm text-slate-600 mb-4 leading-relaxed">
+                            Le site <strong>ZwinCar.com</strong> est édité par la société <strong>WELINK TECH</strong>.
                         </p>
-                        <ul className="list-none space-y-2 pl-0">
-                            <li><strong>Forme juridique :</strong> Société (SASU/SARL selon Kbis)</li>
-                            <li><strong>Siège social :</strong> 91 RUE DU FAUBOURG SAINT-HONORE, 75008 PARIS</li>
-                            <li><strong>SIREN :</strong> 509 987 681 R.C.S. PARIS</li>
-                            <li><strong>Responsable de publication :</strong> Direction MEDIASHMAN</li>
-                            <li><strong>Contact :</strong> <Link href="/contact" className="underline text-blue-600">Formulaire de contact</Link></li>
+                        <ul className="text-xs sm:text-sm text-slate-600 space-y-2">
+                            <li><strong>Société :</strong> WELINK TECH</li>
+                            <li><strong>Siège social :</strong> 6 RUE DES BATELIERS, 92110 CLICHY</li>
+                            <li><strong>SIREN :</strong> 984 800 136 R.C.S. NANTERRE</li>
+                            <li><strong>Responsable de publication :</strong> Direction WELINK TECH</li>
+                            <li><strong>Email & Support :</strong> support@zwincar.com</li>
                         </ul>
                     </div>
 
-                    <div className="mb-8 rounded-2xl border border-neutral-200 bg-white p-8 shadow-sm">
-                        <h2 className="mb-4 text-2xl font-bold text-blue-900">2. Service Proposé</h2>
-                        <p>
-                            Taxi de France est une plateforme nationale regroupant des artisans taxis et des sociétés de transport VTC indépendants. Le site facilite la mise en relation entre les usagers et les professionnels du transport.
+                    <div className="rounded-3xl border border-[#E7DFD5] bg-white p-6 sm:p-8 shadow-xs">
+                        <h2 className="mb-4 text-xl font-bold text-slate-900">2. Nature du Service</h2>
+                        <p className="text-sm text-slate-600 leading-relaxed">
+                            ZwinCar est une plateforme technologique mettant en relation des voyageurs avec des agences professionnelles indépendantes de location de voitures au Maroc, sélectionnées et auditées pour leur conformité légale, leurs véhicules récents et leur politique sans caution abusive.
                         </p>
                     </div>
 
-                    <div className="mb-8 rounded-2xl border border-neutral-200 bg-white p-8 shadow-sm">
-                        <h2 className="mb-4 text-2xl font-bold text-blue-900">3. Hébergement</h2>
-                        <p>
-                            Le Site est hébergé par la société <strong>Vercel Inc.</strong>
+                    <div className="rounded-3xl border border-[#E7DFD5] bg-white p-6 sm:p-8 shadow-xs">
+                        <h2 className="mb-4 text-xl font-bold text-slate-900">3. Hébergement</h2>
+                        <p className="text-sm text-slate-600 leading-relaxed mb-3">
+                            Le site est hébergé par <strong>Vercel Inc.</strong>
                         </p>
-                        <ul className="list-none space-y-2 pl-0">
+                        <ul className="text-xs sm:text-sm text-slate-600 space-y-1">
                             <li><strong>Adresse :</strong> 340 S Lemon Ave #4133 Walnut, CA 91789, USA</li>
-                            <li><strong>Cloud Provider :</strong> Infrastructure AWS / Vercel Edge Network</li>
+                            <li><strong>Infrastructure :</strong> Vercel Global Edge Network</li>
                         </ul>
                     </div>
 
-                    <div className="mb-8 rounded-2xl border border-neutral-200 bg-white p-8 shadow-sm">
-                        <h2 className="mb-4 text-2xl font-bold text-blue-900">4. Propriété Intellectuelle</h2>
-                        <p>
-                            L&apos;ensemble des contenus (textes, images, base de données, marque &quot;Taxi de France&quot;) est protégé par le droit de la propriété intellectuelle. Toute reproduction non autorisée est interdite.
+                    <div className="rounded-3xl border border-[#E7DFD5] bg-white p-6 sm:p-8 shadow-xs">
+                        <h2 className="mb-4 text-xl font-bold text-slate-900">4. Propriété Intellectuelle</h2>
+                        <p className="text-sm text-slate-600 leading-relaxed">
+                            L&apos;ensemble des contenus (textes, visuels, moteurs algorithmiques, marques, logos et données structurées) est la propriété exclusive de WELINK TECH ou de tiers partenaires. Toute reproduction totale ou partielle sans accord préalable est strictement prohibée.
                         </p>
                     </div>
 
-                    <div className="mb-8 rounded-2xl border border-neutral-200 bg-white p-8 shadow-sm">
-                        <h2 className="mb-4 text-2xl font-bold text-blue-900">5. Données Personnelles (RGPD)</h2>
-                        <p>
-                            Les données collectées (nom, téléphone, trajet) sont utilisées uniquement pour l&apos;exécution de la prestation de transport. Elles sont transmises au chauffeur partenaire sélectionné.
+                    <div className="rounded-3xl border border-[#E7DFD5] bg-white p-6 sm:p-8 shadow-xs">
+                        <h2 className="mb-4 text-xl font-bold text-slate-900">5. Données Personnelles (RGPD & CNDP Maroc)</h2>
+                        <p className="text-sm text-slate-600 leading-relaxed mb-3">
+                            Les données renseignées lors d&apos;une réservation (nom, coordonnées WhatsApp, email, numéro de vol) sont traitées conformément aux dispositions légales afin de garantir la mise à disposition du véhicule et le suivi en direct des vols à l&apos;arrivée.
                         </p>
-                        <p>
-                            Vous disposez d&apos;un droit d&apos;accès, de rectification et de suppression de vos données. Pour l&apos;exercer, contactez-nous via la page contact.
+                        <p className="text-sm text-slate-600 leading-relaxed">
+                            Conformément à la réglementation, vous bénéficiez d&apos;un droit d&apos;accès, de rectification et d&apos;effacement de vos données personnelles sur simple demande à support@zwincar.com.
                         </p>
                     </div>
                 </div>
