@@ -3,14 +3,92 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { X, Search, FileText, Mail, ArrowRight, CheckCircle2, AlertCircle, Clock, Car } from "lucide-react";
+import { Locale } from "@/lib/i18n";
 
 interface BookingLookupModalProps {
     isOpen: boolean;
     onClose: () => void;
+    locale?: Locale;
 }
 
-export function BookingLookupModal({ isOpen, onClose }: BookingLookupModalProps) {
+const LOOKUP_I18N = {
+    fr: {
+        badge: "Espace Client ZwinCar",
+        title: "Retrouver mon Bon de Réservation",
+        cachedTitle: "Réservation active sur cet appareil",
+        cachedBtn: "Voir mon bon →",
+        tabRef: "Par Numéro de Dossier",
+        tabEmail: "Par Adresse Email",
+        refLabel: "Référence de dossier (ZW-XXXXXX) *",
+        refPlaceholder: "Ex: ZW-48210",
+        emailLabel: "Email du conducteur principal",
+        emailPlaceholder: "nom@exemple.com",
+        emailSearchLabel: "Votre adresse email utilisée lors de la réservation *",
+        submitBtn: "Accéder à mon bon de réservation",
+        searching: "Recherche en cours...",
+        bookingsFound: "Réservations trouvées",
+        openBtn: "Ouvrir →",
+        promptEmail: (masked: string) => `Pour afficher ce bon, veuillez renseigner l'adresse email associée (${masked}).`,
+    },
+    en: {
+        badge: "ZwinCar Customer Portal",
+        title: "Find My Booking Voucher",
+        cachedTitle: "Active booking on this device",
+        cachedBtn: "View my voucher →",
+        tabRef: "By Booking Reference",
+        tabEmail: "By Email Address",
+        refLabel: "Booking reference (ZW-XXXXXX) *",
+        refPlaceholder: "e.g. ZW-48210",
+        emailLabel: "Main driver's email address",
+        emailPlaceholder: "name@example.com",
+        emailSearchLabel: "Email address used during booking *",
+        submitBtn: "Access my booking voucher",
+        searching: "Searching...",
+        bookingsFound: "Bookings found",
+        openBtn: "View →",
+        promptEmail: (masked: string) => `To open this voucher, please enter the associated email address (${masked}).`,
+    },
+    es: {
+        badge: "Portal del Cliente ZwinCar",
+        title: "Buscar mi Bono de Reserva",
+        cachedTitle: "Reserva activa en este dispositivo",
+        cachedBtn: "Ver mi bono →",
+        tabRef: "Por Número de Reserva",
+        tabEmail: "Por Correo Electrónico",
+        refLabel: "Referencia de reserva (ZW-XXXXXX) *",
+        refPlaceholder: "Ej: ZW-48210",
+        emailLabel: "Email del conductor principal",
+        emailPlaceholder: "nombre@ejemplo.com",
+        emailSearchLabel: "Correo electrónico usado en la reserva *",
+        submitBtn: "Acceder a mi bono de reserva",
+        searching: "Buscando...",
+        bookingsFound: "Reservas encontradas",
+        openBtn: "Abrir →",
+        promptEmail: (masked: string) => `Para abrir este bono, introduzca el correo electrónico asociado (${masked}).`,
+    },
+    nl: {
+        badge: "ZwinCar Klantportaal",
+        title: "Mijn Boekingsvoucher Opzoeken",
+        cachedTitle: "Actieve boeking op dit apparaat",
+        cachedBtn: "Bekijk voucher →",
+        tabRef: "Op Boekingsnummer",
+        tabEmail: "Op E-mailadres",
+        refLabel: "Boekingsreferentie (ZW-XXXXXX) *",
+        refPlaceholder: "Bijv: ZW-48210",
+        emailLabel: "E-mailadres van de hoofdbestuurder",
+        emailPlaceholder: "naam@voorbeeld.nl",
+        emailSearchLabel: "E-mailadres gebruikt bij uw boeking *",
+        submitBtn: "Open mijn boekingsvoucher",
+        searching: "Zoeken...",
+        bookingsFound: "Gevonden boekingen",
+        openBtn: "Openen →",
+        promptEmail: (masked: string) => `Vul het bijbehorende e-mailadres in om de voucher te openen (${masked}).`,
+    },
+};
+
+export function BookingLookupModal({ isOpen, onClose, locale = "fr" }: BookingLookupModalProps) {
     const router = useRouter();
+    const t = LOOKUP_I18N[locale] || LOOKUP_I18N.fr;
     const [searchType, setSearchType] = useState<"ref" | "email">("ref");
     const [refInput, setRefInput] = useState("");
     const [emailInput, setEmailInput] = useState("");
@@ -70,9 +148,7 @@ export function BookingLookupModal({ isOpen, onClose }: BookingLookupModalProps)
 
             // Cas 2 : Demande d'email pour valider la référence (anti-énumération)
             if (data.requiresEmail) {
-                setErrorMessage(
-                    `Pour afficher ce bon, veuillez renseigner l'adresse email associée (${data.maskedEmail}).`
-                );
+                setErrorMessage(t.promptEmail(data.maskedEmail));
                 return;
             }
 
@@ -97,10 +173,10 @@ export function BookingLookupModal({ isOpen, onClose }: BookingLookupModalProps)
                         </div>
                         <div>
                             <div className="text-[10px] uppercase font-bold tracking-wider text-slate-400">
-                                Espace Client ZwinCar
+                                {t.badge}
                             </div>
                             <h3 className="font-bold text-base text-white">
-                                Retrouver mon Bon de Réservation
+                                {t.title}
                             </h3>
                         </div>
                     </div>
@@ -120,7 +196,7 @@ export function BookingLookupModal({ isOpen, onClose }: BookingLookupModalProps)
                             <div className="flex items-center gap-2.5 text-emerald-900">
                                 <CheckCircle2 size={18} className="text-emerald-600 shrink-0" />
                                 <div>
-                                    <span className="font-bold block">Réservation active sur cet appareil</span>
+                                    <span className="font-bold block">{t.cachedTitle}</span>
                                     <span className="text-[11px] text-emerald-700 font-mono">{cachedRef}</span>
                                 </div>
                             </div>
@@ -132,7 +208,7 @@ export function BookingLookupModal({ isOpen, onClose }: BookingLookupModalProps)
                                 }}
                                 className="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition cursor-pointer shrink-0 active:scale-95"
                             >
-                                Voir mon bon →
+                                {t.cachedBtn}
                             </button>
                         </div>
                     )}
@@ -150,7 +226,7 @@ export function BookingLookupModal({ isOpen, onClose }: BookingLookupModalProps)
                                 searchType === "ref" ? "bg-white text-slate-900 shadow-xs" : "hover:text-slate-900"
                             }`}
                         >
-                            Par Numéro de Dossier
+                            {t.tabRef}
                         </button>
                         <button
                             type="button"
@@ -163,7 +239,7 @@ export function BookingLookupModal({ isOpen, onClose }: BookingLookupModalProps)
                                 searchType === "email" ? "bg-white text-slate-900 shadow-xs" : "hover:text-slate-900"
                             }`}
                         >
-                            Par Adresse Email
+                            {t.tabEmail}
                         </button>
                     </div>
 
@@ -172,7 +248,7 @@ export function BookingLookupModal({ isOpen, onClose }: BookingLookupModalProps)
                             <>
                                 <div>
                                     <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
-                                        Référence de dossier (ZW-XXXXXX) *
+                                        {t.refLabel}
                                     </label>
                                     <div className="relative">
                                         <input
@@ -180,7 +256,7 @@ export function BookingLookupModal({ isOpen, onClose }: BookingLookupModalProps)
                                             required
                                             value={refInput}
                                             onChange={(e) => setRefInput(e.target.value.toUpperCase())}
-                                            placeholder="Ex: ZW-48210"
+                                            placeholder={t.refPlaceholder}
                                             className="w-full h-11 pl-9 pr-3 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs font-mono font-bold text-slate-900 focus:outline-none focus:border-[#C9572C]"
                                         />
                                         <Search size={15} className="absolute left-3 top-3.5 text-slate-400" />
@@ -189,14 +265,14 @@ export function BookingLookupModal({ isOpen, onClose }: BookingLookupModalProps)
 
                                 <div>
                                     <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
-                                        Email du conducteur principal
+                                        {t.emailLabel}
                                     </label>
                                     <div className="relative">
                                         <input
                                             type="email"
                                             value={emailInput}
                                             onChange={(e) => setEmailInput(e.target.value)}
-                                            placeholder="nom@exemple.com"
+                                            placeholder={t.emailPlaceholder}
                                             className="w-full h-11 pl-9 pr-3 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs text-slate-900 focus:outline-none focus:border-[#C9572C]"
                                         />
                                         <Mail size={15} className="absolute left-3 top-3.5 text-slate-400" />
@@ -206,7 +282,7 @@ export function BookingLookupModal({ isOpen, onClose }: BookingLookupModalProps)
                         ) : (
                             <div>
                                 <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
-                                    Votre adresse email utilisée lors de la réservation *
+                                    {t.emailSearchLabel}
                                 </label>
                                 <div className="relative">
                                     <input
@@ -214,7 +290,7 @@ export function BookingLookupModal({ isOpen, onClose }: BookingLookupModalProps)
                                         required
                                         value={emailInput}
                                         onChange={(e) => setEmailInput(e.target.value)}
-                                        placeholder="nom@exemple.com"
+                                        placeholder={t.emailPlaceholder}
                                         className="w-full h-11 pl-9 pr-3 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs text-slate-900 focus:outline-none focus:border-[#C9572C]"
                                     />
                                     <Mail size={15} className="absolute left-3 top-3.5 text-slate-400" />
@@ -233,7 +309,7 @@ export function BookingLookupModal({ isOpen, onClose }: BookingLookupModalProps)
                         {searchResults && searchResults.length > 0 && (
                             <div className="space-y-2 pt-2 border-t border-slate-100">
                                 <span className="text-xs font-bold text-slate-700 block">
-                                    Réservations trouvées ({searchResults.length}) :
+                                    {t.bookingsFound} ({searchResults.length}) :
                                 </span>
                                 {searchResults.map((b) => (
                                     <div
@@ -258,7 +334,7 @@ export function BookingLookupModal({ isOpen, onClose }: BookingLookupModalProps)
                                             }}
                                             className="px-3 py-1.5 rounded-xl bg-[#C9572C] hover:bg-[#B24922] text-white text-xs font-bold transition shrink-0 cursor-pointer"
                                         >
-                                            Ouvrir →
+                                            {t.openBtn}
                                         </button>
                                     </div>
                                 ))}
@@ -271,10 +347,10 @@ export function BookingLookupModal({ isOpen, onClose }: BookingLookupModalProps)
                             className="w-full h-11 rounded-2xl bg-[#12161E] hover:bg-slate-800 text-white font-bold text-xs tracking-wide transition flex items-center justify-center gap-2 cursor-pointer shadow-sm active:scale-[0.98] disabled:opacity-50"
                         >
                             {isLoading ? (
-                                <span>Recherche en cours...</span>
+                                <span>{t.searching}</span>
                             ) : (
                                 <>
-                                    <span>Accéder à mon bon de réservation</span>
+                                    <span>{t.submitBtn}</span>
                                     <ArrowRight size={15} />
                                 </>
                             )}

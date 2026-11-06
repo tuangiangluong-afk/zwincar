@@ -194,10 +194,10 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
                             type="button"
                             onClick={() => setLookupModalOpen(true)}
                             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition cursor-pointer whitespace-nowrap active:scale-95"
-                            title="Retrouver mon bon de réservation"
+                            title={t.nav.findBooking}
                         >
                             <FileText size={14} className="text-[#C9572C]" />
-                            <span>Mon Bon</span>
+                            <span>{t.nav.myVoucher}</span>
                         </button>
 
                         {/* SOS Urgence Button */}
@@ -351,7 +351,7 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
                                 className="w-full text-left py-2.5 px-3 rounded-xl text-sm font-semibold text-slate-800 hover:bg-[#FAF7F2] hover:text-[#C9572C] transition flex items-center gap-2 cursor-pointer"
                             >
                                 <FileText size={16} className="text-[#C9572C]" />
-                                <span>Retrouver ma réservation (Bon)</span>
+                                <span>{t.nav.findBooking}</span>
                             </button>
 
                             <Link
@@ -394,7 +394,7 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
             <SosModal isOpen={sosModalOpen} onClose={() => setSosModalOpen(false)} />
 
             {/* Retrouver mon bon de réservation */}
-            <BookingLookupModal isOpen={lookupModalOpen} onClose={() => setLookupModalOpen(false)} />
+            <BookingLookupModal isOpen={lookupModalOpen} onClose={() => setLookupModalOpen(false)} locale={currentLocale} />
         </>
     );
 }

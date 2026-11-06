@@ -313,3 +313,26 @@ test("BOOKING LOOKUP: Retrouver un dossier par email ou par référence", async 
     const notFound = await store.list({ email: "inconnu@test.ma" });
     assert.equal(notFound.length, 0);
 });
+
+test("ADMIN & VENDOR SECURITY: Comptes officiels locapartoo & scrypt auth", async () => {
+    // 1. Authentification Admin locapartoo@gmail.com
+    const { authenticateAdmin, getAdminFromToken } = await import("../src/lib/admin-auth.ts");
+    const badAdmin = await authenticateAdmin("locapartoo@gmail.com", "WrongPassword123!");
+    assert.equal(badAdmin, null);
+
+    const goodAdmin = await authenticateAdmin("locapartoo@gmail.com", "ZwinAdmin2026!");
+    assert.ok(goodAdmin);
+    assert.equal(goodAdmin.admin.email, "locapartoo@gmail.com");
+    assert.ok(goodAdmin.token.startsWith("zwin_adm_"));
+    assert.equal(getAdminFromToken(goodAdmin.token)?.email, "locapartoo@gmail.com");
+
+    // 2. Authentification Loueur test locapartoo+loueur@gmail.com
+    const { authenticateVendor } = await import("../src/lib/vendor-store.ts");
+    const badVendor = await authenticateVendor("locapartoo+loueur@gmail.com", "WrongPass!");
+    assert.equal(badVendor, null);
+
+    const goodVendor = await authenticateVendor("locapartoo+loueur@gmail.com", "Locapartoo2026!");
+    assert.ok(goodVendor);
+    assert.equal(goodVendor.agency.managerEmail, "locapartoo+loueur@gmail.com");
+    assert.equal(goodVendor.agency.cityHub, "marrakech");
+});

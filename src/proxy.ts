@@ -68,6 +68,22 @@ export default async function middleware(req: NextRequest) {
 
     // Main Hub Routing
     if (isMainHub) {
+        // 1. Verrouillage strict Back-Office Admin (Gate 01)
+        if (path.startsWith("/admin")) {
+            const adminToken = req.cookies.get("zwincar_admin_token")?.value;
+            if (!adminToken) {
+                return NextResponse.redirect(new URL("/login", req.url));
+            }
+        }
+
+        // 2. Verrouillage strict Espace Loueur Dashboard
+        if (path.startsWith("/vendor/dashboard")) {
+            const vendorToken = req.cookies.get("zwincar_vendor_token")?.value;
+            if (!vendorToken) {
+                return NextResponse.redirect(new URL("/vendor/login", req.url));
+            }
+        }
+
         if (
             path.startsWith("/admin") ||
             path.startsWith("/home") ||

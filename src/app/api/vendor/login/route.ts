@@ -14,7 +14,8 @@ export async function POST(request: Request) {
     const body = await readJson(request);
     if (!body) return jsonError("Corps de requête JSON manquant", 400);
 
-    const identifier = typeof body.identifier === "string" ? body.identifier.trim() : "";
+    const rawIdentifier = body.identifier ?? body.email;
+    const identifier = typeof rawIdentifier === "string" ? rawIdentifier.trim() : "";
     const password = typeof body.password === "string" ? body.password : "";
 
     if (!identifier || !password) {

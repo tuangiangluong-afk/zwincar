@@ -8,7 +8,12 @@ export function LogoutButton() {
     const router = useRouter();
 
     async function handleLogout() {
-        await supabaseBrowser.auth.signOut();
+        try {
+            await fetch("/api/admin/logout", { method: "POST" });
+            await supabaseBrowser.auth.signOut();
+        } catch {
+            // ignore
+        }
         router.push("/login");
         router.refresh();
     }
@@ -16,10 +21,10 @@ export function LogoutButton() {
     return (
         <button
             onClick={handleLogout}
-            className="p-2 rounded-lg text-neutral-400 hover:text-white hover:bg-white/10 transition"
+            className="p-1.5 rounded-lg text-neutral-400 hover:text-white hover:bg-white/10 transition cursor-pointer"
             title="Se déconnecter"
         >
-            <LogOut size={18} />
+            <LogOut size={16} />
         </button>
     );
 }

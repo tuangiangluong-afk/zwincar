@@ -25,6 +25,8 @@ export const TRANSLATIONS: Record<
             vendorSpace: string;
             contact: string;
             bookNow: string;
+            myVoucher: string;
+            findBooking: string;
         };
         search: {
             sameReturn: string;
@@ -163,6 +165,8 @@ export const TRANSLATIONS: Record<
             vendorSpace: "Espace Loueur",
             contact: "Assistance",
             bookNow: "Réserver",
+            myVoucher: "Mon Bon",
+            findBooking: "Retrouver ma réservation",
         },
         search: {
             sameReturn: "Restitution au même endroit",
@@ -300,6 +304,8 @@ export const TRANSLATIONS: Record<
             vendorSpace: "Partners",
             contact: "Support",
             bookNow: "Book Now",
+            myVoucher: "My Voucher",
+            findBooking: "Find my booking",
         },
         search: {
             sameReturn: "Return to same location",
@@ -437,6 +443,8 @@ export const TRANSLATIONS: Record<
             vendorSpace: "Socios",
             contact: "Asistencia",
             bookNow: "Reservar",
+            myVoucher: "Mi Bono",
+            findBooking: "Buscar mi reserva",
         },
         search: {
             sameReturn: "Devolver en el mismo lugar",
@@ -574,6 +582,8 @@ export const TRANSLATIONS: Record<
             vendorSpace: "Partners",
             contact: "Klantenservice",
             bookNow: "Nu Boeken",
+            myVoucher: "Mijn Voucher",
+            findBooking: "Boeking opzoeken",
         },
         search: {
             sameReturn: "Inleveren op dezelfde locatie",

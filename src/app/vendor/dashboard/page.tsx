@@ -139,7 +139,8 @@ export default function VendorDashboardPage() {
                     if (data.agency) setProfile(data.agency);
                     if (data.fleet?.length) setFleet(data.fleet);
                 } else {
-                    setFleet(getStoredVendorFleet());
+                    router.push("/vendor/login");
+                    return;
                 }
 
                 // 2. Fetch live bookings for this hub

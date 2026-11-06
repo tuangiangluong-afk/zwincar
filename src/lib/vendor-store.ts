@@ -94,6 +94,27 @@ if (!globalVendors.__zwincarAgencies) {
     };
     globalVendors.__zwincarAgencies.set(demoAgency.id, demoAgency);
 
+    // Agence test officielle demandée : locapartoo+loueur@gmail.com
+    const testLoueurSalt = "salt_locapartoo_loueur_2026";
+    const testLoueurHash = "56830cdce94097ee43e7e529fcce92859e2fff6fe7abeee8fe409d5abf14bebd0505467f661e3c499eaa7c9cab927b9b295b24ff0ac6f142ea5ef2c203a8aa86";
+    const testLoueurAgency: VendorAgencyRecord = {
+        id: "vnd-locapartoo-marrakech",
+        agencyName: "Locapartoo Car Rental Marrakech",
+        cityHub: "marrakech",
+        iceNumber: "003189274000099",
+        rcNumber: "104928 / Marrakech",
+        address: "Aéroport Marrakech Menara P2 / Bd Zerktouni Guéliz",
+        managerName: "Responsable Partenaire Locapartoo",
+        managerPhone: "+212660112233",
+        managerEmail: "locapartoo+loueur@gmail.com",
+        passwordHash: testLoueurHash,
+        salt: testLoueurSalt,
+        fleetSizeEstimate: "20 véhicules",
+        status: "active",
+        createdAt: "2026-02-01T10:00:00Z",
+    };
+    globalVendors.__zwincarAgencies.set(testLoueurAgency.id, testLoueurAgency);
+
     const demoFleet: VendorVehicleRecord[] = [
         {
             id: "v-1",
@@ -158,6 +179,38 @@ if (!globalVendors.__zwincarAgencies) {
             status: "blocked",
             currentLocation: "Bloqué manuellement (Client direct)",
             createdAt: "2026-01-15T10:00:00Z",
+        },
+        {
+            id: "v-loca-1",
+            agencyId: testLoueurAgency.id,
+            catalogModelId: "dacia-duster-4x4",
+            name: "Dacia Duster 4x4 Prestige (Locapartoo)",
+            plate: "78410-A-26",
+            color: "Blanc Glacier",
+            year: 2025,
+            transmission: "Manuelle",
+            fuel: "Diesel",
+            dailyPriceMad: 380,
+            dailyPriceEur: 35,
+            status: "available",
+            currentLocation: "Parking P2 Menara",
+            createdAt: "2026-02-01T10:00:00Z",
+        },
+        {
+            id: "v-loca-2",
+            agencyId: testLoueurAgency.id,
+            catalogModelId: "renault-clio-5-auto",
+            name: "Renault Clio 5 Automatique (Locapartoo)",
+            plate: "19024-B-26",
+            color: "Gris Titanium",
+            year: 2024,
+            transmission: "Automatique",
+            fuel: "Essence",
+            dailyPriceMad: 330,
+            dailyPriceEur: 30,
+            status: "available",
+            currentLocation: "Aéroport Menara",
+            createdAt: "2026-02-01T10:00:00Z",
         },
     ];
 
@@ -490,4 +543,27 @@ export async function getVendorHubBookings(cityHub: string): Promise<BookingReco
         const pickup = b.rental.pickupHub.toLowerCase();
         return pickup === hubNormalized || pickup.includes(hubNormalized) || hubNormalized.includes(pickup);
     });
+}
+
+/**
+ * Récupère toutes les agences partenaires enregistrées pour le Back-Office Admin.
+ */
+export function listAllVendorAgencies(): Array<
+    Omit<VendorAgencyRecord, "passwordHash" | "salt"> & { fleetCount: number }
+> {
+    const list: Array<Omit<VendorAgencyRecord, "passwordHash" | "salt"> & { fleetCount: number }> = [];
+    for (const a of globalVendors.__zwincarAgencies!.values()) {
+        const { passwordHash: _p, salt: _s, ...safe } = a;
+        const fleetCount = getVendorFleet(a.id).length;
+        list.push({ ...safe, fleetCount });
+    }
+    return list;
+}
+
+export function setVendorAgencyStatus(agencyId: string, status: "active" | "suspended" | "onboarding"): boolean {
+    const agency = globalVendors.__zwincarAgencies!.get(agencyId);
+    if (!agency) return false;
+    agency.status = status;
+    globalVendors.__zwincarAgencies!.set(agencyId, agency);
+    return true;
 }
