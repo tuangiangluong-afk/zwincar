@@ -19,7 +19,7 @@ export interface BookingStore {
     create(record: BookingRecord): Promise<BookingRecord>;
     get(ref: string): Promise<BookingRecord | null>;
     save(record: BookingRecord, expectedVersion: number): Promise<BookingRecord>;
-    list(filter?: { status?: string[]; from?: string; to?: string }): Promise<BookingRecord[]>;
+    list(filter?: { status?: string[]; from?: string; to?: string; email?: string }): Promise<BookingRecord[]>;
 }
 
 export class VersionConflictError extends Error {
@@ -67,11 +67,12 @@ class MemoryBookingStore implements BookingStore {
         return next;
     }
 
-    async list(filter: { status?: string[]; from?: string; to?: string } = {}): Promise<BookingRecord[]> {
+    async list(filter: { status?: string[]; from?: string; to?: string; email?: string } = {}): Promise<BookingRecord[]> {
         return Array.from(memoryMap().values())
             .filter((record) => !filter.status || filter.status.includes(record.status))
             .filter((record) => !filter.from || record.rental.pickupDate >= filter.from)
             .filter((record) => !filter.to || record.rental.pickupDate <= filter.to)
+            .filter((record) => !filter.email || record.client.email.toLowerCase() === filter.email.toLowerCase().trim())
             .map((record) => structuredClone(record));
     }
 }
@@ -155,11 +156,12 @@ class SupabaseBookingStore implements BookingStore {
         return next;
     }
 
-    async list(filter: { status?: string[]; from?: string; to?: string } = {}): Promise<BookingRecord[]> {
+    async list(filter: { status?: string[]; from?: string; to?: string; email?: string } = {}): Promise<BookingRecord[]> {
         let query = this.client.from("rental_bookings").select("payload");
         if (filter.status?.length) query = query.in("status", filter.status);
         if (filter.from) query = query.gte("pickup_at", `${filter.from}T00:00:00Z`);
         if (filter.to) query = query.lte("pickup_at", `${filter.to}T23:59:59Z`);
+        if (filter.email) query = query.eq("client_email", filter.email.toLowerCase().trim());
 
         const { data, error } = await query.limit(500);
         if (error) throw new Error(`Liste des dossiers impossible: ${error.message}`);

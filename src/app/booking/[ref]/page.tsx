@@ -120,10 +120,12 @@ export default function BookingVoucherPage() {
                 (typeof window !== "undefined"
                     ? localStorage.getItem(`zwincar_booking_token_${ref}`)
                     : null);
+            const emailParam = searchParams.get("email");
 
-            if (token) {
+            if (token || emailParam) {
                 try {
-                    const res = await fetch(`/api/bookings/${ref}?t=${token}`);
+                    const query = token ? `t=${encodeURIComponent(token)}` : `email=${encodeURIComponent(emailParam || "")}`;
+                    const res = await fetch(`/api/bookings/${ref}?${query}`);
                     if (res.ok) {
                         const data = await res.json();
                         if (data?.voucher) {

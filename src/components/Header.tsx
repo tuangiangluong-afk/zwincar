@@ -3,11 +3,12 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { MessageCircle, Globe, Menu, X, ShieldCheck, ChevronDown, ShieldAlert, BookOpen } from "lucide-react";
+import { MessageCircle, Globe, Menu, X, ShieldCheck, ChevronDown, ShieldAlert, BookOpen, FileText } from "lucide-react";
 import Logo from "@/components/Logo";
 import { MOROCCAN_HUBS } from "@/lib/morocco-data";
 import { PURCHASE_INTENTS } from "@/lib/intent-data";
 import { SosModal } from "@/components/SosModal";
+import { BookingLookupModal } from "@/components/BookingLookupModal";
 import { Locale, getTranslation } from "@/lib/i18n";
 
 interface HeaderProps {
@@ -20,6 +21,7 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [hubsDropdownOpen, setHubsDropdownOpen] = useState(false);
     const [sosModalOpen, setSosModalOpen] = useState(false);
+    const [lookupModalOpen, setLookupModalOpen] = useState(false);
 
     // Detect current locale from prop or pathname
     const currentLocale: Locale = propLocale || (pathname?.startsWith("/en")
@@ -185,8 +187,19 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
                         </nav>
                     </div>
 
-                    {/* Right controls: Language, SOS & WhatsApp VIP */}
+                    {/* Right controls: Language, Mon Bon, SOS & WhatsApp VIP */}
                     <div className="hidden lg:flex items-center gap-2 xl:gap-3 shrink-0">
+                        {/* Retrouver mon bon de réservation */}
+                        <button
+                            type="button"
+                            onClick={() => setLookupModalOpen(true)}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition cursor-pointer whitespace-nowrap active:scale-95"
+                            title="Retrouver mon bon de réservation"
+                        >
+                            <FileText size={14} className="text-[#C9572C]" />
+                            <span>Mon Bon</span>
+                        </button>
+
                         {/* SOS Urgence Button */}
                         <button
                             type="button"
@@ -329,6 +342,18 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
                                 </div>
                             </div>
 
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    setMobileMenuOpen(false);
+                                    setLookupModalOpen(true);
+                                }}
+                                className="w-full text-left py-2.5 px-3 rounded-xl text-sm font-semibold text-slate-800 hover:bg-[#FAF7F2] hover:text-[#C9572C] transition flex items-center gap-2 cursor-pointer"
+                            >
+                                <FileText size={16} className="text-[#C9572C]" />
+                                <span>Retrouver ma réservation (Bon)</span>
+                            </button>
+
                             <Link
                                 href="/vendor/login"
                                 onClick={() => setMobileMenuOpen(false)}
@@ -367,6 +392,9 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
 
             {/* Assistance Modale */}
             <SosModal isOpen={sosModalOpen} onClose={() => setSosModalOpen(false)} />
+
+            {/* Retrouver mon bon de réservation */}
+            <BookingLookupModal isOpen={lookupModalOpen} onClose={() => setLookupModalOpen(false)} />
         </>
     );
 }
