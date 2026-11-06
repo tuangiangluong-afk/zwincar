@@ -158,7 +158,7 @@ export const TRANSLATIONS: Record<
         nav: {
             vehicles: "Véhicules",
             airports: "Aéroports & Villes",
-            zeroDeposit: "Zéro Caution CB",
+            zeroDeposit: "Zéro Caution",
             guides: "Guides & Conseils",
             vendorSpace: "Espace Loueur",
             contact: "Assistance",
@@ -295,7 +295,7 @@ export const TRANSLATIONS: Record<
         nav: {
             vehicles: "Cars",
             airports: "Airports & Cities",
-            zeroDeposit: "No Credit Card Hold",
+            zeroDeposit: "Zero Deposit",
             guides: "Travel Guides",
             vendorSpace: "Partners",
             contact: "Support",
@@ -432,7 +432,7 @@ export const TRANSLATIONS: Record<
         nav: {
             vehicles: "Coches",
             airports: "Aeropuertos y Ciudades",
-            zeroDeposit: "Sin Fianza de Tarjeta",
+            zeroDeposit: "Cero Fianza",
             guides: "Guías de Viaje",
             vendorSpace: "Socios",
             contact: "Asistencia",
@@ -569,7 +569,7 @@ export const TRANSLATIONS: Record<
         nav: {
             vehicles: "Auto's",
             airports: "Luchthavens & Steden",
-            zeroDeposit: "Geen Creditcard Borg",
+            zeroDeposit: "Zonder Borg",
             guides: "Reisgidsen",
             vendorSpace: "Partners",
             contact: "Klantenservice",

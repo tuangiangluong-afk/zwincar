@@ -231,6 +231,11 @@ export default function Footer({ config, locale: propLocale }: FooterProps = {})
                                 </Link>
                             </li>
                             <li>
+                                <Link href="/contact" className="hover:text-white transition">
+                                    Support & Contact 24/7
+                                </Link>
+                            </li>
+                            <li>
                                 <Link href="/cgv" className="hover:text-white transition">
                                     {t.terms}
                                 </Link>
@@ -252,7 +257,7 @@ export default function Footer({ config, locale: propLocale }: FooterProps = {})
                                 rel="noopener noreferrer"
                                 className="text-slate-400 hover:text-white underline underline-offset-2 transition"
                             >
-                                Propulse (propulselab.fr)
+                                Propulse
                             </a>
                         </span>
                     </div>

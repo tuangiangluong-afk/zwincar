@@ -35,13 +35,13 @@ export async function POST(req: Request) {
         }
 
         const data = await resend.emails.send({
-            from: 'Taxi France <onboarding@resend.dev>', // Update this with your verified domain later
+            from: 'ZwinCar Support <onboarding@resend.dev>',
             to: ['compareandcash@gmail.com'],
             replyTo: email,
-            subject: `[${city}] Contact: ${subject} - ${name}`,
+            subject: `[ZwinCar - ${city || 'Maroc'}] Contact: ${subject} - ${name}`,
             html: `
-                <h1>Nouveau message depuis ${domain}</h1>
-                <p><strong>Ville :</strong> ${city}</p>
+                <h1>Nouveau message de contact ZwinCar.com</h1>
+                <p><strong>Ville / Hub :</strong> ${city || 'Maroc'}</p>
                 <p><strong>Nom :</strong> ${name}</p>
                 <p><strong>Email :</strong> ${email}</p>
                 <p><strong>Sujet :</strong> ${subject}</p>

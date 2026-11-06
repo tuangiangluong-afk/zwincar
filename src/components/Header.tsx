@@ -116,13 +116,13 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
     return (
         <>
             <header className="sticky top-0 z-40 bg-[#FAF7F2]/90 backdrop-blur-md border-b border-[#EAE3D6] transition-colors">
-                <div className="container mx-auto px-4 max-w-6xl h-20 flex items-center justify-between">
-                    {/* Logo */}
-                    <div className="flex items-center gap-7">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl h-20 flex items-center justify-between gap-4">
+                    {/* Logo & Desktop Nav */}
+                    <div className="flex items-center gap-5 xl:gap-8 min-w-0">
                         <Logo variant="full" theme="dark" size="md" locale={currentLocale} />
 
                         {/* Desktop Navigation */}
-                        <nav className="hidden lg:flex items-center gap-5 text-sm font-semibold text-slate-700 whitespace-nowrap">
+                        <nav className="hidden lg:flex items-center gap-3.5 xl:gap-5 text-xs xl:text-sm font-semibold text-slate-700 whitespace-nowrap">
                             <Link
                                 href={catalogHref}
                                 className="hover:text-[#C9572C] transition-colors whitespace-nowrap"
@@ -171,7 +171,7 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
                                 href={guidesHref}
                                 className="hover:text-[#C9572C] transition-colors flex items-center gap-1.5 whitespace-nowrap"
                             >
-                                <BookOpen size={15} className="text-[#C9572C]" />
+                                <BookOpen size={14} className="text-[#C9572C]" />
                                 <span>{t.nav.guides}</span>
                             </Link>
 
@@ -179,14 +179,14 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
                                 href={zeroCautionHref}
                                 className="hover:text-[#C9572C] transition-colors flex items-center gap-1.5 whitespace-nowrap"
                             >
-                                <ShieldCheck size={15} className="text-emerald-600" />
+                                <ShieldCheck size={14} className="text-emerald-600" />
                                 <span>{t.nav.zeroDeposit}</span>
                             </Link>
                         </nav>
                     </div>
 
                     {/* Right controls: Language, SOS & WhatsApp VIP */}
-                    <div className="hidden sm:flex items-center gap-2.5">
+                    <div className="hidden lg:flex items-center gap-2 xl:gap-3 shrink-0">
                         {/* SOS Urgence Button */}
                         <button
                             type="button"
@@ -227,24 +227,36 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
                         </a>
                     </div>
 
-                    {/* Mobile Menu Button */}
-                    <button
-                        type="button"
-                        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                        className="md:hidden text-slate-800 p-2 rounded-xl hover:bg-slate-100 cursor-pointer"
-                        aria-label="Menu"
-                    >
-                        {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
-                    </button>
+                    {/* Mobile Controls & Hamburger Button */}
+                    <div className="flex lg:hidden items-center gap-2">
+                        {/* Quick SOS button for mobile header */}
+                        <button
+                            type="button"
+                            onClick={() => setSosModalOpen(true)}
+                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-red-50 text-red-700 border border-red-200 text-[11px] font-bold"
+                        >
+                            <ShieldAlert size={13} className="text-red-600" />
+                            <span>SOS</span>
+                        </button>
+
+                        <button
+                            type="button"
+                            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                            className="text-slate-800 p-2 rounded-xl hover:bg-slate-100 cursor-pointer"
+                            aria-label="Menu"
+                        >
+                            {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+                        </button>
+                    </div>
                 </div>
 
                 {/* Mobile Dropdown Menu */}
                 {mobileMenuOpen && (
-                    <div className="md:hidden bg-white border-b border-[#E7DFD5] p-4 space-y-4 animate-in slide-in-from-top-2">
+                    <div className="lg:hidden bg-white border-b border-[#E7DFD5] p-5 space-y-4 animate-in slide-in-from-top-2 shadow-xl">
                         <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                             <span className="text-xs font-bold uppercase text-slate-400">Langue / Language</span>
-                            <div className="inline-flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded-full bg-slate-100">
-                                {(["fr", "en", "es", "nl"] as const).map((l) => (
+                            <div className="inline-flex items-center gap-1 text-xs font-semibold p-1 rounded-full bg-slate-100">
+                                {([ "fr", "en", "es", "nl" ] as const).map((l) => (
                                     <button
                                         key={l}
                                         type="button"
@@ -252,10 +264,10 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
                                             handleLocaleSwitch(l);
                                             setMobileMenuOpen(false);
                                         }}
-                                        className={`px-2 py-0.5 rounded cursor-pointer uppercase text-xs font-bold ${
+                                        className={`px-2.5 py-1 rounded-full cursor-pointer uppercase text-[11px] font-bold ${
                                             currentLocale === l
-                                                ? "bg-[#C9572C] text-white"
-                                                : "text-slate-600"
+                                                ? "bg-[#C9572C] text-white shadow-2xs"
+                                                : "text-slate-600 hover:text-slate-900"
                                         }`}
                                     >
                                         {l}
@@ -264,11 +276,11 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
                             </div>
                         </div>
 
-                        <div className="space-y-2">
+                        <div className="space-y-1">
                             <Link
                                 href={catalogHref}
                                 onClick={() => setMobileMenuOpen(false)}
-                                className="block py-2 text-sm font-semibold text-slate-800 hover:text-[#C9572C]"
+                                className="block py-2.5 px-3 rounded-xl text-sm font-semibold text-slate-800 hover:bg-[#FAF7F2] hover:text-[#C9572C] transition"
                             >
                                 {t.nav.vehicles}
                             </Link>
@@ -276,7 +288,7 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
                             <Link
                                 href={guidesHref}
                                 onClick={() => setMobileMenuOpen(false)}
-                                className="block py-2 text-sm font-semibold text-slate-800 hover:text-[#C9572C]"
+                                className="block py-2.5 px-3 rounded-xl text-sm font-semibold text-slate-800 hover:bg-[#FAF7F2] hover:text-[#C9572C] transition"
                             >
                                 {t.nav.guides}
                             </Link>
@@ -284,15 +296,43 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
                             <Link
                                 href={zeroCautionHref}
                                 onClick={() => setMobileMenuOpen(false)}
-                                className="block py-2 text-sm font-semibold text-slate-800 hover:text-[#C9572C]"
+                                className="block py-2.5 px-3 rounded-xl text-sm font-semibold text-slate-800 hover:bg-[#FAF7F2] hover:text-[#C9572C] transition"
                             >
                                 {t.nav.zeroDeposit}
                             </Link>
 
                             <Link
+                                href="/contact"
+                                onClick={() => setMobileMenuOpen(false)}
+                                className="block py-2.5 px-3 rounded-xl text-sm font-semibold text-slate-800 hover:bg-[#FAF7F2] hover:text-[#C9572C] transition"
+                            >
+                                {t.nav.contact || "Support & Contact"}
+                            </Link>
+
+                            {/* Hubs airport quick list */}
+                            <div className="pt-2 pb-1">
+                                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-3 block mb-1">
+                                    {t.nav.airports}
+                                </span>
+                                <div className="grid grid-cols-2 gap-1.5 px-1">
+                                    {MOROCCAN_HUBS.map((hub) => (
+                                        <Link
+                                            key={hub.slug}
+                                            href={currentLocale === "fr" ? `/maroc/${hub.slug}` : `/${currentLocale}/${hub.slug}`}
+                                            onClick={() => setMobileMenuOpen(false)}
+                                            className="px-2.5 py-1.5 rounded-lg text-xs font-medium text-slate-700 hover:bg-[#FAF7F2] hover:text-[#C9572C] flex items-center justify-between"
+                                        >
+                                            <span>{hub.name}</span>
+                                            <span className="font-mono text-[10px] text-slate-400">{hub.airportCode}</span>
+                                        </Link>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <Link
                                 href="/vendor/login"
                                 onClick={() => setMobileMenuOpen(false)}
-                                className="block py-2 text-sm font-bold text-slate-500 uppercase tracking-wider"
+                                className="block py-2.5 px-3 rounded-xl text-xs font-bold text-slate-500 uppercase tracking-wider hover:bg-slate-50"
                             >
                                 {t.nav.vendorSpace}
                             </Link>
@@ -305,7 +345,7 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
                                     setMobileMenuOpen(false);
                                     setSosModalOpen(true);
                                 }}
-                                className="flex-1 py-2.5 rounded-xl bg-red-50 text-red-700 border border-red-200 text-xs font-bold flex items-center justify-center gap-1"
+                                className="flex-1 py-3 rounded-xl bg-red-50 text-red-700 border border-red-200 text-xs font-bold flex items-center justify-center gap-1.5 active:scale-95 transition"
                             >
                                 <ShieldAlert size={15} />
                                 <span>SOS Maroc 24/7</span>
@@ -315,10 +355,10 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
                                 href={`https://wa.me/212600000000?text=${waText}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="flex-1 py-2.5 rounded-xl bg-slate-900 text-white text-xs font-bold flex items-center justify-center gap-1.5"
+                                className="flex-1 py-3 rounded-xl bg-slate-900 text-white text-xs font-bold flex items-center justify-center gap-1.5 active:scale-95 transition"
                             >
                                 <MessageCircle size={15} className="text-emerald-400" />
-                                <span>WhatsApp</span>
+                                <span>WhatsApp VIP</span>
                             </a>
                         </div>
                     </div>

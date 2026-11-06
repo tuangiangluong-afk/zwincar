@@ -28,12 +28,44 @@ import {
     Building2,
     ExternalLink,
     Lock,
+    Compass,
+    Palmtree,
 } from "lucide-react";
 import Header from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { SosModal } from "@/components/SosModal";
 import BookingManager from "@/components/BookingManager";
 import { MOROCCAN_HUBS, VEHICLE_FLEET } from "@/lib/morocco-data";
+
+const HUB_EXCURSIONS: Record<string, { title: string; duration: string; tag: string; viatorQuery: string }[]> = {
+    marrakech: [
+        { title: "Coucher de soleil & Dîner féerique dans le Désert d'Agafay", duration: "5 heures", tag: "Incontournable", viatorQuery: "agafay desert dinner sunset" },
+        { title: "Excursion Vallée de l'Ourika & Cascades de Setti Fatma (Haut-Atlas)", duration: "1 journée", tag: "Nature & Atlas", viatorQuery: "ourika valley atlas day trip" },
+        { title: "Aventure Safari Quad & Balade Dromadaire dans la Palmeraie", duration: "3 heures", tag: "Sensations", viatorQuery: "palmeraie quad camel ride" },
+    ],
+    agadir: [
+        { title: "Piscines naturelles & Randonnée Vallée du Paradis", duration: "Demi-journée", tag: "Nature", viatorQuery: "paradise valley agadir" },
+        { title: "Session Surf & Sunset aux Falaises de Taghazout Bay", duration: "4 heures", tag: "Océan", viatorQuery: "taghazout surf day trip" },
+        { title: "Safari 4x4 Dunes Sahariennes & Parc National Souss-Massa", duration: "1 journée", tag: "Désert", viatorQuery: "massa desert 4x4 safari" },
+    ],
+    fes: [
+        { title: "Excursion Chefchaouen la Perle Bleue du Rif", duration: "1 journée", tag: "Top Vente", viatorQuery: "chefchaouen day trip fes" },
+        { title: "Ruines Romaines de Volubilis & Cité Impériale de Meknès", duration: "1 journée", tag: "Histoire", viatorQuery: "volubilis meknes day trip" },
+        { title: "Visite VIP Médina Historique de Fès & Tanneries Chouara", duration: "4 heures", tag: "Culture", viatorQuery: "fes medina guided walking tour" },
+    ],
+    tanger: [
+        { title: "Cap Spartel & Grottes mythiques d'Hercule", duration: "Demi-journée", tag: "Panoramique", viatorQuery: "cap spartel hercules caves" },
+        { title: "Excursion Chefchaouen & Montagnes du Rif au départ de Tanger", duration: "1 journée", tag: "Incontournable", viatorQuery: "chefchaouen day trip tangier" },
+    ],
+    casablanca: [
+        { title: "Visite guidée intérieure Mosquée Hassan II & Corniche Aïn Diab", duration: "3 heures", tag: "Chef-d'œuvre", viatorQuery: "hassan ii mosque guided tour" },
+        { title: "Excursion d'une journée à Rabat (Tour Hassan & Kasbah des Oudayas)", duration: "1 journée", tag: "Capitale", viatorQuery: "rabat day trip from casablanca" },
+    ],
+    ouarzazate: [
+        { title: "Ksar Aït Benhaddou (Patrimoine UNESCO) & Studios Cinéma Atlas", duration: "Demi-journée", tag: "Cinéma", viatorQuery: "ait benhaddou ouarzazate" },
+        { title: "Expédition Gorges du Dadès & Vallée des Roses en 4x4", duration: "1 journée", tag: "Canyon", viatorQuery: "dades gorge todra day trip" },
+    ],
+};
 
 export default function BookingVoucherPage() {
     const params = useParams();
@@ -624,7 +656,7 @@ export default function BookingVoucherPage() {
                             </div>
 
                             <a
-                                href={`https://www.booking.com/searchresults.fr.html?ss=${encodeURIComponent(
+                                href={`https://www.booking.com/searchresults.${bookingData?.locale === "en" ? "en-gb" : bookingData?.locale === "es" ? "es" : bookingData?.locale === "nl" ? "nl" : "fr"}.html?ss=${encodeURIComponent(
                                     rental.hubName + ", Maroc"
                                 )}&checkin=${rental.pickupDate}&checkout=${rental.returnDate}&aid=zwincar`}
                                 target="_blank"
@@ -634,6 +666,53 @@ export default function BookingVoucherPage() {
                                 <span>Voir les Riads avec Parking</span>
                                 <ExternalLink size={14} />
                             </a>
+                        </div>
+                    </div>
+
+                    {/* Excursions & Activités Hub (Viator / GetYourGuide Affiliation) */}
+                    <div className="rounded-3xl bg-white border border-[#ECE5D9] p-6 sm:p-8 shadow-sm space-y-4">
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center font-bold">
+                                <Compass size={20} />
+                            </div>
+                            <div>
+                                <h3 className="text-base sm:text-lg font-black text-slate-900">
+                                    Excursions & Activités Incontournables à {rental.hubName}
+                                </h3>
+                                <p className="text-xs text-slate-500">
+                                    Sélection d'activités vérifiées au départ de {rental.hubName} avec guides certifiés et annulation gratuite
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+                            {(HUB_EXCURSIONS[rental.pickupHub] || HUB_EXCURSIONS.marrakech).map((item, idx) => (
+                                <a
+                                    key={idx}
+                                    href={`https://www.viator.com/search/${encodeURIComponent(item.viatorQuery)}?pid=zwincar&mcid=42383`}
+                                    target="_blank"
+                                    rel="noopener noreferrer nofollow"
+                                    className="p-4 rounded-2xl bg-[#FAF7F2] border border-[#E7DFD5] hover:border-[#C9572C] transition-all flex flex-col justify-between group cursor-pointer"
+                                >
+                                    <div className="space-y-2">
+                                        <div className="flex items-center justify-between">
+                                            <span className="text-[10px] font-bold uppercase tracking-wider text-[#C9572C] bg-[#C9572C]/10 px-2 py-0.5 rounded-full">
+                                                {item.tag}
+                                            </span>
+                                            <span className="text-[11px] text-slate-400 font-mono">
+                                                {item.duration}
+                                            </span>
+                                        </div>
+                                        <h4 className="font-bold text-xs text-slate-900 group-hover:text-[#C9572C] transition-colors leading-snug">
+                                            {item.title}
+                                        </h4>
+                                    </div>
+                                    <div className="pt-3 mt-3 border-t border-slate-200/70 flex items-center justify-between text-[11px] font-bold text-slate-700 group-hover:text-[#C9572C]">
+                                        <span>Réserver sur Viator</span>
+                                        <ExternalLink size={12} />
+                                    </div>
+                                </a>
+                            ))}
                         </div>
                     </div>
 

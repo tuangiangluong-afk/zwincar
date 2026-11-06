@@ -34,6 +34,15 @@ export interface SearchState {
     noDepositOnly: boolean;
 }
 
+const HALF_HOUR_SLOTS = [
+    "00:00", "00:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30",
+    "04:00", "04:30", "05:00", "05:30", "06:00", "06:30", "07:00", "07:30",
+    "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30",
+    "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30",
+    "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30",
+    "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30",
+];
+
 export function BookingWidget({
     onSearch,
     compact = false,
@@ -82,14 +91,32 @@ export function BookingWidget({
         }
         setTimeout(() => {
             setIsSearching(false);
-            if (typeof window !== "undefined" && state.pickupHub !== defaultHubSlug) {
+            if (typeof window !== "undefined") {
+                const isHomePage =
+                    pathname === "/" ||
+                    pathname === "/en" ||
+                    pathname === "/es" ||
+                    pathname === "/nl" ||
+                    pathname === "/home";
+                const isDifferentHub = !pathname.includes(`/${state.pickupHub}`);
                 const prefix = activeLocale === "fr" ? "/maroc" : `/${activeLocale}`;
-                window.location.href = `${prefix}/${state.pickupHub}#vehicle-catalog`;
-                return;
-            }
-            const catalog = document.getElementById("vehicle-catalog");
-            if (catalog) {
-                catalog.scrollIntoView({ behavior: "smooth" });
+                const queryParams = new URLSearchParams({
+                    pickupDate: state.pickupDate,
+                    pickupTime: state.pickupTime,
+                    returnDate: state.returnDate,
+                    returnTime: state.returnTime,
+                    transmission: state.transmission,
+                }).toString();
+
+                if (isHomePage || isDifferentHub) {
+                    window.location.href = `${prefix}/${state.pickupHub}?${queryParams}#vehicle-catalog`;
+                    return;
+                }
+
+                const catalog = document.getElementById("vehicle-catalog");
+                if (catalog) {
+                    catalog.scrollIntoView({ behavior: "smooth" });
+                }
             }
         }, 300);
     };
@@ -247,24 +274,45 @@ export function BookingWidget({
                             {t.search.pickupDate}
                         </label>
                         <div className="flex items-center h-[54px] rounded-2xl bg-[#FAF7F2] border border-[#E7DFD5] px-3 gap-2">
-                            <Calendar size={15} className="text-[#C9572C] shrink-0" />
-                            <input
-                                type="date"
-                                value={state.pickupDate}
-                                min={formatDateInput(today)}
-                                onChange={(e) =>
-                                    setState((prev) => ({ ...prev, pickupDate: e.target.value }))
-                                }
-                                className="w-full min-w-0 bg-transparent text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none cursor-pointer [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-inner-spin-button]:hidden"
-                            />
-                            <input
-                                type="time"
-                                value={state.pickupTime}
-                                onChange={(e) =>
-                                    setState((prev) => ({ ...prev, pickupTime: e.target.value }))
-                                }
-                                className="w-[76px] sm:w-[84px] shrink-0 bg-transparent text-xs font-mono font-bold text-slate-800 focus:outline-none border-l border-slate-200 pl-2 text-center"
-                            />
+                            <div
+                                onClick={(e) => {
+                                    const input = e.currentTarget.querySelector('input[type="date"]') as HTMLInputElement;
+                                    input?.showPicker?.();
+                                }}
+                                className="flex items-center gap-2 flex-1 min-w-0 cursor-pointer"
+                            >
+                                <Calendar size={15} className="text-[#C9572C] shrink-0 pointer-events-none" />
+                                <input
+                                    type="date"
+                                    value={state.pickupDate}
+                                    min={formatDateInput(today)}
+                                    onClick={(e) => {
+                                        try {
+                                            (e.target as HTMLInputElement).showPicker?.();
+                                        } catch {}
+                                    }}
+                                    onChange={(e) =>
+                                        setState((prev) => ({ ...prev, pickupDate: e.target.value }))
+                                    }
+                                    className="w-full min-w-0 bg-transparent text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none cursor-pointer [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-60 hover:[&::-webkit-calendar-picker-indicator]:opacity-100"
+                                />
+                            </div>
+                            <div className="shrink-0 border-l border-slate-200/80 pl-2">
+                                <select
+                                    value={state.pickupTime}
+                                    onChange={(e) =>
+                                        setState((prev) => ({ ...prev, pickupTime: e.target.value }))
+                                    }
+                                    aria-label="Heure de départ"
+                                    className="bg-transparent text-xs font-mono font-bold text-slate-800 focus:outline-none cursor-pointer py-1 pr-0.5"
+                                >
+                                    {HALF_HOUR_SLOTS.map((tVal) => (
+                                        <option key={tVal} value={tVal}>
+                                            {tVal}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
                         </div>
                     </div>
 
@@ -278,24 +326,45 @@ export function BookingWidget({
                             {t.search.returnDate}
                         </label>
                         <div className="flex items-center h-[54px] rounded-2xl bg-[#FAF7F2] border border-[#E7DFD5] px-3 gap-2">
-                            <Calendar size={15} className="text-[#C9572C] shrink-0" />
-                            <input
-                                type="date"
-                                value={state.returnDate}
-                                min={state.pickupDate}
-                                onChange={(e) =>
-                                    setState((prev) => ({ ...prev, returnDate: e.target.value }))
-                                }
-                                className="w-full min-w-0 bg-transparent text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none cursor-pointer [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-inner-spin-button]:hidden"
-                            />
-                            <input
-                                type="time"
-                                value={state.returnTime}
-                                onChange={(e) =>
-                                    setState((prev) => ({ ...prev, returnTime: e.target.value }))
-                                }
-                                className="w-[76px] sm:w-[84px] shrink-0 bg-transparent text-xs font-mono font-bold text-slate-800 focus:outline-none border-l border-slate-200 pl-2 text-center"
-                            />
+                            <div
+                                onClick={(e) => {
+                                    const input = e.currentTarget.querySelector('input[type="date"]') as HTMLInputElement;
+                                    input?.showPicker?.();
+                                }}
+                                className="flex items-center gap-2 flex-1 min-w-0 cursor-pointer"
+                            >
+                                <Calendar size={15} className="text-[#C9572C] shrink-0 pointer-events-none" />
+                                <input
+                                    type="date"
+                                    value={state.returnDate}
+                                    min={state.pickupDate}
+                                    onClick={(e) => {
+                                        try {
+                                            (e.target as HTMLInputElement).showPicker?.();
+                                        } catch {}
+                                    }}
+                                    onChange={(e) =>
+                                        setState((prev) => ({ ...prev, returnDate: e.target.value }))
+                                    }
+                                    className="w-full min-w-0 bg-transparent text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none cursor-pointer [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-60 hover:[&::-webkit-calendar-picker-indicator]:opacity-100"
+                                />
+                            </div>
+                            <div className="shrink-0 border-l border-slate-200/80 pl-2">
+                                <select
+                                    value={state.returnTime}
+                                    onChange={(e) =>
+                                        setState((prev) => ({ ...prev, returnTime: e.target.value }))
+                                    }
+                                    aria-label="Heure de retour"
+                                    className="bg-transparent text-xs font-mono font-bold text-slate-800 focus:outline-none cursor-pointer py-1 pr-0.5"
+                                >
+                                    {HALF_HOUR_SLOTS.map((tVal) => (
+                                        <option key={tVal} value={tVal}>
+                                            {tVal}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
