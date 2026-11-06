@@ -39,6 +39,7 @@ const CONTACT_I18N: Record<
         dossierTitle: string;
         dossierDesc: string;
         dossierCta: string;
+        channelsTitle: string;
         formTitle: string;
         formSubtitle: string;
         nameLabel: string;
@@ -73,6 +74,7 @@ const CONTACT_I18N: Record<
         dossierTitle: "Votre Dossier",
         dossierDesc: "Retrouvez votre bon de réservation, modifiez vos dates ou téléchargez le voucher.",
         dossierCta: "Accéder à mon voucher",
+        channelsTitle: "Canaux d'assistance et réservation",
         formTitle: "Envoyer un message",
         formSubtitle: "Remplissez le formulaire ci-dessous. Un conseiller dédié vous répondra par email ou WhatsApp sous 2h.",
         nameLabel: "Nom complet *",
@@ -126,6 +128,7 @@ const CONTACT_I18N: Record<
         dossierTitle: "Your Booking",
         dossierDesc: "Retrieve your voucher, update travel dates, or download receipt.",
         dossierCta: "Access my voucher",
+        channelsTitle: "Support and booking channels",
         formTitle: "Send us a message",
         formSubtitle: "Fill in the form below. A dedicated agent will reply via email or WhatsApp within 2 hours.",
         nameLabel: "Full Name *",
@@ -179,6 +182,7 @@ const CONTACT_I18N: Record<
         dossierTitle: "Su Reserva",
         dossierDesc: "Consulte su bono de alquiler, modifique sus fechas o descargue el justificante.",
         dossierCta: "Ver mi bono",
+        channelsTitle: "Canales de asistencia y reserva",
         formTitle: "Enviar un mensaje",
         formSubtitle: "Complete el formulario. Un agente dedicado le responderá por email o WhatsApp en menos de 2h.",
         nameLabel: "Nombre completo *",
@@ -232,6 +236,7 @@ const CONTACT_I18N: Record<
         dossierTitle: "Uw Reservering",
         dossierDesc: "Bekijk uw voucher, wijzig reisdata of download de bevestiging.",
         dossierCta: "Bekijk mijn voucher",
+        channelsTitle: "Ondersteuning en boekingskanalen",
         formTitle: "Stuur een bericht",
         formSubtitle: "Vul het formulier in. Een medewerker reageert binnen 2 uur per e-mail of WhatsApp.",
         nameLabel: "Volledige naam *",
@@ -376,7 +381,7 @@ export default function ContactPage({ locale: propLocale }: { locale?: Locale } 
                 </section>
 
                 <div className="container mx-auto px-4 max-w-5xl -mt-6">
-                    <h2 className="sr-only">Canaux d&apos;assistance et réservation</h2>
+                    <h2 className="sr-only">{t.channelsTitle}</h2>
                     {/* Quick Channel Cards */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
                         {/* WhatsApp VIP Card */}
