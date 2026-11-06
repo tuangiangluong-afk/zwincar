@@ -44,51 +44,70 @@ export default function Logo({
                     viewBox="0 0 48 48"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
-                    className="transition-transform duration-300 group-hover:scale-[1.03]"
+                    className="transition-transform duration-300 group-hover:scale-[1.04]"
                 >
-                    {/* Background rounded container with subtle shadow & architectural geometry */}
+                    <defs>
+                        <linearGradient id="zwincar-bg-comp" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+                            <stop offset="0%" stopColor="#171C26"/>
+                            <stop offset="100%" stopColor="#0B0E14"/>
+                        </linearGradient>
+
+                        <linearGradient id="zwincar-ribbon-top-comp" x1="10" y1="12" x2="38" y2="24" gradientUnits="userSpaceOnUse">
+                            <stop offset="0%" stopColor="#FF7A45"/>
+                            <stop offset="50%" stopColor="#C9572C"/>
+                            <stop offset="100%" stopColor="#9E3510"/>
+                        </linearGradient>
+
+                        <linearGradient id="zwincar-ribbon-bot-comp" x1="10" y1="24" x2="38" y2="36" gradientUnits="userSpaceOnUse">
+                            <stop offset="0%" stopColor="#9E3510"/>
+                            <stop offset="50%" stopColor="#C9572C"/>
+                            <stop offset="100%" stopColor="#E58B24"/>
+                        </linearGradient>
+
+                        <linearGradient id="zwincar-gold-comp" x1="12" y1="12" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+                            <stop offset="0%" stopColor="#F5A623"/>
+                            <stop offset="100%" stopColor="#D48810"/>
+                        </linearGradient>
+                    </defs>
+
+                    {/* Container */}
                     <rect
                         width="48"
                         height="48"
-                        rx="12"
-                        className={isDark ? "fill-[#0E1420]" : "fill-[#FAF7F2]"}
+                        rx="13"
+                        fill={isDark ? "url(#zwincar-bg-comp)" : "#12161E"}
                     />
                     <rect
                         x="0.75"
                         y="0.75"
                         width="46.5"
                         height="46.5"
-                        rx="11.25"
-                        stroke={isDark ? "rgba(255,255,255,0.08)" : "rgba(18,22,30,0.08)"}
+                        rx="12.25"
+                        stroke="rgba(255,255,255,0.12)"
                         strokeWidth="1.5"
                     />
 
-                    {/* Dynamic 'Z' Horizon Road Geometry */}
-                    {/* Top horizon bar */}
+                    {/* Subtle Road Curve Glow */}
+                    <path d="M6 34C18 30 30 30 42 34" stroke="rgba(201,87,44,0.18)" strokeWidth="2" strokeLinecap="round"/>
+
+                    {/* Upper Speed Wing (Top of Z) */}
                     <path
-                        d="M13 15.5C13 14.6716 13.6716 14 14.5 14H33.5C34.3284 14 35 14.6716 35 15.5C35 16.3284 34.3284 17 33.5 17H19.2L34.1 30.6C34.68 31.13 35 31.88 35 32.66V33.5C35 34.33 34.33 35 33.5 35H14.5C13.67 35 13 34.33 13 33.5C13 32.67 13.67 32 14.5 32H28.9L13.9 18.3C13.33 17.78 13 17.04 13 16.27V15.5Z"
-                        fill="url(#zwincar-terracotta-grad)"
+                        d="M12 15C12 14.17 12.67 13.5 13.5 13.5H33.2C34.6 13.5 35.4 15.1 34.5 16.2L24.8 28H15.5L25.2 16.5H13.5C12.67 16.5 12 15.83 12 15Z"
+                        fill="url(#zwincar-ribbon-top-comp)"
                     />
 
-                    {/* Sleek desert apex arc / subtle arch motif */}
-                    <circle cx="34" cy="15.5" r="2.2" fill="#E58B24" />
-                    <circle cx="14" cy="33.5" r="2.2" fill="#E58B24" />
+                    {/* Lower Speed Wing (Bottom of Z) */}
+                    <path
+                        d="M36 33C36 33.83 35.33 34.5 34.5 34.5H14.8C13.4 34.5 12.6 32.9 13.5 31.8L23.2 20H32.5L22.8 31.5H34.5C35.33 31.5 36 32.17 36 33Z"
+                        fill="url(#zwincar-ribbon-bot-comp)"
+                    />
 
-                    {/* Gradients */}
-                    <defs>
-                        <linearGradient
-                            id="zwincar-terracotta-grad"
-                            x1="13"
-                            y1="14"
-                            x2="35"
-                            y2="35"
-                            gradientUnits="userSpaceOnUse"
-                        >
-                            <stop offset="0%" stopColor="#E56A38" />
-                            <stop offset="60%" stopColor="#C9572C" />
-                            <stop offset="100%" stopColor="#A83E16" />
-                        </linearGradient>
-                    </defs>
+                    {/* Dynamic Center Blade */}
+                    <path d="M21 21.5L27 26.5" stroke="#FFFFFF" strokeWidth="1.75" strokeLinecap="round" strokeOpacity="0.85"/>
+
+                    {/* Sahara Golden Pips */}
+                    <circle cx="34.5" cy="14.8" r="2.2" fill="url(#zwincar-gold-comp)" />
+                    <circle cx="13.5" cy="33.2" r="2.2" fill="url(#zwincar-gold-comp)" />
                 </svg>
             </div>
 

@@ -311,9 +311,16 @@ export default function VendorDashboardPage() {
                                                 <span className="text-base font-black text-slate-900">
                                                     {item.time}
                                                 </span>
-                                                <span className="text-xs font-mono px-2 py-0.5 rounded bg-slate-100 text-slate-700 font-bold">
-                                                    {item.flightNumber}
-                                                </span>
+                                                <a
+                                                    href={`https://www.flightradar24.com/data/flights/${item.flightNumber.replace(/[^A-Za-z0-9]/g, "").toLowerCase()}`}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="text-xs font-mono px-2 py-0.5 rounded bg-blue-50 text-blue-700 hover:bg-blue-100 font-bold flex items-center gap-1 transition"
+                                                    title="Ouvrir le suivi direct FlightRadar24"
+                                                >
+                                                    <Plane size={12} />
+                                                    <span>{item.flightNumber}</span>
+                                                </a>
                                             </div>
                                             <span className="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full">
                                                 {item.flightEta}

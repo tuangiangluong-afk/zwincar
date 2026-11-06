@@ -24,6 +24,10 @@ import {
     User,
     ChevronRight,
     Mail,
+    Wifi,
+    Building2,
+    ExternalLink,
+    Lock,
 } from "lucide-react";
 import Header from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -287,11 +291,31 @@ export default function BookingVoucherPage() {
                                     </div>
                                 </div>
 
-                                <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/80 text-xs text-slate-700 flex items-start gap-2">
-                                    <MapPin size={16} className="text-[#C9572C] shrink-0 mt-0.5" />
-                                    <div>
-                                        <strong>Point de rencontre exact : </strong>
-                                        <span>{rental.meetingPointDetail}</span>
+                                <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/80 text-xs text-slate-700 space-y-2.5">
+                                    <div className="flex items-start gap-2">
+                                        <MapPin size={16} className="text-[#C9572C] shrink-0 mt-0.5" />
+                                        <div>
+                                            <strong>Point de rencontre exact : </strong>
+                                            <span>{rental.meetingPointDetail}</span>
+                                        </div>
+                                    </div>
+
+                                    {/* 1-Tap Arrival Notification */}
+                                    <div className="pt-2 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-2.5">
+                                        <span className="text-[11px] text-slate-500 font-medium">
+                                            Valises récupérées ? Avertissez votre agent en 1 clic :
+                                        </span>
+                                        <a
+                                            href={`https://wa.me/212600000000?text=${encodeURIComponent(
+                                                `Salam Youssef, je suis ${client.fullName} (réservation ZwinCar ${ref}). Je viens de franchir la douane à l'aéroport de ${rental.hubName}. Je me dirige vers le point de rencontre.`
+                                            )}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-bold shadow-xs transition cursor-pointer active:scale-95"
+                                        >
+                                            <MessageCircle size={13} />
+                                            <span>Je viens de sortir de la douane</span>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -448,6 +472,168 @@ export default function BookingVoucherPage() {
                             <p className="text-slate-600 leading-relaxed text-[11px]">
                                 Notre équipe locale surveille votre numéro de vol en continu sur FlightRadar24. En cas de retard de 1h, 2h ou 4h, votre véhicule reste automatiquement réservé sans aucun frais supplémentaire.
                             </p>
+                        </div>
+                    </div>
+
+                    {/* Caution Protocol Card (Enveloppe Scellée vs Franchise Zéro) */}
+                    <div className="rounded-3xl bg-white border border-[#ECE5D9] p-6 sm:p-8 shadow-sm space-y-4">
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center font-bold">
+                                <ShieldCheck size={20} />
+                            </div>
+                            <div>
+                                <h3 className="text-base sm:text-lg font-black text-slate-900">
+                                    Protocole de Caution Transparent & Zéro Litige
+                                </h3>
+                                <p className="text-xs text-slate-500">
+                                    {financials.selectedUpsells?.some((u: string) => u.toLowerCase().includes("franchise") || u === "franchise-zero")
+                                        ? "Option Franchise Zéro active • Zéro caution demandée"
+                                        : "Formule Standard • Caution de 300 € sécurisée sous protocole Enveloppe Scellée"}
+                                </p>
+                            </div>
+                        </div>
+
+                        {financials.selectedUpsells?.some((u: string) => u.toLowerCase().includes("franchise") || u === "franchise-zero") ? (
+                            <div className="rounded-2xl bg-emerald-50 border border-emerald-200 p-4 text-xs text-emerald-950 font-medium space-y-1">
+                                <div className="font-bold flex items-center gap-2 text-emerald-900">
+                                    <CheckCircle2 size={16} className="text-emerald-600" />
+                                    Vous êtes 100% couvert par le Pack Sérénité ZwinCar
+                                </div>
+                                <p className="text-emerald-800 text-[11px] leading-relaxed">
+                                    Aucun dépôt de garantie ne vous sera demandé sur le parking. Restitution en 2 minutes chrono : l'agent reprend simplement les clés.
+                                </p>
+                            </div>
+                        ) : (
+                            <div className="rounded-2xl bg-amber-50/70 border border-amber-200 p-4 text-xs text-amber-950 space-y-3">
+                                <div className="font-bold text-amber-900">
+                                    Comment se passe la caution de 300 € à la remise des clés ?
+                                </div>
+                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-[11px]">
+                                    <div className="p-2.5 rounded-xl bg-white/80 border border-amber-200/60">
+                                        <strong className="block text-slate-900 mb-0.5">1. Enveloppe Scellée</strong>
+                                        Vos 300 € (cash ou dirhams) sont placés dans une enveloppe ZwinCar scellée et signée sur le rabat.
+                                    </div>
+                                    <div className="p-2.5 rounded-xl bg-white/80 border border-amber-200/60">
+                                        <strong className="block text-slate-900 mb-0.5">2. Zéro Prélèvement</strong>
+                                        L'enveloppe reste sous scellé dans le coffre de l'agence. Rien n'est débité sur votre compte.
+                                    </div>
+                                    <div className="p-2.5 rounded-xl bg-white/80 border border-amber-200/60">
+                                        <strong className="block text-slate-900 mb-0.5">3. Restitution Immédiate</strong>
+                                        Au retour, après 2 min de tour du véhicule, l'enveloppe signée vous est rendue intacte en main propre.
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Upsell eSIM Maroc 20 Go 5G */}
+                    <div className="rounded-3xl bg-white border border-[#ECE5D9] p-6 sm:p-8 shadow-sm space-y-4">
+                        <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 rounded-xl bg-[#C9572C]/10 text-[#C9572C] flex items-center justify-center font-bold">
+                                    <Wifi size={20} />
+                                </div>
+                                <div>
+                                    <h3 className="text-base sm:text-lg font-black text-slate-900">
+                                        eSIM Maroc 20 Go 5G (Réseau Maroc Telecom / Orange)
+                                    </h3>
+                                    <p className="text-xs text-slate-500">
+                                        Connexion data haut débit instantanée dès l'atterrissage sur le tarmac
+                                    </p>
+                                </div>
+                            </div>
+
+                            {financials.selectedUpsells?.some((u: string) => u.toLowerCase().includes("esim")) ? (
+                                <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold">
+                                    Activée & Prête
+                                </span>
+                            ) : null}
+                        </div>
+
+                        {financials.selectedUpsells?.some((u: string) => u.toLowerCase().includes("esim")) ? (
+                            <div className="rounded-2xl bg-slate-50 border border-slate-200 p-4 space-y-3 text-xs">
+                                <div className="flex flex-col sm:flex-row items-center gap-4">
+                                    <div className="w-28 h-28 bg-white border border-slate-200 rounded-xl p-2 flex items-center justify-center shrink-0 shadow-xs">
+                                        <QrCode size={92} className="text-slate-900" />
+                                    </div>
+                                    <div className="space-y-1.5 text-[11px] text-slate-600">
+                                        <div className="font-bold text-slate-900 text-xs">
+                                            Votre QR Code d'activation eSIM Maroc
+                                        </div>
+                                        <p>
+                                            Scannez ce QR Code dans les réglages de votre téléphone : <em>Réglages &gt; Données cellulaires &gt; Ajouter une eSIM</em>.
+                                        </p>
+                                        <div className="font-mono text-[10px] bg-white px-2 py-1 rounded border border-slate-200 inline-block text-slate-800">
+                                            LPA:1$smdp.maroctelecom.ma$ZW-{ref}-ESIM20
+                                        </div>
+                                        <div className="text-emerald-700 font-semibold">
+                                            ✓ Valable 30 jours • Partage de connexion (Hotspot) autorisé
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="rounded-2xl bg-[#FAF7F2] border border-[#E7DFD5] p-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+                                <div>
+                                    <div className="font-bold text-slate-900">
+                                        Pas encore de data pour le GPS et WhatsApp au Maroc ?
+                                    </div>
+                                    <p className="text-[11px] text-slate-500 mt-0.5">
+                                        Évitez les 45 min de queue aux guichets de l'aéroport. Recevez votre QR code eSIM 20 Go 5G instantanément.
+                                    </p>
+                                </div>
+                                <a
+                                    href={`https://wa.me/212600000000?text=${encodeURIComponent(`Salam, je souhaite ajouter l'eSIM Maroc 20 Go (19 €) à ma réservation ${ref}`)}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="shrink-0 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-[#C9572C] text-white text-xs font-bold transition shadow-xs cursor-pointer active:scale-95"
+                                >
+                                    Ajouter l'eSIM (+19 €)
+                                </a>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Booking.com Accommodation Affiliation Card */}
+                    <div className="rounded-3xl bg-white border border-[#ECE5D9] p-6 sm:p-8 shadow-sm space-y-4">
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center font-bold">
+                                <Building2 size={20} />
+                            </div>
+                            <div>
+                                <h3 className="text-base sm:text-lg font-black text-slate-900">
+                                    Riads & Hôtels Recommandés à {rental.hubName}
+                                </h3>
+                                <p className="text-xs text-slate-500">
+                                    Établissements avec accès voiture facile et parking gardé 24/7 pour vos dates ({rental.pickupDate} au {rental.returnDate})
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="rounded-2xl bg-[#FAF7F2] border border-[#E7DFD5] p-5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+                            <div className="space-y-1">
+                                <span className="text-[10px] uppercase font-bold text-[#C9572C] tracking-wider">
+                                    Partenaire Hébergement ZwinCar
+                                </span>
+                                <div className="font-black text-slate-900 text-sm">
+                                    Trouvez votre hébergement idéal à {rental.hubName}
+                                </div>
+                                <p className="text-[11px] text-slate-600 max-w-lg leading-relaxed">
+                                    Ne laissez pas votre voiture sans surveillance dans les ruelles étroites. Découvrez notre sélection de Riads et Hôtels partenaires équipés d'un stationnement sécurisé vérifié.
+                                </p>
+                            </div>
+
+                            <a
+                                href={`https://www.booking.com/searchresults.fr.html?ss=${encodeURIComponent(
+                                    rental.hubName + ", Maroc"
+                                )}&checkin=${rental.pickupDate}&checkout=${rental.returnDate}&aid=zwincar`}
+                                target="_blank"
+                                rel="noopener noreferrer nofollow"
+                                className="shrink-0 inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-md transition cursor-pointer active:scale-95"
+                            >
+                                <span>Voir les Riads avec Parking</span>
+                                <ExternalLink size={14} />
+                            </a>
                         </div>
                     </div>
 
