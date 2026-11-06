@@ -78,7 +78,7 @@ export function buildAffiliateRentalUrl({
     returnDate,
     pickupTime = "11:00",
     returnTime = "11:00",
-    marker = process.env.NEXT_PUBLIC_TRAVELPAYOUTS_MARKER || "zwincar",
+    marker = process.env.NEXT_PUBLIC_TRAVELPAYOUTS_MARKER || "596733",
 }: {
     provider?: "discovercars" | "localrent" | "economybookings";
     hubCode: string;

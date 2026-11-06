@@ -66,10 +66,10 @@ export default function HomePage({ locale = "fr" }: HomePageProps = {}) {
 
                 <div className="container mx-auto px-4 max-w-6xl relative z-10">
                     {/* Top Pill */}
-                    <div className="flex justify-center mb-6">
-                        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-white/20 shadow-md text-xs font-bold text-slate-900">
-                            <span className="w-2 h-2 rounded-full bg-[#C9572C]"></span>
-                            <span>
+                    <div className="flex justify-center mb-5 sm:mb-6">
+                        <div className="inline-flex items-center gap-2 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-[10px] sm:text-xs font-bold text-white tracking-wide shadow-xs">
+                            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#E58B24]"></span>
+                            <span className="truncate">
                                 {isEn
                                     ? "MOROCCO • DIRECT RESERVATION FROM TOP LOCAL VERIFIED FLEETS"
                                     : isEs
@@ -117,36 +117,42 @@ export default function HomePage({ locale = "fr" }: HomePageProps = {}) {
                         </p>
 
                         {/* 3 Clear Guarantees */}
-                        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 mt-8 text-xs sm:text-sm font-semibold text-slate-800">
-                            <span className="flex items-center gap-2 bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/40 shadow-sm">
-                                <ShieldCheck size={16} className="text-[#C9572C]" />
-                                {isEn
-                                    ? "€0 deposit with Zero Excess (or €300 standard)"
-                                    : isEs
-                                    ? "0 € de fianza con Franquicia Cero (o 300 € estándar)"
-                                    : isNl
-                                    ? "€ 0 borg met Nul Eigen Risico (of € 300 standaard)"
-                                    : "0 € de caution avec Franchise Zéro (ou 300 € standard)"}
+                        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mt-6 sm:mt-8 text-[11px] sm:text-xs font-medium text-white/90">
+                            <span className="flex items-center gap-1.5 bg-black/45 backdrop-blur-md px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full border border-white/15 shadow-2xs">
+                                <ShieldCheck size={14} className="text-[#E58B24] shrink-0" />
+                                <span>
+                                    {isEn
+                                        ? "€0 deposit with Zero Excess (or €300 standard)"
+                                        : isEs
+                                        ? "0 € de fianza con Franquicia Cero (o 300 € estándar)"
+                                        : isNl
+                                        ? "€ 0 borg met Nul Eigen Risico (of € 300 standaard)"
+                                        : "0 € de caution avec Franchise Zéro (ou 300 € standard)"}
+                                </span>
                             </span>
-                            <span className="flex items-center gap-2 bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/40 shadow-sm">
-                                <KeyRound size={16} className="text-slate-800" />
-                                {isEn
-                                    ? "Exact model guaranteed"
-                                    : isEs
-                                    ? "Modelo exacto garantizado"
-                                    : isNl
-                                    ? "Exact model gegarandeerd"
-                                    : "Modèle exact garanti"}
+                            <span className="flex items-center gap-1.5 bg-black/45 backdrop-blur-md px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full border border-white/15 shadow-2xs">
+                                <KeyRound size={14} className="text-white/80 shrink-0" />
+                                <span>
+                                    {isEn
+                                        ? "Exact model guaranteed"
+                                        : isEs
+                                        ? "Modelo exacto garantizado"
+                                        : isNl
+                                        ? "Exact model gegarandeerd"
+                                        : "Modèle exact garanti"}
+                                </span>
                             </span>
-                            <span className="flex items-center gap-2 bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/40 shadow-sm">
-                                <CreditCard size={16} className="text-slate-800" />
-                                {isEn
-                                    ? "Debit & Cash accepted"
-                                    : isEs
-                                    ? "Débito y Efectivo aceptados"
-                                    : isNl
-                                    ? "Pinpas & Contant geaccepteerd"
-                                    : "Débit & Espèces acceptés"}
+                            <span className="flex items-center gap-1.5 bg-black/45 backdrop-blur-md px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full border border-white/15 shadow-2xs">
+                                <CreditCard size={14} className="text-white/80 shrink-0" />
+                                <span>
+                                    {isEn
+                                        ? "Debit & Cash accepted"
+                                        : isEs
+                                        ? "Débito y Efectivo aceptados"
+                                        : isNl
+                                        ? "Pinpas & Contant geaccepteerd"
+                                        : "Débit & Espèces acceptés"}
+                                </span>
                             </span>
                         </div>
                     </div>

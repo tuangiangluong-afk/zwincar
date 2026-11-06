@@ -140,6 +140,23 @@ export default function RootLayout({
             `,
           }}
         />
+
+        {/* Travelpayouts Tracking & Embed Bar (ID: 596733) */}
+        <Script
+          id="travelpayouts-bars-init"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function () {
+                  var script = document.createElement("script");
+                  script.async = true;
+                  script.setAttribute("data-cmp-ab","2");
+                  script.src = 'https://tpembars.com/NTk2NzMz.js?t=596733';
+                  document.head.appendChild(script);
+              })();
+            `,
+          }}
+        />
       </body>
     </html>
   );

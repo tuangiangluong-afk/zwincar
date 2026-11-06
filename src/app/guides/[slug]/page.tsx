@@ -463,7 +463,7 @@ export default async function GuideDetailPage({
                                     {relatedVehiclesData.map((veh) => (
                                         <Link
                                             key={veh.id}
-                                            href={`/vehicules/${veh.id}`}
+                                            href={`/maroc/marrakech/${veh.id}`}
                                             className="p-4 rounded-2xl bg-white border border-[#E7DFD5] hover:border-emerald-500 transition-all flex items-center gap-4 group"
                                         >
                                             <div className="w-20 h-14 shrink-0 overflow-hidden rounded-xl bg-slate-50">

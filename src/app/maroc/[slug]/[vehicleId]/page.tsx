@@ -361,10 +361,10 @@ export default async function CityVehicleDetailPage({ params }: CityVehiclePageP
                                 </h2>
                             </div>
                             <Link
-                                href={`/vehicules/${vehicle.id}`}
+                                href="/#vehicle-catalog"
                                 className="text-xs font-bold text-slate-700 hover:text-slate-900 underline flex items-center gap-1"
                             >
-                                <span>Fiche technique nationale & avis</span>
+                                <span>Voir tout le catalogue flotte Maroc</span>
                                 <ArrowRight size={13} />
                             </Link>
                         </div>
