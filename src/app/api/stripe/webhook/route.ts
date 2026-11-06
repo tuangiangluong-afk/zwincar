@@ -95,6 +95,30 @@ export async function POST(request: NextRequest) {
 
                     try {
                         await store.save(updated, record.version);
+
+                        // Déclenchement automatique de l'email de confirmation dès validation Stripe
+                        const siteOrigin = process.env.NEXT_PUBLIC_SITE_URL || "https://zwincar.com";
+                        fetch(`${siteOrigin}/api/booking/send-confirmation`, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                                bookingRef: updated.ref,
+                                clientName: updated.client.fullName,
+                                clientEmail: updated.client.email,
+                                vehicleName: updated.rental.vehicleName,
+                                hubName: updated.rental.hubName,
+                                airportCode: updated.rental.airportCode,
+                                meetingPointDetail: updated.rental.meetingPointDetail,
+                                pickupDate: updated.rental.pickupDate,
+                                returnDate: updated.rental.returnDate,
+                                days: updated.rental.days,
+                                depositAcompteEur: updated.paidEur,
+                                balanceOnSiteEur: updated.quote.balanceEur,
+                                balanceOnSiteMad: updated.quote.balanceMad,
+                                hasFranchiseZero: updated.quote.hasZeroDeposit,
+                                locale: updated.locale || "fr",
+                            }),
+                        }).catch((err) => console.error("Webhook async email error:", err));
                     } catch (error) {
                         // Double livraison du webhook : ce n'est pas une erreur bloquante.
                         console.warn("Webhook: dossier déjà mis à jour", ref, error);

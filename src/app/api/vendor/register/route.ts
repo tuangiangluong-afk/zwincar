@@ -68,6 +68,56 @@ export async function POST(request: Request) {
             maxAge: 30 * 86400,
         });
 
+        // Notifications email automatiques via Resend
+        if (process.env.RESEND_API_KEY) {
+            const from = process.env.RESEND_FROM_EMAIL || "ZwinCar <hello@zwincar.com>";
+            fetch("https://api.resend.com/emails", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+                },
+                body: JSON.stringify({
+                    from,
+                    to: ["hello@zwincar.com"],
+                    reply_to: managerEmail,
+                    subject: `[Partenaire ZwinCar] Nouvelle agence inscrite : ${agencyName} (${cityHub})`,
+                    html: `
+                        <h2>Nouvelle Inscription Agence Partenaire</h2>
+                        <p><strong>Agence :</strong> ${agencyName}</p>
+                        <p><strong>Hub :</strong> ${cityHub}</p>
+                        <p><strong>ICE :</strong> ${iceNumber}</p>
+                        <p><strong>Gérant :</strong> ${managerName}</p>
+                        <p><strong>Téléphone / WhatsApp :</strong> ${managerPhone}</p>
+                        <p><strong>Email :</strong> ${managerEmail}</p>
+                        <p><strong>Véhicule déclaré :</strong> ${model} (${plate})</p>
+                    `,
+                }),
+            }).catch((err) => console.error("Vendor admin notification error:", err));
+
+            fetch("https://api.resend.com/emails", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+                },
+                body: JSON.stringify({
+                    from,
+                    to: [managerEmail],
+                    reply_to: "hello@zwincar.com",
+                    subject: "Bienvenue sur le Réseau ZwinCar Partenaires",
+                    html: `
+                        <h2>Bienvenue chez ZwinCar, ${managerName}</h2>
+                        <p>Votre agence <strong>${agencyName}</strong> a été enregistrée avec succès pour le hub de <strong>${cityHub}</strong>.</p>
+                        <p>Vous pouvez dès à présent accéder à votre espace loueur pour gérer votre flotte et vos réservations :</p>
+                        <p><a href="https://zwincar.com/vendor/dashboard" style="display:inline-block;background:#C9572C;color:#ffffff;padding:12px 24px;border-radius:10px;text-decoration:none;font-weight:bold;font-size:13px;">Accéder à mon Espace Loueur</a></p>
+                        <hr style="margin-top:20px;border:none;border-top:1px solid #eee;"/>
+                        <p style="font-size:12px;color:#777;">L'équipe Partenaires ZwinCar • hello@zwincar.com</p>
+                    `,
+                }),
+            }).catch((err) => console.error("Vendor welcome email error:", err));
+        }
+
         return res;
     } catch (e: any) {
         return jsonError(e.message || "Impossible d'enregistrer l'agence.", 409);
