@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getVendorFromToken, getVendorFleet } from "@/lib/vendor-store";
-import { jsonError } from "@/lib/api-helpers";
+import { jsonError, getClientIp, tooManyRequests } from "@/lib/api-helpers";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -16,6 +17,10 @@ function extractToken(request: Request): string | null {
 }
 
 export async function GET(request: Request) {
+    const ip = getClientIp(request);
+    const rl = checkRateLimit(`vendor:me:${ip}`, 30, 60 * 1000);
+    if (!rl.allowed) return tooManyRequests(rl.retryAfterSeconds);
+
     const token = extractToken(request);
     if (!token) return jsonError("Non authentifié", 401);
 

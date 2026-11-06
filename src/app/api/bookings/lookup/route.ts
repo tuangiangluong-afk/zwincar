@@ -85,7 +85,9 @@ export async function POST(request: Request) {
                 hubName: b.rental.hubName,
                 pickupDate: b.rental.pickupDate,
                 returnDate: b.rental.returnDate,
-                url: `${origin}/booking/${b.ref}?t=${b.accessToken}`,
+                // Security: email-only lookup returns URL without accessToken.
+                // Client uses email auth on the voucher page instead.
+                url: `${origin}/booking/${b.ref}?email=${encodeURIComponent(rawEmail)}`,
             })),
         });
     }

@@ -9,7 +9,17 @@ export interface AdminUser {
 
 const SCRYPT_KEYLEN = 64;
 const SCRYPT_COST = { N: 16384, r: 8, p: 1 };
-const ADMIN_SECRET = process.env.ADMIN_AUTH_SECRET || process.env.SUPABASE_SERVICE_ROLE_KEY || "zwincar_admin_secret_guard_2026";
+function getAdminSecret(): string {
+    const secret = process.env.ADMIN_AUTH_SECRET || process.env.SUPABASE_SERVICE_ROLE_KEY;
+    if (!secret) {
+        if (process.env.NODE_ENV === "production") {
+            throw new Error("ADMIN_AUTH_SECRET must be set in production");
+        }
+        // shortcut: dev-only fallback, set ADMIN_AUTH_SECRET on Vercel before launch
+        return "zwincar_admin_secret_guard_2026_dev_only";
+    }
+    return secret;
+}
 
 // Compte Super-Admin officiel ZwinCar
 const ADMIN_SALT = "admin_salt_locapartoo_2026";
@@ -46,7 +56,7 @@ export async function authenticateAdmin(emailPlain: string, passwordPlain: strin
 export function createAdminSession(admin: AdminUser): string {
     const expiresAt = Date.now() + 14 * 86_400_000; // 14 jours
     const payloadB64 = Buffer.from(JSON.stringify({ admin, expiresAt }), "utf8").toString("base64url");
-    const sig = createHmac("sha256", ADMIN_SECRET).update(payloadB64).digest("base64url");
+    const sig = createHmac("sha256", getAdminSecret()).update(payloadB64).digest("base64url");
     return `zwin_adm_${payloadB64}.${sig}`;
 }
 
@@ -60,7 +70,7 @@ export function getAdminFromToken(token: string): AdminUser | null {
     const payloadB64 = raw.slice(0, dotIdx);
     const sig = raw.slice(dotIdx + 1);
 
-    const expectedSig = createHmac("sha256", ADMIN_SECRET).update(payloadB64).digest("base64url");
+    const expectedSig = createHmac("sha256", getAdminSecret()).update(payloadB64).digest("base64url");
     const a = Buffer.from(sig, "utf8");
     const b = Buffer.from(expectedSig, "utf8");
 
@@ -82,4 +92,15 @@ export function getAdminFromToken(token: string): AdminUser | null {
     }
 
     return null;
+}
+
+/** Extracts admin token from Authorization header or cookie. */
+export function extractAdminToken(request: Request): string | null {
+    const authHeader = request.headers.get("authorization");
+    if (authHeader?.startsWith("Bearer ")) {
+        return authHeader.substring(7).trim();
+    }
+    const cookieHeader = request.headers.get("cookie") || "";
+    const match = cookieHeader.match(/zwincar_admin_token=([^;]+)/);
+    return match ? match[1].trim() : null;
 }

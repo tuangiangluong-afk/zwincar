@@ -27,7 +27,7 @@ export async function POST(request: Request) {
     if (!managerName) return jsonError("Le nom du gérant est requis.", 422);
     if (!managerPhone || managerPhone.length < 8) return jsonError("Numéro WhatsApp valide requis.", 422);
     if (!managerEmail || !managerEmail.includes("@")) return jsonError("Email professionnel valide requis.", 422);
-    if (password.length < 6) return jsonError("Mot de passe trop court (min 6 caractères).", 422);
+    if (password.length < 12) return jsonError("Mot de passe trop court (min 12 caractères).", 422);
 
     const firstCar = (body.firstCar as Record<string, unknown>) || {};
     const model = typeof firstCar.model === "string" ? firstCar.model : "Dacia Sandero Stepway";
