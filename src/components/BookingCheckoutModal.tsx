@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { VehicleModel, CityHub, MOROCCAN_HUBS, getLocalizedAirportName } from "@/lib/morocco-data";
 import { Locale, getTranslation } from "@/lib/i18n";
+import { trackBeginCheckout } from "@/lib/gtm";
 
 interface BookingCheckoutModalProps {
     isOpen: boolean;
@@ -82,6 +83,19 @@ export function BookingCheckoutModal({
 
     React.useEffect(() => {
         if (!isOpen) return;
+
+        trackBeginCheckout({
+            vehicleId: vehicle.id,
+            vehicleName: vehicle.name,
+            valueEur: (depositAcompteEur || 0) + (balanceOnSiteEur || 0),
+            currency,
+            days,
+            pickupHub: currentHub.slug,
+            depositAcompteEur,
+            balanceOnSiteEur,
+            hasZeroDeposit: hasFranchiseZero,
+        });
+
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === "Escape") {
                 onClose();
@@ -89,7 +103,7 @@ export function BookingCheckoutModal({
         };
         window.addEventListener("keydown", handleKeyDown);
         return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [isOpen, onClose]);
+    }, [isOpen, onClose, vehicle, depositAcompteEur, balanceOnSiteEur, currency, days, currentHub.slug, hasFranchiseZero]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();

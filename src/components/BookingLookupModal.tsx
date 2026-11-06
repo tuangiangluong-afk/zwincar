@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { X, Search, FileText, Mail, ArrowRight, CheckCircle2, AlertCircle, Clock, Car } from "lucide-react";
 import { Locale } from "@/lib/i18n";
+import { trackVoucherLookup } from "@/lib/gtm";
 
 interface BookingLookupModalProps {
     isOpen: boolean;
@@ -141,6 +142,7 @@ export function BookingLookupModal({ isOpen, onClose, locale = "fr" }: BookingLo
 
             // Cas 1 : Redirection directe si le voucher URL est retourné
             if (data.url) {
+                trackVoucherLookup(refInput.trim().toUpperCase() || undefined);
                 onClose();
                 router.push(data.url);
                 return;

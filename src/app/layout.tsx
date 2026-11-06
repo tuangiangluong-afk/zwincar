@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
+import Script from "next/script";
 import PwaRegistrar from "@/components/PwaRegistrar";
 import CookieBanner from "@/components/CookieBanner";
 import "./globals.css";
@@ -75,9 +76,43 @@ export default function RootLayout({
   return (
     <html lang="fr" className="scroll-smooth">
       <body className={`${jakartaSans.variable} font-sans antialiased bg-[#FAF7F2] text-[#12161E]`}>
+        {/* Google Tag Manager (noscript) */}
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-PP5JRZ54"
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          />
+        </noscript>
+
         {children}
         <PwaRegistrar />
         <CookieBanner />
+
+        {/* Google Tag Manager (GTM-PP5JRZ54) */}
+        <Script
+          id="gtm-script"
+          strategy="afterInteractive"
+          src="https://www.googletagmanager.com/gtm.js?id=GTM-PP5JRZ54"
+        />
+
+        {/* Google Analytics (GA4 G-7ENRDH54TP) & dataLayer setup */}
+        <Script
+          id="ga4-gtag-init"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-7ENRDH54TP', {
+                page_path: window.location.pathname,
+                currency: 'EUR'
+              });
+            `,
+          }}
+        />
       </body>
     </html>
   );

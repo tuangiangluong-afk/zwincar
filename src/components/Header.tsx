@@ -10,6 +10,7 @@ import { PURCHASE_INTENTS } from "@/lib/intent-data";
 import { SosModal } from "@/components/SosModal";
 import { BookingLookupModal } from "@/components/BookingLookupModal";
 import { Locale, getTranslation } from "@/lib/i18n";
+import { trackWhatsAppClick } from "@/lib/gtm";
 
 interface HeaderProps {
     locale?: Locale;
@@ -233,6 +234,7 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
                             href={`https://wa.me/212600000000?text=${waText}`}
                             target="_blank"
                             rel="noopener noreferrer"
+                            onClick={() => trackWhatsAppClick("header_desktop")}
                             className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-2xl bg-slate-900 hover:bg-[#C9572C] text-white text-xs font-bold tracking-wide transition-all shadow-xs cursor-pointer active:scale-95 whitespace-nowrap"
                         >
                             <MessageCircle size={15} className="text-emerald-400" />
@@ -380,6 +382,10 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
                                 href={`https://wa.me/212600000000?text=${waText}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
+                                onClick={() => {
+                                    trackWhatsAppClick("header_mobile");
+                                    setMobileMenuOpen(false);
+                                }}
                                 className="flex-1 py-3 rounded-xl bg-slate-900 text-white text-xs font-bold flex items-center justify-center gap-1.5 active:scale-95 transition"
                             >
                                 <MessageCircle size={15} className="text-emerald-400" />

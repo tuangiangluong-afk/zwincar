@@ -36,6 +36,7 @@ import { Footer } from "@/components/Footer";
 import { SosModal } from "@/components/SosModal";
 import BookingManager from "@/components/BookingManager";
 import { MOROCCAN_HUBS, VEHICLE_FLEET } from "@/lib/morocco-data";
+import { trackPurchase } from "@/lib/gtm";
 
 const HUB_EXCURSIONS: Record<string, { title: string; duration: string; tag: string; viatorQuery: string }[]> = {
     marrakech: [
@@ -135,6 +136,22 @@ export default function BookingVoucherPage() {
                             }
                             if (data.booking?.kyc?.verified) {
                                 setKycUploaded(true);
+                            }
+
+                            // Tracking e-commerce GA4 / GTM (Achat confirmé & Panier Moyen)
+                            if (data.booking?.status === "confirmed" || data.booking?.status === "checked_in" || data.booking?.status === "completed") {
+                                trackPurchase({
+                                    transactionId: data.voucher.ref,
+                                    valueEur: data.voucher.financials?.totalEur || 0,
+                                    currency: "EUR",
+                                    vehicleId: data.voucher.rental?.vehicleId || "vehicle",
+                                    vehicleName: data.voucher.rental?.vehicleName || "Véhicule",
+                                    acompteEur: data.voucher.financials?.depositAcompteEur || 0,
+                                    balanceEur: data.voucher.financials?.balanceOnSiteEur || 0,
+                                    days: data.voucher.rental?.days || 1,
+                                    pickupHub: data.voucher.rental?.pickupHub || "maroc",
+                                    hasZeroDeposit: data.voucher.financials?.cautionEur === 0,
+                                });
                             }
                             return;
                         }
