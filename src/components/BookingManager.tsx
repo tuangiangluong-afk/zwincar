@@ -20,6 +20,15 @@ interface ServerBooking {
     paidEur: number;
 }
 
+const HALF_HOUR_SLOTS = [
+    "00:00", "00:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30",
+    "04:00", "04:30", "05:00", "05:30", "06:00", "06:30", "07:00", "07:30",
+    "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30",
+    "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30",
+    "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30",
+    "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30",
+];
+
 const STATUS_LABEL: Record<string, string> = {
     awaiting_payment: "En attente de paiement",
     confirmed: "Confirmée",
@@ -233,12 +242,15 @@ export default function BookingManager({ refId }: BookingManagerProps) {
                     </label>
                     <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
                         Heure
-                        <input
-                            type="time"
+                        <select
                             value={pickupTime}
                             onChange={(event) => setPickupTime(event.target.value)}
                             className="mt-1 block h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-900"
-                        />
+                        >
+                            {HALF_HOUR_SLOTS.map((t) => (
+                                <option key={t} value={t}>{t}</option>
+                            ))}
+                        </select>
                     </label>
                     <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
                         Nouvelle restitution
@@ -251,12 +263,15 @@ export default function BookingManager({ refId }: BookingManagerProps) {
                     </label>
                     <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
                         Heure
-                        <input
-                            type="time"
+                        <select
                             value={returnTime}
                             onChange={(event) => setReturnTime(event.target.value)}
                             className="mt-1 block h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-900"
-                        />
+                        >
+                            {HALF_HOUR_SLOTS.map((t) => (
+                                <option key={t} value={t}>{t}</option>
+                            ))}
+                        </select>
                     </label>
                     <div className="sm:col-span-2 flex items-center justify-between gap-3">
                         <p className="text-[11px] text-slate-500">
