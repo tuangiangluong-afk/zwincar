@@ -126,10 +126,12 @@ export default function LocalizedPageRenderer({
                                             ? `${vehicle.name} Rental in ${hub.name} (${hub.airportCode})`
                                             : locale === "es"
                                             ? `Alquiler ${vehicle.name} en ${hub.name} (${hub.airportCode})`
-                                            : `Huur ${vehicle.name} in ${hub.name} (${hub.airportCode})`}
+                                            : locale === "nl"
+                                            ? `Huur ${vehicle.name} in ${hub.name} (${hub.airportCode})`
+                                            : `Location ${vehicle.name} à ${hub.name} (${hub.airportCode})`}
                                     </h1>
                                     <p className="text-sm sm:text-base text-slate-600 mt-2 leading-relaxed">
-                                        {vehicle.highlight}
+                                        {locale !== "fr" && vehicle.highlightEn ? vehicle.highlightEn : vehicle.highlight}
                                     </p>
                                 </div>
 
@@ -141,43 +143,43 @@ export default function LocalizedPageRenderer({
                                         className="w-full h-full object-cover"
                                     />
                                     <div className="absolute top-4 left-4 bg-slate-900/80 backdrop-blur-xs text-white px-3 py-1 rounded-full text-xs font-semibold">
-                                        {vehicle.transmission} • {vehicle.fuel}
+                                        {locale === "en" ? vehicle.transmissionEn : locale === "es" ? (vehicle.transmission === "Automatique" ? "Automático" : "Manual") : locale === "nl" ? (vehicle.transmission === "Automatique" ? "Automatisch" : "Handgeschakeld") : vehicle.transmission} • {locale === "en" ? (vehicle.fuel === "Essence" ? "Petrol" : "Diesel") : locale === "es" ? (vehicle.fuel === "Essence" ? "Gasolina" : "Diésel") : locale === "nl" ? (vehicle.fuel === "Essence" ? "Benzine" : "Diesel") : vehicle.fuel}
                                     </div>
                                 </div>
 
                                 {/* Technical Specs */}
                                 <div className="rounded-3xl bg-white border border-[#E7DFD5] p-6 space-y-4 shadow-2xs">
                                     <div className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                                        {locale === "en" ? "Verified Specifications • Moroccan Setup" : "Especificaciones Verificadas"}
+                                        {locale === "en" ? "Verified Specifications • Moroccan Setup" : locale === "es" ? "Especificaciones Verificadas • Configuración Marruecos" : locale === "nl" ? "Geverifieerde Specificaties • Marokko Setup" : "Caractéristiques Vérifiées • Configuration Maroc"}
                                     </div>
                                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
                                         <div className="p-3 rounded-2xl bg-[#FAF7F2] border border-[#ECE5D9]">
                                             <div className="text-slate-400 text-[10px] uppercase font-bold flex items-center gap-1 mb-1">
-                                                <Gauge size={13} /> {locale === "en" ? "Engine" : "Motor"}
+                                                <Gauge size={13} /> {locale === "en" ? "Engine" : locale === "es" ? "Motor" : locale === "nl" ? "Motor" : "Moteur"}
                                             </div>
                                             <div className="font-bold text-slate-900">{vehicle.engine}</div>
                                             <div className="text-[10px] text-slate-500">{vehicle.horsepower} HP</div>
                                         </div>
                                         <div className="p-3 rounded-2xl bg-[#FAF7F2] border border-[#ECE5D9]">
                                             <div className="text-slate-400 text-[10px] uppercase font-bold flex items-center gap-1 mb-1">
-                                                <Briefcase size={13} /> {locale === "en" ? "Trunk" : "Maletero"}
+                                                <Briefcase size={13} /> {locale === "en" ? "Trunk" : locale === "es" ? "Maletero" : locale === "nl" ? "Kofferbak" : "Coffre"}
                                             </div>
                                             <div className="font-bold text-slate-900">{vehicle.trunkLiters} L</div>
                                             <div className="text-[10px] text-slate-500">{vehicle.luggage} {t.catalog.luggage}</div>
                                         </div>
                                         <div className="p-3 rounded-2xl bg-[#FAF7F2] border border-[#ECE5D9]">
                                             <div className="text-slate-400 text-[10px] uppercase font-bold flex items-center gap-1 mb-1">
-                                                <Fuel size={13} /> {locale === "en" ? "Consumption" : "Consumo"}
+                                                <Fuel size={13} /> {locale === "en" ? "Consumption" : locale === "es" ? "Consumo" : locale === "nl" ? "Verbruik" : "Consommation"}
                                             </div>
                                             <div className="font-bold text-slate-900">{vehicle.fuelConsumption}</div>
-                                            <div className="text-[10px] text-slate-500">{vehicle.fuel}</div>
+                                            <div className="text-[10px] text-slate-500">{locale === "en" ? (vehicle.fuel === "Essence" ? "Petrol" : "Diesel") : locale === "es" ? (vehicle.fuel === "Essence" ? "Gasolina" : "Diésel") : locale === "nl" ? (vehicle.fuel === "Essence" ? "Benzine" : "Diesel") : vehicle.fuel}</div>
                                         </div>
                                         <div className="p-3 rounded-2xl bg-[#FAF7F2] border border-[#ECE5D9]">
                                             <div className="text-slate-400 text-[10px] uppercase font-bold flex items-center gap-1 mb-1">
-                                                <Sparkles size={13} /> {locale === "en" ? "Clearance" : "Altura libre"}
+                                                <Sparkles size={13} /> {locale === "en" ? "Clearance" : locale === "es" ? "Altura libre" : locale === "nl" ? "Bodemvrijheid" : "Garde au sol"}
                                             </div>
                                             <div className="font-bold text-slate-900">{vehicle.groundClearanceCm} cm</div>
-                                            <div className="text-[10px] text-slate-500">Skid plates</div>
+                                            <div className="text-[10px] text-slate-500">{locale === "en" ? "Skid plates" : locale === "es" ? "Cubre cárter" : locale === "nl" ? "Bodembescherming" : "Plaques de protection"}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -188,6 +190,7 @@ export default function LocalizedPageRenderer({
                                 <VehicleBookingCard
                                     vehicle={vehicle}
                                     defaultHubSlug={hub.slug}
+                                    locale={locale}
                                 />
                             </div>
                         </div>
@@ -195,7 +198,7 @@ export default function LocalizedPageRenderer({
                         {/* Cross-linking to other models in this city */}
                         <div className="mt-16 pt-10 border-t border-[#E7DFD5] space-y-6">
                             <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-                                {locale === "en" ? `Other available cars in ${hub.name}` : `Otros vehículos en ${hub.name}`}
+                                {locale === "en" ? `Other available cars in ${hub.name}` : locale === "es" ? `Otros vehículos disponibles en ${hub.name}` : locale === "nl" ? `Andere beschikbare auto's in ${hub.name}` : `Autres véhicules disponibles à ${hub.name}`}
                             </h2>
                             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5">
                                 {VEHICLE_FLEET.filter((v) => v.id !== vehicle.id).map((v) => (
@@ -215,7 +218,7 @@ export default function LocalizedPageRenderer({
                                             {v.name}
                                         </div>
                                         <div className="text-xs font-mono font-bold text-[#C9572C] mt-1.5">
-                                            {v.dailyPriceEur} € / {locale === "en" ? "day" : "día"}
+                                            {v.dailyPriceEur} € / {locale === "en" ? "day" : locale === "es" ? "día" : locale === "nl" ? "dag" : "jour"}
                                         </div>
                                     </Link>
                                 ))}

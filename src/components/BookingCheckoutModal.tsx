@@ -17,6 +17,7 @@ import {
     Sparkles,
 } from "lucide-react";
 import { VehicleModel, CityHub, MOROCCAN_HUBS } from "@/lib/morocco-data";
+import { Locale, getTranslation } from "@/lib/i18n";
 
 interface BookingCheckoutModalProps {
     isOpen: boolean;
@@ -38,7 +39,7 @@ interface BookingCheckoutModalProps {
     currency: "EUR" | "MAD";
     pickupTime?: string;
     returnTime?: string;
-    locale?: "fr" | "en" | "es" | "nl";
+    locale?: Locale;
 }
 
 export function BookingCheckoutModal({
@@ -77,6 +78,7 @@ export function BookingCheckoutModal({
     const currentHub =
         MOROCCAN_HUBS.find((h) => h.slug === pickupHubSlug) || MOROCCAN_HUBS[0];
     const hasFranchiseZero = selectedUpsells.includes("franchise-zero");
+    const t = getTranslation(locale);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -182,10 +184,10 @@ export function BookingCheckoutModal({
                         </div>
                         <div>
                             <div className="text-[10px] uppercase font-bold tracking-wider text-slate-400">
-                                Réservation Sécurisée & Modèle Garanti
+                                {t.checkoutModal.modalTitle}
                             </div>
                             <h3 className="text-base sm:text-lg font-black tracking-tight text-white">
-                                {vehicle.name} — {currentHub.name} ({days} jours)
+                                {vehicle.name} — {currentHub.name} ({days} {t.search.daysCount})
                             </h3>
                         </div>
                     </div>
@@ -193,7 +195,7 @@ export function BookingCheckoutModal({
                         type="button"
                         onClick={onClose}
                         className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition cursor-pointer"
-                        aria-label="Fermer"
+                        aria-label="Close"
                     >
                         <X size={18} />
                     </button>
@@ -202,9 +204,9 @@ export function BookingCheckoutModal({
                 {/* Caution & Conditions Claires */}
                 <div className="bg-[#FAF7F2] px-5 py-2.5 border-b border-[#ECE5D9] flex items-center justify-between text-xs text-slate-700">
                     <span className="font-semibold">
-                        Caution : <strong className="text-slate-900">{hasFranchiseZero ? "0 € (Franchise Zéro)" : "300 € (ou 0 € avec Franchise Zéro)"}</strong>
+                        {hasFranchiseZero ? t.checkoutModal.depositSummaryZero : t.checkoutModal.depositSummaryStandard}
                     </span>
-                    <span className="text-[11px] text-slate-500">Cartes de débit & espèces acceptées</span>
+                    <span className="text-[11px] text-slate-500">{t.checkoutModal.acceptedCardsNotice}</span>
                 </div>
 
                 <form onSubmit={handleSubmit} className="p-6 space-y-5">
@@ -212,7 +214,7 @@ export function BookingCheckoutModal({
                     <div className="rounded-2xl bg-[#FAF7F2] border border-[#ECE5D9] p-3.5 grid grid-cols-2 gap-3 text-xs">
                         <div>
                             <span className="text-slate-400 text-[10px] uppercase font-bold block">
-                                Prise en charge
+                                {t.checkoutModal.pickupLabel}
                             </span>
                             <span className="font-bold text-slate-900 block truncate">
                                 {currentHub.airportName} ({currentHub.airportCode})
@@ -221,12 +223,12 @@ export function BookingCheckoutModal({
                         </div>
                         <div>
                             <span className="text-slate-400 text-[10px] uppercase font-bold block">
-                                Restitution
+                                {t.checkoutModal.returnLabel}
                             </span>
                             <span className="font-bold text-slate-900 block truncate">
-                                Même aéroport / Riad
+                                {currentHub.name}
                             </span>
-                            <span className="text-[11px] text-slate-500">{returnDate} ({days} j)</span>
+                            <span className="text-[11px] text-slate-500">{returnDate} ({days} {t.search.daysCount})</span>
                         </div>
                     </div>
 
@@ -235,13 +237,13 @@ export function BookingCheckoutModal({
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <div>
                                 <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">
-                                    Nom & Prénom *
+                                    {t.checkoutModal.fullNameLabel}
                                 </label>
                                 <div className="relative">
                                     <input
                                         type="text"
                                         required
-                                        placeholder="ex: Thomas Martin"
+                                        placeholder={t.checkoutModal.fullNamePlaceholder}
                                         value={fullName}
                                         onChange={(e) => setFullName(e.target.value)}
                                         className="w-full h-11 pl-9 pr-3 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-900 focus:outline-none focus:border-[#C9572C]"
@@ -252,13 +254,13 @@ export function BookingCheckoutModal({
 
                             <div>
                                 <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">
-                                    WhatsApp / Téléphone *
+                                    {t.checkoutModal.phoneLabel}
                                 </label>
                                 <div className="relative">
                                     <input
                                         type="tel"
                                         required
-                                        placeholder="+33 6 12 34 56 78"
+                                        placeholder={t.checkoutModal.phonePlaceholder}
                                         value={phone}
                                         onChange={(e) => setPhone(e.target.value)}
                                         className="w-full h-11 pl-9 pr-3 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-900 focus:outline-none focus:border-[#C9572C]"
@@ -271,13 +273,13 @@ export function BookingCheckoutModal({
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <div>
                                 <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">
-                                    Email de confirmation *
+                                    {t.checkoutModal.emailLabel}
                                 </label>
                                 <div className="relative">
                                     <input
                                         type="email"
                                         required
-                                        placeholder="thomas@exemple.com"
+                                        placeholder={t.checkoutModal.emailPlaceholder}
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                         className="w-full h-11 pl-9 pr-3 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-900 focus:outline-none focus:border-[#C9572C]"
@@ -288,12 +290,12 @@ export function BookingCheckoutModal({
 
                             <div>
                                 <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">
-                                    N° de Vol (Suivi de retard)
+                                    {t.checkoutModal.flightNumberLabel}
                                 </label>
                                 <div className="relative">
                                     <input
                                         type="text"
-                                        placeholder="ex: TO3040 / FR2104"
+                                        placeholder={t.checkoutModal.flightNumberPlaceholder}
                                         value={flightNumber}
                                         onChange={(e) => setFlightNumber(e.target.value)}
                                         className="w-full h-11 pl-9 pr-3 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-900 focus:outline-none focus:border-[#C9572C]"
@@ -305,11 +307,11 @@ export function BookingCheckoutModal({
 
                         <div>
                             <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">
-                                Demandes particulières (Optionnel)
+                                {t.checkoutModal.notesLabel}
                             </label>
                             <input
                                 type="text"
-                                placeholder="ex: Livraison directe Riad Médina, heure d'atterrissage tardive..."
+                                placeholder={t.checkoutModal.notesPlaceholder}
                                 value={notes}
                                 onChange={(e) => setNotes(e.target.value)}
                                 className="w-full h-10 px-3 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-900 focus:outline-none focus:border-[#C9572C]"
@@ -320,21 +322,21 @@ export function BookingCheckoutModal({
                     {/* Financial Split Box */}
                     <div className="rounded-2xl bg-[#FAF7F2] border border-[#ECE5D9] p-4 space-y-2 text-xs">
                         <div className="flex justify-between items-center text-slate-700">
-                            <span>Acompte à régler aujourd'hui (Stripe) :</span>
+                            <span>{t.bookingWidget.payTodayStripe} :</span>
                             <span className="text-base font-black text-[#C9572C] font-mono">
                                 {currency === "EUR" ? `${depositAcompteEur} €` : `${depositAcompteMad} MAD`}
                             </span>
                         </div>
                         <div className="flex justify-between items-center text-slate-500 text-[11px]">
-                            <span>Solde à payer à l'agence (remise des clés) :</span>
+                            <span>{t.bookingWidget.balanceOnSite}</span>
                             <span className="font-bold text-slate-900 font-mono">
                                 {currency === "EUR" ? `${balanceOnSiteEur} €` : `${balanceOnSiteMad} MAD`} (~{balanceOnSiteMad} DH)
                             </span>
                         </div>
                         <div className="flex justify-between items-center text-slate-500 text-[11px] pt-1 border-t border-slate-200/80">
-                            <span>Caution à la prise en charge :</span>
+                            <span>{t.bookingWidget.depositAtCounter} :</span>
                             <span className="font-bold text-slate-900 font-mono">
-                                {hasFranchiseZero ? "0 € (Franchise Zéro active)" : "300 € (restituée à la remise des clés)"}
+                                {hasFranchiseZero ? t.bookingWidget.zeroDepositActive : "300 €"}
                             </span>
                         </div>
                     </div>
@@ -353,18 +355,18 @@ export function BookingCheckoutModal({
                             className="w-full h-13 rounded-2xl bg-[#C9572C] hover:bg-[#B24922] text-white font-black text-sm tracking-wide shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98] disabled:opacity-50"
                         >
                             {isSubmitting ? (
-                                <span>Génération du Voucher...</span>
+                                <span>{t.checkoutModal.payStripeBtn}...</span>
                             ) : (
                                 <>
                                     <Sparkles size={16} />
                                     <span>
-                                        Confirmer & Générer mon Voucher • Acompte {currency === "EUR" ? `${depositAcompteEur} €` : `${depositAcompteMad} MAD`}
+                                        {t.checkoutModal.payStripeBtn} • {currency === "EUR" ? `${depositAcompteEur} €` : `${depositAcompteMad} MAD`}
                                     </span>
                                 </>
                             )}
                         </button>
                         <div className="text-center text-[10px] text-slate-400">
-                            Annulation gratuite jusqu'à 48h avant l'atterrissage • Données chiffrées SSL 256 bits
+                            {t.checkoutModal.cancelFreeNotice} • {t.checkoutModal.securePaymentNotice}
                         </div>
                     </div>
                 </form>

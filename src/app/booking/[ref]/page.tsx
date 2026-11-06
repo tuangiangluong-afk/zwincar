@@ -385,16 +385,27 @@ export default function BookingVoucherPage() {
                                 <div className="text-xs text-slate-600 font-medium">
                                     Glissez ou sélectionnez la photo de votre <strong>Permis de Conduire</strong> et <strong>Passeport / CNI</strong>
                                 </div>
-                                <label className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900 hover:bg-[#C9572C] text-white text-xs font-bold transition cursor-pointer">
-                                    <span>{kycUploading ? "Chiffrement et vérification..." : "Téléverser mes documents (JPG, PNG, PDF)"}</span>
-                                    <input
-                                        type="file"
-                                        accept="image/*,application/pdf"
-                                        multiple
-                                        onChange={handleKycUpload}
-                                        className="hidden"
-                                    />
-                                </label>
+                                <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 pt-1">
+                                    <label className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-[#C9572C] text-white text-xs font-bold transition cursor-pointer shadow-xs active:scale-95">
+                                        <span>{kycUploading ? "Chiffrement et vérification..." : "Téléverser mon permis (Photo/PDF)"}</span>
+                                        <input
+                                            type="file"
+                                            accept="image/*,application/pdf"
+                                            multiple
+                                            onChange={handleKycUpload}
+                                            className="hidden"
+                                        />
+                                    </label>
+                                    <a
+                                        href={`https://wa.me/212600000000?text=${encodeURIComponent(`Salam, voici mon permis pour le Fast-Track réservation ZwinCar ${ref}`)}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs font-bold transition shadow-xs active:scale-95"
+                                    >
+                                        <MessageCircle size={14} />
+                                        <span>Envoyer par WhatsApp au Loueur</span>
+                                    </a>
+                                </div>
                                 <div className="text-[10px] text-slate-400">
                                     Données chiffrées de bout en bout et automatiquement supprimées 48h après restitution.
                                 </div>

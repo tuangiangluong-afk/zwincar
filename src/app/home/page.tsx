@@ -43,45 +43,44 @@ export default function HomePage() {
                 {/* Authentic Moroccan Roadtrip Backdrop (Atlas Mountains & Golden Hour) */}
                 <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
                     <img
-                        src="https://images.unsplash.com/photo-1509099836639-18ba1795216d?auto=format&fit=crop&w=2000&q=85"
+                        src="/images/hero-morocco.webp"
                         alt="Route panoramique du Haut-Atlas Maroc au coucher de soleil"
-                        className="w-full h-[680px] md:h-[780px] object-cover object-center opacity-20 filter saturate-125"
+                        className="w-full h-[640px] md:h-[740px] object-cover object-center opacity-90 filter brightness-[0.85] contrast-105"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-b from-[#FAF7F2]/40 via-[#FAF7F2]/80 to-[#FAF7F2]"></div>
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[600px] bg-gradient-to-b from-[#C9572C]/10 via-[#FAF7F2]/30 to-transparent blur-3xl"></div>
+                    <div className="absolute inset-0 bg-gradient-to-b from-black/65 via-black/45 to-[#FAF7F2]"></div>
                 </div>
 
                 <div className="container mx-auto px-4 max-w-6xl relative z-10">
                     {/* Top Pill */}
                     <div className="flex justify-center mb-6">
-                        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-[#E7DFD5] shadow-xs text-xs font-bold text-slate-800">
+                        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-white/20 shadow-md text-xs font-bold text-slate-900">
                             <span className="w-2 h-2 rounded-full bg-[#C9572C]"></span>
                             <span>MAROC • RÉSERVATION DIRECTE AUPRÈS DES MEILLEURS LOUEURS LOCAUX</span>
                         </div>
                     </div>
 
                     {/* Headline */}
-                    <div className="text-center max-w-4xl mx-auto mb-10">
-                        <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-slate-900 tracking-tight leading-[1.08] mb-6">
+                    <div className="text-center max-w-4xl mx-auto mb-10 text-white">
+                        <h1 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.08] mb-6 drop-shadow-sm text-white">
                             Louez votre voiture au Maroc.{" "}
-                            <span className="text-[#C9572C]">Sans caution de 1 500 € bloquée.</span>{" "}
+                            <span className="text-[#E58B24]">Sans caution de 1 500 € bloquée.</span>{" "}
                             Sans mauvaise surprise.
                         </h1>
-                        <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
+                        <p className="text-base sm:text-lg md:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed drop-shadow-xs font-medium">
                             Marrakech, Agadir, Casablanca, Tanger, Fès, Ouarzazate. Véhicules récents, cartes de débit et espèces acceptées. Remise des clés directe au parking sans guichet.
                         </p>
 
                         {/* 3 Clear Guarantees */}
-                        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 mt-8 text-xs sm:text-sm font-semibold text-slate-700">
-                            <span className="flex items-center gap-2 bg-white px-3.5 py-1.5 rounded-full border border-[#E7DFD5]">
+                        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 mt-8 text-xs sm:text-sm font-semibold text-slate-800">
+                            <span className="flex items-center gap-2 bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/40 shadow-sm">
                                 <ShieldCheck size={16} className="text-[#C9572C]" />
                                 0 € de caution avec Franchise Zéro (ou 300 € standard)
                             </span>
-                            <span className="flex items-center gap-2 bg-white px-3.5 py-1.5 rounded-full border border-[#E7DFD5]">
+                            <span className="flex items-center gap-2 bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/40 shadow-sm">
                                 <KeyRound size={16} className="text-slate-800" />
                                 Modèle exact garanti
                             </span>
-                            <span className="flex items-center gap-2 bg-white px-3.5 py-1.5 rounded-full border border-[#E7DFD5]">
+                            <span className="flex items-center gap-2 bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/40 shadow-sm">
                                 <CreditCard size={16} className="text-slate-800" />
                                 Débit & Espèces acceptés
                             </span>

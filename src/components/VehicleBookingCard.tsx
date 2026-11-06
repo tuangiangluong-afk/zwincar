@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import { VehicleModel, MOROCCAN_HUBS, UPSELL_OPTIONS } from "@/lib/morocco-data";
 import { DEFAULT_HUB_DISTRIBUTION, DEFAULT_VEHICLE_STOCK } from "@/lib/affiliate";
+import { Locale, getTranslation } from "@/lib/i18n";
 import UpsellSelector from "@/components/UpsellSelector";
 import { BookingCheckoutModal } from "@/components/BookingCheckoutModal";
 import { AffiliateExitDrawer } from "@/components/AffiliateExitDrawer";
@@ -24,12 +26,23 @@ import {
 interface VehicleBookingCardProps {
     vehicle: VehicleModel;
     defaultHubSlug?: string;
+    locale?: Locale;
 }
 
 export default function VehicleBookingCard({
     vehicle,
     defaultHubSlug = "marrakech",
+    locale: propLocale,
 }: VehicleBookingCardProps) {
+    const pathname = usePathname() || "";
+    let activeLocale: Locale = propLocale || "fr";
+    if (!propLocale) {
+        if (pathname.startsWith("/en")) activeLocale = "en";
+        else if (pathname.startsWith("/es")) activeLocale = "es";
+        else if (pathname.startsWith("/nl")) activeLocale = "nl";
+    }
+
+    const t = getTranslation(activeLocale);
     const today = new Date();
     const tomorrow = new Date(today);
     tomorrow.setDate(today.getDate() + 2);
@@ -125,11 +138,8 @@ export default function VehicleBookingCard({
                     <ShieldCheck size={18} className="text-[#C9572C] shrink-0 mt-0.5" />
                     <div>
                         <span className="font-bold text-slate-900 block">
-                            {hasFranchiseZero ? "Caution : 0 € (Option Franchise Zéro active)" : "Caution : 300 € (ou 0 € avec l'option Franchise Zéro)"}
+                            {hasFranchiseZero ? t.bookingWidget.depositNoticeZero : t.bookingWidget.depositNoticeStandard}
                         </span>
-                        <p className="text-[11px] text-slate-500 mt-0.5">
-                            Aucun blocage de 1 500 € sur votre carte. Cartes de débit & espèces acceptées.
-                        </p>
                     </div>
                 </div>
             )}
@@ -138,13 +148,13 @@ export default function VehicleBookingCard({
             <div className="flex items-baseline justify-between pb-4 border-b border-slate-100">
                 <div>
                     <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
-                        Tarif Garanti Partenaire
+                        {t.bookingWidget.partnerRate}
                     </div>
                     <div className="flex items-baseline gap-2 mt-0.5">
                         <span className="text-3xl font-black text-slate-900">
                             {currency === "EUR" ? `${vehicle.dailyPriceEur} €` : `${vehicle.dailyPriceMad} MAD`}
                         </span>
-                        <span className="text-xs text-slate-500 font-medium">/ jour</span>
+                        <span className="text-xs text-slate-500 font-medium">/ {t.bookingWidget.perDay}</span>
                         <span className="text-xs font-mono text-slate-400 ml-1">
                             ({currency === "EUR" ? `${vehicle.dailyPriceMad} MAD` : `${vehicle.dailyPriceEur} €`})
                         </span>
@@ -178,7 +188,7 @@ export default function VehicleBookingCard({
             <div className="space-y-3">
                 <div>
                     <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">
-                        Lieu de prise en charge
+                        {t.bookingWidget.pickupLocationLabel}
                     </label>
                     <div className="relative">
                         <select
@@ -201,10 +211,10 @@ export default function VehicleBookingCard({
                             <span className="truncate">{currentHub.meetingPointDetail}</span>
                         </span>
                         <a
-                            href={`/maroc/${currentHub.slug}/${vehicle.id}`}
+                            href={`/${activeLocale === "fr" ? "maroc" : activeLocale}/${currentHub.slug}/${vehicle.id}`}
                             className="font-bold text-[#C9572C] hover:underline shrink-0"
                         >
-                            Fiche {currentHub.name} →
+                            {t.bookingWidget.hubSheetLink.replace("{hub}", currentHub.name)}
                         </a>
                     </div>
                 </div>
@@ -212,7 +222,7 @@ export default function VehicleBookingCard({
                 <div className="grid grid-cols-2 gap-3">
                     <div>
                         <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">
-                            Début location
+                            {t.bookingWidget.pickupDateLabel}
                         </label>
                         <input
                             type="date"
@@ -223,7 +233,7 @@ export default function VehicleBookingCard({
                     </div>
                     <div>
                         <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">
-                            Fin location ({days} jours)
+                            {t.bookingWidget.returnDateLabel} ({days} {t.search.daysCount})
                         </label>
                         <input
                             type="date"
@@ -241,9 +251,9 @@ export default function VehicleBookingCard({
                 <div className="flex items-start gap-2">
                     <Fuel size={15} className="text-amber-700 shrink-0 mt-0.5" />
                     <div>
-                        <span className="font-bold text-amber-950">Politique Carburant : Same-to-Same</span>
+                        <span className="font-bold text-amber-950">{t.bookingWidget.fuelPolicy}</span>
                         <p className="text-[11px] text-amber-800 leading-snug mt-0.5">
-                            {vehicle.fuelPolicyNote}
+                            {t.bookingWidget.fuelPolicyDesc}
                         </p>
                     </div>
                 </div>
@@ -251,9 +261,9 @@ export default function VehicleBookingCard({
                 <div className="flex items-start gap-2 pt-2 border-t border-amber-200/50">
                     <Compass size={15} className="text-amber-700 shrink-0 mt-0.5" />
                     <div>
-                        <span className="font-bold text-amber-950">Autorisation Pistes :</span>
+                        <span className="font-bold text-amber-950">{t.bookingWidget.pistePolicy}</span>
                         <p className="text-[11px] text-amber-800 leading-snug mt-0.5">
-                            {vehicle.pistePolicy}
+                            {t.bookingWidget.pistePolicyDesc}
                         </p>
                     </div>
                 </div>
@@ -266,13 +276,14 @@ export default function VehicleBookingCard({
                     selectedUpsells={selectedUpsells}
                     onToggle={handleToggleUpsell}
                     currency={currency}
+                    locale={activeLocale}
                 />
             </div>
 
             {/* Split Financial Breakdown (Transparency & Max Cash Flow) */}
             <div className="rounded-2xl bg-[#FAF7F2] border border-[#ECE5D9] p-4 space-y-2.5 text-xs">
                 <div className="flex justify-between text-slate-600">
-                    <span>Location ({days} jours x {currency === "EUR" ? `${vehicle.dailyPriceEur} €` : `${vehicle.dailyPriceMad} MAD`})</span>
+                    <span>{t.catalog.all} ({days} {t.search.daysCount} x {currency === "EUR" ? `${vehicle.dailyPriceEur} €` : `${vehicle.dailyPriceMad} MAD`})</span>
                     <span className="font-semibold text-slate-900 font-mono">
                         {currency === "EUR" ? `${baseRentalEur} €` : `${baseRentalMad} MAD`}
                     </span>
@@ -280,7 +291,7 @@ export default function VehicleBookingCard({
 
                 {(vendorUpsellsEur > 0 || platformUpsellsEur > 0) && (
                     <div className="flex justify-between text-slate-600">
-                        <span>Options sélectionnées</span>
+                        <span>{t.bookingWidget.selectedOptions}</span>
                         <span className="font-semibold text-[#C9572C] font-mono">
                             {currency === "EUR"
                                 ? `+${vendorUpsellsEur + platformUpsellsEur} €`
@@ -290,9 +301,9 @@ export default function VehicleBookingCard({
                 )}
 
                 <div className="flex justify-between text-slate-600">
-                    <span>Caution à la prise en charge</span>
+                    <span>{t.bookingWidget.depositAtCounter}</span>
                     <span className="font-bold text-slate-900 font-mono">
-                        {hasFranchiseZero ? "0 € (Franchise Zéro active)" : "300 € (restituée au retour)"}
+                        {hasFranchiseZero ? t.bookingWidget.zeroDepositActive : "300 €"}
                     </span>
                 </div>
 
@@ -300,10 +311,10 @@ export default function VehicleBookingCard({
                 <div className="pt-3 border-t border-slate-200/80 flex items-baseline justify-between">
                     <div>
                         <div className="font-black text-slate-900 text-sm">
-                            Acompte à régler aujourd'hui (Stripe)
+                            {t.bookingWidget.payTodayStripe}
                         </div>
                         <div className="text-[10px] text-slate-400">
-                            Bloque définitivement le véhicule et vos options
+                            {t.bookingWidget.payTodayNote}
                         </div>
                     </div>
                     <div className="text-xl font-black text-[#C9572C]">
@@ -312,7 +323,7 @@ export default function VehicleBookingCard({
                 </div>
 
                 <div className="flex justify-between text-slate-500 pt-1 text-[11px]">
-                    <span>Solde à régler à l'agence (remise des clés) :</span>
+                    <span>{t.bookingWidget.balanceOnSite}</span>
                     <span className="font-bold text-slate-800 font-mono">
                         {currency === "EUR" ? `${balanceOnSiteEur} €` : `${balanceOnSiteMad} MAD`} (~{balanceOnSiteMad} DH)
                     </span>
@@ -337,7 +348,7 @@ export default function VehicleBookingCard({
                         className="w-full h-12 rounded-2xl bg-[#C9572C] hover:bg-[#B24922] text-white font-bold text-sm tracking-wide shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]"
                     >
                         <Lock size={15} />
-                        <span>Bloquer ce véhicule • Acompte {currency === "EUR" ? `${depositAcompteEur} €` : `${depositAcompteMad} MAD`}</span>
+                        <span>{t.bookingWidget.lockVehicleBtn.replace("{amount}", currency === "EUR" ? `${depositAcompteEur} €` : `${depositAcompteMad} MAD`)}</span>
                     </button>
                 )}
 
@@ -350,7 +361,7 @@ export default function VehicleBookingCard({
                     className="w-full h-11 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-xs cursor-pointer"
                 >
                     <MessageCircle size={15} className="text-emerald-600" />
-                    <span>Demander disponibilité sur WhatsApp</span>
+                    <span>{t.bookingWidget.whatsappAvailabilityBtn}</span>
                 </a>
             </div>
 
@@ -358,27 +369,27 @@ export default function VehicleBookingCard({
             <div className="grid grid-cols-2 gap-2 text-[11px] text-slate-500 pt-1">
                 <span className="flex items-center gap-1.5">
                     <Check size={13} className="text-emerald-600 shrink-0" />
-                    Annulation sans frais jusqu'à 48h
+                    {t.bookingWidget.freeCancellationNotice}
                 </span>
                 <span className="flex items-center gap-1.5">
                     <Check size={13} className="text-emerald-600 shrink-0" />
-                    Paiement sécurisé par Stripe
+                    {t.bookingWidget.stripeNotice}
                 </span>
             </div>
 
             {/* Différence avec les courtiers à bas coût */}
             <div className="rounded-2xl bg-[#FAF7F2] border border-[#ECE5D9] p-3.5 space-y-2 text-[11px] text-slate-700">
                 <div className="font-bold text-slate-900 text-xs">
-                    Rappel transparence caution
+                    {t.bookingWidget.brokerComparisonTitle}
                 </div>
                 <div className="space-y-1.5 text-slate-600 text-[11px]">
                     <div className="flex items-start gap-1.5">
                         <span className="text-slate-400 font-bold shrink-0">•</span>
-                        <span><strong>Courtiers classiques :</strong> Bloquent 1 500 € à 2 500 € sur carte de crédit physique obligatoire à l'arrivée.</span>
+                        <span>{t.bookingWidget.brokerComparisonLegacy}</span>
                     </div>
                     <div className="flex items-start gap-1.5 pt-1.5 border-t border-[#E7DFD5]">
                         <span className="text-[#C9572C] font-bold shrink-0">•</span>
-                        <span><strong>ZwinCar :</strong> 0 € de caution avec Franchise Zéro (ou 300 € en formule standard). Cartes de débit & espèces acceptées. Remise des clés directe au parking.</span>
+                        <span>{t.bookingWidget.brokerComparisonZwincar}</span>
                     </div>
                 </div>
             </div>
@@ -402,6 +413,7 @@ export default function VehicleBookingCard({
                 balanceOnSiteEur={balanceOnSiteEur}
                 balanceOnSiteMad={balanceOnSiteMad}
                 currency={currency}
+                locale={activeLocale}
             />
 
             {/* Fallback Affiliation Drawer */}

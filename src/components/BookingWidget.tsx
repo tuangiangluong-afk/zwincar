@@ -1,25 +1,25 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import {
     MapPin,
     Calendar,
-    Clock,
     Search,
     ShieldCheck,
     Check,
     ChevronDown,
     Car,
-    Sparkles,
-    ArrowRightLeft,
 } from "lucide-react";
 import { MOROCCAN_HUBS } from "@/lib/morocco-data";
+import { Locale, getTranslation } from "@/lib/i18n";
 
 interface BookingWidgetProps {
     onSearch?: (searchState: SearchState) => void;
     compact?: boolean;
     city?: any;
     defaultHubSlug?: string;
+    locale?: Locale;
 }
 
 export interface SearchState {
@@ -34,11 +34,22 @@ export interface SearchState {
     noDepositOnly: boolean;
 }
 
-export default function BookingWidget({
+export function BookingWidget({
     onSearch,
     compact = false,
     defaultHubSlug = "marrakech",
+    locale: propLocale,
 }: BookingWidgetProps) {
+    const pathname = usePathname() || "";
+    let activeLocale: Locale = propLocale || "fr";
+    if (!propLocale) {
+        if (pathname.startsWith("/en")) activeLocale = "en";
+        else if (pathname.startsWith("/es")) activeLocale = "es";
+        else if (pathname.startsWith("/nl")) activeLocale = "nl";
+    }
+
+    const t = getTranslation(activeLocale);
+
     const today = new Date();
     const tomorrow = new Date(today);
     tomorrow.setDate(today.getDate() + 2);
@@ -72,7 +83,8 @@ export default function BookingWidget({
         setTimeout(() => {
             setIsSearching(false);
             if (typeof window !== "undefined" && state.pickupHub !== defaultHubSlug) {
-                window.location.href = `/maroc/${state.pickupHub}#vehicle-catalog`;
+                const prefix = activeLocale === "fr" ? "/maroc" : `/${activeLocale}`;
+                window.location.href = `${prefix}/${state.pickupHub}#vehicle-catalog`;
                 return;
             }
             const catalog = document.getElementById("vehicle-catalog");
@@ -105,7 +117,7 @@ export default function BookingWidget({
                             }`}
                         >
                             <Check size={13} className={state.sameReturnLocation ? "opacity-100" : "opacity-0"} />
-                            Restitution au même endroit
+                            {t.search.sameReturn}
                         </button>
 
                         <button
@@ -124,14 +136,14 @@ export default function BookingWidget({
                             }`}
                         >
                             <Car size={13} />
-                            Boîte Automatique
+                            {t.search.autoOnly}
                         </button>
                     </div>
 
                     {/* Zero caution badge indicator */}
                     <div className="flex items-center gap-1.5 text-slate-700 bg-[#FAF7F2] border border-[#E7DFD5] px-3 py-1.5 rounded-full font-semibold">
                         <ShieldCheck size={14} className="text-[#C9572C]" />
-                        <span>Pas d'empreinte de 1 500 € • Débit & Cash acceptés</span>
+                        <span>{t.search.noDepositHoldNotice}</span>
                     </div>
                 </div>
 
@@ -144,7 +156,7 @@ export default function BookingWidget({
                         } relative`}
                     >
                         <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">
-                            Prise en charge (Aéroport ou Ville)
+                            {t.search.pickupLocation}
                         </label>
                         <div
                             onClick={() => setShowHubDropdown(!showHubDropdown)}
@@ -168,7 +180,7 @@ export default function BookingWidget({
                         {showHubDropdown && (
                             <div className="absolute top-[80px] left-0 right-0 bg-white border border-slate-200 rounded-2xl shadow-xl z-50 p-2 max-h-72 overflow-y-auto">
                                 <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-3 py-1.5">
-                                    Principaux Aéroports & Villes du Maroc
+                                    {t.search.pickupPlaceholder}
                                 </div>
                                 {MOROCCAN_HUBS.map((hub) => (
                                     <button
@@ -195,7 +207,7 @@ export default function BookingWidget({
                                             </span>
                                         </div>
                                         <span className="text-xs text-slate-500 font-mono">
-                                            dès {hub.avgDailyPriceEur}€/j
+                                            {hub.avgDailyPriceEur}€ / {t.bookingWidget.perDay}
                                         </span>
                                     </button>
                                 ))}
@@ -207,7 +219,7 @@ export default function BookingWidget({
                     {!state.sameReturnLocation && (
                         <div className="md:col-span-3">
                             <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">
-                                Restitution
+                                {t.search.dropoffLocation}
                             </label>
                             <select
                                 value={state.returnHub}
@@ -232,7 +244,7 @@ export default function BookingWidget({
                         }
                     >
                         <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">
-                            Début de location
+                            {t.search.pickupDate}
                         </label>
                         <div className="flex items-center h-[54px] rounded-2xl bg-[#FAF7F2] border border-[#E7DFD5] px-3 gap-2">
                             <Calendar size={16} className="text-slate-400 shrink-0" />
@@ -263,7 +275,7 @@ export default function BookingWidget({
                         }
                     >
                         <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">
-                            Restitution
+                            {t.search.returnDate}
                         </label>
                         <div className="flex items-center h-[54px] rounded-2xl bg-[#FAF7F2] border border-[#E7DFD5] px-3 gap-2">
                             <Calendar size={16} className="text-slate-400 shrink-0" />
@@ -293,15 +305,15 @@ export default function BookingWidget({
                     <div className="flex items-center gap-3 text-xs text-slate-500">
                         <span className="flex items-center gap-1">
                             <Check size={14} className="text-[#C9572C]" />
-                            Modèle garanti
+                            {t.search.exactModelPill}
                         </span>
                         <span className="flex items-center gap-1">
                             <Check size={14} className="text-[#C9572C]" />
-                            Annulation gratuite jusqu'à 48h
+                            {t.search.freeCancellationPill}
                         </span>
                         <span className="flex items-center gap-1 hidden sm:flex">
                             <Check size={14} className="text-[#C9572C]" />
-                            Livraison Riad/Aéroport offerte
+                            {t.search.airportDeliveryPill}
                         </span>
                     </div>
 
@@ -311,11 +323,12 @@ export default function BookingWidget({
                         className="w-full sm:w-auto h-[52px] px-8 rounded-2xl bg-[#C9572C] hover:bg-[#B24922] text-white font-bold text-sm tracking-wide shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]"
                     >
                         <Search size={16} />
-                        <span>{isSearching ? "Recherche en cours..." : "Afficher les véhicules disponibles"}</span>
+                        <span>{isSearching ? t.search.searchingBtn : t.search.ctaButton}</span>
                     </button>
                 </div>
             </div>
         </div>
     );
 }
-export { BookingWidget };
+
+export default BookingWidget;

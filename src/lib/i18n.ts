@@ -27,15 +27,24 @@ export const TRANSLATIONS: Record<
             bookNow: string;
         };
         search: {
+            sameReturn: string;
+            oneWay: string;
+            allGearboxes: string;
+            autoOnly: string;
+            zeroDepositOnly: string;
+            noDepositHoldNotice: string;
             pickupLocation: string;
+            dropoffLocation: string;
             pickupPlaceholder: string;
             pickupDate: string;
             returnDate: string;
             daysCount: string;
             ctaButton: string;
+            searchingBtn: string;
             noDepositPill: string;
             exactModelPill: string;
             airportDeliveryPill: string;
+            freeCancellationPill: string;
         };
         catalog: {
             title: string;
@@ -57,12 +66,22 @@ export const TRANSLATIONS: Record<
         };
         bookingWidget: {
             guaranteedRate: string;
+            partnerRate: string;
+            perDay: string;
+            depositNoticeZero: string;
+            depositNoticeStandard: string;
+            pickupLocationLabel: string;
+            pickupDateLabel: string;
+            returnDateLabel: string;
+            hubSheetLink: string;
             pickupReturn: string;
             sameAirportNotice: string;
             fuelPolicy: string;
             fuelPolicyDesc: string;
             pistePolicy: string;
             pistePolicyDesc: string;
+            optionsTitle: string;
+            optionsSubtitle: string;
             breakdownTitle: string;
             rentalBase: string;
             selectedOptions: string;
@@ -73,6 +92,13 @@ export const TRANSLATIONS: Record<
             payTodayNote: string;
             balanceOnSite: string;
             ctaProceed: string;
+            lockVehicleBtn: string;
+            whatsappAvailabilityBtn: string;
+            freeCancellationNotice: string;
+            stripeNotice: string;
+            brokerComparisonTitle: string;
+            brokerComparisonLegacy: string;
+            brokerComparisonZwincar: string;
         };
         checkoutModal: {
             modalTitle: string;
@@ -139,15 +165,24 @@ export const TRANSLATIONS: Record<
             bookNow: "Réserver",
         },
         search: {
+            sameReturn: "Restitution au même endroit",
+            oneWay: "Aller simple (+ frais)",
+            allGearboxes: "Toutes boîtes",
+            autoOnly: "Boîte Automatique",
+            zeroDepositOnly: "Zéro caution uniquement",
+            noDepositHoldNotice: "Pas d'empreinte de 1 500 € • Débit & Cash acceptés",
             pickupLocation: "Lieu de prise en charge",
+            dropoffLocation: "Lieu de restitution",
             pickupPlaceholder: "Choisir un aéroport ou une ville...",
             pickupDate: "Date de départ",
             returnDate: "Date de retour",
             daysCount: "jours",
             ctaButton: "Voir les voitures disponibles",
+            searchingBtn: "Recherche en cours...",
             noDepositPill: "Zéro caution CB bloquée",
             exactModelPill: "Modèle exact garanti",
             airportDeliveryPill: "Livraison aéroport & riad offerte",
+            freeCancellationPill: "Annulation gratuite jusqu'à 48h",
         },
         catalog: {
             title: "Flotte Réelle & Tarifs Transparents",
@@ -169,12 +204,22 @@ export const TRANSLATIONS: Record<
         },
         bookingWidget: {
             guaranteedRate: "Tarif Garanti Partenaire",
+            partnerRate: "Tarif Garanti Partenaire",
+            perDay: "jour",
+            depositNoticeZero: "Caution : 0 € (Option Franchise Zéro active). Aucun blocage de 1 500 € sur votre carte. Cartes de débit & espèces acceptées.",
+            depositNoticeStandard: "Caution : 300 € (restituée au retour). Aucun blocage abusif. Débit & espèces acceptés.",
+            pickupLocationLabel: "Lieu de prise en charge",
+            pickupDateLabel: "Début location",
+            returnDateLabel: "Fin location",
+            hubSheetLink: "Fiche {hub} →",
             pickupReturn: "Prise en charge & Restitution",
             sameAirportNotice: "Restitution au même endroit ou à votre Riad sans frais cachés.",
             fuelPolicy: "Politique Carburant : Same-to-Same",
             fuelPolicyDesc: "Vous rendez le véhicule avec le même niveau qu'au départ. Pas de surfacturation de plein.",
             pistePolicy: "Autorisation Pistes :",
             pistePolicyDesc: "Pistes carrossables menant aux hébergements et désert autorisées.",
+            optionsTitle: "Options & Services Voyage",
+            optionsSubtitle: "Sélectionnez vos options utiles. Modifiable sans frais avant la prise en charge.",
             breakdownTitle: "Détail du Tarif & Modalités",
             rentalBase: "Location du véhicule",
             selectedOptions: "Options sélectionnées",
@@ -185,6 +230,13 @@ export const TRANSLATIONS: Record<
             payTodayNote: "Bloque définitivement le véhicule et vos options",
             balanceOnSite: "Solde à régler à l'agence (remise des clés) :",
             ctaProceed: "Continuer vers la Réservation",
+            lockVehicleBtn: "Bloquer ce véhicule • Acompte {amount}",
+            whatsappAvailabilityBtn: "Demander disponibilité sur WhatsApp",
+            freeCancellationNotice: "Annulation sans frais jusqu'à 48h",
+            stripeNotice: "Paiement sécurisé par Stripe",
+            brokerComparisonTitle: "Rappel transparence caution",
+            brokerComparisonLegacy: "Courtiers classiques : Bloquent 1 500 € à 2 500 € sur carte de crédit physique obligatoire à l'arrivée.",
+            brokerComparisonZwincar: "ZwinCar : 0 € de caution avec Franchise Zéro (ou 300 € en formule standard). Cartes de débit & espèces acceptées. Remise directe au parking.",
         },
         checkoutModal: {
             modalTitle: "Réservation Sécurisée & Modèle Garanti",
@@ -250,15 +302,24 @@ export const TRANSLATIONS: Record<
             bookNow: "Book Now",
         },
         search: {
+            sameReturn: "Return to same location",
+            oneWay: "One-way rental (+ fee)",
+            allGearboxes: "All gearboxes",
+            autoOnly: "Automatic only",
+            zeroDepositOnly: "Zero deposit only",
+            noDepositHoldNotice: "No €1,500 credit card hold • Debit cards & cash accepted",
             pickupLocation: "Pick-up Location",
+            dropoffLocation: "Drop-off Location",
             pickupPlaceholder: "Select an airport or city...",
             pickupDate: "Pick-up Date",
             returnDate: "Drop-off Date",
             daysCount: "days",
             ctaButton: "View Available Cars",
+            searchingBtn: "Searching available cars...",
             noDepositPill: "No €1,500 credit card freeze",
             exactModelPill: "Exact model guaranteed",
             airportDeliveryPill: "Free airport & riad delivery",
+            freeCancellationPill: "Free cancellation up to 48h",
         },
         catalog: {
             title: "Real Fleet & Transparent Rates",
@@ -280,12 +341,22 @@ export const TRANSLATIONS: Record<
         },
         bookingWidget: {
             guaranteedRate: "Guaranteed Partner Price",
+            partnerRate: "Guaranteed Partner Rate",
+            perDay: "day",
+            depositNoticeZero: "Deposit: €0 (Zero-Excess option active). No €1,500 blocked on your card. Debit cards & cash accepted.",
+            depositNoticeStandard: "Deposit: €300 (returned upon drop-off). No abusive card holds. Debit & cash accepted.",
+            pickupLocationLabel: "Pick-up location",
+            pickupDateLabel: "Pick-up date",
+            returnDateLabel: "Drop-off date",
+            hubSheetLink: "{hub} Guide →",
             pickupReturn: "Pick-up & Drop-off",
             sameAirportNotice: "Drop off at the same spot or your Riad with zero hidden surprises.",
             fuelPolicy: "Fuel Policy: Same-to-Same",
             fuelPolicyDesc: "Return the vehicle with the exact same fuel level. No prepaid tank markups.",
             pistePolicy: "Off-Road & Trail Permission:",
             pistePolicyDesc: "Accessible gravel tracks leading to hotels and desert camps officially permitted.",
+            optionsTitle: "Travel Options & Extras",
+            optionsSubtitle: "Select your optional add-ons. Fully amendable free of charge before pick-up.",
             breakdownTitle: "Price Breakdown & Terms",
             rentalBase: "Vehicle rental",
             selectedOptions: "Selected options",
@@ -296,6 +367,13 @@ export const TRANSLATIONS: Record<
             payTodayNote: "Secures the vehicle and selected options",
             balanceOnSite: "Balance due on collection (to local partner):",
             ctaProceed: "Continue to Booking",
+            lockVehicleBtn: "Lock this vehicle • Deposit {amount}",
+            whatsappAvailabilityBtn: "Check availability on WhatsApp",
+            freeCancellationNotice: "Free cancellation up to 48h",
+            stripeNotice: "Secure payment powered by Stripe",
+            brokerComparisonTitle: "Deposit transparency reminder",
+            brokerComparisonLegacy: "Standard brokers: Block €1,500 to €2,500 on a mandatory physical credit card upon arrival.",
+            brokerComparisonZwincar: "ZwinCar: €0 deposit with Zero-Excess (or €300 standard). Debit cards & cash accepted. Direct lot handover.",
         },
         checkoutModal: {
             modalTitle: "Secure Booking & Guaranteed Model",
@@ -361,15 +439,24 @@ export const TRANSLATIONS: Record<
             bookNow: "Reservar",
         },
         search: {
+            sameReturn: "Devolver en el mismo lugar",
+            oneWay: "Solo ida (+ suplemento)",
+            allGearboxes: "Todas las cajas",
+            autoOnly: "Solo Automático",
+            zeroDepositOnly: "Solo sin fianza",
+            noDepositHoldNotice: "Sin bloqueo de 1.500 € en tarjeta • Débito y efectivo aceptados",
             pickupLocation: "Punto de recogida",
+            dropoffLocation: "Punto de devolución",
             pickupPlaceholder: "Seleccione un aeropuerto o ciudad...",
             pickupDate: "Fecha de salida",
             returnDate: "Fecha de devolución",
             daysCount: "días",
             ctaButton: "Ver coches disponibles",
+            searchingBtn: "Buscando coches disponibles...",
             noDepositPill: "Sin retención de 1.500 € en tarjeta",
             exactModelPill: "Modelo exacto garantizado",
             airportDeliveryPill: "Entrega gratuita en aeropuerto y riad",
+            freeCancellationPill: "Cancelación gratuita hasta 48h",
         },
         catalog: {
             title: "Flota Real y Precios Transparentes",
@@ -391,12 +478,22 @@ export const TRANSLATIONS: Record<
         },
         bookingWidget: {
             guaranteedRate: "Tarifa Garantizada de Socio",
+            partnerRate: "Tarifa Garantizada de Socio",
+            perDay: "día",
+            depositNoticeZero: "Fianza: 0 € (Opción Franquicia Cero activa). Sin bloqueo de 1.500 € en tarjeta. Débito y efectivo aceptados.",
+            depositNoticeStandard: "Fianza: 300 € (devuelta al entregar). Sin bloqueos abusivos. Débito y efectivo aceptados.",
+            pickupLocationLabel: "Lugar de recogida",
+            pickupDateLabel: "Fecha de recogida",
+            returnDateLabel: "Fecha de devolución",
+            hubSheetLink: "Guía {hub} →",
             pickupReturn: "Recogida y Devolución",
             sameAirportNotice: "Devolución en el mismo punto o en su Riad sin costes ocultos.",
             fuelPolicy: "Política de Combustible: Mismo a Mismo",
             fuelPolicyDesc: "Devuelve el coche con el mismo nivel de combustible. Sin recargos abusivos de depósito.",
             pistePolicy: "Autorización de Pistas:",
             pistePolicyDesc: "Pistas transitables a hoteles y campamentos del desierto autorizadas.",
+            optionsTitle: "Opciones y Extras de Viaje",
+            optionsSubtitle: "Seleccione sus extras. Modificables sin coste antes de la recogida.",
             breakdownTitle: "Desglose de Tarifas y Condiciones",
             rentalBase: "Alquiler de vehículo",
             selectedOptions: "Opciones seleccionadas",
@@ -407,6 +504,13 @@ export const TRANSLATIONS: Record<
             payTodayNote: "Bloquea definitivamente el coche y sus opciones",
             balanceOnSite: "Saldo a pagar a la agencia local (en mano):",
             ctaProceed: "Continuar con la Reserva",
+            lockVehicleBtn: "Reservar este coche • Anticipo {amount}",
+            whatsappAvailabilityBtn: "Consultar disponibilidad por WhatsApp",
+            freeCancellationNotice: "Cancelación gratuita hasta 48h",
+            stripeNotice: "Pago seguro con Stripe",
+            brokerComparisonTitle: "Recordatorio de transparencia de fianza",
+            brokerComparisonLegacy: "Brokers habituales: Bloquean de 1.500 € a 2.500 € en tarjeta de crédito física obligatoria a la llegada.",
+            brokerComparisonZwincar: "ZwinCar: 0 € de fianza con Franquicia Cero (o 300 € estándar). Débito y efectivo aceptados. Entrega directa en parking.",
         },
         checkoutModal: {
             modalTitle: "Reserva Segura y Modelo Garantizado",
@@ -472,15 +576,24 @@ export const TRANSLATIONS: Record<
             bookNow: "Nu Boeken",
         },
         search: {
+            sameReturn: "Inleveren op dezelfde locatie",
+            oneWay: "Enkele reis (+ toeslag)",
+            allGearboxes: "Alle transmissies",
+            autoOnly: "Alleen automaat",
+            zeroDepositOnly: "Alleen zonder borg",
+            noDepositHoldNotice: "Geen blokkade van € 1.500 op creditcard • Betaalpas & contant geaccepteerd",
             pickupLocation: "Ophaallocatie",
+            dropoffLocation: "Inleverlocatie",
             pickupPlaceholder: "Kies een luchthaven of stad...",
             pickupDate: "Ophaaldatum",
             returnDate: "Inleverdatum",
             daysCount: "dagen",
             ctaButton: "Bekijk beschikbare auto's",
+            searchingBtn: "Beschikbaarheid controleren...",
             noDepositPill: "Geen €1.500 creditcard blokkade",
             exactModelPill: "Exact model gegarandeerd",
             airportDeliveryPill: "Gratis levering op luchthaven & riad",
+            freeCancellationPill: "Gratis annuleren tot 48 uur",
         },
         catalog: {
             title: "Echte Vloot & Eerlijke Prijzen",
@@ -502,12 +615,22 @@ export const TRANSLATIONS: Record<
         },
         bookingWidget: {
             guaranteedRate: "Gegarandeerde Partnerprijs",
+            partnerRate: "Gegarandeerd Partnertarief",
+            perDay: "dag",
+            depositNoticeZero: "Borg: € 0 (Geen Eigen Risico actief). Geen blokkade van € 1.500 op creditcard. Betaalpas & contant geaccepteerd.",
+            depositNoticeStandard: "Borg: € 300 (terugbetaald bij inlevering). Geen oneerlijke blokkades. Betaalpas & contant geaccepteerd.",
+            pickupLocationLabel: "Ophaallocatie",
+            pickupDateLabel: "Ophaaldatum",
+            returnDateLabel: "Inleverdatum",
+            hubSheetLink: "{hub} Gids →",
             pickupReturn: "Ophalen & Inleveren",
             sameAirportNotice: "Inleveren op dezelfde locatie of bij uw riad zonder verborgen kosten.",
             fuelPolicy: "Brandstofbeleid: Same-to-Same",
             fuelPolicyDesc: "Lever de auto in met hetzelfde brandstofniveau. Geen dure verplichte tankkosten.",
             pistePolicy: "Off-Road & Pistes:",
             pistePolicyDesc: "Toegankelijke grindwegen naar hotels en woestijnkampen officieel toegestaan.",
+            optionsTitle: "Reisopties & Extra's",
+            optionsSubtitle: "Kies uw extra opties. Kosteloos aanpasbaar vóór het ophalen.",
             breakdownTitle: "Prijsoverzicht & Voorwaarden",
             rentalBase: "Autohuur",
             selectedOptions: "Geselecteerde opties",
@@ -518,6 +641,13 @@ export const TRANSLATIONS: Record<
             payTodayNote: "Blokkeert definitief het voertuig en uw opties",
             balanceOnSite: "Restant te betalen bij aflevering (aan lokale partner):",
             ctaProceed: "Verder naar Reservering",
+            lockVehicleBtn: "Auto reserveren • Aanbetaling {amount}",
+            whatsappAvailabilityBtn: "Beschikbaarheid vragen via WhatsApp",
+            freeCancellationNotice: "Gratis annuleren tot 48 uur",
+            stripeNotice: "Veilige betaling via Stripe",
+            brokerComparisonTitle: "Transparantie over borgsommen",
+            brokerComparisonLegacy: "Klassieke brokers: Blokkeren € 1.500 tot € 2.500 op verplichte fysieke creditcard bij aankomst.",
+            brokerComparisonZwincar: "ZwinCar: € 0 borg met Geen Eigen Risico (of € 300 standaard). Betaalpas & contant geaccepteerd. Directe overdracht op parking.",
         },
         checkoutModal: {
             modalTitle: "Veilige Boeking & Gegarandeerd Model",

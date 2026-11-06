@@ -3,12 +3,14 @@
 import React from "react";
 import { Check, ShieldCheck, Wifi, Baby, Users, Clock, Tag } from "lucide-react";
 import { UPSELL_OPTIONS } from "@/lib/morocco-data";
+import { Locale, getTranslation } from "@/lib/i18n";
 
 interface UpsellSelectorProps {
     days?: number;
     selectedUpsells: string[];
     onToggle: (id: string) => void;
     currency?: "EUR" | "MAD";
+    locale?: Locale;
 }
 
 export default function UpsellSelector({
@@ -16,7 +18,16 @@ export default function UpsellSelector({
     selectedUpsells,
     onToggle,
     currency = "EUR",
+    locale = "fr",
 }: UpsellSelectorProps) {
+    const t = getTranslation(locale);
+
+    const labels = {
+        included: { fr: "Inclus", en: "Included", es: "Incluido", nl: "Inbegrepen" }[locale] || "Inclus",
+        perDay: { fr: "/j", en: "/day", es: "/día", nl: "/dag" }[locale] || "/j",
+        stay: { fr: "séjour", en: "stay", es: "estancia", nl: "verblijf" }[locale] || "séjour",
+    };
+
     const getIcon = (id: string, isSelected: boolean) => {
         const iconClass = isSelected ? "text-[#C9572C]" : "text-slate-600";
         switch (id) {
@@ -40,10 +51,10 @@ export default function UpsellSelector({
             <div className="flex items-center justify-between">
                 <div>
                     <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                        Options & Services Voyage
+                        {t.bookingWidget.optionsTitle}
                     </h4>
                     <p className="text-[11px] text-slate-400 mt-0.5">
-                        Sélectionnez vos options utiles. Modifiable sans frais avant la prise en charge.
+                        {t.bookingWidget.optionsSubtitle}
                     </p>
                 </div>
             </div>
@@ -55,6 +66,9 @@ export default function UpsellSelector({
                         upsell.type === "per_day" ? upsell.priceEur * days : upsell.priceEur;
                     const totalCostMad =
                         upsell.type === "per_day" ? upsell.priceMad * days : upsell.priceMad;
+
+                    const title = (locale !== "fr" && upsell.nameEn) ? upsell.nameEn : upsell.name;
+                    const subtitle = (locale !== "fr" && upsell.taglineEn) ? upsell.taglineEn : upsell.tagline;
 
                     return (
                         <div
@@ -76,10 +90,10 @@ export default function UpsellSelector({
                                 </div>
                                 <div className="min-w-0">
                                     <div className="text-xs sm:text-sm font-bold text-slate-900 truncate">
-                                        {upsell.name}
+                                        {title}
                                     </div>
                                     <p className="text-[11px] text-slate-500 truncate">
-                                        {upsell.tagline}
+                                        {subtitle}
                                     </p>
                                 </div>
                             </div>
@@ -88,7 +102,7 @@ export default function UpsellSelector({
                                 <div>
                                     {upsell.priceEur === 0 ? (
                                         <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200/60">
-                                            Inclus
+                                            {labels.included}
                                         </span>
                                     ) : (
                                         <div className="text-right">
@@ -98,9 +112,9 @@ export default function UpsellSelector({
                                             <div className="text-[10px] text-slate-400">
                                                 {upsell.type === "per_day"
                                                     ? currency === "EUR"
-                                                        ? `${upsell.priceEur} €/j`
-                                                        : `${upsell.priceMad} DH/j`
-                                                    : "séjour"}
+                                                        ? `${upsell.priceEur} €${labels.perDay}`
+                                                        : `${upsell.priceMad} DH${labels.perDay}`
+                                                    : labels.stay}
                                             </div>
                                         </div>
                                     )}
