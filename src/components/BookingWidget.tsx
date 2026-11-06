@@ -276,8 +276,15 @@ export function BookingWidget({
                         <div className="flex items-center h-[54px] rounded-2xl bg-[#FAF7F2] border border-[#E7DFD5] px-3 gap-2">
                             <div
                                 onClick={(e) => {
-                                    const input = e.currentTarget.querySelector('input[type="date"]') as HTMLInputElement;
-                                    input?.showPicker?.();
+                                    const target = e.target as HTMLElement;
+                                    if (target.tagName !== "INPUT" && target.tagName !== "SELECT") {
+                                        try {
+                                            const input = e.currentTarget.querySelector('input[type="date"]') as HTMLInputElement | null;
+                                            input?.showPicker?.();
+                                        } catch {
+                                            // Navigateur bloque showPicker sans activation utilisateur directe
+                                        }
+                                    }
                                 }}
                                 className="flex items-center gap-2 flex-1 min-w-0 cursor-pointer"
                             >
@@ -286,11 +293,6 @@ export function BookingWidget({
                                     type="date"
                                     value={state.pickupDate}
                                     min={formatDateInput(today)}
-                                    onClick={(e) => {
-                                        try {
-                                            (e.target as HTMLInputElement).showPicker?.();
-                                        } catch {}
-                                    }}
                                     onChange={(e) =>
                                         setState((prev) => ({ ...prev, pickupDate: e.target.value }))
                                     }
@@ -328,8 +330,15 @@ export function BookingWidget({
                         <div className="flex items-center h-[54px] rounded-2xl bg-[#FAF7F2] border border-[#E7DFD5] px-3 gap-2">
                             <div
                                 onClick={(e) => {
-                                    const input = e.currentTarget.querySelector('input[type="date"]') as HTMLInputElement;
-                                    input?.showPicker?.();
+                                    const target = e.target as HTMLElement;
+                                    if (target.tagName !== "INPUT" && target.tagName !== "SELECT") {
+                                        try {
+                                            const input = e.currentTarget.querySelector('input[type="date"]') as HTMLInputElement | null;
+                                            input?.showPicker?.();
+                                        } catch {
+                                            // Navigateur bloque showPicker sans activation utilisateur directe
+                                        }
+                                    }
                                 }}
                                 className="flex items-center gap-2 flex-1 min-w-0 cursor-pointer"
                             >
@@ -338,11 +347,6 @@ export function BookingWidget({
                                     type="date"
                                     value={state.returnDate}
                                     min={state.pickupDate}
-                                    onClick={(e) => {
-                                        try {
-                                            (e.target as HTMLInputElement).showPicker?.();
-                                        } catch {}
-                                    }}
                                     onChange={(e) =>
                                         setState((prev) => ({ ...prev, returnDate: e.target.value }))
                                     }

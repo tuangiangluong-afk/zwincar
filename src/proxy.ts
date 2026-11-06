@@ -35,7 +35,6 @@ export default async function middleware(req: NextRequest) {
 
     const isMainHub =
         hostname === "zwincar.com" ||
-        hostname === "taxifrance.fr" ||
         hostname.includes("vercel.app") ||
         (hostname.includes("localhost") && !hostname.includes(".localhost"));
 
@@ -73,6 +72,9 @@ export default async function middleware(req: NextRequest) {
             path.startsWith("/admin") ||
             path.startsWith("/home") ||
             path.startsWith("/login") ||
+            path.startsWith("/contact") ||
+            path.startsWith("/cgv") ||
+            path.startsWith("/mentions-legales") ||
             path.startsWith("/maroc") ||
             path.startsWith("/vehicules") ||
             path.startsWith("/vendor") ||
