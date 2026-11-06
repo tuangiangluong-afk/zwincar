@@ -183,7 +183,7 @@ export default function LocalizedPageRenderer({
                                         </div>
                                         <div className="p-3 rounded-2xl bg-[#FAF7F2] border border-[#ECE5D9]">
                                             <div className="text-slate-400 text-[10px] uppercase font-bold flex items-center gap-1 mb-1">
-                                                <Sparkles size={13} /> {locale === "en" ? "Clearance" : locale === "es" ? "Altura libre" : locale === "nl" ? "Bodemvrijheid" : "Garde au sol"}
+                                                <Gauge size={13} /> {locale === "en" ? "Clearance" : locale === "es" ? "Altura libre" : locale === "nl" ? "Bodemvrijheid" : "Garde au sol"}
                                             </div>
                                             <div className="font-bold text-slate-900">{vehicle.groundClearanceCm} cm</div>
                                             <div className="text-[10px] text-slate-500">{locale === "en" ? "Skid plates" : locale === "es" ? "Cubre cárter" : locale === "nl" ? "Bodembescherming" : "Plaques de protection"}</div>

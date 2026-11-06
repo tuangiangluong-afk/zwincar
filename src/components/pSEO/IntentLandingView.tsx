@@ -15,9 +15,9 @@ import {
     Briefcase,
     Cog,
     Fuel,
-    Sparkles,
+    Check,
 } from "lucide-react";
-import { CityHub, VehicleModel, MOROCCAN_HUBS, VEHICLE_FLEET } from "@/lib/morocco-data";
+import { CityHub, VehicleModel, MOROCCAN_HUBS, VEHICLE_FLEET, getLocalizedAirportName } from "@/lib/morocco-data";
 import { PurchaseIntent, PURCHASE_INTENTS } from "@/lib/intent-data";
 import { PointOfService, getPosForHub } from "@/lib/pos-data";
 import { Locale, getTranslation } from "@/lib/i18n";
@@ -115,17 +115,17 @@ export default function IntentLandingView({ hub, intent, locale }: IntentLanding
                             {formatText(intent.intro[locale])}
                         </p>
 
-                        <div className="flex flex-wrap items-center gap-4 text-xs font-semibold text-slate-700">
-                            <div className="flex items-center gap-1.5 bg-[#FAF7F2] border border-[#E7DFD5] px-3 py-1.5 rounded-lg">
-                                <CheckCircle2 size={15} className="text-emerald-600" />
-                                <span>{hub.airportName} ({hub.airportCode})</span>
+                        <div className="flex flex-wrap items-center gap-2.5 text-xs font-semibold text-slate-700">
+                            <div className="flex items-center gap-1.5 bg-white border border-[#E7DFD5] px-3.5 py-1.5 rounded-xl shadow-2xs">
+                                <Plane size={14} className="text-slate-500" />
+                                <span>{getLocalizedAirportName(hub, locale)} ({hub.airportCode})</span>
                             </div>
-                            <div className="flex items-center gap-1.5 bg-[#FAF7F2] border border-[#E7DFD5] px-3 py-1.5 rounded-lg">
-                                <Clock size={15} className="text-emerald-600" />
+                            <div className="flex items-center gap-1.5 bg-white border border-[#E7DFD5] px-3.5 py-1.5 rounded-xl shadow-2xs">
+                                <Clock size={14} className="text-slate-500" />
                                 <span>{t.checkoutModal.cancelFreeNotice}</span>
                             </div>
-                            <div className="flex items-center gap-1.5 bg-[#FAF7F2] border border-[#E7DFD5] px-3 py-1.5 rounded-lg">
-                                <Sparkles size={15} className="text-[#C9572C]" />
+                            <div className="flex items-center gap-1.5 bg-white border border-[#E7DFD5] px-3.5 py-1.5 rounded-xl shadow-2xs">
+                                <Check size={14} className="text-[#C9572C]" />
                                 <span>{t.search.exactModelPill}</span>
                             </div>
                         </div>
@@ -185,7 +185,7 @@ export default function IntentLandingView({ hub, intent, locale }: IntentLanding
                                             </span>
                                         </div>
 
-                                        <Link href={getVehicleUrl(vehicle.id)} className="block relative w-full h-44 rounded-2xl overflow-hidden bg-slate-50 mb-4 cursor-pointer">
+                                        <Link href={getVehicleUrl(vehicle.id)} aria-label={vehicle.name} className="block relative w-full h-44 rounded-2xl overflow-hidden bg-slate-50 mb-4 cursor-pointer">
                                             <img
                                                 src={vehicle.image}
                                                 alt={vehicle.name}
@@ -294,7 +294,7 @@ export default function IntentLandingView({ hub, intent, locale }: IntentLanding
                     </div>
 
                     <div className="p-5 rounded-2xl bg-amber-50/70 border border-amber-200/80 text-xs text-amber-950 flex items-start gap-3">
-                        <Sparkles size={18} className="text-amber-700 shrink-0 mt-0.5" />
+                        <ShieldCheck size={18} className="text-amber-800 shrink-0 mt-0.5" />
                         <div>
                             <span className="font-bold block mb-0.5">
                                 {locale === "fr" ? "Recommandation Terrain ZwinCar :" : "ZwinCar Local Recommendation:"}

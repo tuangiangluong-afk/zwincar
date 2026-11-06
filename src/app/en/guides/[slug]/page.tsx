@@ -216,10 +216,8 @@ export default async function EnglishGuideDetailPage({
                                     />
                                 </div>
                                 <div>
-                                    <div className="flex items-center gap-1.5 font-bold text-slate-900">
-                                        <span>{guide.author.name}</span>
-                                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                                        <span className="text-[10px] text-emerald-700 font-semibold uppercase tracking-wider">Verified Expert</span>
+                                    <div className="font-bold text-slate-900">
+                                        {guide.author.name}
                                     </div>
                                     <span className="text-[11px] text-slate-500">{guide.author.role}</span>
                                 </div>
@@ -346,10 +344,6 @@ export default async function EnglishGuideDetailPage({
                             <div className="space-y-2 text-center sm:text-left flex-1">
                                 <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
                                     <span className="font-black text-slate-900 text-base">{guide.author.name}</span>
-                                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold uppercase tracking-wider">
-                                        <CheckCircle2 size={11} />
-                                        Certified ZwinCar Auditor
-                                    </span>
                                 </div>
                                 <p className="text-xs font-bold text-[#C9572C]">{guide.author.role}</p>
                                 {guide.author.bio && (

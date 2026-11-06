@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { BookOpen, Clock, ArrowRight, ShieldCheck, MapPin, Sparkles } from "lucide-react";
+import { BookOpen, Clock, ArrowRight, ShieldCheck, MapPin } from "lucide-react";
 import Header from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { MOROCCO_GUIDES } from "@/data/morocco-guides";
@@ -58,7 +58,7 @@ export default function GuidesPage() {
                 <section className="py-14 sm:py-20 border-b border-[#ECE5D9] bg-gradient-to-b from-[#FAF7F2] to-white">
                     <div className="container mx-auto px-4 max-w-5xl text-center space-y-4">
                         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#C9572C]/10 border border-[#C9572C]/20 text-[#C9572C] text-xs font-bold tracking-wide uppercase">
-                            <Sparkles size={14} />
+                            <BookOpen size={14} />
                             <span>Expertise Terrain & Sécurité Routière</span>
                         </div>
                         <h1 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight leading-tight">

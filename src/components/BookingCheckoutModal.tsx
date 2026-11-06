@@ -508,7 +508,7 @@ export function BookingCheckoutModal({
                                 <span>{t.checkoutModal.payStripeBtn}...</span>
                             ) : (
                                 <>
-                                    <Sparkles size={16} />
+                                    <ShieldCheck size={16} />
                                     <span>
                                         {t.checkoutModal.payStripeBtn} • {currency === "EUR" ? `${depositAcompteEur} €` : `${depositAcompteMad} MAD`}
                                     </span>

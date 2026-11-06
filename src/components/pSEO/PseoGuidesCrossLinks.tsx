@@ -59,6 +59,7 @@ export default function PseoGuidesCrossLinks({
                         <Link
                             key={guide.slug}
                             href={`${basePath}/${guide.slug}`}
+                            aria-label={guide.title}
                             className="group rounded-2xl bg-white border border-[#ECE5D9] overflow-hidden shadow-2xs hover:shadow-md hover:border-[#C9572C]/40 transition-all flex flex-col justify-between"
                         >
                             <div>

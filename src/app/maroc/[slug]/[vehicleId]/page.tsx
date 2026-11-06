@@ -267,7 +267,7 @@ export default async function CityVehicleDetailPage({ params }: CityVehiclePageP
                                     </div>
                                     <div className="p-3 rounded-2xl bg-[#FAF7F2] border border-[#ECE5D9]">
                                         <div className="text-slate-400 text-[10px] uppercase font-bold flex items-center gap-1 mb-1">
-                                            <Sparkles size={13} /> Garde au sol
+                                            <Gauge size={13} /> Garde au sol
                                         </div>
                                         <div className="font-bold text-slate-900">{vehicle.groundClearanceCm} cm</div>
                                         <div className="text-[10px] text-slate-500">Protection sous-moteur</div>

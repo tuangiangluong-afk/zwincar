@@ -51,7 +51,7 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "author": {
             "name": "Kenza Alami",
             "role": "Juriste Spécialisée Droit des Assurances & Transports au Maroc",
-            "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80",
+            "avatar": "/images/authors/kenza-alami.webp",
             "bio": "Diplômée de l'Université Hassan II de Casablanca, Kenza audite la conformité des contrats de location au Maroc et conseille les voyageurs sur les litiges de caution bancaire CMI et garanties tous risques."
         },
         "category": "Assurance & Caution",
@@ -159,7 +159,7 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "author": {
             "name": "Kenza Alami",
             "role": "Juriste Spécialisée Droit des Assurances & Transports au Maroc",
-            "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80",
+            "avatar": "/images/authors/kenza-alami.webp",
             "bio": "Diplômée de l'Université Hassan II de Casablanca, Kenza audite la conformité des contrats de location au Maroc et conseille les voyageurs sur les litiges de caution bancaire CMI et garanties tous risques."
         },
         "category": "Assurance & Caution",
@@ -258,7 +258,7 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "author": {
             "name": "Kenza Alami",
             "role": "Juriste Spécialisée Droit des Assurances & Transports au Maroc",
-            "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80",
+            "avatar": "/images/authors/kenza-alami.webp",
             "bio": "Diplômée de l'Université Hassan II de Casablanca, Kenza audite la conformité des contrats de location au Maroc et conseille les voyageurs sur les litiges de caution bancaire CMI et garanties tous risques."
         },
         "category": "Assurance & Caution",
@@ -357,7 +357,7 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "author": {
             "name": "Kenza Alami",
             "role": "Juriste Spécialisée Droit des Assurances & Transports au Maroc",
-            "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80",
+            "avatar": "/images/authors/kenza-alami.webp",
             "bio": "Diplômée de l'Université Hassan II de Casablanca, Kenza audite la conformité des contrats de location au Maroc et conseille les voyageurs sur les litiges de caution bancaire CMI et garanties tous risques."
         },
         "category": "Assurance & Caution",
@@ -465,7 +465,7 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "author": {
             "name": "Kenza Alami",
             "role": "Juriste Spécialisée Droit des Assurances & Transports au Maroc",
-            "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80",
+            "avatar": "/images/authors/kenza-alami.webp",
             "bio": "Diplômée de l'Université Hassan II de Casablanca, Kenza audite la conformité des contrats de location au Maroc et conseille les voyageurs sur les litiges de caution bancaire CMI et garanties tous risques."
         },
         "category": "Assurance & Caution",
@@ -569,7 +569,7 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "author": {
             "name": "Yassine El Idrissi",
             "role": "Auditeur Logistique Flotte & Sécurité Routière Maroc",
-            "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+            "avatar": "/images/authors/yassine-el-idrissi.webp",
             "bio": "12 ans de terrain en logistique automobile à Marrakech Menara et Casablanca Mohammed V. Ancien coordinateur d'opérations ayant supervisé plus de 25 000 remises de clés sans intermédiaire."
         },
         "category": "Réglementation",
@@ -664,7 +664,7 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "author": {
             "name": "Yassine El Idrissi",
             "role": "Auditeur Logistique Flotte & Sécurité Routière Maroc",
-            "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+            "avatar": "/images/authors/yassine-el-idrissi.webp",
             "bio": "12 ans de terrain en logistique automobile à Marrakech Menara et Casablanca Mohammed V. Ancien coordinateur d'opérations ayant supervisé plus de 25 000 remises de clés sans intermédiaire."
         },
         "category": "Réglementation",
@@ -772,7 +772,7 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "author": {
             "name": "Yassine El Idrissi",
             "role": "Auditeur Logistique Flotte & Sécurité Routière Maroc",
-            "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+            "avatar": "/images/authors/yassine-el-idrissi.webp",
             "bio": "12 ans de terrain en logistique automobile à Marrakech Menara et Casablanca Mohammed V. Ancien coordinateur d'opérations ayant supervisé plus de 25 000 remises de clés sans intermédiaire."
         },
         "category": "Réglementation",
@@ -867,7 +867,7 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "author": {
             "name": "Yassine El Idrissi",
             "role": "Auditeur Logistique Flotte & Sécurité Routière Maroc",
-            "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+            "avatar": "/images/authors/yassine-el-idrissi.webp",
             "bio": "12 ans de terrain en logistique automobile à Marrakech Menara et Casablanca Mohammed V. Ancien coordinateur d'opérations ayant supervisé plus de 25 000 remises de clés sans intermédiaire."
         },
         "category": "Réglementation",
@@ -966,7 +966,7 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "author": {
             "name": "Yassine El Idrissi",
             "role": "Auditeur Logistique Flotte & Sécurité Routière Maroc",
-            "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+            "avatar": "/images/authors/yassine-el-idrissi.webp",
             "bio": "12 ans de terrain en logistique automobile à Marrakech Menara et Casablanca Mohammed V. Ancien coordinateur d'opérations ayant supervisé plus de 25 000 remises de clés sans intermédiaire."
         },
         "category": "Réglementation",
@@ -1074,7 +1074,7 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "author": {
             "name": "Yassine El Idrissi",
             "role": "Auditeur Logistique Flotte & Sécurité Routière Maroc",
-            "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+            "avatar": "/images/authors/yassine-el-idrissi.webp",
             "bio": "12 ans de terrain en logistique automobile à Marrakech Menara et Casablanca Mohammed V. Ancien coordinateur d'opérations ayant supervisé plus de 25 000 remises de clés sans intermédiaire."
         },
         "category": "Réglementation",
@@ -1173,7 +1173,7 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "author": {
             "name": "Yassine El Idrissi",
             "role": "Auditeur Logistique Flotte & Sécurité Routière Maroc",
-            "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+            "avatar": "/images/authors/yassine-el-idrissi.webp",
             "bio": "12 ans de terrain en logistique automobile à Marrakech Menara et Casablanca Mohammed V. Ancien coordinateur d'opérations ayant supervisé plus de 25 000 remises de clés sans intermédiaire."
         },
         "category": "Itinéraire & Roadtrip",
@@ -1270,7 +1270,7 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "author": {
             "name": "Yassine El Idrissi",
             "role": "Auditeur Logistique Flotte & Sécurité Routière Maroc",
-            "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+            "avatar": "/images/authors/yassine-el-idrissi.webp",
             "bio": "12 ans de terrain en logistique automobile à Marrakech Menara et Casablanca Mohammed V. Ancien coordinateur d'opérations ayant supervisé plus de 25 000 remises de clés sans intermédiaire."
         },
         "category": "Itinéraire & Roadtrip",
@@ -1364,7 +1364,7 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "author": {
             "name": "Yassine El Idrissi",
             "role": "Auditeur Logistique Flotte & Sécurité Routière Maroc",
-            "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+            "avatar": "/images/authors/yassine-el-idrissi.webp",
             "bio": "12 ans de terrain en logistique automobile à Marrakech Menara et Casablanca Mohammed V. Ancien coordinateur d'opérations ayant supervisé plus de 25 000 remises de clés sans intermédiaire."
         },
         "category": "Itinéraire & Roadtrip",
@@ -1470,7 +1470,7 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "author": {
             "name": "Yassine El Idrissi",
             "role": "Auditeur Logistique Flotte & Sécurité Routière Maroc",
-            "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+            "avatar": "/images/authors/yassine-el-idrissi.webp",
             "bio": "12 ans de terrain en logistique automobile à Marrakech Menara et Casablanca Mohammed V. Ancien coordinateur d'opérations ayant supervisé plus de 25 000 remises de clés sans intermédiaire."
         },
         "category": "Itinéraire & Roadtrip",
@@ -1564,7 +1564,7 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "author": {
             "name": "Yassine El Idrissi",
             "role": "Auditeur Logistique Flotte & Sécurité Routière Maroc",
-            "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+            "avatar": "/images/authors/yassine-el-idrissi.webp",
             "bio": "12 ans de terrain en logistique automobile à Marrakech Menara et Casablanca Mohammed V. Ancien coordinateur d'opérations ayant supervisé plus de 25 000 remises de clés sans intermédiaire."
         },
         "category": "Itinéraire & Roadtrip",
@@ -1668,10 +1668,10 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "updatedAt": "2026-11-06",
         "readTimeMinutes": 10,
         "author": {
-            "name": "Mehdi Chraïbi",
-            "role": "Expert Technique Automobile & Contrôleur de Flotte Agréé",
-            "avatar": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80",
-            "bio": "Ingénieur automobile à Casablanca et Tanger. Spécialiste du diagnostic des trains roulants, de l'usure mécanique sur pistes du Sud et de l'inspection contradictoire de carrosserie anti-litige."
+            "name": "Yassine El Idrissi",
+            "role": "Auditeur Logistique Flotte & Sécurité Routière Maroc",
+            "avatar": "/images/authors/yassine-el-idrissi.webp",
+            "bio": "12 ans de terrain en logistique automobile à Marrakech Menara et Casablanca Mohammed V. Ancien coordinateur d'opérations ayant supervisé plus de 25 000 remises de clés sans intermédiaire."
         },
         "category": "Véhicules & Pistes",
         "summaryDirectAnswer": "Non, 95 % des itinéraires touristiques au Maroc ne nécessitent aucun 4x4. Les grands axes (N9 Tizi n'Tichka, N13 Merzouga, Gorges du Todra) sont entièrement asphaltés. Pour le désert d'Agafay ou les pistes d'accès aux écolodges, la garde au sol (175 à 210 mm) prime sur la transmission intégrale. Un SUV 2WD type Dacia Duster ou Sandero Stepway suffit largement, vous épargnant 650 à 900 MAD (60 à 85 €) par jour tout en évitant les clauses de déchéance d'assurance hors-piste.",
@@ -1766,10 +1766,10 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "updatedAt": "2026-11-06",
         "readTimeMinutes": 10,
         "author": {
-            "name": "Mehdi Chraïbi",
-            "role": "Expert Technique Automobile & Contrôleur de Flotte Agréé",
-            "avatar": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80",
-            "bio": "Ingénieur automobile à Casablanca et Tanger. Spécialiste du diagnostic des trains roulants, de l'usure mécanique sur pistes du Sud et de l'inspection contradictoire de carrosserie anti-litige."
+            "name": "Yassine El Idrissi",
+            "role": "Auditeur Logistique Flotte & Sécurité Routière Maroc",
+            "avatar": "/images/authors/yassine-el-idrissi.webp",
+            "bio": "12 ans de terrain en logistique automobile à Marrakech Menara et Casablanca Mohammed V. Ancien coordinateur d'opérations ayant supervisé plus de 25 000 remises de clés sans intermédiaire."
         },
         "category": "Véhicules & Pistes",
         "summaryDirectAnswer": "Louez la Dacia Sandero Stepway pour les itinéraires goudronnés (côte Atlantique, Villes Impériales et routes nationales comme la N9 du Tizi n'Tichka) ; sa garde au sol de 201 mm encaisse les nids-de-poule pour 250 à 350 MAD (23 à 32 €)/jour. Optez pour le Dacia Duster (1.5 dCi ou 4x4) à 450–700 MAD (41–64 €)/jour si vous traversez des cols secondaires dégradés (R307, Anti-Atlas, accès bivouacs), voyagez à 3+ adultes chargés, ou exigez un blindage de carter et 210 mm de débattement.",
@@ -1873,10 +1873,10 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "updatedAt": "2026-11-06",
         "readTimeMinutes": 10,
         "author": {
-            "name": "Mehdi Chraïbi",
-            "role": "Expert Technique Automobile & Contrôleur de Flotte Agréé",
-            "avatar": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80",
-            "bio": "Ingénieur automobile à Casablanca et Tanger. Spécialiste du diagnostic des trains roulants, de l'usure mécanique sur pistes du Sud et de l'inspection contradictoire de carrosserie anti-litige."
+            "name": "Yassine El Idrissi",
+            "role": "Auditeur Logistique Flotte & Sécurité Routière Maroc",
+            "avatar": "/images/authors/yassine-el-idrissi.webp",
+            "bio": "12 ans de terrain en logistique automobile à Marrakech Menara et Casablanca Mohammed V. Ancien coordinateur d'opérations ayant supervisé plus de 25 000 remises de clés sans intermédiaire."
         },
         "category": "Véhicules & Pistes",
         "summaryDirectAnswer": "Au Maroc, louer un véhicule à boîte automatique engendre un surcoût de 80 à 150 MAD (7,50 € à 14 €) par jour, soit une prime de 20 % à 35 % par rapport à une manuelle. Ce différentiel est largement compensé par la suppression du risque de casse d'embrayage en montagne — facture d'exclusion CDW de 6 000 à 12 000 MAD — et par l'élimination de la surcharge cognitive dans les ronds-points denses de Marrakech ou Casablanca.",
@@ -1976,10 +1976,10 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "updatedAt": "2026-11-06",
         "readTimeMinutes": 10,
         "author": {
-            "name": "Mehdi Chraïbi",
-            "role": "Expert Technique Automobile & Contrôleur de Flotte Agréé",
-            "avatar": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80",
-            "bio": "Ingénieur automobile à Casablanca et Tanger. Spécialiste du diagnostic des trains roulants, de l'usure mécanique sur pistes du Sud et de l'inspection contradictoire de carrosserie anti-litige."
+            "name": "Yassine El Idrissi",
+            "role": "Auditeur Logistique Flotte & Sécurité Routière Maroc",
+            "avatar": "/images/authors/yassine-el-idrissi.webp",
+            "bio": "12 ans de terrain en logistique automobile à Marrakech Menara et Casablanca Mohammed V. Ancien coordinateur d'opérations ayant supervisé plus de 25 000 remises de clés sans intermédiaire."
         },
         "category": "Véhicules & Pistes",
         "summaryDirectAnswer": "Au Maroc, la réglementation préfectorale des « Petits Taxis » urbains plafonne strictement la capacité à 3 passagers (nourrissons inclus), obligeant toute famille de 4 personnes ou plus à scinder le groupe en deux véhicules ou à louer des Grands Taxis non-comptabilisés. Louer un 7 places (dès 420 MAD / 39 € par jour pour un Dacia Jogger 1.5 Blue dCi) devient mathématiquement rentable dès 3 trajets quotidiens, tandis que les cols de l'Atlas à pleine charge imposent un SUV à châssis échelle comme le Toyota Prado TX 2.8L (950 MAD / 88 € par jour).",
@@ -2076,7 +2076,7 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "author": {
             "name": "Yassine El Idrissi",
             "role": "Auditeur Logistique Flotte & Sécurité Routière Maroc",
-            "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+            "avatar": "/images/authors/yassine-el-idrissi.webp",
             "bio": "12 ans de terrain en logistique automobile à Marrakech Menara et Casablanca Mohammed V. Ancien coordinateur d'opérations ayant supervisé plus de 25 000 remises de clés sans intermédiaire."
         },
         "category": "Aéroports & Logistique",
@@ -2172,7 +2172,7 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "author": {
             "name": "Yassine El Idrissi",
             "role": "Auditeur Logistique Flotte & Sécurité Routière Maroc",
-            "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+            "avatar": "/images/authors/yassine-el-idrissi.webp",
             "bio": "12 ans de terrain en logistique automobile à Marrakech Menara et Casablanca Mohammed V. Ancien coordinateur d'opérations ayant supervisé plus de 25 000 remises de clés sans intermédiaire."
         },
         "category": "Aéroports & Logistique",
@@ -2269,7 +2269,7 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "author": {
             "name": "Yassine El Idrissi",
             "role": "Auditeur Logistique Flotte & Sécurité Routière Maroc",
-            "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+            "avatar": "/images/authors/yassine-el-idrissi.webp",
             "bio": "12 ans de terrain en logistique automobile à Marrakech Menara et Casablanca Mohammed V. Ancien coordinateur d'opérations ayant supervisé plus de 25 000 remises de clés sans intermédiaire."
         },
         "category": "Aéroports & Logistique",
@@ -2364,7 +2364,7 @@ export const MOROCCO_GUIDES: MoroccoGuide[] = [
         "author": {
             "name": "Yassine El Idrissi",
             "role": "Auditeur Logistique Flotte & Sécurité Routière Maroc",
-            "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+            "avatar": "/images/authors/yassine-el-idrissi.webp",
             "bio": "12 ans de terrain en logistique automobile à Marrakech Menara et Casablanca Mohammed V. Ancien coordinateur d'opérations ayant supervisé plus de 25 000 remises de clés sans intermédiaire."
         },
         "category": "Aéroports & Logistique",
@@ -2455,6 +2455,6 @@ export function getGuideBySlug(slug: string): MoroccoGuide | undefined {
     return MOROCCO_GUIDES.find((g) => g.slug === slug);
 }
 
-export function getAllGuideSlugs(): string[] {
-    return MOROCCO_GUIDES.map((g) => g.slug);
+export function getAllGuides(): MoroccoGuide[] {
+    return MOROCCO_GUIDES;
 }
