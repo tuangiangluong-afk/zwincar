@@ -30,7 +30,7 @@ export async function POST(
         updatedAt: now,
         kyc: {
             uploadedAt: now,
-            verified: true,
+            verified: false, // requires manual vendor review before check-in
             driverAge,
             licenseNumber: licenseNumber || "Enregistré lors du pré-checkin",
             licenseFile,

@@ -6,7 +6,7 @@
  */
 
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
-import { createHmac, randomBytes } from "node:crypto";
+import { randomBytes, scryptSync, timingSafeEqual } from "node:crypto";
 import { getBookingStore } from "./booking-store.ts";
 import type { BookingRecord } from "./booking-engine.ts";
 
@@ -44,10 +44,17 @@ export interface VendorAgencyRecord {
     createdAt: string;
 }
 
-const VENDOR_SECRET = process.env.VENDOR_AUTH_SECRET || "zwincar_vendor_secret_key_2026";
+const SCRYPT_KEYLEN = 64;
+const SCRYPT_COST = { N: 16384, r: 8, p: 1 }; // ~100ms on commodity hardware
 
 function hashPassword(password: string, salt: string): string {
-    return createHmac("sha256", VENDOR_SECRET).update(`${salt}:${password}`).digest("hex");
+    return scryptSync(password, salt, SCRYPT_KEYLEN, SCRYPT_COST).toString("hex");
+}
+
+function verifyPassword(password: string, salt: string, storedHash: string): boolean {
+    const derived = scryptSync(password, salt, SCRYPT_KEYLEN, SCRYPT_COST);
+    const expected = Buffer.from(storedHash, "hex");
+    return derived.length === expected.length && timingSafeEqual(derived, expected);
 }
 
 // ---------------------------------------------------------------------------
@@ -67,6 +74,8 @@ if (!globalVendors.__zwincarAgencies) {
 
     // Agence témoin par défaut : Atlas Drive Marrakech
     const demoSalt = "demo_salt_atlas_2026";
+    // Pre-computed scrypt hash of "Marrakech2026!" with the demo salt.
+    const demoHash = "cbdb8eb9aa660c400ba36aef80aee913c674d795fc46a28bf611f41243838ca8e42b4db78895a94b5f41025d680475b731286c42111115efc222e9c524e391f1";
     const demoAgency: VendorAgencyRecord = {
         id: "vnd-atlas-drive",
         agencyName: "Atlas Drive Marrakech SARL",
@@ -77,7 +86,7 @@ if (!globalVendors.__zwincarAgencies) {
         managerName: "Karim Benjelloun",
         managerPhone: "+212661234567",
         managerEmail: "contact@atlasdrive-marrakech.ma",
-        passwordHash: hashPassword("Marrakech2026!", demoSalt),
+        passwordHash: demoHash,
         salt: demoSalt,
         fleetSizeEstimate: "15 à 30 véhicules",
         status: "active",
@@ -299,8 +308,7 @@ export async function authenticateVendor(
 
     if (!found) return null;
 
-    const hash = hashPassword(passwordPlain, found.salt);
-    if (hash !== found.passwordHash && passwordPlain !== "Marrakech2026!") {
+    if (!verifyPassword(passwordPlain, found.salt, found.passwordHash)) {
         return null;
     }
 
