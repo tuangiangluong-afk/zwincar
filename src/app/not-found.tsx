@@ -1,89 +1,101 @@
-import Link from 'next/link';
-import { Phone, Home, MapPin, ArrowRight } from 'lucide-react';
+import Link from "next/link";
+import Logo from "@/components/Logo";
+import { Car, MapPin, Compass, ArrowRight, MessageCircle } from "lucide-react";
 
 export default function NotFound() {
     return (
-        <div className="min-h-screen bg-gradient-to-br from-neutral-900 via-neutral-800 to-neutral-900 flex flex-col items-center justify-center px-4 text-center">
-            {/* Animated Background Elements */}
-            <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-yellow-500/10 rounded-full blur-3xl animate-pulse" />
-                <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl animate-pulse delay-1000" />
-            </div>
-
-            {/* Content */}
-            <div className="relative z-10 max-w-2xl mx-auto">
-                {/* 404 Number */}
-                <div className="mb-8">
-                    <span className="text-[150px] sm:text-[200px] font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-600 leading-none select-none">
-                        404
-                    </span>
-                </div>
-
-                {/* Message */}
-                <h1 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-                    Cette page n'existe plus
-                </h1>
-                <p className="text-neutral-400 text-lg mb-8 max-w-md mx-auto">
-                    La page que vous recherchez a été déplacée ou supprimée.
-                    Pas de panique, votre taxi vous attend !
-                </p>
-
-                {/* CTA Buttons */}
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+        <div className="min-h-screen bg-[#FAF7F2] text-[#12161E] flex flex-col justify-between selection:bg-[#C9572C] selection:text-white font-sans">
+            {/* Top Minimal Nav */}
+            <header className="p-6 border-b border-[#E7DFD5] bg-white/80 backdrop-blur-md">
+                <div className="max-w-5xl mx-auto flex items-center justify-between">
+                    <Logo variant="full" theme="dark" size="md" />
                     <Link
                         href="/"
-                        className="flex items-center gap-3 px-8 py-4 rounded-2xl bg-gradient-to-r from-yellow-400 to-yellow-500 text-neutral-900 font-bold text-lg shadow-lg shadow-yellow-500/25 hover:-translate-y-1 hover:shadow-xl hover:shadow-yellow-500/30 transition-all"
+                        className="text-xs font-bold text-slate-700 hover:text-[#C9572C] transition-colors"
                     >
-                        <Home size={20} />
-                        Retour à l'accueil
+                        ← Retour à l'accueil
+                    </Link>
+                </div>
+            </header>
+
+            {/* Main 404 Hero */}
+            <main className="flex-1 flex flex-col items-center justify-center px-4 py-16 text-center max-w-2xl mx-auto">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#C9572C]/10 border border-[#C9572C]/20 text-[#C9572C] text-xs font-bold tracking-wider uppercase mb-6">
+                    <Compass size={14} />
+                    <span>Erreur 404 • Piste Introuvable</span>
+                </div>
+
+                <h1 className="text-4xl sm:text-6xl font-black text-slate-900 tracking-tight mb-4">
+                    Cette route n'existe pas.
+                </h1>
+
+                <p className="text-slate-600 text-base sm:text-lg mb-8 max-w-md mx-auto leading-relaxed">
+                    La page que vous recherchez a été déplacée ou n'est plus accessible.
+                    Reprenez la route avec nos véhicules garantis sans caution bloquée.
+                </p>
+
+                {/* CTAs */}
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full sm:w-auto mb-12">
+                    <Link
+                        href="/#vehicle-catalog"
+                        className="w-full sm:w-auto flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl bg-[#C9572C] hover:bg-[#b54a22] text-white font-bold text-sm shadow-md transition-all active:scale-98"
+                    >
+                        <Car size={16} />
+                        Voir les voitures disponibles
                     </Link>
                     <a
-                        href="tel:0184607878"
-                        className="flex items-center gap-3 px-8 py-4 rounded-2xl bg-white/10 backdrop-blur border border-white/20 text-white font-bold text-lg hover:bg-white/20 transition-all"
+                        href="https://wa.me/212600000000?text=Bonjour%20ZwinCar,%20je%20cherche%20une%20information%20sur%20le%20site"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-white hover:bg-slate-50 border border-[#E7DFD5] text-slate-800 font-bold text-sm shadow-xs transition-all"
                     >
-                        <Phone size={20} />
-                        Appeler un taxi
+                        <MessageCircle size={16} className="text-emerald-500" />
+                        Assistance WhatsApp 24/7
                     </a>
                 </div>
 
-                {/* Quick Links */}
-                <div className="bg-white/5 backdrop-blur rounded-2xl border border-white/10 p-6">
-                    <h2 className="text-sm font-semibold text-neutral-400 uppercase tracking-wider mb-4">
-                        Accès rapides
-                    </h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {/* Quick Hub Links */}
+                <div className="w-full bg-white rounded-3xl border border-[#E7DFD5] p-6 shadow-xs text-left">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-3">
+                        Aéroports & Villes Populaires au Maroc :
+                    </span>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
                         <Link
-                            href="/gare-aeroport"
-                            className="flex items-center gap-2 text-neutral-300 hover:text-yellow-400 transition group"
+                            href="/maroc/marrakech"
+                            className="p-2.5 rounded-xl bg-[#FAF7F2] hover:bg-slate-900 hover:text-white border border-[#E7DFD5] font-semibold text-slate-800 transition flex items-center justify-between"
                         >
-                            <MapPin size={16} className="text-yellow-500" />
-                            <span>Gare & Aéroport</span>
-                            <ArrowRight size={14} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+                            <span>Marrakech (RAK)</span>
+                            <ArrowRight size={12} className="opacity-50" />
                         </Link>
                         <Link
-                            href="/transport-medical"
-                            className="flex items-center gap-2 text-neutral-300 hover:text-yellow-400 transition group"
+                            href="/maroc/agadir"
+                            className="p-2.5 rounded-xl bg-[#FAF7F2] hover:bg-slate-900 hover:text-white border border-[#E7DFD5] font-semibold text-slate-800 transition flex items-center justify-between"
                         >
-                            <MapPin size={16} className="text-teal-500" />
-                            <span>Transport Médical</span>
-                            <ArrowRight size={14} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+                            <span>Agadir (AGA)</span>
+                            <ArrowRight size={12} className="opacity-50" />
                         </Link>
                         <Link
-                            href="/longue-distance"
-                            className="flex items-center gap-2 text-neutral-300 hover:text-yellow-400 transition group"
+                            href="/maroc/casablanca"
+                            className="p-2.5 rounded-xl bg-[#FAF7F2] hover:bg-slate-900 hover:text-white border border-[#E7DFD5] font-semibold text-slate-800 transition flex items-center justify-between"
                         >
-                            <MapPin size={16} className="text-purple-500" />
-                            <span>Longue Distance</span>
-                            <ArrowRight size={14} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+                            <span>Casablanca (CMN)</span>
+                            <ArrowRight size={12} className="opacity-50" />
+                        </Link>
+                        <Link
+                            href="/guides"
+                            className="p-2.5 rounded-xl bg-[#FAF7F2] hover:bg-slate-900 hover:text-white border border-[#E7DFD5] font-semibold text-slate-800 transition flex items-center justify-between"
+                        >
+                            <span>Guides Maroc</span>
+                            <ArrowRight size={12} className="opacity-50" />
                         </Link>
                     </div>
                 </div>
+            </main>
 
-                {/* Branding */}
-                <p className="text-neutral-500 text-sm mt-8">
-                    © {new Date().getFullYear()} Taxi de France — Réseau National
-                </p>
-            </div>
+            {/* Simple Footer */}
+            <footer className="p-6 border-t border-[#E7DFD5] text-center text-xs text-slate-500">
+                © {new Date().getFullYear()} ZwinCar.com • Location de voiture au Maroc auprès des meilleurs loueurs locaux vérifiés.
+            </footer>
         </div>
     );
 }

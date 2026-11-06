@@ -347,33 +347,33 @@ export default function VehicleCatalog({
                                     </div>
 
                                     {/* 2 Action Buttons: Direct Booking / Affiliate + Full SEO Product Page */}
-                                    <div className="grid grid-cols-2 gap-2">
+                                    <div className="grid grid-cols-2 gap-2.5 items-center">
                                         {isAffiliate ? (
                                             <button
                                                 type="button"
                                                 onClick={() => handleSelectVehicle(vehicle)}
-                                                className="h-11 rounded-2xl bg-slate-900 hover:bg-[#C9572C] text-white font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-xs active:scale-[0.98]"
+                                                className="h-11 px-3 rounded-2xl bg-slate-900 hover:bg-[#C9572C] text-white font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-xs active:scale-[0.98] whitespace-nowrap"
                                             >
-                                                <ExternalLink size={14} />
-                                                <span>{activeLocale === "en" ? "Check Partner Stock" : activeLocale === "es" ? "Disponibilidad" : activeLocale === "nl" ? "Beschikbaarheid" : "Dispos Aéroport"}</span>
+                                                <ExternalLink size={14} className="shrink-0" />
+                                                <span className="truncate">{activeLocale === "en" ? "Check Stock" : activeLocale === "es" ? "Disponibilidad" : activeLocale === "nl" ? "Beschikbaarheid" : "Dispos Hub"}</span>
                                             </button>
                                         ) : (
                                             <button
                                                 type="button"
                                                 onClick={() => handleSelectVehicle(vehicle)}
-                                                className="h-11 rounded-2xl bg-[#C9572C] hover:bg-[#B24922] text-white font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-xs active:scale-[0.98]"
+                                                className="h-11 px-3 rounded-2xl bg-[#C9572C] hover:bg-[#B24922] text-white font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-xs active:scale-[0.98] whitespace-nowrap"
                                             >
-                                                <Zap size={14} />
-                                                <span>{t.catalog.bookCar}</span>
+                                                <Zap size={14} className="shrink-0" />
+                                                <span className="truncate">{t.catalog.bookCar}</span>
                                             </button>
                                         )}
 
                                         <Link
                                             href={vehicleLocalUrl}
-                                            className="h-11 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
+                                            className="h-11 px-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-xs whitespace-nowrap"
                                         >
-                                            <span>{t.catalog.viewDetails}</span>
-                                            <ArrowRight size={14} />
+                                            <span className="truncate">{t.catalog.viewDetails}</span>
+                                            <ArrowRight size={14} className="shrink-0" />
                                         </Link>
                                     </div>
                                 </div>

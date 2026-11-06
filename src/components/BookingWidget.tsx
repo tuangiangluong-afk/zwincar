@@ -11,7 +11,7 @@ import {
     ChevronDown,
     Car,
 } from "lucide-react";
-import { MOROCCAN_HUBS } from "@/lib/morocco-data";
+import { MOROCCAN_HUBS, getLocalizedAirportName } from "@/lib/morocco-data";
 import { Locale, getTranslation } from "@/lib/i18n";
 
 interface BookingWidgetProps {
@@ -169,7 +169,7 @@ export function BookingWidget({
                                         {currentHub.name} ({currentHub.airportCode})
                                     </div>
                                     <div className="text-[11px] text-slate-500 truncate">
-                                        {currentHub.airportName}
+                                        {getLocalizedAirportName(currentHub, activeLocale)}
                                     </div>
                                 </div>
                             </div>

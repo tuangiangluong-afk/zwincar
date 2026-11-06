@@ -3,6 +3,8 @@
  * Conforme aux pratiques locales marocaines (Dirhams, cash, zéro empreinte CB bloquante).
  */
 
+import type { Locale } from "./i18n";
+
 export interface CityHub {
     slug: string;
     name: string;
@@ -785,4 +787,12 @@ export function getHubMeetingPoint(hub: CityHub, locale: string = "fr"): string 
         },
     };
     return meetingMap[hub.slug]?.[locale as "en" | "es" | "nl"] || hub.meetingPointDetail;
+}
+
+export function getLocalizedAirportName(hub: CityHub, locale: Locale = "fr"): string {
+    const raw = hub.airportName.replace(/^Aéroport\s+/i, "");
+    if (locale === "en") return `${raw} Airport`;
+    if (locale === "es") return `Aeropuerto ${raw}`;
+    if (locale === "nl") return `Luchthaven ${raw}`;
+    return hub.airportName;
 }

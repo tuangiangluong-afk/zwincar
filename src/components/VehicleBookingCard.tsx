@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { usePathname } from "next/navigation";
-import { VehicleModel, MOROCCAN_HUBS, UPSELL_OPTIONS, getHubMeetingPoint } from "@/lib/morocco-data";
+import { VehicleModel, MOROCCAN_HUBS, UPSELL_OPTIONS, getHubMeetingPoint, getLocalizedAirportName } from "@/lib/morocco-data";
 import { DEFAULT_HUB_DISTRIBUTION, DEFAULT_VEHICLE_STOCK } from "@/lib/affiliate";
 import { Locale, getTranslation } from "@/lib/i18n";
 import UpsellSelector from "@/components/UpsellSelector";
@@ -198,7 +198,7 @@ export default function VehicleBookingCard({
                         >
                             {MOROCCAN_HUBS.map((hub) => (
                                 <option key={hub.slug} value={hub.slug}>
-                                    {hub.name} — {hub.airportName} ({hub.airportCode})
+                                    {hub.name} — {getLocalizedAirportName(hub, activeLocale)} ({hub.airportCode})
                                 </option>
                             ))}
                         </select>

@@ -191,9 +191,7 @@ export default function VendorDashboardPage() {
             <header className="sticky top-0 z-30 bg-[#12161E] text-white px-4 py-3 border-b border-slate-800 shadow-sm">
                 <div className="max-w-4xl mx-auto flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                        <Link href="/" className="hover:opacity-80 transition">
-                            <Logo variant="icon" theme="light" size="sm" />
-                        </Link>
+                        <Logo variant="icon" theme="light" size="sm" href="/" />
                         <div>
                             <div className="text-xs font-black tracking-tight text-white flex items-center gap-1.5">
                                 <span>ZwinCar Pro</span>

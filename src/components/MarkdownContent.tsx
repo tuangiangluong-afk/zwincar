@@ -5,31 +5,49 @@ interface MarkdownContentProps {
     className?: string;
 }
 
-// Inline renderer for **bold**, `code`, and *italic*
+// Inline renderer for **bold**, `code`, *italic*, and [links](url)
 function renderInline(text: string): React.ReactNode[] {
-    // Regex matching **bold**, `code`, or *italic*
-    const regex = /(\*\*[^*]+\*\*|`[^`]+`|\*[^*]+\*)/g;
+    if (!text) return [];
+    const regex = /(\[[^\]]+\]\([^)]+\)|\*\*[^*]+\*\*|`[^`]+`|\*[^*]+\*)/g;
     const parts = text.split(regex);
 
     return parts.map((part, i) => {
-        if (part.startsWith("**") && part.endsWith("**")) {
+        // Markdown Link: [label](url)
+        if (part.startsWith("[") && part.includes("](") && part.endsWith(")")) {
+            const match = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+            if (match) {
+                return (
+                    <a
+                        key={i}
+                        href={match[2]}
+                        className="text-[#C9572C] font-semibold underline underline-offset-2 hover:text-[#A8431E] transition-colors"
+                    >
+                        {match[1]}
+                    </a>
+                );
+            }
+        }
+        // Bold: **text**
+        if (part.startsWith("**") && part.endsWith("**") && part.length >= 4) {
             return (
                 <strong key={i} className="font-bold text-slate-900">
                     {part.slice(2, -2)}
                 </strong>
             );
         }
-        if (part.startsWith("`") && part.endsWith("`")) {
+        // Inline code: `code`
+        if (part.startsWith("`") && part.endsWith("`") && part.length >= 2) {
             return (
                 <code
                     key={i}
-                    className="font-mono text-xs px-1.5 py-0.5 rounded bg-[#FAF7F2] text-[#C9572C] font-bold border border-[#E7DFD5]"
+                    className="font-mono text-xs px-1.5 py-0.5 rounded bg-[#FAF7F2] text-[#C9572C] font-semibold border border-[#E7DFD5]"
                 >
                     {part.slice(1, -1)}
                 </code>
             );
         }
-        if (part.startsWith("*") && part.endsWith("*") && !part.startsWith("**")) {
+        // Italic: *text*
+        if (part.startsWith("*") && part.endsWith("*") && !part.startsWith("**") && part.length >= 2) {
             return (
                 <em key={i} className="italic text-slate-800">
                     {part.slice(1, -1)}
@@ -48,6 +66,7 @@ export default function MarkdownContent({ content, className = "" }: MarkdownCon
     let i = 0;
 
     while (i < lines.length) {
+        const startI = i;
         const line = lines[i];
         const trimmed = line.trim();
 
@@ -57,7 +76,7 @@ export default function MarkdownContent({ content, className = "" }: MarkdownCon
             continue;
         }
 
-        // 2. Markdown Table Detection: line starts with | and contains |
+        // 2. Markdown Table Detection
         if (trimmed.startsWith("|") && trimmed.endsWith("|")) {
             const tableLines: string[] = [];
             while (i < lines.length && lines[i].trim().startsWith("|") && lines[i].trim().endsWith("|")) {
@@ -66,13 +85,11 @@ export default function MarkdownContent({ content, className = "" }: MarkdownCon
             }
 
             if (tableLines.length >= 2) {
-                // Header row
                 const headerCells = tableLines[0]
                     .split("|")
                     .slice(1, -1)
                     .map((c) => c.trim());
 
-                // Skip separator row (tableLines[1] usually | :--- | :--- |)
                 const startRow = tableLines[1].includes("---") ? 2 : 1;
                 const bodyRows = tableLines.slice(startRow).map((rowLine) =>
                     rowLine
@@ -83,8 +100,8 @@ export default function MarkdownContent({ content, className = "" }: MarkdownCon
 
                 blocks.push(
                     <div
-                        key={`table-${i}`}
-                        className="my-6 overflow-x-auto rounded-2xl border border-[#E7DFD5] bg-white shadow-xs"
+                        key={`table-${startI}`}
+                        className="my-6 overflow-x-auto rounded-xl border border-[#E7DFD5] bg-white shadow-xs"
                     >
                         <table className="w-full text-left text-xs sm:text-sm border-collapse">
                             <thead>
@@ -106,7 +123,7 @@ export default function MarkdownContent({ content, className = "" }: MarkdownCon
                                         className={rIdx % 2 === 1 ? "bg-[#FAF7F2]/40" : "bg-white"}
                                     >
                                         {row.map((cell, cIdx) => (
-                                            <td key={cIdx} className="px-4 py-3 text-slate-700 leading-normal">
+                                            <td key={cIdx} className="px-4 py-3 text-slate-700 leading-relaxed align-top">
                                                 {renderInline(cell)}
                                             </td>
                                         ))}
@@ -120,15 +137,31 @@ export default function MarkdownContent({ content, className = "" }: MarkdownCon
             }
         }
 
-        // 3. Subheadings (### or ####)
-        if (trimmed.startsWith("### ")) {
-            const text = trimmed.replace(/^###\s+/, "");
+        // 3. Headings (# to ####)
+        if (trimmed.startsWith("# ")) {
             blocks.push(
-                <h3
-                    key={`h3-${i}`}
-                    className="text-lg sm:text-xl font-black text-slate-900 mt-7 mb-3 tracking-tight"
-                >
-                    {renderInline(text)}
+                <h2 key={`h1-${startI}`} className="text-xl sm:text-2xl font-black text-slate-900 mt-8 mb-3 tracking-tight">
+                    {renderInline(trimmed.replace(/^#\s+/, ""))}
+                </h2>
+            );
+            i++;
+            continue;
+        }
+
+        if (trimmed.startsWith("## ")) {
+            blocks.push(
+                <h2 key={`h2-${startI}`} className="text-xl sm:text-2xl font-black text-slate-900 mt-8 mb-3 tracking-tight">
+                    {renderInline(trimmed.replace(/^##\s+/, ""))}
+                </h2>
+            );
+            i++;
+            continue;
+        }
+
+        if (trimmed.startsWith("### ")) {
+            blocks.push(
+                <h3 key={`h3-${startI}`} className="text-lg sm:text-xl font-black text-slate-900 mt-7 mb-3 tracking-tight">
+                    {renderInline(trimmed.replace(/^###\s+/, ""))}
                 </h3>
             );
             i++;
@@ -136,13 +169,9 @@ export default function MarkdownContent({ content, className = "" }: MarkdownCon
         }
 
         if (trimmed.startsWith("#### ")) {
-            const text = trimmed.replace(/^####\s+/, "");
             blocks.push(
-                <h4
-                    key={`h4-${i}`}
-                    className="text-base font-bold text-slate-900 mt-5 mb-2"
-                >
-                    {renderInline(text)}
+                <h4 key={`h4-${startI}`} className="text-base font-bold text-slate-900 mt-5 mb-2">
+                    {renderInline(trimmed.replace(/^####\s+/, ""))}
                 </h4>
             );
             i++;
@@ -161,7 +190,7 @@ export default function MarkdownContent({ content, className = "" }: MarkdownCon
             }
 
             blocks.push(
-                <ul key={`ul-${i}`} className="space-y-3 my-4 pl-1">
+                <ul key={`ul-${startI}`} className="space-y-3 my-4 pl-1">
                     {listItems.map((item, idx) => (
                         <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-700 leading-relaxed">
                             <span className="w-1.5 h-1.5 rounded-full bg-[#C9572C] mt-2 shrink-0"></span>
@@ -173,7 +202,7 @@ export default function MarkdownContent({ content, className = "" }: MarkdownCon
             continue;
         }
 
-        // 5. Standard Paragraphs
+        // 5. Standard Paragraph Lines
         const paragraphLines: string[] = [];
         while (
             i < lines.length &&
@@ -188,15 +217,26 @@ export default function MarkdownContent({ content, className = "" }: MarkdownCon
         }
 
         if (paragraphLines.length > 0) {
-            const pText = paragraphLines.join(" ");
             blocks.push(
                 <p
-                    key={`p-${i}`}
+                    key={`p-${startI}`}
                     className="leading-relaxed text-slate-700 my-3 text-xs sm:text-sm md:text-base"
                 >
-                    {renderInline(pText)}
+                    {renderInline(paragraphLines.join(" "))}
                 </p>
             );
+        }
+
+        // Safety fallback: if no condition advanced i, advance by 1
+        if (i === startI) {
+            if (trimmed) {
+                blocks.push(
+                    <p key={`fallback-${startI}`} className="leading-relaxed text-slate-700 my-3 text-xs sm:text-sm md:text-base">
+                        {renderInline(trimmed)}
+                    </p>
+                );
+            }
+            i++;
         }
     }
 
