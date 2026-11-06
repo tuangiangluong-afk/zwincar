@@ -5,7 +5,7 @@ export const metadata: Metadata = {
     description: "Espace d'administration et de gestion de flotte réservé aux agences locales partenaires ZwinCar au Maroc.",
     robots: {
         index: false,
-        follow: false,
+        follow: true,
     },
     alternates: {
         canonical: "https://zwincar.com/vendor/login",

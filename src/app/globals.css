@@ -45,10 +45,21 @@
 
 /* Base styles */
 @layer base {
+  html,
   body {
     background-color: #FAF7F2;
     color: #12161E;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    overflow-x: hidden;
+    max-width: 100vw;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  button,
+  a,
+  [role="button"] {
+    touch-action: manipulation;
   }
 
   ::selection {

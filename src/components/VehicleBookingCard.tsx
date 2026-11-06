@@ -283,7 +283,7 @@ export default function VehicleBookingCard({
             {/* Split Financial Breakdown (Transparency & Max Cash Flow) */}
             <div className="rounded-2xl bg-[#FAF7F2] border border-[#ECE5D9] p-4 space-y-2.5 text-xs">
                 <div className="flex justify-between text-slate-600">
-                    <span>{t.catalog.all} ({days} {t.search.daysCount} x {currency === "EUR" ? `${vehicle.dailyPriceEur} €` : `${vehicle.dailyPriceMad} MAD`})</span>
+                    <span>{vehicle.name} ({days} {t.search.daysCount} x {currency === "EUR" ? `${vehicle.dailyPriceEur} €` : `${vehicle.dailyPriceMad} MAD`})</span>
                     <span className="font-semibold text-slate-900 font-mono">
                         {currency === "EUR" ? `${baseRentalEur} €` : `${baseRentalMad} MAD`}
                     </span>

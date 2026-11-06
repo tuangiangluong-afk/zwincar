@@ -117,17 +117,17 @@ export default function HomePage({ locale = "fr" }: HomePageProps = {}) {
                         </p>
 
                         {/* 3 Clear Guarantees */}
-                        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mt-6 sm:mt-8 text-[11px] sm:text-xs font-medium text-white/90">
+                        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mt-6 sm:mt-8 text-[11px] sm:text-xs font-medium text-white/90 max-w-full px-2">
                             <span className="flex items-center gap-1.5 bg-black/45 backdrop-blur-md px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full border border-white/15 shadow-2xs">
                                 <ShieldCheck size={14} className="text-[#E58B24] shrink-0" />
                                 <span>
                                     {isEn
-                                        ? "€0 deposit with Zero Excess (or €300 standard)"
+                                        ? "€0 deposit (Zero Excess) or €300"
                                         : isEs
-                                        ? "0 € de fianza con Franquicia Cero (o 300 € estándar)"
+                                        ? "0 € fianza (Franquicia Cero) o 300 €"
                                         : isNl
-                                        ? "€ 0 borg met Nul Eigen Risico (of € 300 standaard)"
-                                        : "0 € de caution avec Franchise Zéro (ou 300 € standard)"}
+                                        ? "€ 0 borg (Nul Risico) of € 300"
+                                        : "Caution 0 € (Franchise Zéro) ou 300 €"}
                                 </span>
                             </span>
                             <span className="flex items-center gap-1.5 bg-black/45 backdrop-blur-md px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full border border-white/15 shadow-2xs">

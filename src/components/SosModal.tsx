@@ -14,10 +14,10 @@ export function SosModal({ isOpen, onClose }: SosModalProps) {
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-xs">
-            <div className="w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200 animate-in fade-in zoom-in-95 duration-150">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/65 backdrop-blur-xs">
+            <div className="w-full max-w-lg max-h-[calc(100dvh-1.5rem)] flex flex-col bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200 animate-in fade-in zoom-in-95 duration-150 my-auto">
                 {/* Deep Architectural Header */}
-                <div className="bg-[#12161E] p-5 text-white flex items-center justify-between border-b border-slate-800">
+                <div className="shrink-0 bg-[#12161E] p-4 sm:p-5 text-white flex items-center justify-between border-b border-slate-800">
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-xl bg-white/10 text-white flex items-center justify-center font-bold">
                             <ShieldAlert size={20} className="text-[#C9572C]" />
@@ -42,7 +42,7 @@ export function SosModal({ isOpen, onClose }: SosModalProps) {
                 </div>
 
                 {/* Navigation Tabs */}
-                <div className="flex border-b border-slate-200 bg-[#FAF7F2] text-xs font-bold text-slate-600">
+                <div className="shrink-0 flex border-b border-slate-200 bg-[#FAF7F2] text-xs font-bold text-slate-600">
                     <button
                         type="button"
                         onClick={() => setActiveTab("numbers")}
@@ -79,7 +79,7 @@ export function SosModal({ isOpen, onClose }: SosModalProps) {
                 </div>
 
                 {/* Body Content */}
-                <div className="p-6 max-h-[75vh] overflow-y-auto space-y-4">
+                <div className="flex-1 min-h-0 p-4 sm:p-6 overflow-y-auto overscroll-contain space-y-4">
                     {activeTab === "numbers" && (
                         <div className="space-y-4">
                             <div className="text-xs text-slate-500 font-medium">
@@ -156,7 +156,7 @@ export function SosModal({ isOpen, onClose }: SosModalProps) {
                                     href="https://wa.me/212600000000?text=URGENCE%20ASSISTANCE%20ZWINCAR"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="inline-flex items-center justify-center w-full py-2.5 rounded-xl bg-[#C9572C] hover:bg-[#B24922] text-white font-bold text-xs tracking-wide transition cursor-pointer"
+                                    className="inline-flex items-center justify-center w-full py-2.5 px-3 rounded-xl bg-[#C9572C] hover:bg-[#B24922] text-white font-bold text-xs tracking-wide transition cursor-pointer text-center"
                                 >
                                     Contacter l'astreinte WhatsApp (+212 6 00 00 00 00)
                                 </a>
@@ -219,7 +219,7 @@ export function SosModal({ isOpen, onClose }: SosModalProps) {
                 </div>
 
                 {/* Footer */}
-                <div className="p-4 bg-[#FAF7F2] border-t border-slate-200 flex justify-end">
+                <div className="shrink-0 p-3 sm:p-4 bg-[#FAF7F2] border-t border-slate-200 flex justify-end">
                     <button
                         type="button"
                         onClick={onClose}

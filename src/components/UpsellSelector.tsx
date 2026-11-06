@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Check, ShieldCheck, Wifi, Baby, Users, Clock, Tag } from "lucide-react";
+import { Check, ShieldCheck, Baby, Users, Clock, Tag } from "lucide-react";
 import { UPSELL_OPTIONS } from "@/lib/morocco-data";
 import { Locale, getTranslation } from "@/lib/i18n";
 
@@ -34,7 +34,25 @@ export default function UpsellSelector({
             case "franchise-zero":
                 return <ShieldCheck size={18} className={iconClass} />;
             case "esim-maroc":
-                return <Wifi size={18} className={iconClass} />;
+                return (
+                    <svg
+                        width={18}
+                        height={18}
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className={iconClass}
+                        aria-hidden="true"
+                    >
+                        <path d="M4 4a2 2 0 0 1 2-2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4z" />
+                        <rect x="8" y="10" width="8" height="8" rx="1.5" />
+                        <path d="M12 10v8" />
+                        <path d="M8 14h8" />
+                    </svg>
+                );
             case "siege-bebe":
                 return <Baby size={18} className={iconClass} />;
             case "conducteur-additionnel":

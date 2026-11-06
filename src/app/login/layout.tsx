@@ -5,7 +5,7 @@ export const metadata: Metadata = {
     description: "Portail sécurisé de gestion et d'administration interne ZwinCar Maroc.",
     robots: {
         index: false,
-        follow: false,
+        follow: true,
     },
     alternates: {
         canonical: "https://zwincar.com/login",

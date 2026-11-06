@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { MessageCircle, Globe, Menu, X, ShieldCheck, ChevronDown, ShieldAlert, BookOpen, FileText } from "lucide-react";
@@ -23,6 +23,17 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
     const [hubsDropdownOpen, setHubsDropdownOpen] = useState(false);
     const [sosModalOpen, setSosModalOpen] = useState(false);
     const [lookupModalOpen, setLookupModalOpen] = useState(false);
+
+    // Lock background scroll when mobile menu or modal is open
+    useEffect(() => {
+        if (mobileMenuOpen || sosModalOpen || lookupModalOpen) {
+            const originalOverflow = document.body.style.overflow;
+            document.body.style.overflow = "hidden";
+            return () => {
+                document.body.style.overflow = originalOverflow;
+            };
+        }
+    }, [mobileMenuOpen, sosModalOpen, lookupModalOpen]);
 
     // Detect current locale from prop or pathname
     const currentLocale: Locale = propLocale || (pathname?.startsWith("/en")
@@ -265,9 +276,9 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
                     </div>
                 </div>
 
-                {/* Mobile Dropdown Menu */}
+                {/* Mobile Dropdown Menu (Full Height Dedicated Scrollable Drawer) */}
                 {mobileMenuOpen && (
-                    <div className="lg:hidden bg-white border-b border-[#E7DFD5] p-5 space-y-4 animate-in slide-in-from-top-2 shadow-xl">
+                    <div className="lg:hidden fixed inset-x-0 top-[65px] bottom-0 z-50 bg-white/98 backdrop-blur-md overflow-y-auto overscroll-contain p-5 pb-20 space-y-4 shadow-2xl animate-in slide-in-from-top-2">
                         <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                             <span className="text-xs font-bold uppercase text-slate-400">Langue / Language</span>
                             <div className="inline-flex items-center gap-1 text-xs font-semibold p-1 rounded-full bg-slate-100">

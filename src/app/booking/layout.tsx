@@ -5,7 +5,7 @@ export const metadata: Metadata = {
     description: "Consultez votre bon de réservation ZwinCar, coordonnées de remise des clés et assistance 24/7.",
     robots: {
         index: false,
-        follow: false,
+        follow: true,
     },
 };
 

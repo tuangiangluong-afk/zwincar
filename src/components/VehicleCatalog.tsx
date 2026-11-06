@@ -170,66 +170,71 @@ export default function VehicleCatalog({
                     </div>
 
                     {/* Filter Pills & Currency Switch */}
-                    <div className="flex flex-wrap items-center gap-2.5">
-                        <div className="inline-flex rounded-full bg-white p-1 border border-[#E7DFD5] shadow-xs text-xs">
-                            {[
-                                { id: "all", label: t.catalog.all },
-                                { id: "auto", label: t.catalog.automatic },
-                                { id: "suv", label: "SUV & 4x4" },
-                                {
-                                    id: "citadine",
-                                    label:
-                                        activeLocale === "en"
-                                            ? "City Cars"
-                                            : activeLocale === "es"
-                                            ? "Urbanos"
-                                            : activeLocale === "nl"
-                                            ? "Stadsauto's"
-                                            : "Citadines",
-                                },
-                                {
-                                    id: "family",
-                                    label:
-                                        activeLocale === "en"
-                                            ? "7-Seaters"
-                                            : activeLocale === "es"
-                                            ? "7 Plazas"
-                                            : activeLocale === "nl"
-                                            ? "7 Zitplaatsen"
-                                            : "7 Places",
-                                },
-                            ].map((tab) => (
-                                <button
-                                    key={tab.id}
-                                    type="button"
-                                    onClick={() => setSelectedCategory(tab.id)}
-                                    className={`px-3 py-1.5 rounded-full font-medium transition cursor-pointer ${
-                                        selectedCategory === tab.id
-                                            ? "bg-slate-900 text-white font-semibold"
-                                            : "text-slate-600 hover:text-slate-900"
-                                    }`}
-                                >
-                                    {tab.label}
-                                </button>
-                            ))}
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 w-full">
+                        {/* Categories Horizontal Scroll on Mobile */}
+                        <div className="flex items-center overflow-x-auto no-scrollbar py-1 -mx-4 px-4 sm:mx-0 sm:px-0">
+                            <div className="inline-flex items-center gap-1 rounded-full bg-white p-1 border border-[#E7DFD5] shadow-xs text-xs shrink-0">
+                                {[
+                                    { id: "all", label: t.catalog.all },
+                                    { id: "auto", label: t.catalog.automatic },
+                                    { id: "suv", label: "SUV & 4x4" },
+                                    {
+                                        id: "citadine",
+                                        label:
+                                            activeLocale === "en"
+                                                ? "City Cars"
+                                                : activeLocale === "es"
+                                                ? "Urbanos"
+                                                : activeLocale === "nl"
+                                                ? "Stadsauto's"
+                                                : "Citadines",
+                                    },
+                                    {
+                                        id: "family",
+                                        label:
+                                            activeLocale === "en"
+                                                ? "7-Seaters"
+                                                : activeLocale === "es"
+                                                ? "7 Plazas"
+                                                : activeLocale === "nl"
+                                                ? "7 Zitplaatsen"
+                                                : "7 Places",
+                                    },
+                                ].map((tab) => (
+                                    <button
+                                        key={tab.id}
+                                        type="button"
+                                        onClick={() => setSelectedCategory(tab.id)}
+                                        className={`whitespace-nowrap px-3.5 py-1.5 rounded-full font-medium transition cursor-pointer text-xs shrink-0 ${
+                                            selectedCategory === tab.id
+                                                ? "bg-slate-900 text-white font-semibold shadow-xs"
+                                                : "text-slate-600 hover:text-slate-900"
+                                        }`}
+                                    >
+                                        {tab.label}
+                                    </button>
+                                ))}
+                            </div>
                         </div>
 
                         {/* Currency selector */}
-                        <div className="inline-flex rounded-full bg-white px-2 py-1 border border-[#E7DFD5] shadow-xs text-xs font-semibold text-slate-700">
-                            {(["EUR", "MAD", "GBP", "USD"] as const).map((c) => (
-                                <button
-                                    key={c}
-                                    type="button"
-                                    onClick={() => setCurrency(c)}
-                                    className={`px-2 py-0.5 rounded cursor-pointer transition ${
-                                        currency === c
-                                            ? "bg-[#C9572C]/15 text-[#C9572C] font-bold"
-                                            : "hover:text-slate-900"
-                                    }`}
-                                >
-                                    {c === "MAD" ? "DH" : c}
-                                </button>
-                            ))}
+                        <div className="flex items-center shrink-0">
+                            <div className="inline-flex items-center rounded-full bg-white p-1 border border-[#E7DFD5] shadow-xs text-xs font-semibold text-slate-700">
+                                {(["EUR", "MAD", "GBP", "USD"] as const).map((c) => (
+                                    <button
+                                        key={c}
+                                        type="button"
+                                        onClick={() => setCurrency(c)}
+                                        className={`px-2.5 py-1 rounded-full cursor-pointer transition text-[11px] font-bold ${
+                                            currency === c
+                                                ? "bg-[#C9572C] text-white shadow-2xs"
+                                                : "text-slate-600 hover:text-slate-900"
+                                        }`}
+                                    >
+                                        {c === "MAD" ? "DH" : c}
+                                    </button>
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -281,13 +286,13 @@ export default function VehicleCatalog({
                                     <Link
                                         href={vehicleLocalUrl}
                                         aria-label={`${vehicle.name} - ${currentHub.name}`}
-                                        className="block relative w-full h-44 rounded-2xl overflow-hidden bg-slate-50 mb-4 cursor-pointer"
+                                        className="block relative w-full h-44 sm:h-48 rounded-2xl overflow-hidden bg-slate-50 mb-4 cursor-pointer"
                                     >
                                         <img
                                             src={vehicle.image}
                                             alt={vehicle.name}
-                                            width={600}
-                                            height={390}
+                                            width={800}
+                                            height={500}
                                             loading="lazy"
                                             decoding="async"
                                             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
