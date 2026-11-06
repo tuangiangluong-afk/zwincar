@@ -41,7 +41,7 @@ export function InternalMesh({ city, config }: InternalMeshProps) {
                         <h4 className="text-white font-bold mb-6 text-lg">Nos Services</h4>
                         <ul className="space-y-3">
                             <li>
-                                <Link href="/conseils" className="text-neutral-400 hover:text-white transition text-sm flex items-center gap-2">
+                                <Link href="/guides" className="text-neutral-400 hover:text-white transition text-sm flex items-center gap-2">
                                     <span className="w-1 h-1 bg-amber-500 rounded-full"></span>
                                     Conseils & Astuces Taxi
                                 </Link>

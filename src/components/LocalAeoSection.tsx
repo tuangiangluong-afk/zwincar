@@ -69,7 +69,7 @@ export default function LocalAeoSection({ hubSlug }: LocalAeoSectionProps) {
                     </div>
 
                     <h2 data-speakable className="text-xl md:text-2xl font-black text-slate-900 mb-4 tracking-tight">
-                        {DIRECT_ANSWERS_AEO.title}
+                        {hubSlug && hub ? `Louer une voiture sans caution ni carte bancaire à ${hub.name} (2026)` : DIRECT_ANSWERS_AEO.title}
                     </h2>
 
                     <p data-speakable className="text-base md:text-lg text-slate-700 leading-relaxed mb-8">

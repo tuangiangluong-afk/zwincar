@@ -114,6 +114,8 @@ export default function LocalizedHubView({ hub, locale }: LocalizedHubViewProps)
                                 <img
                                     src={hub.heroImage}
                                     alt={`Location voiture ${hub.name}`}
+                                    width={1200}
+                                    height={630}
                                     className="w-full h-full object-cover"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
@@ -186,9 +188,9 @@ export default function LocalizedHubView({ hub, locale }: LocalizedHubViewProps)
                                             {pos.type === "airport" ? <Plane size={16} /> : <MapPin size={16} />}
                                         </div>
                                         <div>
-                                            <h4 className="font-bold text-slate-900 text-xs sm:text-sm">
+                                            <h3 className="font-bold text-slate-900 text-xs sm:text-sm">
                                                 {pos.name}
-                                            </h4>
+                                            </h3>
                                             <span className="text-[10px] text-slate-400 font-mono">{pos.nameAr}</span>
                                         </div>
                                     </div>

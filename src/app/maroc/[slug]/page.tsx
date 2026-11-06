@@ -134,6 +134,8 @@ export default async function CityHubPage({ params }: CityPageProps) {
                                 <img
                                     src={hub.heroImage}
                                     alt={`Location voiture ${hub.name}`}
+                                    width={1200}
+                                    height={630}
                                     className="w-full h-full object-cover"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>

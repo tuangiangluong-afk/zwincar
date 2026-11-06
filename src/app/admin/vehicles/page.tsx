@@ -96,6 +96,8 @@ export default function VehiclesManager() {
                                 <img
                                     src={car.image_url || "/placeholder-car.jpg"}
                                     alt={car.name}
+                                    width={600}
+                                    height={390}
                                     className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                                 />
                                 <button

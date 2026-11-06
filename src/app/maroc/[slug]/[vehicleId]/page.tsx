@@ -226,6 +226,8 @@ export default async function CityVehicleDetailPage({ params }: CityVehiclePageP
                                 <img
                                     src={vehicle.image}
                                     alt={`Location ${vehicle.name} à ${hub.name}`}
+                                    width={600}
+                                    height={390}
                                     className="w-full h-full object-cover"
                                 />
                                 <div className="absolute top-4 left-4 bg-slate-900/80 backdrop-blur-xs text-white px-3 py-1 rounded-full text-xs font-semibold">
@@ -276,9 +278,9 @@ export default async function CityVehicleDetailPage({ params }: CityVehiclePageP
                                     <Plane size={15} />
                                     <span>Procédure de Réception à {hub.name} ({hub.airportCode})</span>
                                 </div>
-                                <h3 className="text-lg font-bold text-slate-900">
+                                <h2 className="text-lg font-bold text-slate-900">
                                     Comment se déroule la remise des clés de votre {vehicle.name} ?
-                                </h3>
+                                </h2>
                                 <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                                     <strong>Point de rendez-vous : </strong>{hub.meetingPointDetail}. Un agent de notre agence partenaire locale vous attend avec une pancarte nominative à votre nom. Le tour du véhicule prend 5 minutes, vous signez le contrat sur smartphone et partez directement sans passer par un guichet.
                                 </p>
@@ -325,6 +327,8 @@ export default async function CityVehicleDetailPage({ params }: CityVehiclePageP
                                         <img
                                             src={v.image}
                                             alt={`Location ${v.name} à ${hub.name}`}
+                                            width={240}
+                                            height={160}
                                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                         />
                                     </div>

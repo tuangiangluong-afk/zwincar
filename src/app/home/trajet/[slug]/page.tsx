@@ -278,7 +278,7 @@ export default async function TrajetPage({ params }: { params: Promise<{ slug: s
                                 <Flag size={32} className="mx-auto mb-4 text-white/50" />
                                 <h3 className="font-bold text-lg mb-2">Besoin d'un Van ?</h3>
                                 <p className="text-sm text-blue-100 mb-4">Jusqu'à 7 passagers pour ce trajet. Idéal pour les groupes et séminaires.</p>
-                                <a href="/van-minibus" className="inline-block bg-white/20 backdrop-blur border border-white/30 text-white px-6 py-2 rounded-full font-bold text-sm hover:bg-white/30 transition">
+                                <a href="/vehicules/dacia-jogger-7p" className="inline-block bg-white/20 backdrop-blur border border-white/30 text-white px-6 py-2 rounded-full font-bold text-sm hover:bg-white/30 transition">
                                     Demander un Van
                                 </a>
                             </div>

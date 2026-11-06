@@ -64,7 +64,7 @@ export function AeoContent({ city }: AeoContentProps) {
 
                     <div className="mt-8 text-center">
                         <Link
-                            href="/conseils"
+                            href="/guides"
                             className="inline-flex items-center gap-2 text-sm font-bold text-neutral-900 bg-neutral-900 text-white px-6 py-3 rounded-full hover:bg-neutral-800 transition"
                         >
                             <Sparkles size={16} />

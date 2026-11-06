@@ -134,6 +134,8 @@ export default async function VehicleDetailPage({ params }: VehiclePageProps) {
                                 <img
                                     src={vehicle.image}
                                     alt={vehicle.name}
+                                    width={600}
+                                    height={390}
                                     className="w-full h-full object-cover"
                                 />
                                 <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between pointer-events-none">

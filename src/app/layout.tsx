@@ -28,7 +28,6 @@ export const metadata: Metadata = {
   ],
   metadataBase: new URL("https://zwincar.com"),
   alternates: {
-    canonical: "https://zwincar.com",
     languages: {
       "fr-FR": "https://zwincar.com",
       "en-US": "https://zwincar.com/en",

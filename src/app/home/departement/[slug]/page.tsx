@@ -153,6 +153,8 @@ export default async function DepartmentPage({ params }: Props) {
                                                         : "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?q=80&w=2940&auto=format&fit=crop"
                                                 }
                                                 alt={`Taxi ${city.city} (${dept.code}) - Réservation VTC & Taxi`}
+                                                width={400}
+                                                height={250}
                                                 className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110 filter brightness-[0.6]"
                                                 loading="lazy"
                                             />

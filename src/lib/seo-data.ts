@@ -36,7 +36,7 @@ export const SEO_SERVICES: SeoService[] = [
         title: 'Taxi Van & Minibus',
         description: 'Transport de groupe jusqu\'à 7 passagers avec bagages.',
         keywords: ['groupe', 'famille', 'van', 'grand taxi'],
-        href: '/van-minibus'
+        href: '/vehicules/dacia-jogger-7p'
     },
     {
         slug: 'longue-distance',

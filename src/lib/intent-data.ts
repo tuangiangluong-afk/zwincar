@@ -95,10 +95,10 @@ export const PURCHASE_INTENTS: PurchaseIntent[] = [
             nl: "Geen Creditcard Blokkade",
         },
         headline: {
-            fr: "Louez à {hub} sans risquer 1 500 € bloqués au comptoir aéroport",
-            en: "Rent in {hub} without risking a €1,500 security deposit hold",
-            es: "Alquile en {hub} sin arriesgar un bloqueo de 1.500 € en el mostrador",
-            nl: "Huur in {hub} zonder het risico van €1.500 borg op uw creditcard",
+            fr: "Louez à {hub} sans risquer 1 500 € bloqués au comptoir",
+            en: "Rent in {hub} without a €1,500 deposit hold",
+            es: "Alquile en {hub} sin bloqueo de 1.500 €",
+            nl: "Huur in {hub} zonder €1.500 borg blokkade",
         },
         intro: {
             fr: "Le piège n°1 à l'arrivée au Maroc : les courtiers low-cost imposent une carte de CRÉDIT physique et bloquent 1 500 € à 2 500 € sur votre plafond de vacances. ZwinCar casse cette pratique avec des agences locales vérifiées : formule 0 € caution ou dépôt modéré de 300 € en cash/débit rendu en main propre.",
@@ -221,10 +221,10 @@ export const PURCHASE_INTENTS: PurchaseIntent[] = [
             nl: "Gegarandeerde Automaat",
         },
         headline: {
-            fr: "Conduite sereine à {hub} : zéro calage dans le trafic et sur les cols de l'Atlas",
-            en: "Stress-free driving in {hub}: zero stalling in traffic or steep Atlas passes",
-            es: "Conducción sin estrés en {hub}: sin calarse en rotondas ni en los puertos del Atlas",
-            nl: "Zorgeloos rijden in {hub}: nooit afslaan in druk stadsverkeer of op berghellingen",
+            fr: "Voiture automatique à {hub} : zéro calage garanti",
+            en: "Automatic Car Rental in {hub}: Stress-Free Drive",
+            es: "Coche automático en {hub}: conducción sin calarse",
+            nl: "Automaat huren in {hub}: zorgeloos rijden",
         },
         intro: {
             fr: "Au Maroc, 90% des parcs de location low-cost sont en boîte manuelle. Si vous réservez une automatique sur un comparateur international, vous risquez la mention 'ou similaire' et une vieille manuelle au comptoir. Sur ZwinCar, la transmission automatique est contractuellement garantie sur le modèle choisi.",
@@ -319,10 +319,10 @@ export const PURCHASE_INTENTS: PurchaseIntent[] = [
             nl: "Onverharde Pistes Toegestaan",
         },
         headline: {
-            fr: "L'arme absolue pour le Maroc : garde au sol 21 cm et pistes d'auberges autorisées",
-            en: "The ultimate Moroccan roadtrip vehicle: 21 cm ground clearance & authorized trails",
-            es: "El vehículo ideal para Marruecos: 21 cm de altura al suelo y pistas autorizadas",
-            nl: "Het ideale voertuig voor Marokko: 21 cm bodemvrijheid en toegestane pistes",
+            fr: "Location SUV & 4x4 à {hub} : pistes autorisées",
+            en: "SUV & 4x4 Rental in {hub}: 21 cm clearance",
+            es: "Alquiler SUV y 4x4 en {hub}: pistas autorizadas",
+            nl: "SUV & 4x4 huren in {hub}: toegestane pistes",
         },
         intro: {
             fr: "Les plus beaux spots du Maroc (bivouacs d'Agafay, kasbahs de l'Atlas, plages secrètes du Sud) nécessitent d'emprunter des pistes de graviers. Les loueurs low-cost interdisent formellement les routes non goudronnées dans leurs CGV pour confisquer les cautions. Sur ZwinCar, nos SUV Duster 4x4 et Tucson intègrent l'autorisation officielle des pistes carrossables.",
@@ -417,10 +417,10 @@ export const PURCHASE_INTENTS: PurchaseIntent[] = [
             nl: "Ruim voor Families & Groepen",
         },
         headline: {
-            fr: "Voyagez tous ensemble à {hub} : contournez la règle des taxis limités à 3 personnes",
-            en: "Travel together in {hub}: beat the strict 3-passenger taxi limit in Morocco",
-            es: "Viajen todos juntos en {hub}: supere la norma de taxis limitada a 3 personas",
-            nl: "Reis samen in {hub}: omzeil de strikte taxilimiet van maximaal 3 personen",
+            fr: "Location 7 places à {hub} : voyagez en famille",
+            en: "7-Seater Rental in {hub}: Family Travel",
+            es: "Alquiler 7 plazas en {hub}: viaje en familia",
+            nl: "7-persoons auto huren in {hub}: voor families",
         },
         intro: {
             fr: "Au Maroc, la législation sur les 'Petits Taxis' est inflexible : ils ont l'interdiction absolue de transporter plus de 3 passagers. Pour une famille de 4 ou 5 personnes, chaque déplacement nécessite deux taxis distincts ! Louer un Dacia Jogger 7 places vous permet de voyager réunis, d'installer vos sièges bébé ISOFIX et de diviser vos coûts de transport par deux.",
@@ -515,10 +515,10 @@ export const PURCHASE_INTENTS: PurchaseIntent[] = [
             nl: "Sleuteloverdracht bij Riad",
         },
         headline: {
-            fr: "Commencez votre roadtrip directement au réveil devant votre hébergement à {hub}",
-            en: "Start your road trip right outside your riad or hotel entrance in {hub}",
-            es: "Inicie su viaje directamente desde la puerta de su alojamiento en {hub}",
-            nl: "Begin uw roadtrip direct vanaf de drempel van uw riad of hotel in {hub}",
+            fr: "Livraison de votre voiture au Riad à {hub}",
+            en: "Car Delivery directly to your Riad in {hub}",
+            es: "Entrega directa de coche en su Riad en {hub}",
+            nl: "Bezorging van uw huurauto bij uw Riad in {hub}",
         },
         intro: {
             fr: "Beaucoup de voyageurs passent leurs 2 premiers jours à pied dans la médina de {hub} avant de partir explorer l'Atlas ou la côte. Plutôt que de payer un taxi pour retourner à l'aéroport louer une voiture, notre agent local vous livre le véhicule propre au point carrossable le plus proche de votre riad ou à la réception de votre hôtel.",

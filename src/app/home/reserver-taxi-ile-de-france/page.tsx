@@ -52,6 +52,8 @@ export default function RegionPage() {
                                 <img
                                     src={dept.image}
                                     alt={`Taxi ${dept.name} - Chauffeurs VTC et Taxis dans le ${dept.code}`}
+                                    width={400}
+                                    height={500}
                                     className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105 filter brightness-[0.5] group-hover:brightness-[0.6]"
                                 />
                                 <div className={`absolute inset-0 bg-gradient-to-t ${dept.heroColor} opacity-50 mix-blend-multiply`} />

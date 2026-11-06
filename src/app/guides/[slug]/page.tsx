@@ -115,6 +115,10 @@ export default async function GuideDetailPage({
     const relatedVehiclesData = VEHICLE_FLEET.filter((v) => guide.relatedVehicles.includes(v.id));
     const infographicType = getInfographicType(guide.slug);
 
+    const titleMatch = guide.title.match(/^(.+?)(?:\s*[:?]\s+)(.+)$/);
+    const h1Title = titleMatch ? (guide.title.includes("?") && !titleMatch[1].endsWith("?") ? `${titleMatch[1]} ?` : titleMatch[1]) : guide.title;
+    const subtitle = titleMatch ? titleMatch[2] : null;
+
     return (
         <div className="min-h-screen bg-[#FAF7F2] text-slate-900 flex flex-col font-sans">
             <Header />
@@ -229,8 +233,13 @@ export default async function GuideDetailPage({
                         </div>
 
                         <h1 className="text-2xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">
-                            {guide.title}
+                            {h1Title}
                         </h1>
+                        {subtitle && (
+                            <p className="text-base sm:text-lg text-slate-600 font-medium mt-2 leading-relaxed">
+                                {subtitle}
+                            </p>
+                        )}
 
                         {/* Author line & Dates */}
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2 pb-6 border-b border-slate-200">
@@ -268,7 +277,7 @@ export default async function GuideDetailPage({
                     <div className="relative h-64 sm:h-96 rounded-3xl overflow-hidden my-8 shadow-md border border-slate-200">
                         <Image
                             src={guide.heroImage}
-                            alt={guide.title}
+                            alt={guide.shortTitle || guide.title}
                             fill
                             priority
                             className="object-cover"

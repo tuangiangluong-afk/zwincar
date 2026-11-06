@@ -65,7 +65,7 @@ export default function PseoGuidesCrossLinks({
                                 <div className="relative h-36 w-full overflow-hidden bg-slate-100">
                                     <Image
                                         src={guide.heroImage}
-                                        alt={guide.title}
+                                        alt={guide.shortTitle || guide.title}
                                         fill
                                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                                         className="object-cover group-hover:scale-105 transition-transform duration-300"

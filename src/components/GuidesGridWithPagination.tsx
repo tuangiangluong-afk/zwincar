@@ -154,7 +154,7 @@ export default function GuidesGridWithPagination({
                             <div className="relative h-52 w-full overflow-hidden bg-slate-100">
                                 <Image
                                     src={guide.heroImage}
-                                    alt={guide.title}
+                                    alt={guide.shortTitle || guide.title}
                                     fill
                                     className="object-cover group-hover:scale-105 transition-transform duration-500"
                                     sizes="(max-width: 768px) 100vw, 500px"

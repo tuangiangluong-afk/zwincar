@@ -374,6 +374,7 @@ export default function ContactPage({ locale: propLocale }: { locale?: Locale } 
                 </section>
 
                 <div className="container mx-auto px-4 max-w-5xl -mt-6">
+                    <h2 className="sr-only">Canaux d&apos;assistance et réservation</h2>
                     {/* Quick Channel Cards */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
                         {/* WhatsApp VIP Card */}
@@ -419,7 +420,7 @@ export default function ContactPage({ locale: propLocale }: { locale?: Locale } 
                             <h3 className="font-bold text-slate-900 text-sm mb-1">{t.dossierTitle}</h3>
                             <p className="text-xs text-slate-500 mb-3">{t.dossierDesc}</p>
                             <Link
-                                href="/booking/ZW-78421"
+                                href="/booking/zw-78421"
                                 className="inline-flex items-center gap-1.5 text-xs font-bold text-[#C9572C] hover:text-[#B24922]"
                             >
                                 <span>{t.dossierCta}</span>

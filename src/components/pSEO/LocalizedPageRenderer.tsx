@@ -141,6 +141,8 @@ export default function LocalizedPageRenderer({
                                     <img
                                         src={vehicle.image}
                                         alt={`${vehicle.name} in ${hub.name}`}
+                                        width={600}
+                                        height={390}
                                         className="w-full h-full object-cover"
                                     />
                                     <div className="absolute top-4 left-4 bg-slate-900/80 backdrop-blur-xs text-white px-3 py-1 rounded-full text-xs font-semibold">
@@ -212,6 +214,8 @@ export default function LocalizedPageRenderer({
                                             <img
                                                 src={v.image}
                                                 alt={v.name}
+                                                width={240}
+                                                height={160}
                                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                             />
                                         </div>

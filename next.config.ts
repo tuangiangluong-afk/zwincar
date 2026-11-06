@@ -61,6 +61,21 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
     ]),
+      {
+        source: '/conseils',
+        destination: '/guides',
+        permanent: true,
+      },
+      {
+        source: '/van-minibus',
+        destination: '/vehicules/dacia-jogger-7p',
+        permanent: true,
+      },
+      {
+        source: '/home/:path*',
+        destination: '/',
+        permanent: true,
+      },
     ];
   },
   images: {

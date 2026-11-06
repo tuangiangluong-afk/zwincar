@@ -189,6 +189,8 @@ export default function IntentLandingView({ hub, intent, locale }: IntentLanding
                                             <img
                                                 src={vehicle.image}
                                                 alt={vehicle.name}
+                                                width={600}
+                                                height={390}
                                                 className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                                             />
                                             <div className="absolute bottom-2 left-2 bg-[#12161E]/80 backdrop-blur-xs text-white text-[10px] font-semibold px-2 py-0.5 rounded-md">
@@ -326,9 +328,9 @@ export default function IntentLandingView({ hub, intent, locale }: IntentLanding
                                             {pos.type === "airport" ? <Plane size={16} /> : <MapPin size={16} />}
                                         </div>
                                         <div>
-                                            <h4 className="font-bold text-slate-900 text-xs sm:text-sm leading-tight">
+                                            <h3 className="font-bold text-slate-900 text-xs sm:text-sm leading-tight">
                                                 {pos.name}
-                                            </h4>
+                                            </h3>
                                             <span className="text-[10px] text-slate-400 font-mono">{pos.nameAr}</span>
                                         </div>
                                     </div>
@@ -351,7 +353,13 @@ export default function IntentLandingView({ hub, intent, locale }: IntentLanding
                 <div className="container mx-auto px-4 max-w-4xl">
                     <div className="text-center mb-10">
                         <h2 className="text-2xl font-black text-slate-900 tracking-tight">
-                            {locale === "fr" ? "Questions Fréquentes sur cette Option" : "Frequently Asked Questions"}
+                            {locale === "fr"
+                                ? `Questions Fréquentes : ${intent.badge[locale]} à ${hub.name}`
+                                : locale === "es"
+                                ? `Preguntas Frecuentes: ${intent.badge[locale]} en ${hub.name}`
+                                : locale === "nl"
+                                ? `Veelgestelde Vragen: ${intent.badge[locale]} in ${hub.name}`
+                                : `Frequently Asked Questions: ${intent.badge[locale]} in ${hub.name}`}
                         </h2>
                         <p className="text-xs text-slate-500 mt-1">
                             {locale === "fr" ? "Réponses concrètes et transparentes sur nos conditions à " + hub.name : "Straightforward answers regarding our rental terms in " + hub.name}
