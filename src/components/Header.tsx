@@ -129,14 +129,14 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
 
     return (
         <>
-            <header className="sticky top-0 z-40 bg-[#FAF7F2]/90 backdrop-blur-md border-b border-[#EAE3D6] transition-colors">
-                <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl h-20 flex items-center justify-between gap-4">
+            <header className="sticky top-0 z-40 bg-[#FAF7F2]/95 backdrop-blur-md border-b border-[#EAE3D6] transition-colors">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl h-20 flex items-center justify-between gap-2 xl:gap-4">
                     {/* Logo & Desktop Nav */}
-                    <div className="flex items-center gap-5 xl:gap-8 min-w-0">
+                    <div className="flex items-center gap-3.5 xl:gap-6 shrink-0">
                         <Logo variant="full" theme="dark" size="md" locale={currentLocale} />
 
                         {/* Desktop Navigation */}
-                        <nav className="hidden lg:flex items-center gap-3.5 xl:gap-5 text-xs xl:text-sm font-semibold text-slate-700 whitespace-nowrap">
+                        <nav className="hidden lg:flex items-center gap-2.5 xl:gap-4.5 text-xs xl:text-sm font-semibold text-slate-700 whitespace-nowrap">
                             <Link
                                 href={catalogHref}
                                 className="hover:text-[#C9572C] transition-colors whitespace-nowrap"
@@ -200,12 +200,12 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
                     </div>
 
                     {/* Right controls: Language, Mon Bon, SOS & WhatsApp VIP */}
-                    <div className="hidden lg:flex items-center gap-2 xl:gap-3 shrink-0">
+                    <div className="hidden lg:flex items-center gap-1.5 xl:gap-2.5 shrink-0">
                         {/* Retrouver mon bon de réservation */}
                         <button
                             type="button"
                             onClick={() => setLookupModalOpen(true)}
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition cursor-pointer whitespace-nowrap active:scale-95"
+                            className="inline-flex items-center gap-1.5 px-2.5 xl:px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition cursor-pointer whitespace-nowrap active:scale-95"
                             title={t.nav.findBooking}
                         >
                             <FileText size={14} className="text-[#C9572C]" />
@@ -216,7 +216,7 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
                         <button
                             type="button"
                             onClick={() => setSosModalOpen(true)}
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-red-50 hover:bg-red-100 text-red-700 border border-red-200/80 text-xs font-bold transition cursor-pointer whitespace-nowrap"
+                            className="inline-flex items-center gap-1.5 px-2.5 xl:px-3 py-1.5 rounded-full bg-red-50 hover:bg-red-100 text-red-700 border border-red-200/80 text-xs font-bold transition cursor-pointer whitespace-nowrap"
                         >
                             <ShieldAlert size={14} className="text-red-600" />
                             <span>SOS 24/7</span>
@@ -229,7 +229,7 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
                                     key={l}
                                     type="button"
                                     onClick={() => handleLocaleSwitch(l)}
-                                    className={`px-2 py-0.5 rounded-full cursor-pointer transition uppercase text-[10px] font-bold ${
+                                    className={`px-1.5 xl:px-2 py-0.5 rounded-full cursor-pointer transition uppercase text-[10px] font-bold ${
                                         currentLocale === l
                                             ? "bg-[#C9572C] text-white shadow-2xs"
                                             : "hover:text-slate-900 text-slate-500"
@@ -246,7 +246,7 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
                             target="_blank"
                             rel="noopener noreferrer"
                             onClick={() => trackWhatsAppClick("header_desktop")}
-                            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-2xl bg-slate-900 hover:bg-[#C9572C] text-white text-xs font-bold tracking-wide transition-all shadow-xs cursor-pointer active:scale-95 whitespace-nowrap"
+                            className="inline-flex items-center gap-1.5 px-3 xl:px-3.5 py-2 rounded-2xl bg-slate-900 hover:bg-[#C9572C] text-white text-xs font-bold tracking-wide transition-all shadow-xs cursor-pointer active:scale-95 whitespace-nowrap"
                         >
                             <MessageCircle size={15} className="text-emerald-400" />
                             <span>WhatsApp VIP</span>
@@ -275,12 +275,43 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
                         </button>
                     </div>
                 </div>
+            </header>
 
-                {/* Mobile Dropdown Menu (Full Height Dedicated Scrollable Drawer) */}
-                {mobileMenuOpen && (
-                    <div className="lg:hidden fixed inset-x-0 top-[65px] bottom-0 z-50 bg-white/98 backdrop-blur-md overflow-y-auto overscroll-contain p-5 pb-20 space-y-4 shadow-2xl animate-in slide-in-from-top-2">
+            {/* FULL SCREEN DEDICATED MOBILE DRAWER (OUTSIDE HEADER, SOLID BACKGROUND, Z-INDEX 100) */}
+            {mobileMenuOpen && (
+                <div className="lg:hidden fixed inset-0 z-[100] flex flex-col bg-white animate-in fade-in duration-150">
+                    {/* Drawer Header (Exact match of real header height & layout) */}
+                    <div className="h-20 px-4 sm:px-6 flex items-center justify-between border-b border-slate-100 bg-[#FAF7F2] shrink-0">
+                        <Logo variant="full" theme="dark" size="md" locale={currentLocale} />
+                        <div className="flex items-center gap-2">
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    setMobileMenuOpen(false);
+                                    setSosModalOpen(true);
+                                }}
+                                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-red-50 text-red-700 border border-red-200 text-[11px] font-bold"
+                            >
+                                <ShieldAlert size={13} className="text-red-600" />
+                                <span>SOS</span>
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => setMobileMenuOpen(false)}
+                                className="text-slate-800 p-2 rounded-xl hover:bg-slate-200/60 cursor-pointer"
+                                aria-label="Fermer le menu"
+                            >
+                                <X size={24} />
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Drawer Scrollable Content */}
+                    <div className="flex-1 overflow-y-auto overscroll-contain p-5 pb-24 space-y-4 bg-white">
                         <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-                            <span className="text-xs font-bold uppercase text-slate-400">Langue / Language</span>
+                            <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                                {currentLocale === "en" ? "Language" : currentLocale === "es" ? "Idioma" : currentLocale === "nl" ? "Taal" : "Langue"}
+                            </span>
                             <div className="inline-flex items-center gap-1 text-xs font-semibold p-1 rounded-full bg-slate-100">
                                 {([ "fr", "en", "es", "nl" ] as const).map((l) => (
                                     <button
@@ -290,7 +321,7 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
                                             handleLocaleSwitch(l);
                                             setMobileMenuOpen(false);
                                         }}
-                                        className={`px-2.5 py-1 rounded-full cursor-pointer uppercase text-[11px] font-bold ${
+                                        className={`px-3 py-1 rounded-full cursor-pointer uppercase text-xs font-bold transition ${
                                             currentLocale === l
                                                 ? "bg-[#C9572C] text-white shadow-2xs"
                                                 : "text-slate-600 hover:text-slate-900"
@@ -306,7 +337,7 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
                             <Link
                                 href={catalogHref}
                                 onClick={() => setMobileMenuOpen(false)}
-                                className="block py-2.5 px-3 rounded-xl text-sm font-semibold text-slate-800 hover:bg-[#FAF7F2] hover:text-[#C9572C] transition"
+                                className="block py-3 px-3.5 rounded-xl text-base font-bold text-slate-800 hover:bg-[#FAF7F2] hover:text-[#C9572C] transition"
                             >
                                 {t.nav.vehicles}
                             </Link>
@@ -314,81 +345,72 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
                             <Link
                                 href={guidesHref}
                                 onClick={() => setMobileMenuOpen(false)}
-                                className="block py-2.5 px-3 rounded-xl text-sm font-semibold text-slate-800 hover:bg-[#FAF7F2] hover:text-[#C9572C] transition"
+                                className="block py-3 px-3.5 rounded-xl text-base font-bold text-slate-800 hover:bg-[#FAF7F2] hover:text-[#C9572C] transition flex items-center gap-2"
                             >
-                                {t.nav.guides}
+                                <BookOpen size={16} className="text-[#C9572C]" />
+                                <span>{t.nav.guides}</span>
                             </Link>
 
                             <Link
                                 href={zeroCautionHref}
                                 onClick={() => setMobileMenuOpen(false)}
-                                className="block py-2.5 px-3 rounded-xl text-sm font-semibold text-slate-800 hover:bg-[#FAF7F2] hover:text-[#C9572C] transition"
+                                className="block py-3 px-3.5 rounded-xl text-base font-bold text-slate-800 hover:bg-[#FAF7F2] hover:text-[#C9572C] transition flex items-center gap-2"
                             >
-                                {t.nav.zeroDeposit}
+                                <ShieldCheck size={16} className="text-emerald-600" />
+                                <span>{t.nav.zeroDeposit}</span>
                             </Link>
 
                             <Link
                                 href="/contact"
                                 onClick={() => setMobileMenuOpen(false)}
-                                className="block py-2.5 px-3 rounded-xl text-sm font-semibold text-slate-800 hover:bg-[#FAF7F2] hover:text-[#C9572C] transition"
+                                className="block py-3 px-3.5 rounded-xl text-base font-bold text-slate-800 hover:bg-[#FAF7F2] hover:text-[#C9572C] transition"
                             >
                                 {t.nav.contact || "Support & Contact"}
                             </Link>
-
-                            {/* Hubs airport quick list */}
-                            <div className="pt-2 pb-1">
-                                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-3 block mb-1">
-                                    {t.nav.airports}
-                                </span>
-                                <div className="grid grid-cols-2 gap-1.5 px-1">
-                                    {MOROCCAN_HUBS.map((hub) => (
-                                        <Link
-                                            key={hub.slug}
-                                            href={currentLocale === "fr" ? `/maroc/${hub.slug}` : `/${currentLocale}/${hub.slug}`}
-                                            onClick={() => setMobileMenuOpen(false)}
-                                            className="px-2.5 py-1.5 rounded-lg text-xs font-medium text-slate-700 hover:bg-[#FAF7F2] hover:text-[#C9572C] flex items-center justify-between"
-                                        >
-                                            <span>{hub.name}</span>
-                                            <span className="font-mono text-[10px] text-slate-400">{hub.airportCode}</span>
-                                        </Link>
-                                    ))}
-                                </div>
-                            </div>
-
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    setMobileMenuOpen(false);
-                                    setLookupModalOpen(true);
-                                }}
-                                className="w-full text-left py-2.5 px-3 rounded-xl text-sm font-semibold text-slate-800 hover:bg-[#FAF7F2] hover:text-[#C9572C] transition flex items-center gap-2 cursor-pointer"
-                            >
-                                <FileText size={16} className="text-[#C9572C]" />
-                                <span>{t.nav.findBooking}</span>
-                            </button>
-
-                            <Link
-                                href="/vendor/login"
-                                onClick={() => setMobileMenuOpen(false)}
-                                className="block py-2.5 px-3 rounded-xl text-xs font-bold text-slate-500 uppercase tracking-wider hover:bg-slate-50"
-                            >
-                                {t.nav.vendorSpace}
-                            </Link>
                         </div>
 
-                        <div className="pt-2 flex items-center gap-2">
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    setMobileMenuOpen(false);
-                                    setSosModalOpen(true);
-                                }}
-                                className="flex-1 py-3 rounded-xl bg-red-50 text-red-700 border border-red-200 text-xs font-bold flex items-center justify-center gap-1.5 active:scale-95 transition"
-                            >
-                                <ShieldAlert size={15} />
-                                <span>SOS Maroc 24/7</span>
-                            </button>
+                        {/* Hubs airport quick list */}
+                        <div className="pt-2 pb-1 border-t border-slate-100">
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-3 block mb-2">
+                                {t.nav.airports}
+                            </span>
+                            <div className="grid grid-cols-2 gap-2 px-1">
+                                {MOROCCAN_HUBS.map((hub) => (
+                                    <Link
+                                        key={hub.slug}
+                                        href={currentLocale === "fr" ? `/maroc/${hub.slug}` : `/${currentLocale}/${hub.slug}`}
+                                        onClick={() => setMobileMenuOpen(false)}
+                                        className="px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 bg-slate-50 hover:bg-[#FAF7F2] hover:text-[#C9572C] flex items-center justify-between transition"
+                                    >
+                                        <span>{hub.name}</span>
+                                        <span className="font-mono text-[10px] text-slate-400">{hub.airportCode}</span>
+                                    </Link>
+                                ))}
+                            </div>
+                        </div>
 
+                        {/* Voucher Lookup */}
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setMobileMenuOpen(false);
+                                setLookupModalOpen(true);
+                            }}
+                            className="w-full text-left py-3 px-3.5 rounded-xl text-sm font-bold text-slate-800 bg-[#FAF7F2] hover:bg-slate-100 transition flex items-center gap-2.5 cursor-pointer"
+                        >
+                            <FileText size={18} className="text-[#C9572C]" />
+                            <span>{t.nav.findBooking}</span>
+                        </button>
+
+                        <Link
+                            href="/vendor/login"
+                            onClick={() => setMobileMenuOpen(false)}
+                            className="block py-2 px-3.5 rounded-xl text-xs font-bold text-slate-400 uppercase tracking-wider hover:text-slate-600"
+                        >
+                            {t.nav.vendorSpace}
+                        </Link>
+
+                        <div className="pt-2 flex flex-col gap-2">
                             <a
                                 href={`https://wa.me/212600000000?text=${waText}`}
                                 target="_blank"
@@ -397,15 +419,15 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
                                     trackWhatsAppClick("header_mobile");
                                     setMobileMenuOpen(false);
                                 }}
-                                className="flex-1 py-3 rounded-xl bg-slate-900 text-white text-xs font-bold flex items-center justify-center gap-1.5 active:scale-95 transition"
+                                className="w-full py-3.5 rounded-2xl bg-slate-900 text-white text-xs font-bold flex items-center justify-center gap-2 active:scale-98 transition shadow-md"
                             >
-                                <MessageCircle size={15} className="text-emerald-400" />
-                                <span>WhatsApp VIP</span>
+                                <MessageCircle size={16} className="text-emerald-400" />
+                                <span>Contacter l&apos;astreinte WhatsApp 24/7</span>
                             </a>
                         </div>
                     </div>
-                )}
-            </header>
+                </div>
+            )}
 
             {/* Assistance Modale */}
             <SosModal isOpen={sosModalOpen} onClose={() => setSosModalOpen(false)} />
