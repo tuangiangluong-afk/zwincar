@@ -247,6 +247,7 @@ export async function POST(request: NextRequest) {
         `;
 
         if (resendApiKey) {
+            const fromEmail = process.env.RESEND_FROM_EMAIL || "ZwinCar <hello@zwincar.com>";
             const res = await fetch("https://api.resend.com/emails", {
                 method: "POST",
                 headers: {
@@ -254,7 +255,8 @@ export async function POST(request: NextRequest) {
                     Authorization: `Bearer ${resendApiKey}`,
                 },
                 body: JSON.stringify({
-                    from: "ZwinCar <reservations@zwincar.com>",
+                    from: fromEmail,
+                    reply_to: "hello@zwincar.com",
                     to: [clientEmail],
                     subject: t.subject(bookingRef, vehicleName || "Véhicule", hubName || "Maroc"),
                     html: emailHtml,

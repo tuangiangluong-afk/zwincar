@@ -46,7 +46,7 @@ export default function MentionsLegales() {
                             <li><strong>Siège social :</strong> 6 RUE DES BATELIERS, 92110 CLICHY</li>
                             <li><strong>SIREN :</strong> 984 800 136 R.C.S. NANTERRE</li>
                             <li><strong>Responsable de publication :</strong> Direction WELINK TECH</li>
-                            <li><strong>Email & Support :</strong> support@zwincar.com</li>
+                            <li><strong>Email & Support :</strong> hello@zwincar.com</li>
                         </ul>
                     </div>
 
@@ -81,7 +81,7 @@ export default function MentionsLegales() {
                             Les données renseignées lors d&apos;une réservation (nom, coordonnées WhatsApp, email, numéro de vol) sont traitées conformément aux dispositions légales afin de garantir la mise à disposition du véhicule et le suivi en direct des vols à l&apos;arrivée.
                         </p>
                         <p className="text-sm text-slate-600 leading-relaxed">
-                            Conformément à la réglementation, vous bénéficiez d&apos;un droit d&apos;accès, de rectification et d&apos;effacement de vos données personnelles sur simple demande à support@zwincar.com.
+                            Conformément à la réglementation, vous bénéficiez d&apos;un droit d&apos;accès, de rectification et d&apos;effacement de vos données personnelles sur simple demande à hello@zwincar.com.
                         </p>
                     </div>
                 </div>

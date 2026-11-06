@@ -75,7 +75,7 @@ export default function CGV() {
                     <div className="rounded-3xl border border-[#E7DFD5] bg-white p-6 sm:p-8 shadow-xs">
                         <h2 className="mb-3 text-lg font-bold text-slate-900">5. Droit Applicable & Litiges</h2>
                         <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                            Les présentes conditions sont régies par le droit applicable. En cas de différend relatif à une réservation, les parties s&apos;engagent à rechercher une solution amiable préalable via l&apos;assistance conciergerie ZwinCar à support@zwincar.com.
+                            Les présentes conditions sont régies par le droit applicable. En cas de différend relatif à une réservation, les parties s&apos;engagent à rechercher une solution amiable préalable via l&apos;assistance conciergerie ZwinCar à hello@zwincar.com.
                         </p>
                     </div>
                 </div>

@@ -34,9 +34,11 @@ export async function POST(req: Request) {
             return NextResponse.json({ success: true, simulated: true });
         }
 
+        const fromEmail = process.env.RESEND_FROM_EMAIL || 'ZwinCar <hello@zwincar.com>';
+        const toEmail = process.env.CONTACT_DESTINATION_EMAIL || 'hello@zwincar.com';
         const data = await resend.emails.send({
-            from: 'ZwinCar Support <onboarding@resend.dev>',
-            to: ['compareandcash@gmail.com'],
+            from: fromEmail,
+            to: [toEmail],
             replyTo: email,
             subject: `[ZwinCar - ${city || 'Maroc'}] Contact: ${subject} - ${name}`,
             html: `

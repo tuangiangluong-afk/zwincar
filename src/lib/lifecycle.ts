@@ -355,7 +355,7 @@ export interface SendEmailResult {
 
 export async function sendEmail(to: string, content: EmailContent): Promise<SendEmailResult> {
     const apiKey = process.env.RESEND_API_KEY;
-    const from = process.env.RESEND_FROM_EMAIL || "ZwinCar <reservations@zwincar.com>";
+    const from = process.env.RESEND_FROM_EMAIL || "ZwinCar <hello@zwincar.com>";
 
     if (!apiKey) {
         return { success: true, simulated: true };
@@ -365,7 +365,14 @@ export async function sendEmail(to: string, content: EmailContent): Promise<Send
         const response = await fetch("https://api.resend.com/emails", {
             method: "POST",
             headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
-            body: JSON.stringify({ from, to: [to], subject: content.subject, html: content.html, text: content.text }),
+            body: JSON.stringify({
+                from,
+                to: [to],
+                reply_to: "hello@zwincar.com",
+                subject: content.subject,
+                html: content.html,
+                text: content.text,
+            }),
         });
         const data = (await response.json()) as { id?: string; message?: string };
         if (!response.ok) return { success: false, error: data?.message ?? "Erreur Resend" };
