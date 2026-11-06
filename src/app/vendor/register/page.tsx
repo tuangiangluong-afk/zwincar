@@ -263,9 +263,9 @@ export default function VendorRegisterPage() {
                                 <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
                                     Identité de votre Agence de Location
                                 </h1>
-                                <p className="text-xs text-slate-500 mt-0.5">
-                                    ZwinCar collabore exclusivement avec des loueurs professionnels déclarés au Maroc.
-                                </p>
+                                <h2 className="text-xs text-slate-500 mt-0.5 font-normal">
+                                    Loueurs professionnels déclarés et certifiés au Maroc.
+                                </h2>
                             </div>
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -378,9 +378,9 @@ export default function VendorRegisterPage() {
                                     <Phone size={13} />
                                     <span>Étape 2 sur 3</span>
                                 </div>
-                                <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+                                <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
                                     Contact Gérant & Accès Espace Pro
-                                </h1>
+                                </h2>
                                 <p className="text-xs text-slate-500 mt-0.5">
                                     Ce numéro WhatsApp recevra instantanément les alertes d'atterrissage et de réservations.
                                 </p>
@@ -489,9 +489,9 @@ export default function VendorRegisterPage() {
                                     <Car size={13} />
                                     <span>Étape 3 sur 3</span>
                                 </div>
-                                <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+                                <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
                                     Ajoutez votre Premier Véhicule
-                                </h1>
+                                </h2>
                                 <p className="text-xs text-slate-500 mt-0.5">
                                     Ce véhicule sera immédiatement visible dans votre tableau de bord avec son switch de stop-sell 1-clic.
                                 </p>

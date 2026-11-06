@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
     title: "Administration ZwinCar • Connexion",
+    description: "Portail sécurisé de gestion et d'administration interne ZwinCar Maroc.",
     robots: {
         index: false,
         follow: false,

@@ -50,9 +50,9 @@ export default function UpsellSelector({
         <div className="space-y-3">
             <div className="flex items-center justify-between">
                 <div>
-                    <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                    <div className="text-xs font-bold uppercase tracking-wider text-slate-500">
                         {t.bookingWidget.optionsTitle}
-                    </h4>
+                    </div>
                     <p className="text-[11px] text-slate-400 mt-0.5">
                         {t.bookingWidget.optionsSubtitle}
                     </p>

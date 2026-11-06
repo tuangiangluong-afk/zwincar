@@ -155,9 +155,9 @@ export default function GuidesGridWithPagination({
                                 <Image
                                     src={guide.heroImage}
                                     alt={guide.shortTitle || guide.title}
-                                    fill
-                                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                                    sizes="(max-width: 768px) 100vw, 500px"
+                                    width={600}
+                                    height={350}
+                                    className="w-full h-52 object-cover group-hover:scale-105 transition-transform duration-500"
                                 />
                                 <div className="absolute top-4 left-4">
                                     <span className="px-3 py-1 rounded-full bg-slate-900/85 backdrop-blur-xs text-white text-[11px] font-bold uppercase tracking-wider shadow-sm">
@@ -195,13 +195,13 @@ export default function GuidesGridWithPagination({
                         {/* Author & CTA Footer */}
                         <div className="p-6 pt-0 border-t border-slate-100 mt-4 flex items-center justify-between">
                             <div className="flex items-center gap-2.5">
-                                <div className="w-8 h-8 rounded-full overflow-hidden relative shrink-0 border border-slate-200">
+                                <div className="w-8 h-8 rounded-full overflow-hidden shrink-0 border border-slate-200">
                                     <Image
                                         src={guide.author.avatar}
                                         alt={guide.author.name}
-                                        fill
-                                        sizes="32px"
-                                        className="object-cover"
+                                        width={32}
+                                        height={32}
+                                        className="w-8 h-8 object-cover"
                                     />
                                 </div>
                                 <div className="text-left">

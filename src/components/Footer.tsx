@@ -116,9 +116,9 @@ export default function Footer({ config, locale: propLocale }: FooterProps = {})
                             <ShieldCheck size={14} />
                             {t.bannerBadge}
                         </div>
-                        <h4 className="text-lg md:text-xl font-bold text-white tracking-tight">
+                        <p className="text-lg md:text-xl font-bold text-white tracking-tight">
                             {t.bannerTitle}
-                        </h4>
+                        </p>
                         <p className="text-xs text-slate-400 max-w-xl">
                             {t.bannerDesc}
                         </p>

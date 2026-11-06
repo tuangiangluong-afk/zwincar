@@ -20,6 +20,7 @@ import {
 import Header from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { SosModal } from "@/components/SosModal";
+import { BookingLookupModal } from "@/components/BookingLookupModal";
 import { MOROCCAN_HUBS } from "@/lib/morocco-data";
 import { Locale } from "@/lib/i18n";
 
@@ -287,6 +288,7 @@ export default function ContactPage({ locale: propLocale }: { locale?: Locale } 
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessage, setErrorMessage] = useState("");
     const [sosModalOpen, setSosModalOpen] = useState(false);
+    const [lookupModalOpen, setLookupModalOpen] = useState(false);
 
     const [formData, setFormData] = useState({
         name: "",
@@ -419,13 +421,14 @@ export default function ContactPage({ locale: propLocale }: { locale?: Locale } 
                             </div>
                             <h3 className="font-bold text-slate-900 text-sm mb-1">{t.dossierTitle}</h3>
                             <p className="text-xs text-slate-500 mb-3">{t.dossierDesc}</p>
-                            <Link
-                                href="/booking/zw-78421"
-                                className="inline-flex items-center gap-1.5 text-xs font-bold text-[#C9572C] hover:text-[#B24922]"
+                            <button
+                                type="button"
+                                onClick={() => setLookupModalOpen(true)}
+                                className="inline-flex items-center gap-1.5 text-xs font-bold text-[#C9572C] hover:text-[#B24922] cursor-pointer"
                             >
                                 <span>{t.dossierCta}</span>
                                 <span>→</span>
-                            </Link>
+                            </button>
                         </div>
                     </div>
 
@@ -651,6 +654,7 @@ export default function ContactPage({ locale: propLocale }: { locale?: Locale } 
             <Footer locale={activeLocale} />
 
             <SosModal isOpen={sosModalOpen} onClose={() => setSosModalOpen(false)} />
+            <BookingLookupModal isOpen={lookupModalOpen} onClose={() => setLookupModalOpen(false)} locale={activeLocale} />
         </div>
     );
 }

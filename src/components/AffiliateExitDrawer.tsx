@@ -14,7 +14,7 @@ import {
     Info,
 } from "lucide-react";
 import { VehicleModel, CityHub } from "@/lib/morocco-data";
-import { buildAffiliateRentalUrl } from "@/lib/affiliate";
+import { buildAffiliateRentalUrl, buildAffiliateEsimUrl } from "@/lib/affiliate";
 
 interface AffiliateExitDrawerProps {
     isOpen: boolean;
@@ -38,7 +38,15 @@ export function AffiliateExitDrawer({
 
     if (!isOpen) return null;
 
-    const affiliateUrl = buildAffiliateRentalUrl({
+    const localrentUrl = buildAffiliateRentalUrl({
+        provider: "localrent",
+        hubCode: hub.airportCode,
+        citySlug: hub.slug,
+        pickupDate,
+        returnDate,
+    });
+
+    const discoverCarsUrl = buildAffiliateRentalUrl({
         provider: "discovercars",
         hubCode: hub.airportCode,
         citySlug: hub.slug,
@@ -46,11 +54,10 @@ export function AffiliateExitDrawer({
         returnDate,
     });
 
-    const handleProceed = () => {
+    const handleProceed = (targetUrl: string) => {
         setIsRedirecting(true);
 
         if (includeEsim) {
-            // Store eSIM intent in localStorage so user can complete it later or on return
             try {
                 if (typeof window !== "undefined") {
                     localStorage.setItem(
@@ -61,6 +68,7 @@ export function AffiliateExitDrawer({
                             priceEur: 19,
                         })
                     );
+                    window.open(buildAffiliateEsimUrl("airalo"), "_blank", "noopener,noreferrer");
                 }
             } catch {
                 // ignore
@@ -68,10 +76,10 @@ export function AffiliateExitDrawer({
         }
 
         setTimeout(() => {
-            window.open(affiliateUrl, "_blank", "noopener,noreferrer");
+            window.open(targetUrl, "_blank", "noopener,noreferrer");
             setIsRedirecting(false);
             onClose();
-        }, 500);
+        }, 300);
     };
 
     return (
@@ -173,23 +181,30 @@ export function AffiliateExitDrawer({
                         </div>
                     </div>
 
-                    {/* CTA Redirect Button */}
-                    <div className="space-y-2 pt-1">
-                        <button
-                            type="button"
-                            onClick={handleProceed}
-                            disabled={isRedirecting}
-                            className="w-full h-12 rounded-2xl bg-slate-900 hover:bg-[#C9572C] text-white font-bold text-xs sm:text-sm tracking-wide transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer disabled:opacity-50"
-                        >
-                            <span>
-                                {isRedirecting
-                                    ? "Ouverture des offres aéroport..."
-                                    : `Voir les véhicules disponibles à ${hub.name} (${hub.airportCode})`}
-                            </span>
-                            <ExternalLink size={15} />
-                        </button>
+                    {/* 2 Dedicated Affiliate CTA Buttons */}
+                    <div className="space-y-2.5 pt-1">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                            <button
+                                type="button"
+                                onClick={() => handleProceed(localrentUrl)}
+                                disabled={isRedirecting}
+                                className="h-12 px-3.5 rounded-2xl bg-[#C9572C] hover:bg-[#B24922] text-white font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 shadow-md cursor-pointer disabled:opacity-50 active:scale-95"
+                            >
+                                <span className="truncate">Localrent (Faible Caution)</span>
+                                <ExternalLink size={14} className="shrink-0" />
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => handleProceed(discoverCarsUrl)}
+                                disabled={isRedirecting}
+                                className="h-12 px-3.5 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 shadow-md cursor-pointer disabled:opacity-50 active:scale-95"
+                            >
+                                <span className="truncate">DiscoverCars (Terminal)</span>
+                                <ExternalLink size={14} className="shrink-0" />
+                            </button>
+                        </div>
                         <div className="text-center text-[10px] text-slate-400">
-                            L'inventaire partenaire s'ouvre dans un nouvel onglet sécurisé.
+                            Inventaires officiels avec réservation instantanée et confirmation immédiate par email.
                         </div>
                     </div>
                 </div>

@@ -13,12 +13,16 @@ import {
     Mail,
     Phone,
     Check,
+    CheckCircle2,
+    MessageCircle,
+    ExternalLink,
     ArrowRight,
     Sparkles,
 } from "lucide-react";
 import { VehicleModel, CityHub, MOROCCAN_HUBS, getLocalizedAirportName } from "@/lib/morocco-data";
 import { Locale, getTranslation } from "@/lib/i18n";
 import { trackBeginCheckout } from "@/lib/gtm";
+import { buildAffiliateRentalUrl } from "@/lib/affiliate";
 
 interface BookingCheckoutModalProps {
     isOpen: boolean;
@@ -73,6 +77,7 @@ export function BookingCheckoutModal({
     const [notes, setNotes] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [leadConfirmation, setLeadConfirmation] = useState<{ bookingRef: string; token: string } | null>(null);
 
     if (!isOpen) return null;
 
@@ -177,27 +182,146 @@ export function BookingCheckoutModal({
                 }),
             }).catch(() => {});
 
-            // 3. Paiement : la route Stripe relit le montant dans le dossier.
-            const payRes = await fetch("/api/stripe/checkout", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ ref: bookingRef, token: created.accessToken }),
-            });
-            const pay = await payRes.json();
+            // 3. Mode Lead-Gen Affiliation Hybride
+            if (process.env.NEXT_PUBLIC_AFFILIATE_MODE === "true") {
+                setIsSubmitting(false);
+                setLeadConfirmation({ bookingRef, token: created.accessToken });
+                return;
+            }
 
-            setIsSubmitting(false);
-            onClose();
+            // Tentative Stripe ou bascule immédiate vers la confirmation Lead-Gen
+            try {
+                const payRes = await fetch("/api/stripe/checkout", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ ref: bookingRef, token: created.accessToken }),
+                });
+                const pay = await payRes.json();
 
-            if (pay?.url && typeof pay.url === "string" && pay.url.startsWith("http")) {
-                window.location.href = pay.url;
-            } else {
-                router.push(`/booking/${bookingRef}?t=${created.accessToken}`);
+                setIsSubmitting(false);
+
+                if (pay?.url && typeof pay.url === "string" && pay.url.startsWith("http")) {
+                    onClose();
+                    window.location.href = pay.url;
+                } else {
+                    setLeadConfirmation({ bookingRef, token: created.accessToken });
+                }
+            } catch {
+                setIsSubmitting(false);
+                setLeadConfirmation({ bookingRef, token: created.accessToken });
             }
         } catch {
             setIsSubmitting(false);
             setErrorMessage("Connexion interrompue. Réessayez dans un instant.");
         }
     };
+
+    if (leadConfirmation) {
+        const localrentUrl = buildAffiliateRentalUrl({
+            provider: "localrent",
+            hubCode: currentHub.airportCode,
+            citySlug: currentHub.slug,
+            pickupDate,
+            returnDate,
+        });
+
+        const discoverCarsUrl = buildAffiliateRentalUrl({
+            provider: "discovercars",
+            hubCode: currentHub.airportCode,
+            citySlug: currentHub.slug,
+            pickupDate,
+            returnDate,
+        });
+
+        return (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-xs overflow-y-auto">
+                <div className="w-full max-w-lg bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden my-8 animate-in fade-in zoom-in-95 duration-150">
+                    <div className="bg-[#12161E] text-white p-5 flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center font-bold">
+                                <CheckCircle2 size={20} />
+                            </div>
+                            <div>
+                                <div className="text-[10px] uppercase font-bold tracking-wider text-emerald-400">
+                                    Demande #{leadConfirmation.bookingRef} Transmise
+                                </div>
+                                <h3 className="text-base sm:text-lg font-black tracking-tight text-white">
+                                    Vérification WhatsApp en cours
+                                </h3>
+                            </div>
+                        </div>
+                        <button
+                            type="button"
+                            onClick={onClose}
+                            className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition cursor-pointer"
+                        >
+                            <X size={18} />
+                        </button>
+                    </div>
+
+                    <div className="p-6 space-y-5">
+                        <div className="rounded-2xl bg-emerald-50 border border-emerald-200 p-4 space-y-1.5 text-xs text-emerald-950">
+                            <div className="font-bold flex items-center gap-1.5 text-emerald-900">
+                                <MessageCircle size={15} />
+                                <span>Alerte envoyée aux agents {currentHub.name}</span>
+                            </div>
+                            <p className="text-[11px] text-emerald-900/80 leading-relaxed">
+                                Notre équipe locale vérifie la disponibilité sans caution de votre <strong>{vehicle.name}</strong> à {currentHub.name} ({pickupDate} au {returnDate}) et vous contacte sur WhatsApp au <strong>{phone}</strong> d&apos;ici 15 minutes.
+                            </p>
+                        </div>
+
+                        {/* Partner Instant Bridge */}
+                        <div className="rounded-2xl bg-linear-to-b from-[#FAF7F2] to-amber-500/10 border-2 border-amber-500/30 p-4 space-y-3">
+                            <div>
+                                <div className="text-[10px] font-bold uppercase text-amber-800 tracking-wider">
+                                    ⚡ Besoin d&apos;un véhicule garanti immédiatement ?
+                                </div>
+                                <p className="text-xs text-slate-700 mt-1 leading-relaxed">
+                                    En attendant notre confirmation WhatsApp, sécurisez instantanément une voiture disponible au Terminal {currentHub.airportCode} via nos partenaires officiels certifiés :
+                                </p>
+                            </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+                                <a
+                                    href={localrentUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="h-11 px-3 rounded-xl bg-[#C9572C] hover:bg-[#B24922] text-white font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-1.5 shadow-sm active:scale-95"
+                                >
+                                    <span className="truncate">Localrent (Faible Caution)</span>
+                                    <ExternalLink size={13} className="shrink-0" />
+                                </a>
+                                <a
+                                    href={discoverCarsUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="h-11 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-1.5 shadow-sm active:scale-95"
+                                >
+                                    <span className="truncate">DiscoverCars (Terminal)</span>
+                                    <ExternalLink size={13} className="shrink-0" />
+                                </a>
+                            </div>
+                        </div>
+
+                        {/* Direct Voucher Access */}
+                        <div className="pt-1">
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    onClose();
+                                    router.push(`/booking/${leadConfirmation.bookingRef}?t=${leadConfirmation.token}`);
+                                }}
+                                className="w-full h-11 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-1.5 cursor-pointer"
+                            >
+                                <span>Consulter mon bon de réservation #{leadConfirmation.bookingRef}</span>
+                                <ArrowRight size={14} />
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-xs overflow-y-auto">

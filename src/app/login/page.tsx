@@ -49,7 +49,9 @@ export default function AdminLoginPage() {
                     <h1 className="text-3xl font-black text-white tracking-tight">
                         ZwinCar<span className="text-[#C9572C]">.</span> Admin OS
                     </h1>
-                    <p className="text-slate-400 text-xs mt-1">Supervision nationale des réservations et flotte Maroc</p>
+                    <h2 className="text-slate-400 text-xs mt-1 font-normal">
+                        Supervision nationale des réservations et flotte Maroc
+                    </h2>
                 </div>
 
                 <div className="bg-white rounded-3xl p-8 shadow-2xl border border-slate-800 text-slate-900">

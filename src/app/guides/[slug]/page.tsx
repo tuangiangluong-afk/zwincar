@@ -116,7 +116,10 @@ export default async function GuideDetailPage({
     const infographicType = getInfographicType(guide.slug);
 
     const titleMatch = guide.title.match(/^(.+?)(?:\s*[:?]\s+)(.+)$/);
-    const h1Title = titleMatch ? (guide.title.includes("?") && !titleMatch[1].endsWith("?") ? `${titleMatch[1]} ?` : titleMatch[1]) : guide.title;
+    let h1Title = titleMatch ? (guide.title.includes("?") && !titleMatch[1].endsWith("?") ? `${titleMatch[1]} ?` : titleMatch[1]) : guide.title;
+    if (h1Title.length > 65 && guide.shortTitle) {
+        h1Title = guide.shortTitle;
+    }
     const subtitle = titleMatch ? titleMatch[2] : null;
 
     return (
@@ -244,12 +247,13 @@ export default async function GuideDetailPage({
                         {/* Author line & Dates */}
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2 pb-6 border-b border-slate-200">
                             <div className="flex items-center gap-3">
-                                <div className="w-11 h-11 rounded-full overflow-hidden relative shrink-0 border border-slate-200 shadow-2xs">
+                                <div className="w-11 h-11 rounded-full overflow-hidden shrink-0 border border-slate-200 shadow-2xs">
                                     <Image
                                         src={guide.author.avatar}
                                         alt={guide.author.name}
-                                        fill
-                                        className="object-cover"
+                                        width={44}
+                                        height={44}
+                                        className="w-11 h-11 object-cover"
                                     />
                                 </div>
                                 <div>
@@ -278,9 +282,10 @@ export default async function GuideDetailPage({
                         <Image
                             src={guide.heroImage}
                             alt={guide.shortTitle || guide.title}
-                            fill
+                            width={1200}
+                            height={630}
                             priority
-                            className="object-cover"
+                            className="w-full h-full object-cover"
                         />
                     </div>
 
@@ -371,8 +376,8 @@ export default async function GuideDetailPage({
 
                     {/* EEAT Author Verification Box */}
                     <div className="rounded-3xl bg-white border border-[#E7DFD5] p-6 sm:p-7 my-10 flex flex-col sm:flex-row items-center sm:items-start gap-5 shadow-xs">
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden relative shrink-0 border-2 border-[#FAF7F2] shadow-sm">
-                            <Image src={guide.author.avatar} alt={guide.author.name} fill className="object-cover" />
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden shrink-0 border-2 border-[#FAF7F2] shadow-sm">
+                            <Image src={guide.author.avatar} alt={guide.author.name} width={80} height={80} className="w-16 h-16 sm:w-20 sm:h-20 object-cover" />
                         </div>
                         <div className="space-y-2 text-center sm:text-left flex-1">
                             <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
@@ -461,12 +466,13 @@ export default async function GuideDetailPage({
                                             href={`/vehicules/${veh.id}`}
                                             className="p-4 rounded-2xl bg-white border border-[#E7DFD5] hover:border-emerald-500 transition-all flex items-center gap-4 group"
                                         >
-                                            <div className="w-20 h-14 relative shrink-0 overflow-hidden rounded-xl bg-slate-50">
+                                            <div className="w-20 h-14 shrink-0 overflow-hidden rounded-xl bg-slate-50">
                                                 <Image
                                                     src={veh.image}
                                                     alt={veh.name}
-                                                    fill
-                                                    className="object-cover group-hover:scale-105 transition-transform"
+                                                    width={80}
+                                                    height={56}
+                                                    className="w-20 h-14 object-cover group-hover:scale-105 transition-transform"
                                                 />
                                             </div>
                                             <div>

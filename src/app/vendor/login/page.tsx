@@ -124,9 +124,9 @@ export default function VendorLoginPage() {
                         <h1 className="text-2xl font-black tracking-tight text-slate-900">
                             Connexion Agence Partenaire
                         </h1>
-                        <p className="text-xs text-slate-500">
-                            Gérez vos remises de clés aéroport, vos cautions et votre flotte en temps réel.
-                        </p>
+                        <h2 className="text-xs text-slate-500 font-normal">
+                            Gérez vos remises de clés, cautions et flotte en temps réel.
+                        </h2>
                     </div>
 
                     {/* Quick Demo Pill */}

@@ -28,13 +28,7 @@ export const metadata: Metadata = {
   ],
   metadataBase: new URL("https://zwincar.com"),
   alternates: {
-    languages: {
-      "fr-FR": "https://zwincar.com",
-      "en-US": "https://zwincar.com/en",
-      "es-ES": "https://zwincar.com/es",
-      "nl-NL": "https://zwincar.com/nl",
-      "x-default": "https://zwincar.com/en",
-    },
+    canonical: "/",
   },
   manifest: "/manifest.webmanifest",
   icons: {

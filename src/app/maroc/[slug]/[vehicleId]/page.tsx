@@ -92,7 +92,8 @@ export async function generateMetadata({ params }: CityVehiclePageProps): Promis
     // 2. Check if it's a Vehicle
     const vehicle = VEHICLE_FLEET.find((v) => v.id === vehicleId);
     if (vehicle) {
-        const title = clampTitle(`Location ${vehicle.name} ${hub.name} (${hub.airportCode}) • 0€ Caution`);
+        const vehicleTitleName = vehicle.id === "toyota-prado-tx-7places" ? "Toyota Prado 7 Places" : vehicle.name;
+        const title = clampTitle(`Location ${vehicleTitleName} à ${hub.name} (${hub.airportCode}) • 0€ Caution`, 65);
         const description = clampDescription(
             `Louez la ${vehicle.name} à ${hub.name} (${hub.airportName}). 0€ caution bloquée sur CB, modèle exact garanti, livraison aéroport et riad gratuite. Dès ${vehicle.dailyPriceEur} €/j.`
         );
@@ -279,7 +280,7 @@ export default async function CityVehicleDetailPage({ params }: CityVehiclePageP
                                     <span>Procédure de Réception à {hub.name} ({hub.airportCode})</span>
                                 </div>
                                 <h2 className="text-lg font-bold text-slate-900">
-                                    Comment se déroule la remise des clés de votre {vehicle.name} ?
+                                    Remise des clés et contrat à l&apos;arrivée
                                 </h2>
                                 <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                                     <strong>Point de rendez-vous : </strong>{hub.meetingPointDetail}. Un agent de notre agence partenaire locale vous attend avec une pancarte nominative à votre nom. Le tour du véhicule prend 5 minutes, vous signez le contrat sur smartphone et partez directement sans passer par un guichet.
@@ -356,7 +357,7 @@ export default async function CityVehicleDetailPage({ params }: CityVehiclePageP
                                     Réseau National Aéroports
                                 </div>
                                 <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight mt-0.5">
-                                    La {vehicle.name} dans les autres villes du Maroc
+                                    Disponibilité dans les autres villes du Maroc
                                 </h2>
                             </div>
                             <Link

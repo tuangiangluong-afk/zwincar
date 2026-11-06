@@ -86,27 +86,23 @@ export default function HomePage({ locale = "fr" }: HomePageProps = {}) {
                         <h1 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.08] mb-6 drop-shadow-sm text-white">
                             {isEn ? (
                                 <>
-                                    Rent your car in Morocco.{" "}
-                                    <span className="text-[#E58B24]">No €1,500 credit card hold.</span>{" "}
-                                    Zero bad surprises.
+                                    Car Rental Morocco:{" "}
+                                    <span className="text-[#E58B24]">No Deposit Hold</span>
                                 </>
                             ) : isEs ? (
                                 <>
-                                    Alquile su coche en Marruecos.{" "}
-                                    <span className="text-[#E58B24]">Sin fianza de 1.500 € bloqueada.</span>{" "}
-                                    Sin malas sorpresas.
+                                    Alquiler Coche Marruecos:{" "}
+                                    <span className="text-[#E58B24]">Sin Fianza CB</span>
                                 </>
                             ) : isNl ? (
                                 <>
-                                    Huur uw auto in Marokko.{" "}
-                                    <span className="text-[#E58B24]">Geen € 1.500 borg geblokkeerd.</span>{" "}
-                                    Zonder nare verrassingen.
+                                    Autohuur Marokko:{" "}
+                                    <span className="text-[#E58B24]">Zonder Borg</span>
                                 </>
                             ) : (
                                 <>
-                                    Louez votre voiture au Maroc.{" "}
-                                    <span className="text-[#E58B24]">Sans caution de 1 500 € bloquée.</span>{" "}
-                                    Sans mauvaise surprise.
+                                    Location Voiture Maroc :{" "}
+                                    <span className="text-[#E58B24]">Sans Caution CB</span>
                                 </>
                             )}
                         </h1>

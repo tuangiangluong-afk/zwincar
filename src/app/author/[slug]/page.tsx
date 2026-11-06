@@ -80,14 +80,14 @@ export default async function AuthorPage({ params }: { params: Promise<{ slug: s
 
                 {/* Author Card */}
                 <div className="bg-white rounded-3xl p-8 shadow-sm border border-neutral-200 flex flex-col md:flex-row items-center md:items-start gap-8 mb-12">
-                    <div className="relative w-28 h-28 rounded-full overflow-hidden shrink-0 border-2 border-amber-500 bg-neutral-100">
+                    <div className="w-28 h-28 rounded-full overflow-hidden shrink-0 border-2 border-amber-500 bg-neutral-100">
                         {author.image_url ? (
                             <Image
                                 src={author.image_url}
                                 alt={author.name}
-                                fill
-                                className="object-cover"
-                                sizes="112px"
+                                width={112}
+                                height={112}
+                                className="w-28 h-28 object-cover"
                             />
                         ) : (
                             <div className="w-full h-full flex items-center justify-center text-3xl font-bold text-amber-600 bg-amber-50">

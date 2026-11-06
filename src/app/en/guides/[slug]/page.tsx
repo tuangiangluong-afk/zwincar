@@ -111,7 +111,10 @@ export default async function EnglishGuideDetailPage({
     const infographicType = getInfographicType(guide.slug);
 
     const titleMatch = guide.title.match(/^(.+?)(?:\s*[:?]\s+)(.+)$/);
-    const h1Title = titleMatch ? (guide.title.includes("?") && !titleMatch[1].endsWith("?") ? `${titleMatch[1]} ?` : titleMatch[1]) : guide.title;
+    let h1Title = titleMatch ? (guide.title.includes("?") && !titleMatch[1].endsWith("?") ? `${titleMatch[1]} ?` : titleMatch[1]) : guide.title;
+    if (h1Title.length > 65 && guide.shortTitle) {
+        h1Title = guide.shortTitle;
+    }
     const subtitle = titleMatch ? titleMatch[2] : null;
 
     return (
@@ -200,13 +203,13 @@ export default async function EnglishGuideDetailPage({
 
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-slate-500 font-medium pt-3 border-t border-slate-100">
                             <div className="flex items-center gap-2.5">
-                                <div className="w-9 h-9 rounded-full overflow-hidden relative shrink-0 border border-slate-200">
+                                <div className="w-9 h-9 rounded-full overflow-hidden shrink-0 border border-slate-200">
                                     <Image
                                         src={guide.author.avatar}
                                         alt={guide.author.name}
-                                        fill
-                                        sizes="36px"
-                                        className="object-cover"
+                                        width={36}
+                                        height={36}
+                                        className="w-9 h-9 object-cover"
                                     />
                                 </div>
                                 <div>
@@ -246,10 +249,10 @@ export default async function EnglishGuideDetailPage({
                         <Image
                             src={guide.heroImage}
                             alt={guide.shortTitle || guide.title}
-                            fill
+                            width={1200}
+                            height={514}
                             priority
-                            sizes="(max-width: 1024px) 100vw, 896px"
-                            className="object-cover"
+                            className="w-full h-auto object-cover"
                         />
                     </div>
                 </div>
@@ -334,8 +337,8 @@ export default async function EnglishGuideDetailPage({
 
                         {/* EEAT Author Verification Box */}
                         <div className="rounded-3xl bg-white border border-[#E7DFD5] p-6 sm:p-7 my-10 flex flex-col sm:flex-row items-center sm:items-start gap-5 shadow-xs">
-                            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden relative shrink-0 border-2 border-[#FAF7F2] shadow-sm">
-                                <Image src={guide.author.avatar} alt={guide.author.name} fill className="object-cover" />
+                            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden shrink-0 border-2 border-[#FAF7F2] shadow-sm">
+                                <Image src={guide.author.avatar} alt={guide.author.name} width={80} height={80} className="w-16 h-16 sm:w-20 sm:h-20 object-cover" />
                             </div>
                             <div className="space-y-2 text-center sm:text-left flex-1">
                                 <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">

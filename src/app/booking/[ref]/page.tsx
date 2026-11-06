@@ -37,6 +37,7 @@ import { SosModal } from "@/components/SosModal";
 import BookingManager from "@/components/BookingManager";
 import { MOROCCAN_HUBS, VEHICLE_FLEET } from "@/lib/morocco-data";
 import { trackPurchase } from "@/lib/gtm";
+import { buildAffiliateRentalUrl, buildAffiliateEsimUrl } from "@/lib/affiliate";
 
 const HUB_EXCURSIONS: Record<string, { title: string; duration: string; tag: string; viatorQuery: string }[]> = {
     marrakech: [
@@ -348,6 +349,56 @@ export default function BookingVoucherPage() {
                         <BookingManager refId={ref} />
                     </div>
 
+                    {/* Lead-Gen & Immediate Airport Affiliate Bridge Banner */}
+                    <div className="rounded-3xl bg-linear-to-r from-amber-500/10 via-orange-500/10 to-amber-500/5 border-2 border-amber-500/30 p-5 sm:p-6 shadow-sm print:hidden">
+                        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                            <div className="space-y-1.5">
+                                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500 text-white text-[11px] font-bold uppercase tracking-wider shadow-2xs">
+                                    <span className="w-2 h-2 rounded-full bg-white animate-ping" />
+                                    <span>Vérification WhatsApp en cours</span>
+                                </div>
+                                <h3 className="text-base sm:text-lg font-black text-slate-900">
+                                    Besoin d&apos;une voiture garantie immédiatement au Terminal {rental.airportCode} ?
+                                </h3>
+                                <p className="text-xs text-slate-600 max-w-xl leading-relaxed">
+                                    Notre équipe locale vérifie les stocks ZwinCar sans caution et vous contacte sur WhatsApp au <strong>{client.phone}</strong>. En attendant notre confirmation, sécurisez instantanément un véhicule disponible à l&apos;aéroport via nos partenaires officiels :
+                                </p>
+                            </div>
+                            <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+                                <a
+                                    href={buildAffiliateRentalUrl({
+                                        provider: "localrent",
+                                        hubCode: rental.airportCode || "RAK",
+                                        citySlug: rental.hubName?.toLowerCase().includes("marrakech") ? "marrakech" : rental.hubName?.toLowerCase().includes("agadir") ? "agadir" : rental.hubName?.toLowerCase().includes("casablanca") ? "casablanca" : "marrakech",
+                                        pickupDate: rental.pickupDate || new Date().toISOString().split("T")[0],
+                                        returnDate: rental.returnDate || new Date(Date.now() + 86400000 * 3).toISOString().split("T")[0],
+                                    })}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-[#C9572C] text-white text-xs font-bold transition flex items-center gap-1.5 shadow-sm active:scale-95"
+                                >
+                                    <span>Localrent (Faible Caution)</span>
+                                    <ExternalLink size={14} />
+                                </a>
+                                <a
+                                    href={buildAffiliateRentalUrl({
+                                        provider: "discovercars",
+                                        hubCode: rental.airportCode || "RAK",
+                                        citySlug: rental.hubName?.toLowerCase() || "marrakech",
+                                        pickupDate: rental.pickupDate || new Date().toISOString().split("T")[0],
+                                        returnDate: rental.returnDate || new Date(Date.now() + 86400000 * 3).toISOString().split("T")[0],
+                                    })}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-sm active:scale-95"
+                                >
+                                    <span>DiscoverCars (Terminal)</span>
+                                    <ExternalLink size={14} />
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
                     {/* Main Voucher Card */}
                     <div className="rounded-3xl bg-white border border-[#ECE5D9] p-6 sm:p-8 shadow-sm space-y-6">
                         {/* Status & Barcode Header */}
@@ -386,8 +437,9 @@ export default function BookingVoucherPage() {
                                 <Image
                                     src={rental.vehicleImage}
                                     alt={rental.vehicleName}
-                                    fill
-                                    className="object-cover"
+                                    width={400}
+                                    height={240}
+                                    className="w-full h-44 object-cover"
                                 />
                                 <div className="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-md bg-slate-900/80 text-white text-[10px] font-bold uppercase tracking-wider">
                                     {rental.vehicleCategory}

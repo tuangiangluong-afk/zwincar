@@ -76,12 +76,16 @@ export function getLocalizedMetadata(
     const vehicle = VEHICLE_FLEET.find((v) => v.id === subslug);
     if (vehicle) {
         const t = getTranslation(locale);
+        const vTitle = vehicle.id === "toyota-prado-tx-7places"
+            ? (locale === "en" ? "Toyota Prado 7-Seater" : locale === "es" ? "Toyota Prado 7 Plazas" : "Toyota Prado 7-Persoons")
+            : vehicle.name;
         const title = clampTitle(
             locale === "en"
-                ? `${vehicle.name} Rental ${hub.name} (${hub.airportCode}) • 0€ Deposit`
+                ? `${vTitle} Rental ${hub.name} (${hub.airportCode}) • 0€ Deposit`
                 : locale === "es"
-                ? `Alquiler ${vehicle.name} en ${hub.name} (${hub.airportCode}) • 0€ Fianza`
-                : `Huur ${vehicle.name} in ${hub.name} (${hub.airportCode}) • 0€ Borg`
+                ? `Alquiler ${vTitle} en ${hub.name} (${hub.airportCode}) • 0€ Fianza`
+                : `Huur ${vTitle} in ${hub.name} (${hub.airportCode}) • 0€ Borg`,
+            65
         );
 
         const description = clampDescription(

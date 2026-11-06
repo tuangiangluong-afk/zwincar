@@ -104,3 +104,14 @@ export function buildAffiliateRentalUrl({
     // Exemple d'URL trackée DiscoverCars:
     return `https://www.discovercars.com/?iata=${hubCode}&pick_date=${pickupDate}&pick_time=${pickupTime}&drop_date=${returnDate}&drop_time=${returnTime}&a_aid=${cleanMarker}&data1=zwincar_fallback`;
 }
+
+/**
+ * Génère le lien affilié pour l'eSIM Maroc (Airalo / MobiMatter)
+ */
+export function buildAffiliateEsimUrl(partner: "airalo" | "mobimatter" = "airalo"): string {
+    const airaloRef = process.env.NEXT_PUBLIC_AIRALO_AFFILIATE_CODE || "ZWINCAR";
+    if (partner === "mobimatter") {
+        return `https://mobimatter.com/travel-esim/morocco?affiliate=${airaloRef}`;
+    }
+    return `https://www.airalo.com/morocco-esim?referral=${airaloRef}`;
+}
