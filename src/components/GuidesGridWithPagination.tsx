@@ -180,11 +180,11 @@ export default function GuidesGridWithPagination({
                                     </span>
                                 </div>
 
-                                <h2 className="text-xl font-black text-slate-900 group-hover:text-[#C9572C] transition-colors line-clamp-2 leading-tight">
+                                <h3 className="text-xl font-black text-slate-900 group-hover:text-[#C9572C] transition-colors line-clamp-2 leading-tight">
                                     <Link href={`${basePath}/${guide.slug}`}>
                                         {guide.title}
                                     </Link>
-                                </h2>
+                                </h3>
 
                                 <p className="text-xs sm:text-sm text-slate-600 line-clamp-3 leading-relaxed">
                                     {guide.metaDescription}
@@ -216,6 +216,7 @@ export default function GuidesGridWithPagination({
 
                             <Link
                                 href={`${basePath}/${guide.slug}`}
+                                aria-label={`${isEn ? "Read guide" : "Lire le guide"} : ${guide.shortTitle || guide.title}`}
                                 className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#FAF7F2] text-[#C9572C] hover:bg-[#C9572C] hover:text-white transition-all text-xs font-bold shrink-0"
                             >
                                 <span>{isEn ? "Read Guide" : "Lire"}</span>

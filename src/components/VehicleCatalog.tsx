@@ -278,10 +278,18 @@ export default function VehicleCatalog({
                                     </div>
 
                                     {/* Vehicle Image */}
-                                    <Link href={vehicleLocalUrl} className="block relative w-full h-44 rounded-2xl overflow-hidden bg-slate-50 mb-4 cursor-pointer">
+                                    <Link
+                                        href={vehicleLocalUrl}
+                                        aria-label={`${vehicle.name} - ${currentHub.name}`}
+                                        className="block relative w-full h-44 rounded-2xl overflow-hidden bg-slate-50 mb-4 cursor-pointer"
+                                    >
                                         <img
                                             src={vehicle.image}
                                             alt={vehicle.name}
+                                            width={600}
+                                            height={390}
+                                            loading="lazy"
+                                            decoding="async"
                                             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                                         />
                                         <div className="absolute bottom-2 left-2 bg-[#12161E]/80 backdrop-blur-xs text-white text-[10px] font-semibold px-2 py-0.5 rounded-md">
@@ -290,7 +298,7 @@ export default function VehicleCatalog({
                                     </Link>
 
                                     {/* Title & Highlight */}
-                                    <Link href={vehicleLocalUrl}>
+                                    <Link href={vehicleLocalUrl} aria-label={`${vehicle.name} - ${currentHub.name}`}>
                                         <h3 className="text-lg font-black text-slate-900 tracking-tight group-hover:text-[#C9572C] transition-colors flex items-center justify-between">
                                             <span>{vehicle.name}</span>
                                             <ExternalLink size={15} className="text-slate-300 group-hover:text-[#C9572C] transition-colors shrink-0 ml-1" />
@@ -325,22 +333,22 @@ export default function VehicleCatalog({
                                 <div>
                                     <div className="flex items-baseline justify-between mb-3.5">
                                         <div>
-                                            <div className="text-[11px] text-slate-400">{t.catalog.fromPerDay}</div>
+                                            <div className="text-[11px] text-slate-600 font-medium">{t.catalog.fromPerDay}</div>
                                             <div className="flex items-baseline gap-1.5">
                                                 <span className="text-2xl font-black text-slate-900">
                                                     {formatPrice(vehicle.dailyPriceEur, vehicle.dailyPriceMad)}
                                                 </span>
-                                                <span className="text-xs text-slate-500 font-medium">/ {t.bookingWidget.perDay}</span>
-                                                <span className="text-xs font-mono text-slate-400 font-semibold ml-0.5">
+                                                <span className="text-xs text-slate-600 font-medium">/ {t.bookingWidget.perDay}</span>
+                                                <span className="text-xs font-mono text-slate-500 font-semibold ml-0.5">
                                                     ({currency === "EUR" ? `${vehicle.dailyPriceMad} MAD` : `${vehicle.dailyPriceEur} €`})
                                                 </span>
                                             </div>
                                         </div>
                                         <div className="text-right">
-                                            <div className="text-[11px] font-medium text-slate-500">
+                                            <div className="text-[11px] font-semibold text-slate-700">
                                                 {activeLocale === "en" ? "Airport delivery included" : activeLocale === "es" ? "Entrega en aeropuerto incluida" : activeLocale === "nl" ? "Luchthavenbezorging inbegrepen" : "Livraison aéroport incluse"}
                                             </div>
-                                            <div className="text-[10px] text-slate-400 mt-0.5 font-mono">
+                                            <div className="text-[10px] text-slate-500 mt-0.5 font-mono">
                                                 {days}{activeLocale === "en" ? "d" : activeLocale === "es" ? "d" : activeLocale === "nl" ? "d" : "j"} : ~{formatPrice(totalEst, totalEst * 11)}
                                             </div>
                                         </div>
@@ -370,6 +378,7 @@ export default function VehicleCatalog({
 
                                         <Link
                                             href={vehicleLocalUrl}
+                                            aria-label={`${t.catalog.viewDetails} : ${vehicle.name}`}
                                             className="h-11 px-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-xs whitespace-nowrap"
                                         >
                                             <span className="truncate">{t.catalog.viewDetails}</span>

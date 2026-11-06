@@ -107,9 +107,9 @@ export const PURCHASE_INTENTS: PurchaseIntent[] = [
             nl: "De grootste valkuil in Marokko: autoverhuurders op de luchthaven eisen een fysieke CREDITCARD en blokkeren €1.500 tot €2.500. ZwinCar biedt geverifieerde lokale partners: kies voor 0 € borg of een lichte borg van €300 in contanten/betaalpas, direct terugbetaald.",
         },
         analysisTitle: {
-            fr: "Pourquoi les comptoirs aéroports refusent votre carte de débit au Maroc ?",
+            fr: "Pourquoi l'aéroport refuse votre carte de débit au Maroc ?",
             en: "Why do airport rental desks reject European debit cards in Morocco?",
-            es: "¿Por qué los mostradores de aeropuerto rechazan su tarjeta de débito en Marruecos?",
+            es: "¿Por qué el aeropuerto rechaza su tarjeta de débito en Marruecos?",
             nl: "Waarom weigeren traditionele verhuurders uw debetkaart in Marokko?",
         },
         analysisPoints: [
@@ -331,9 +331,9 @@ export const PURCHASE_INTENTS: PurchaseIntent[] = [
             nl: "De mooiste plekken in Marokko (Agafay woestijnkampen, Atlas kasba's, rustige stranden) liggen aan grindwegen. Veel verhuurders verbieden onverharde wegen stiekem. Bij ZwinCar zijn toegankelijke pistes officieel toegestaan.",
         },
         analysisTitle: {
-            fr: "Pourquoi le Dacia Duster 4x4 est le roi incontesté du roadtrip au Maroc ?",
-            en: "Why is the Dacia Duster 4x4 the undisputed king of Moroccan road trips?",
-            es: "¿Por qué el Dacia Duster 4x4 es el rey del viaje por carretera en Marruecos?",
+            fr: "Pourquoi le Duster 4x4 est le roi du roadtrip au Maroc ?",
+            en: "Why the Dacia Duster 4x4 is king of Moroccan road trips",
+            es: "¿Por qué el Duster 4x4 es el rey del roadtrip en Marruecos?",
             nl: "Waarom is de Dacia Duster 4x4 de koning van de Marokkaanse roadtrip?",
         },
         analysisPoints: [

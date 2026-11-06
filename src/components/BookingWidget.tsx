@@ -270,7 +270,10 @@ export function BookingWidget({
                             state.sameReturnLocation ? "md:col-span-3" : "md:col-span-3"
                         }
                     >
-                        <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">
+                        <label
+                            htmlFor="pickup-date-input"
+                            className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5"
+                        >
                             {t.search.pickupDate}
                         </label>
                         <div className="flex items-center h-[54px] rounded-2xl bg-[#FAF7F2] border border-[#E7DFD5] px-3 gap-2">
@@ -290,7 +293,9 @@ export function BookingWidget({
                             >
                                 <Calendar size={15} className="text-[#C9572C] shrink-0 pointer-events-none" />
                                 <input
+                                    id="pickup-date-input"
                                     type="date"
+                                    aria-label={t.search.pickupDate || "Date de prise en charge"}
                                     value={state.pickupDate}
                                     min={formatDateInput(today)}
                                     onChange={(e) =>
@@ -324,7 +329,10 @@ export function BookingWidget({
                             state.sameReturnLocation ? "md:col-span-4" : "md:col-span-3"
                         }
                     >
-                        <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">
+                        <label
+                            htmlFor="return-date-input"
+                            className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5"
+                        >
                             {t.search.returnDate}
                         </label>
                         <div className="flex items-center h-[54px] rounded-2xl bg-[#FAF7F2] border border-[#E7DFD5] px-3 gap-2">
@@ -344,7 +352,9 @@ export function BookingWidget({
                             >
                                 <Calendar size={15} className="text-[#C9572C] shrink-0 pointer-events-none" />
                                 <input
+                                    id="return-date-input"
                                     type="date"
+                                    aria-label={t.search.returnDate || "Date de restitution"}
                                     value={state.returnDate}
                                     min={state.pickupDate}
                                     onChange={(e) =>

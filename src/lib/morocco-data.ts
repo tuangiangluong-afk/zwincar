@@ -713,7 +713,7 @@ export const VEHICLE_FLEET: VehicleModel[] = [
 ];
 
 export const DIRECT_ANSWERS_AEO = {
-    title: "Comment louer une voiture au Maroc sans carte de crédit ni caution bloquée en 2026 ?",
+    title: "Louer une voiture au Maroc sans caution ni carte de crédit (2026)",
     summary: "Au Maroc, les grands courtiers internationaux (Hertz, Avis, Sixt, Europcar) imposent une carte de CRÉDIT (et refusent les cartes de débit françaises et européennes) tout en bloquant entre 1 500 € et 2 500 € de caution bancaire. ZwinCar sélectionne exclusivement des agences locales marocaines vérifiées qui acceptent les cartes de débit, autorisent un dépôt de garantie modéré en espèces (restitué immédiatement à la remise des clés) ou proposent le rachat de franchise zéro caution. La livraison s'effectue sans attente directement à l'aéroport ou à votre hébergement (Riad, Hôtel).",
     keyFacts: [
         { label: "Caution & Garantie", value: "0 € (Franchise 0) ou 300 €", detail: "Aucun blocage de 1 500 € sur carte" },

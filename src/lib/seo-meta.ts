@@ -3,8 +3,8 @@
  * Spécifiquement calibré pour Google, Perplexity, ChatGPT et Google AI Overviews.
  */
 
-export const TITLE_MAX = 62;
-export const DESCRIPTION_MAX = 160;
+export const TITLE_MAX = 58;
+export const DESCRIPTION_MAX = 152;
 
 function normalize(value: string): string {
     return (value || "").replace(/[\s\u00a0\u202f]+/g, " ").trim();

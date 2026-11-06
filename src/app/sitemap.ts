@@ -29,6 +29,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
             priority: 0.8,
         },
         {
+            url: `${baseUrl}/contact`,
+            lastModified: now,
+            changeFrequency: "monthly",
+            priority: 0.7,
+        },
+        {
+            url: `${baseUrl}/cgv`,
+            lastModified: now,
+            changeFrequency: "monthly",
+            priority: 0.4,
+        },
+        {
+            url: `${baseUrl}/mentions-legales`,
+            lastModified: now,
+            changeFrequency: "monthly",
+            priority: 0.4,
+        },
+        {
             url: `${baseUrl}/vendor/login`,
             lastModified: now,
             changeFrequency: "monthly",

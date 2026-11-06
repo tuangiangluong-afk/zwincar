@@ -88,7 +88,7 @@ export async function generateMetadata({
         },
         openGraph: {
             title: guide.title,
-            description: guide.metaDescription,
+            description: clampDescription(guide.metaDescription),
             url: `https://zwincar.com/guides/${guide.slug}`,
             images: [{ url: guide.heroImage, width: 1200, height: 630 }],
             type: "article",

@@ -240,6 +240,11 @@ export default function Footer({ config, locale: propLocale }: FooterProps = {})
                                     {t.terms}
                                 </Link>
                             </li>
+                            <li>
+                                <Link href="/mentions-legales" className="hover:text-white transition">
+                                    {activeLocale === "en" ? "Legal Notice" : activeLocale === "es" ? "Aviso Legal" : activeLocale === "nl" ? "Juridische Informatie" : "Mentions Légales"}
+                                </Link>
+                            </li>
                         </ul>
                     </div>
                 </div>

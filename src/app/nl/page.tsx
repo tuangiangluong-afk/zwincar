@@ -4,15 +4,16 @@ import HomePage from "@/app/home/page";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-    title: "Autoverhuur in Marokko Zonder Borg • Lokale Partners | ZwinCar",
-    description: "Huur een auto in Marokko zonder € 1.500 creditcard borg. Directe luchthavenoverdracht in Marrakech, Agadir, Casablanca, Tanger en Fez. Gegarandeerde modellen.",
+    title: "Auto Huren Marokko Zonder Borg • ZwinCar",
+    description: "Huur een auto in Marokko zonder creditcard borg. Directe luchthavenoverdracht in Marrakech, Agadir, Casablanca en Tanger. Gegarandeerde modellen.",
     alternates: {
         canonical: "https://zwincar.com/nl",
         languages: {
-            "fr": "https://zwincar.com",
-            "en": "https://zwincar.com/en",
-            "es": "https://zwincar.com/es",
-            "nl": "https://zwincar.com/nl",
+            "fr-FR": "https://zwincar.com",
+            "en-US": "https://zwincar.com/en",
+            "es-ES": "https://zwincar.com/es",
+            "nl-NL": "https://zwincar.com/nl",
+            "x-default": "https://zwincar.com/en",
         },
     },
 };

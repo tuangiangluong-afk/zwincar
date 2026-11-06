@@ -12,7 +12,7 @@ import GuidesGridWithPagination from "@/components/GuidesGridWithPagination";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-    title: clampTitle("Guides Conduite & Conseils Location de Voiture au Maroc | ZwinCar"),
+    title: clampTitle("Guides Conduite • Conseils Location Maroc | ZwinCar"),
     description: clampDescription(
         "Tous les conseils d'experts pour conduire au Maroc en 2026 : radars, ronds-points, pièges de caution CB, col du Tichka et roadtrips atlantiques sans stress."
     ),
@@ -83,6 +83,7 @@ export default function GuidesPage() {
 
                 {/* Guides Grid with Category Filters & Pagination */}
                 <section className="py-12 sm:py-16">
+                    <h2 className="sr-only">Tous nos dossiers et guides routiers</h2>
                     <div className="container mx-auto px-4 max-w-5xl">
                         <GuidesGridWithPagination guides={MOROCCO_GUIDES} locale="fr" itemsPerPage={8} />
                     </div>

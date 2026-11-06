@@ -79,7 +79,7 @@ export async function generateMetadata({
         },
         openGraph: {
             title: guide.title,
-            description: guide.metaDescription,
+            description: clampDescription(guide.metaDescription),
             url: `${baseUrl}/en/guides/${guide.slug}`,
             images: [{ url: guide.heroImage, width: 1200, height: 630 }],
             type: "article",
@@ -90,7 +90,7 @@ export async function generateMetadata({
         twitter: {
             card: "summary_large_image",
             title: guide.title,
-            description: guide.metaDescription,
+            description: clampDescription(guide.metaDescription),
             images: [guide.heroImage],
         },
     };

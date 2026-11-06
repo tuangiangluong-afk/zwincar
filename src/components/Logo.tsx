@@ -84,8 +84,8 @@ export default function Logo({
                     <span
                         className={`font-semibold text-xs ml-1 px-1.5 py-0.5 rounded tracking-wide uppercase ${
                             isDark
-                                ? "bg-[#C9572C]/10 text-[#C9572C]"
-                                : "bg-white/10 text-white/80"
+                                ? "bg-slate-900 text-white font-bold"
+                                : "bg-white/20 text-white font-bold"
                         }`}
                     >
                         .com

@@ -47,6 +47,9 @@ export async function generateMetadata({ params }: VehiclePageProps): Promise<Me
     return {
         title,
         description,
+        alternates: {
+            canonical: `https://zwincar.com/vehicules/${vehicle.id}`,
+        },
         openGraph: {
             title,
             description,

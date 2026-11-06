@@ -79,7 +79,16 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
-        source: "/((?!api|admin|login|_next|sw\.js|manifest\.webmanifest).*)",
+        source: "/images/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        source: "/((?!api|admin|login|_next|images|sw\.js|manifest\.webmanifest).*)",
         headers: [
           {
             key: "Cache-Control",

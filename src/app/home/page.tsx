@@ -43,16 +43,24 @@ export default function HomePage({ locale = "fr" }: HomePageProps = {}) {
             {/* Header Navigation */}
             <Header locale={locale} />
 
+            <main id="main-content">
             {/* HERO SECTION */}
             <section className="relative pt-12 pb-24 md:pt-16 md:pb-32 overflow-hidden bg-[#181411]">
                 {/* Authentic Moroccan Roadtrip Backdrop (Atlas Mountains & Golden Hour) */}
                 <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden bg-gradient-to-b from-[#181411] via-[#241c18] to-[#12161E]">
-                    <img
-                        src="/images/hero-morocco.webp"
-                        alt=""
-                        aria-hidden="true"
-                        className="w-full h-[640px] md:h-[740px] object-cover object-center opacity-90 filter brightness-[0.85] contrast-105"
-                    />
+                    <picture>
+                        <source media="(max-width: 768px)" srcSet="/images/hero-morocco-mobile.webp" />
+                        <img
+                            src="/images/hero-morocco.webp"
+                            width={1440}
+                            height={810}
+                            fetchPriority="high"
+                            loading="eager"
+                            decoding="async"
+                            alt="Location de voiture au Maroc sans caution ZwinCar"
+                            className="w-full h-[640px] md:h-[740px] object-cover object-center opacity-90 filter brightness-[0.85] contrast-105"
+                        />
+                    </picture>
                     <div className="absolute inset-0 bg-gradient-to-b from-black/65 via-black/45 to-[#FAF7F2]"></div>
                 </div>
 
@@ -157,9 +165,9 @@ export default function HomePage({ locale = "fr" }: HomePageProps = {}) {
                                 <span className="text-[11px] font-bold uppercase tracking-wider text-[#C9572C] block">
                                     {isEn ? "Roadtrip Inspiration" : isEs ? "Inspiración Roadtrip" : isNl ? "Roadtrip Inspiratie" : "Inspiration Roadtrip"}
                                 </span>
-                                <h3 className="text-base sm:text-lg font-black text-slate-900 tracking-tight">
+                                <h2 className="text-base sm:text-lg font-black text-slate-900 tracking-tight">
                                     {isEn ? "Morocco at your own pace, in total freedom" : isEs ? "Marruecos a su propio ritmo, con total libertad" : isNl ? "Marokko op uw eigen tempo, in alle vrijheid" : "Le Maroc à votre rythme, en toute liberté"}
-                                </h3>
+                                </h2>
                             </div>
                             <span className="text-xs text-slate-500 hidden sm:inline">
                                 {isEn ? "Unlimited mileage on all our vehicles" : isEs ? "Kilometraje ilimitado en todos los vehículos" : isNl ? "Onbeperkte kilometers op alle voertuigen" : "Kilométrage illimité sur tous nos véhicules"}
@@ -170,7 +178,11 @@ export default function HomePage({ locale = "fr" }: HomePageProps = {}) {
                             {/* Photo 1: Col du Tichka & Gorges du Dadès */}
                             <div className="group relative h-48 sm:h-64 rounded-2xl sm:rounded-3xl overflow-hidden border border-[#E7DFD5] shadow-xs">
                                 <img
-                                    src="/images/hero-morocco.webp"
+                                    src="/images/hero-morocco-mobile.webp"
+                                    width={400}
+                                    height={260}
+                                    loading="lazy"
+                                    decoding="async"
                                     alt="Col du Tichka et Gorges du Dadès Haut Atlas Maroc"
                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                 />
@@ -191,7 +203,11 @@ export default function HomePage({ locale = "fr" }: HomePageProps = {}) {
                             {/* Photo 2: Taghazout Coast */}
                             <div className="group relative h-48 sm:h-64 rounded-2xl sm:rounded-3xl overflow-hidden border border-[#E7DFD5] shadow-xs">
                                 <img
-                                    src="https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=800&q=80"
+                                    src="https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=480&q=70"
+                                    width={400}
+                                    height={260}
+                                    loading="lazy"
+                                    decoding="async"
                                     alt="Taghazout et Côte Atlantique"
                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                 />
@@ -212,7 +228,11 @@ export default function HomePage({ locale = "fr" }: HomePageProps = {}) {
                             {/* Photo 3: Agafay Desert */}
                             <div className="group relative h-48 sm:h-64 rounded-2xl sm:rounded-3xl overflow-hidden border border-[#E7DFD5] shadow-xs">
                                 <img
-                                    src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80"
+                                    src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=480&q=70"
+                                    width={400}
+                                    height={260}
+                                    loading="lazy"
+                                    decoding="async"
                                     alt="Désert d'Agafay en 4x4"
                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                 />
@@ -233,7 +253,11 @@ export default function HomePage({ locale = "fr" }: HomePageProps = {}) {
                             {/* Photo 4: Marrakech Medina */}
                             <div className="group relative h-48 sm:h-64 rounded-2xl sm:rounded-3xl overflow-hidden border border-[#E7DFD5] shadow-xs">
                                 <img
-                                    src="https://images.unsplash.com/photo-1597212618440-806262de4f6b?auto=format&fit=crop&w=800&q=80"
+                                    src="https://images.unsplash.com/photo-1597212618440-806262de4f6b?auto=format&fit=crop&w=480&q=70"
+                                    width={400}
+                                    height={260}
+                                    loading="lazy"
+                                    decoding="async"
                                     alt="Marrakech Médina et Palmeraie"
                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                 />
@@ -268,12 +292,12 @@ export default function HomePage({ locale = "fr" }: HomePageProps = {}) {
                         </div>
                         <h2 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
                             {isEn
-                                ? "Why 9 out of 10 travelers hate traditional airport rental desks"
+                                ? "Why 9 out of 10 travelers avoid airport rental desks"
                                 : isEs
-                                ? "Por qué 9 de cada 10 turistas odian alquilar en mostradores de aeropuerto"
+                                ? "Por qué evitar los mostradores de alquiler tradicionales"
                                 : isNl
-                                ? "Waarom 9 van de 10 reizigers een hekel hebben aan luchthavenbalies"
-                                : "Pourquoi 9 touristes sur 10 détestent louer aux comptoirs d'aéroport"}
+                                ? "Waarom reizigers traditionele balies vermijden"
+                                : "Pourquoi 9 touristes sur 10 évitent les guichets d'aéroport"}
                         </h2>
                         <p className="text-sm sm:text-base text-slate-600 mt-3">
                             {isEn
@@ -478,6 +502,10 @@ export default function HomePage({ locale = "fr" }: HomePageProps = {}) {
                                     <img
                                         src={hub.heroImage}
                                         alt={`Location voiture ${hub.name}`}
+                                        width={640}
+                                        height={426}
+                                        loading="lazy"
+                                        decoding="async"
                                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                                     />
                                     <div className="absolute top-3 right-3 bg-[#12161E]/80 backdrop-blur-xs text-white text-[11px] font-mono px-2.5 py-1 rounded-full font-bold">
@@ -511,6 +539,7 @@ export default function HomePage({ locale = "fr" }: HomePageProps = {}) {
 
             {/* AEO / GEO ADVANCED DIRECT ANSWER SECTION */}
             <LocalAeoSection hubSlug="marrakech" />
+            </main>
 
             {/* Footer */}
             <Footer locale={locale} />

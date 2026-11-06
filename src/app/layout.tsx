@@ -13,10 +13,10 @@ const jakartaSans = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | ZwinCar.com",
-    default: "ZwinCar.com — Location de Voiture au Maroc Sans Caution CB",
+    template: "%s",
+    default: "ZwinCar.com — Location Voiture Maroc Sans Caution CB",
   },
-  description: "Louez votre voiture au Maroc sans blocage de carte de crédit. Agences locales vérifiées à Marrakech, Casablanca, Agadir, Tanger et Fès. Livraison aéroport et Riad gratuite. Assistance WhatsApp 24/7.",
+  description: "Louez votre voiture au Maroc sans blocage de carte bancaire. Agences locales vérifiées à Marrakech, Casablanca, Agadir, Tanger. 0€ caution franchise zéro.",
   keywords: [
     "location voiture maroc sans caution",
     "location voiture marrakech sans carte de credit",
@@ -27,6 +27,16 @@ export const metadata: Metadata = {
     "zwincar maroc",
   ],
   metadataBase: new URL("https://zwincar.com"),
+  alternates: {
+    canonical: "https://zwincar.com",
+    languages: {
+      "fr-FR": "https://zwincar.com",
+      "en-US": "https://zwincar.com/en",
+      "es-ES": "https://zwincar.com/es",
+      "nl-NL": "https://zwincar.com/nl",
+      "x-default": "https://zwincar.com/en",
+    },
+  },
   manifest: "/manifest.webmanifest",
   icons: {
     icon: [
@@ -75,7 +85,31 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr" className="scroll-smooth">
+      <head>
+        <link
+          rel="preload"
+          as="image"
+          href="/images/hero-morocco-mobile.webp"
+          media="(max-width: 768px)"
+          fetchPriority="high"
+          type="image/webp"
+        />
+        <link
+          rel="preload"
+          as="image"
+          href="/images/hero-morocco.webp"
+          media="(min-width: 769px)"
+          fetchPriority="high"
+          type="image/webp"
+        />
+      </head>
       <body className={`${jakartaSans.variable} font-sans antialiased bg-[#FAF7F2] text-[#12161E]`}>
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 z-50 bg-[#C9572C] text-white px-4 py-2 rounded-xl font-bold shadow-lg focus:outline-none"
+        >
+          Aller au contenu principal
+        </a>
         {/* Google Tag Manager (noscript) */}
         <noscript>
           <iframe
