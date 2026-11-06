@@ -958,6 +958,14 @@ export interface BookingRecord {
         photos: number;
         notes?: string;
     };
+    kyc?: {
+        uploadedAt: string;
+        verified: boolean;
+        driverAge: number;
+        licenseNumber: string;
+        licenseFile?: string;
+        passportFile?: string;
+    };
     stripeSessionId?: string;
     /** Complément à encaisser après une modification de dates (calculé serveur). */
     pendingPayment?: { kind: "acompte" | "change"; amountEur: number; createdAt: string };

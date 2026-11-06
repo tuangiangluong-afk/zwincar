@@ -10,6 +10,8 @@ import { getBookingStore, __resetBookingStoreForTests } from "../src/lib/booking
 import {
     registerVendorAgency,
     authenticateVendor,
+    getVendorFromToken,
+    getHubModelAvailability,
     addVendorVehicle,
     setVendorVehicleStatus,
     getVendorFleet,
@@ -117,11 +119,14 @@ test("E2E complet : Réservation client -> KYC -> Inscription Loueur -> Check-in
 
     assert.equal(agency.cityHub, "marrakech");
     assert.ok(vendorToken.startsWith("zwin_vnd_"));
+    assert.equal(getVendorFromToken(vendorToken)?.id, agency.id);
+    assert.equal(getVendorFromToken(`${vendorToken}tampered`), null);
 
     // Loueur se reconnecte
     const auth = await authenticateVendor("contact@kawkabcars.ma", "SecretPassword123!");
     assert.ok(auth);
     assert.equal(auth.agency.agencyName, "Kawkab Cars Marrakech");
+    assert.equal(await authenticateVendor("contact@kawkabcars.ma", "Marrakech2026!"), null);
 
     // Ajout d'une 2e voiture + test Stop-Sell
     const car2 = addVendorVehicle(agency.id, {
@@ -133,6 +138,10 @@ test("E2E complet : Réservation client -> KYC -> Inscription Loueur -> Check-in
 
     const blockedCar = setVendorVehicleStatus(agency.id, car2.id, "blocked");
     assert.equal(blockedCar?.status, "blocked");
+
+    const dusterAvail = getHubModelAvailability("marrakech", "dacia-duster-4x4", "Dacia Duster 4x4", 2);
+    assert.equal(dusterAvail.available, true);
+    assert.ok(dusterAvail.stockCount >= 2);
 
     const fleet = getVendorFleet(agency.id);
     assert.equal(fleet.length, 2);

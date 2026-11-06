@@ -1,11 +1,16 @@
 import { NextResponse } from "next/server";
 import { authenticateVendor } from "@/lib/vendor-store";
-import { jsonError, readJson } from "@/lib/api-helpers";
+import { checkRateLimit } from "@/lib/rate-limit";
+import { getClientIp, jsonError, readJson, tooManyRequests } from "@/lib/api-helpers";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
+    const ip = getClientIp(request);
+    const limit = checkRateLimit(`vendor:login:${ip}`, 10, 10 * 60 * 1000);
+    if (!limit.allowed) return tooManyRequests(limit.retryAfterSeconds);
+
     const body = await readJson(request);
     if (!body) return jsonError("Corps de requête JSON manquant", 400);
 

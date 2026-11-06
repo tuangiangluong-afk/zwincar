@@ -6,7 +6,7 @@
  */
 
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
-import { randomBytes, scryptSync, timingSafeEqual } from "node:crypto";
+import { createHmac, randomBytes, scryptSync, timingSafeEqual } from "node:crypto";
 import { getBookingStore } from "./booking-store.ts";
 import type { BookingRecord } from "./booking-engine.ts";
 
@@ -317,15 +317,54 @@ export async function authenticateVendor(
     return { agency: safeAgency, token };
 }
 
+const SESSION_SIGNING_SECRET =
+    process.env.VENDOR_SESSION_SECRET || process.env.SUPABASE_SERVICE_ROLE_KEY || "zwincar_stateless_vnd_hmac_v1";
+
 export function createVendorSession(agencyId: string): string {
-    const token = `zwin_vnd_${randomBytes(24).toString("hex")}`;
     const expiresAt = Date.now() + 30 * 86_400_000; // 30 jours
+    const agency = globalVendors.__zwincarAgencies!.get(agencyId);
+    if (!agency) {
+        const fallback = `zwin_vnd_${randomBytes(24).toString("hex")}`;
+        globalVendors.__zwincarSessions!.set(fallback, { agencyId, expiresAt });
+        return fallback;
+    }
+    const { passwordHash: _p, salt: _s, ...safeAgency } = agency;
+    const payloadB64 = Buffer.from(JSON.stringify({ agency: safeAgency, expiresAt }), "utf8").toString("base64url");
+    const sig = createHmac("sha256", SESSION_SIGNING_SECRET).update(payloadB64).digest("base64url");
+    const token = `zwin_vnd_${payloadB64}.${sig}`;
     globalVendors.__zwincarSessions!.set(token, { agencyId, expiresAt });
     return token;
 }
 
 export function getVendorFromToken(token: string): Omit<VendorAgencyRecord, "passwordHash" | "salt"> | null {
     if (!token) return null;
+
+    // 1. Check stateless signed token (survives Vercel serverless cold-starts)
+    if (token.startsWith("zwin_vnd_") && token.includes(".")) {
+        const raw = token.slice("zwin_vnd_".length);
+        const dotIdx = raw.indexOf(".");
+        const payloadB64 = raw.slice(0, dotIdx);
+        const sig = raw.slice(dotIdx + 1);
+        const expectedSig = createHmac("sha256", SESSION_SIGNING_SECRET).update(payloadB64).digest("base64url");
+        const a = Buffer.from(sig, "utf8");
+        const b = Buffer.from(expectedSig, "utf8");
+        if (a.length === b.length && timingSafeEqual(a, b)) {
+            try {
+                const decoded = JSON.parse(Buffer.from(payloadB64, "base64url").toString("utf8")) as {
+                    agency: Omit<VendorAgencyRecord, "passwordHash" | "salt">;
+                    expiresAt: number;
+                };
+                if (decoded.expiresAt > Date.now() && decoded.agency?.id) {
+                    return decoded.agency;
+                }
+            } catch {
+                return null;
+            }
+        }
+        return null;
+    }
+
+    // 2. Fallback to in-memory session map
     const session = globalVendors.__zwincarSessions!.get(token);
     if (!session || session.expiresAt < Date.now()) {
         return null;
@@ -338,6 +377,44 @@ export function getVendorFromToken(token: string): Omit<VendorAgencyRecord, "pas
 
 export function revokeVendorSession(token: string): void {
     globalVendors.__zwincarSessions!.delete(token);
+}
+
+/**
+ * Calcule la disponibilité réelle d'un modèle catalogue sur un hub en tenant
+ * compte des véhicules partenaires et du Stop-Sell 1-Swipe.
+ */
+export function getHubModelAvailability(
+    hubSlug: string,
+    catalogModelId: string,
+    modelName: string,
+    defaultStock: number
+): { available: boolean; stockCount: number } {
+    const hubNorm = hubSlug.trim().toLowerCase();
+    const hubAgencyIds = new Set<string>();
+    for (const a of globalVendors.__zwincarAgencies!.values()) {
+        if (a.cityHub.toLowerCase() === hubNorm) {
+            hubAgencyIds.add(a.id);
+        }
+    }
+
+    const matchingCars: VendorVehicleRecord[] = [];
+    for (const v of globalVendors.__zwincarFleet!.values()) {
+        if (!hubAgencyIds.has(v.agencyId)) continue;
+        const sameId = v.catalogModelId === catalogModelId;
+        const sameName =
+            v.name.toLowerCase().includes(modelName.toLowerCase().split(" ").slice(0, 2).join(" ")) ||
+            modelName.toLowerCase().includes(v.name.toLowerCase().split(" ").slice(0, 2).join(" "));
+        if (sameId || sameName) {
+            matchingCars.push(v);
+        }
+    }
+
+    if (matchingCars.length === 0) {
+        return { available: defaultStock > 0, stockCount: defaultStock };
+    }
+
+    const availableCount = matchingCars.filter((c) => c.status === "available").length;
+    return { available: availableCount > 0, stockCount: availableCount };
 }
 
 export function getVendorFleet(agencyId: string): VendorVehicleRecord[] {

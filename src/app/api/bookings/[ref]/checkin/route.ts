@@ -52,6 +52,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ ref
         ...record,
         status: "checked_in" as const,
         updatedAt: now,
+        kyc: record.kyc ? { ...record.kyc, verified: true } : undefined,
         checkin: {
             at: now,
             fuelLevel,

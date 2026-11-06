@@ -56,6 +56,7 @@ export async function GET(request: Request) {
         },
         checkin: b.checkin || null,
         checkout: b.checkout || null,
+        kyc: b.kyc || null,
         createdAt: b.createdAt,
     }));
 
