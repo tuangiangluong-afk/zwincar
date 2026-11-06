@@ -135,6 +135,17 @@ export default function LocalizedPageRenderer({
                                             ? `Huur ${vehicle.name} in ${hub.name} (${hub.airportCode})`
                                             : `Location ${vehicle.name} à ${hub.name} (${hub.airportCode})`}
                                     </h1>
+                                    <div className="mt-2 text-xs font-semibold text-slate-600 bg-slate-100/90 px-3 py-1.5 rounded-xl inline-flex items-center gap-1.5">
+                                        <span>
+                                            {locale === "en"
+                                                ? vehicle.equivalentCategoryEn
+                                                : locale === "es"
+                                                ? vehicle.equivalentCategoryEs
+                                                : locale === "nl"
+                                                ? vehicle.equivalentCategoryNl
+                                                : vehicle.equivalentCategoryFr}
+                                        </span>
+                                    </div>
                                     <p className="text-sm sm:text-base text-slate-600 mt-2 leading-relaxed">
                                         {locale !== "fr" && vehicle.highlightEn ? vehicle.highlightEn : vehicle.highlight}
                                     </p>

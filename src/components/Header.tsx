@@ -205,11 +205,12 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
                         <button
                             type="button"
                             onClick={() => setLookupModalOpen(true)}
-                            className="inline-flex items-center gap-1.5 px-2.5 xl:px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition cursor-pointer whitespace-nowrap active:scale-95"
+                            className="inline-flex items-center gap-1.5 px-2 xl:px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition cursor-pointer whitespace-nowrap active:scale-95"
                             title={t.nav.findBooking}
+                            aria-label={t.nav.findBooking}
                         >
                             <FileText size={14} className="text-[#C9572C]" />
-                            <span>{t.nav.myVoucher}</span>
+                            <span className="hidden xl:inline">{t.nav.myVoucher}</span>
                         </button>
 
                         {/* SOS Urgence Button */}
@@ -246,10 +247,10 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
                             target="_blank"
                             rel="noopener noreferrer"
                             onClick={() => trackWhatsAppClick("header_desktop")}
-                            className="inline-flex items-center gap-1.5 px-3 xl:px-3.5 py-2 rounded-2xl bg-slate-900 hover:bg-[#C9572C] text-white text-xs font-bold tracking-wide transition-all shadow-xs cursor-pointer active:scale-95 whitespace-nowrap"
+                            className="inline-flex items-center gap-1.5 px-2.5 xl:px-3.5 py-2 rounded-2xl bg-slate-900 hover:bg-[#C9572C] text-white text-xs font-bold tracking-wide transition-all shadow-xs cursor-pointer active:scale-95 whitespace-nowrap"
                         >
                             <MessageCircle size={15} className="text-emerald-400" />
-                            <span>WhatsApp VIP</span>
+                            <span className="hidden xl:inline">WhatsApp VIP</span>
                         </a>
                     </div>
 

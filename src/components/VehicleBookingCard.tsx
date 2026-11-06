@@ -144,11 +144,19 @@ export default function VehicleBookingCard({
                 </div>
             )}
 
-            {/* Top Pricing Header (Dual Currency) */}
+            {/* Top Pricing Header (Dual Currency & Airport Counter Strike-through) */}
             <div className="flex items-baseline justify-between pb-4 border-b border-slate-100">
                 <div>
-                    <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
-                        {t.bookingWidget.partnerRate}
+                    <div className="flex items-center gap-1.5 text-xs text-slate-400 mb-0.5">
+                        <span className="line-through font-mono">
+                            {currency === "EUR" ? `${vehicle.marketPriceEur} €` : `${vehicle.marketPriceMad} MAD`}
+                        </span>
+                        <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-1.5 py-0.2 rounded">
+                            -{Math.round(((vehicle.marketPriceEur - vehicle.dailyPriceEur) / vehicle.marketPriceEur) * 100)}%
+                        </span>
+                        <span className="text-[10px] text-slate-400">
+                            ({t.catalog.airportCounterBenchmark})
+                        </span>
                     </div>
                     <div className="flex items-baseline gap-2 mt-0.5">
                         <span className="text-3xl font-black text-slate-900">

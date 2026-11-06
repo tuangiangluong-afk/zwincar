@@ -46,18 +46,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
             changeFrequency: "monthly",
             priority: 0.4,
         },
-        {
-            url: `${baseUrl}/vendor/login`,
-            lastModified: now,
-            changeFrequency: "monthly",
-            priority: 0.5,
-        },
-        {
-            url: `${baseUrl}/vendor/register`,
-            lastModified: now,
-            changeFrequency: "monthly",
-            priority: 0.6,
-        },
     ];
 
     // 1. Hub Routes in 4 Languages (FR: /maroc/[slug], Others: /[locale]/[slug])

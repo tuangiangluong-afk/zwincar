@@ -134,12 +134,12 @@ export default function HomePage({ locale = "fr" }: HomePageProps = {}) {
                                 <KeyRound size={14} className="text-white/80 shrink-0" />
                                 <span>
                                     {isEn
-                                        ? "Exact model guaranteed"
+                                        ? "Model or equivalent guaranteed"
                                         : isEs
-                                        ? "Modelo exacto garantizado"
+                                        ? "Modelo o equivalente garantizado"
                                         : isNl
-                                        ? "Exact model gegarandeerd"
-                                        : "Modèle exact garanti"}
+                                        ? "Model of gelijkwaardig gegarandeerd"
+                                        : "Modèle ou équivalent garanti"}
                                 </span>
                             </span>
                             <span className="flex items-center gap-1.5 bg-black/45 backdrop-blur-md px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full border border-white/15 shadow-2xs">

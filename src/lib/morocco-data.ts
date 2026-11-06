@@ -48,6 +48,12 @@ export interface VehicleModel {
     hasAC: boolean;
     dailyPriceEur: number;
     dailyPriceMad: number;
+    marketPriceEur: number;
+    marketPriceMad: number;
+    equivalentCategoryFr: string;
+    equivalentCategoryEn: string;
+    equivalentCategoryEs: string;
+    equivalentCategoryNl: string;
     depositPolicy: string;
     depositPolicyEn: string;
     image: string;
@@ -393,6 +399,12 @@ export const VEHICLE_FLEET: VehicleModel[] = [
         hasAC: true,
         dailyPriceEur: 23,
         dailyPriceMad: 250,
+        marketPriceEur: 39,
+        marketPriceMad: 420,
+        equivalentCategoryFr: "Dacia Sandero, Renault Clio ou équivalent même catégorie",
+        equivalentCategoryEn: "Dacia Sandero, Renault Clio or equivalent category",
+        equivalentCategoryEs: "Dacia Sandero, Renault Clio o equivalente misma categoría",
+        equivalentCategoryNl: "Dacia Sandero, Renault Clio of gelijkwaardig model",
         depositPolicy: "0 € de caution avec Franchise Zéro (ou 300 € en formule standard)",
         depositPolicyEn: "0€ deposit with Zero-Excess option (or €300 standard deposit)",
         image: "/images/vehicles/dacia-sandero-stepway.webp",
@@ -450,6 +462,12 @@ export const VEHICLE_FLEET: VehicleModel[] = [
         hasAC: true,
         dailyPriceEur: 32,
         dailyPriceMad: 350,
+        marketPriceEur: 54,
+        marketPriceMad: 590,
+        equivalentCategoryFr: "Renault Clio 5 BVA, Peugeot 208 BVA ou équivalent même catégorie",
+        equivalentCategoryEn: "Renault Clio 5 Auto, Peugeot 208 Auto or equivalent category",
+        equivalentCategoryEs: "Renault Clio 5 Auto, Peugeot 208 Auto o equivalente misma categoría",
+        equivalentCategoryNl: "Renault Clio 5 Automaat, Peugeot 208 of gelijkwaardig model",
         depositPolicy: "0 € de caution avec Franchise Zéro (ou 300 € en formule standard)",
         depositPolicyEn: "0€ deposit with Zero-Excess option (or €300 standard deposit)",
         image: "/images/vehicles/renault-clio-5-auto.webp",
@@ -507,6 +525,12 @@ export const VEHICLE_FLEET: VehicleModel[] = [
         hasAC: true,
         dailyPriceEur: 45,
         dailyPriceMad: 490,
+        marketPriceEur: 78,
+        marketPriceMad: 850,
+        equivalentCategoryFr: "Dacia Duster 4x4 ou SUV compact tout-chemin équivalent",
+        equivalentCategoryEn: "Dacia Duster 4WD or equivalent all-terrain compact SUV",
+        equivalentCategoryEs: "Dacia Duster 4x4 o SUV compacto equivalente",
+        equivalentCategoryNl: "Dacia Duster 4x4 of gelijkwaardige compacte SUV",
         depositPolicy: "0 € de caution avec Franchise Zéro (ou 300 € en formule standard)",
         depositPolicyEn: "0€ deposit with Zero-Excess option (or €300 standard deposit)",
         image: "/images/vehicles/dacia-duster-4x4.webp",
@@ -564,6 +588,12 @@ export const VEHICLE_FLEET: VehicleModel[] = [
         hasAC: true,
         dailyPriceEur: 62,
         dailyPriceMad: 680,
+        marketPriceEur: 105,
+        marketPriceMad: 1150,
+        equivalentCategoryFr: "Hyundai Tucson BVA, Kia Sportage BVA ou SUV Premium équivalent",
+        equivalentCategoryEn: "Hyundai Tucson Auto, Kia Sportage Auto or equivalent Premium SUV",
+        equivalentCategoryEs: "Hyundai Tucson Auto, Kia Sportage Auto o SUV Premium equivalente",
+        equivalentCategoryNl: "Hyundai Tucson Automaat, Kia Sportage of gelijkwaardige Premium SUV",
         depositPolicy: "0 € de caution avec Franchise Zéro (ou 300 € en formule standard)",
         depositPolicyEn: "0€ deposit with Zero-Excess option (or €300 standard deposit)",
         image: "/images/vehicles/hyundai-tucson.webp",
@@ -617,6 +647,12 @@ export const VEHICLE_FLEET: VehicleModel[] = [
         hasAC: true,
         dailyPriceEur: 25,
         dailyPriceMad: 270,
+        marketPriceEur: 42,
+        marketPriceMad: 460,
+        equivalentCategoryFr: "Peugeot 208, Citroën C3, Hyundai i20 ou citadine équivalente",
+        equivalentCategoryEn: "Peugeot 208, Citroën C3, Hyundai i20 or equivalent city car",
+        equivalentCategoryEs: "Peugeot 208, Citroën C3, Hyundai i20 o urbano equivalente",
+        equivalentCategoryNl: "Peugeot 208, Citroën C3 of gelijkwaardige stadsauto",
         depositPolicy: "0 € de caution avec Franchise Zéro (ou 300 € en formule standard)",
         depositPolicyEn: "0€ deposit with Zero-Excess option (or €300 standard deposit)",
         image: "/images/vehicles/peugeot-208.webp",
@@ -669,6 +705,12 @@ export const VEHICLE_FLEET: VehicleModel[] = [
         hasAC: true,
         dailyPriceEur: 110,
         dailyPriceMad: 1200,
+        marketPriceEur: 185,
+        marketPriceMad: 2000,
+        equivalentCategoryFr: "Toyota Land Cruiser Prado TX (7 Places) ou grand 4x4 équivalent",
+        equivalentCategoryEn: "Toyota Land Cruiser Prado TX (7 Seats) or equivalent large 4WD",
+        equivalentCategoryEs: "Toyota Prado TX (7 Plazas) o gran 4x4 equivalente",
+        equivalentCategoryNl: "Toyota Prado TX (7 Zitplaatsen) of gelijkwaardige 4x4",
         depositPolicy: "0 € de caution avec Franchise Zéro (ou 300 € en formule standard)",
         depositPolicyEn: "0€ deposit with Zero-Excess option (or €300 standard deposit)",
         image: "/images/vehicles/toyota-prado.webp",

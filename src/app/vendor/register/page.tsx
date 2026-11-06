@@ -177,9 +177,7 @@ export default function VendorRegisterPage() {
         <div className="min-h-screen bg-[#FAF7F2] text-slate-900 flex flex-col justify-between font-sans">
             {/* Top Minimal Nav */}
             <header className="px-6 py-4 flex items-center justify-between border-b border-[#E7DFD5] bg-white/70 backdrop-blur-md">
-                <Link href="/" className="inline-block" aria-label="Retour à l'accueil ZwinCar">
-                    <Logo variant="full" theme="dark" size="sm" />
-                </Link>
+                <Logo variant="full" theme="dark" size="sm" />
                 <div className="flex items-center gap-3 text-xs font-semibold">
                     <span className="text-slate-500 hidden sm:inline">Déjà inscrit ?</span>
                     <Link

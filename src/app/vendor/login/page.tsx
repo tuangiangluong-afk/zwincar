@@ -98,9 +98,7 @@ export default function VendorLoginPage() {
         <div className="min-h-screen bg-[#FAF7F2] text-slate-900 flex flex-col justify-between font-sans">
             {/* Top Minimal Nav */}
             <header className="px-6 py-4 flex items-center justify-between border-b border-[#E7DFD5] bg-white/70 backdrop-blur-md">
-                <Link href="/" className="inline-block" aria-label="Retour à l'accueil ZwinCar">
-                    <Logo variant="full" theme="dark" size="sm" />
-                </Link>
+                <Logo variant="full" theme="dark" size="sm" />
                 <div className="flex items-center gap-3 text-xs font-semibold">
                     <span className="text-slate-500 hidden sm:inline">Nouveau loueur ?</span>
                     <Link
@@ -243,24 +241,35 @@ export default function VendorLoginPage() {
                     </div>
 
                     {/* Partenariat Local & Engagements ZwinCar */}
-                    <div className="pt-4 border-t border-slate-100 space-y-2.5 text-left">
+                    <div className="pt-4 border-t border-slate-100 space-y-3 text-left">
                         <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
                             Engagements Plateforme ZwinCar Pro
                         </div>
-                        <ul className="space-y-1.5 text-xs text-slate-600 leading-snug">
+                        <ul className="space-y-2 text-xs text-slate-600 leading-snug">
                             <li className="flex items-start gap-1.5">
                                 <span className="text-emerald-600 font-bold shrink-0">✓</span>
-                                <span><strong>Zéro abonnement :</strong> Inscription 100% gratuite pour les loueurs indépendants agréés au Maroc.</span>
+                                <span><strong>Zéro abonnement ni frais d'entrée :</strong> Inscription 100% gratuite et sans engagement pour les agences locales indépendantes agréées par le Ministère du Transport au Maroc.</span>
                             </li>
                             <li className="flex items-start gap-1.5">
                                 <span className="text-emerald-600 font-bold shrink-0">✓</span>
-                                <span><strong>Acompte garanti :</strong> Chaque réservation transmise dispose d'un acompte validé et traçable.</span>
+                                <span><strong>Acompte en ligne sécurisé :</strong> Chaque demande transmise dispose d'un acompte validé par Stripe. ZwinCar sécurise sa commission à la réservation et ne prélève aucun pourcentage sur le solde agence.</span>
                             </li>
                             <li className="flex items-start gap-1.5">
                                 <span className="text-emerald-600 font-bold shrink-0">✓</span>
-                                <span><strong>Solde direct sur place :</strong> Vous encaissez le solde en direct (cash ou CB) à la livraison du véhicule.</span>
+                                <span><strong>Paiement du solde 100% direct :</strong> Le client vous règle les 80% du solde directement lors de la remise des clés au parking aéroport ou au riad (en espèces ou carte de débit).</span>
+                            </li>
+                            <li className="flex items-start gap-1.5">
+                                <span className="text-emerald-600 font-bold shrink-0">✓</span>
+                                <span><strong>Gestion flexible par WhatsApp :</strong> Vous recevez les fiches missions détaillées (numéro de vol, heure d'arrivée, modèle équivalent) directement sur votre smartphone pour une prise en charge rapide en moins de 3 minutes.</span>
                             </li>
                         </ul>
+
+                        <div className="pt-3 border-t border-slate-100">
+                            <h3 className="text-xs font-bold text-slate-800 mb-1">Critères d'audit des agences partenaires ZwinCar :</h3>
+                            <p className="text-[11px] text-slate-500 leading-relaxed">
+                                Afin de garantir une qualité irréprochable aux voyageurs internationaux, chaque partenaire s'engage à fournir des véhicules récents (moins de 4 ans ou moins de 80 000 km), révisés, équipés de climatisation opérationnelle et d'une roue de secours fonctionnelle. Les remises de clés s'effectuent sans guichet intermédiaire avec état des lieux contradictoire photo sur smartphone.
+                            </p>
+                        </div>
                     </div>
                 </div>
             </main>

@@ -210,7 +210,7 @@ export default async function CityVehicleDetailPage({ params }: CityVehiclePageP
                                     </span>
                                     <span className="px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-semibold flex items-center gap-1">
                                         <ShieldCheck size={14} className="text-emerald-600" />
-                                        Modèle Exact Garanti
+                                        Catégorie Garantie (Surclassement Offert)
                                     </span>
                                     <span className="px-3 py-1 rounded-full bg-[#FAF7F2] text-slate-700 border border-[#E7DFD5] text-xs font-medium">
                                         {hub.airportName}
@@ -219,6 +219,9 @@ export default async function CityVehicleDetailPage({ params }: CityVehiclePageP
                                 <h1 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight leading-tight">
                                     Location {vehicle.name} à {hub.name} ({hub.airportCode})
                                 </h1>
+                                <div className="mt-2 text-xs font-semibold text-slate-600 bg-slate-100/90 px-3 py-1.5 rounded-xl inline-flex items-center gap-1.5">
+                                    <span>{vehicle.equivalentCategoryFr}</span>
+                                </div>
                                 <p className="text-sm sm:text-base text-slate-600 mt-2 leading-relaxed">
                                     {vehicle.highlight} Livrée sans attente dès votre sortie de l'avion ou directement à votre Riad à {hub.name}.
                                 </p>

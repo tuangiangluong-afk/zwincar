@@ -65,6 +65,9 @@ export const TRANSLATIONS: Record<
             bookCar: string;
             viewDetails: string;
             verifiedPartner: string;
+            orEquivalent: string;
+            airportCounterBenchmark: string;
+            freeUpgradeGuaranteed: string;
         };
         bookingWidget: {
             guaranteedRate: string;
@@ -184,13 +187,13 @@ export const TRANSLATIONS: Record<
             ctaButton: "Voir les voitures disponibles",
             searchingBtn: "Recherche en cours...",
             noDepositPill: "Zéro caution CB bloquée",
-            exactModelPill: "Modèle exact garanti",
+            exactModelPill: "Modèle ou équivalent garanti (surclassement offert)",
             airportDeliveryPill: "Livraison aéroport & riad offerte",
             freeCancellationPill: "Annulation gratuite jusqu'à 48h",
         },
         catalog: {
             title: "Flotte Réelle & Tarifs Transparents",
-            subtitle: "Modèles garantis, révisés pour le climat marocain et livrés sans attente à l'aéroport ou à votre riad.",
+            subtitle: "Modèles garantis ou équivalents même catégorie révisés pour le climat marocain, livrés sans attente à l'aéroport ou à votre riad.",
             all: "Tous les véhicules",
             seats: "pl.",
             luggage: "bag.",
@@ -205,6 +208,9 @@ export const TRANSLATIONS: Record<
             bookCar: "Réserver",
             viewDetails: "Fiche & Détails",
             verifiedPartner: "Partenaire Vérifié",
+            orEquivalent: "ou modèle équivalent même catégorie",
+            airportCounterBenchmark: "Tarif moyen comptoir aéroport",
+            freeUpgradeGuaranteed: "Modèle garanti ou surclassement offert",
         },
         bookingWidget: {
             guaranteedRate: "Tarif Garanti Partenaire",
@@ -323,13 +329,13 @@ export const TRANSLATIONS: Record<
             ctaButton: "View Available Cars",
             searchingBtn: "Searching available cars...",
             noDepositPill: "No €1,500 credit card freeze",
-            exactModelPill: "Exact model guaranteed",
+            exactModelPill: "Model or equivalent guaranteed (free upgrade)",
             airportDeliveryPill: "Free airport & riad delivery",
             freeCancellationPill: "Free cancellation up to 48h",
         },
         catalog: {
             title: "Real Fleet & Transparent Rates",
-            subtitle: "Guaranteed models, inspected for Moroccan climate, delivered with zero waiting time at the airport or your riad.",
+            subtitle: "Guaranteed models or equivalent category inspected for Moroccan climate, delivered with zero waiting time at the airport or your riad.",
             all: "All Vehicles",
             seats: "seats",
             luggage: "bags",
@@ -344,6 +350,9 @@ export const TRANSLATIONS: Record<
             bookCar: "Book Car",
             viewDetails: "Details & Specs",
             verifiedPartner: "Verified Partner",
+            orEquivalent: "or equivalent model in same category",
+            airportCounterBenchmark: "Airport counter average rate",
+            freeUpgradeGuaranteed: "Guaranteed model or free upgrade",
         },
         bookingWidget: {
             guaranteedRate: "Guaranteed Partner Price",
@@ -462,13 +471,13 @@ export const TRANSLATIONS: Record<
             ctaButton: "Ver coches disponibles",
             searchingBtn: "Buscando coches disponibles...",
             noDepositPill: "Sin retención de 1.500 € en tarjeta",
-            exactModelPill: "Modelo exacto garantizado",
+            exactModelPill: "Modelo o equivalente garantizado (mejora gratis)",
             airportDeliveryPill: "Entrega gratuita en aeropuerto y riad",
             freeCancellationPill: "Cancelación gratuita hasta 48h",
         },
         catalog: {
             title: "Flota Real y Precios Transparentes",
-            subtitle: "Modelos garantizados, revisados para el clima de Marruecos y entregados sin colas en el aeropuerto o en su riad.",
+            subtitle: "Modelos garantizados o equivalente de misma categoría revisados para el clima de Marruecos, entregados sin colas en el aeropuerto o en su riad.",
             all: "Todos los coches",
             seats: "plazas",
             luggage: "maletas",
@@ -483,6 +492,9 @@ export const TRANSLATIONS: Record<
             bookCar: "Reservar",
             viewDetails: "Detalles y Ficha",
             verifiedPartner: "Socio Verificado",
+            orEquivalent: "o modelo equivalente misma categoría",
+            airportCounterBenchmark: "Tarifa media mostrador aeropuerto",
+            freeUpgradeGuaranteed: "Modelo garantizado o mejora gratis",
         },
         bookingWidget: {
             guaranteedRate: "Tarifa Garantizada de Socio",
@@ -601,13 +613,13 @@ export const TRANSLATIONS: Record<
             ctaButton: "Bekijk beschikbare auto's",
             searchingBtn: "Beschikbaarheid controleren...",
             noDepositPill: "Geen €1.500 creditcard blokkade",
-            exactModelPill: "Exact model gegarandeerd",
+            exactModelPill: "Model of gelijkwaardig gegarandeerd (gratis upgrade)",
             airportDeliveryPill: "Gratis levering op luchthaven & riad",
             freeCancellationPill: "Gratis annuleren tot 48 uur",
         },
         catalog: {
             title: "Echte Vloot & Eerlijke Prijzen",
-            subtitle: "Gegarandeerde modellen, gecontroleerd voor het Marokkaanse klimaat en zonder wachttijd afgeleverd.",
+            subtitle: "Gegarandeerde modellen of gelijkwaardige categorie gecontroleerd voor het Marokkaanse klimaat en zonder wachttijd afgeleverd.",
             all: "Alle Voertuigen",
             seats: "zitpl.",
             luggage: "koffers",
@@ -622,6 +634,9 @@ export const TRANSLATIONS: Record<
             bookCar: "Reserveren",
             viewDetails: "Details & Specificaties",
             verifiedPartner: "Geverifieerde Partner",
+            orEquivalent: "of gelijkwaardig model zelfde categorie",
+            airportCounterBenchmark: "Gemiddelde luchthavenbalie prijs",
+            freeUpgradeGuaranteed: "Gegarandeerd model of gratis upgrade",
         },
         bookingWidget: {
             guaranteedRate: "Gegarandeerde Partnerprijs",

@@ -24,7 +24,7 @@ export default function LocalAeoSection({ hubSlug }: LocalAeoSectionProps) {
         },
         {
             feature: "Modèle de Voiture",
-            zwincar: "Modèle exact garanti (Sandero, Clio 5, Duster 4x4)",
+            zwincar: "Catégorie garantie ou surclassement offert (Sandero, Clio 5, Duster 4x4)",
             competitors: "« Ou similaire » (souvent sous-classé ou fatigué)",
             isPositive: true,
         },

@@ -259,6 +259,14 @@ export default function VehicleCatalog({
                         const transLabel = vehicle.transmission === "Automatique" ? "Auto." : (activeLocale === "en" ? "Manual" : activeLocale === "es" ? "Man." : activeLocale === "nl" ? "Hand." : "Manu.");
                         const fuelLabel = vehicle.fuel === "Diesel" ? "Diesel" : (activeLocale === "en" ? "Petrol" : activeLocale === "es" ? "Gasolina" : activeLocale === "nl" ? "Benzine" : "Essence");
                         const highlightText = (activeLocale !== "fr" && vehicle.highlightEn) ? vehicle.highlightEn : vehicle.highlight;
+                        const equivalentCategoryText = activeLocale === "en"
+                            ? vehicle.equivalentCategoryEn
+                            : activeLocale === "es"
+                            ? vehicle.equivalentCategoryEs
+                            : activeLocale === "nl"
+                            ? vehicle.equivalentCategoryNl
+                            : vehicle.equivalentCategoryFr;
+                        const discountPct = Math.round(((vehicle.marketPriceEur - vehicle.dailyPriceEur) / vehicle.marketPriceEur) * 100);
 
                         return (
                             <div
@@ -302,14 +310,23 @@ export default function VehicleCatalog({
                                         </div>
                                     </Link>
 
-                                    {/* Title & Highlight */}
+                                    {/* Title & Category Equivalent Notice */}
                                     <Link href={vehicleLocalUrl} aria-label={`${vehicle.name} - ${currentHub.name}`}>
                                         <h3 className="text-lg font-black text-slate-900 tracking-tight group-hover:text-[#C9572C] transition-colors flex items-center justify-between">
                                             <span>{vehicle.name}</span>
                                             <ExternalLink size={15} className="text-slate-300 group-hover:text-[#C9572C] transition-colors shrink-0 ml-1" />
                                         </h3>
                                     </Link>
-                                    <p className="text-xs text-slate-500 mt-1 line-clamp-2">
+                                    <p className="text-[11px] font-medium text-slate-500 mt-0.5 line-clamp-1">
+                                        {equivalentCategoryText}
+                                    </p>
+                                    <div className="mt-1.5 flex items-center gap-1.5">
+                                        <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-2 py-0.5 rounded-full">
+                                            <CheckCircle2 size={11} className="text-emerald-600 shrink-0" />
+                                            <span>{t.catalog.freeUpgradeGuaranteed}</span>
+                                        </span>
+                                    </div>
+                                    <p className="text-xs text-slate-500 mt-2 line-clamp-2">
                                         {highlightText}
                                     </p>
 
@@ -336,9 +353,21 @@ export default function VehicleCatalog({
 
                                 {/* Dual Price Display & Action Buttons */}
                                 <div>
+                                    {/* Market Comparison Strike-through */}
+                                    <div className="flex items-center gap-1.5 text-[11px] text-slate-400 mb-1">
+                                        <span className="line-through font-mono">
+                                            {formatPrice(vehicle.marketPriceEur, vehicle.marketPriceMad)}
+                                        </span>
+                                        <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-1.5 py-0.2 rounded">
+                                            -{discountPct}%
+                                        </span>
+                                        <span className="text-[10px] text-slate-400 hidden sm:inline">
+                                            ({t.catalog.airportCounterBenchmark})
+                                        </span>
+                                    </div>
+
                                     <div className="flex items-baseline justify-between mb-3.5">
                                         <div>
-                                            <div className="text-[11px] text-slate-600 font-medium">{t.catalog.fromPerDay}</div>
                                             <div className="flex items-baseline gap-1.5">
                                                 <span className="text-2xl font-black text-slate-900">
                                                     {formatPrice(vehicle.dailyPriceEur, vehicle.dailyPriceMad)}
