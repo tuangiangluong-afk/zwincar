@@ -27,7 +27,7 @@ export default function VendorLoginPage() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const handleLogin = (e: React.FormEvent) => {
+    const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         setError(null);
 
@@ -43,24 +43,55 @@ export default function VendorLoginPage() {
 
         setLoading(true);
 
-        setTimeout(() => {
-            // Save active session
+        try {
+            const res = await fetch("/api/vendor/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ identifier, password }),
+            });
+
+            const data = await res.json();
+            if (!res.ok) {
+                setError(data.error || "Identifiants invalides.");
+                setLoading(false);
+                return;
+            }
+
             if (typeof window !== "undefined") {
+                if (data.token) localStorage.setItem("zwincar_vendor_token", data.token);
+                if (data.agency) saveVendorProfile(data.agency);
                 localStorage.setItem("zwincar_vendor_authenticated", "true");
             }
             router.push("/vendor/dashboard");
-        }, 600);
+        } catch {
+            setError("Impossible de contacter le serveur d'authentification.");
+            setLoading(false);
+        }
     };
 
-    const handleDemoLogin = () => {
+    const handleDemoLogin = async () => {
         setIdentifier("contact@atlasdrive-marrakech.ma");
         setPassword("Marrakech2026!");
-        saveVendorProfile(DEFAULT_VENDOR_PROFILE);
-
         setLoading(true);
-        setTimeout(() => {
+        try {
+            const res = await fetch("/api/vendor/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    identifier: "contact@atlasdrive-marrakech.ma",
+                    password: "Marrakech2026!",
+                }),
+            });
+            const data = await res.json();
+            if (data.token && typeof window !== "undefined") {
+                localStorage.setItem("zwincar_vendor_token", data.token);
+                if (data.agency) saveVendorProfile(data.agency);
+            }
             router.push("/vendor/dashboard");
-        }, 500);
+        } catch {
+            saveVendorProfile(DEFAULT_VENDOR_PROFILE);
+            router.push("/vendor/dashboard");
+        }
     };
 
     return (

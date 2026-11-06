@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import type { BookingRecord } from "./booking-engine";
+import { getVendorFromToken } from "./vendor-store";
 
 /** IP cliente fiable derrière un proxy (Vercel/Cloudflare). */
 export function getClientIp(request: Request): string {
@@ -30,7 +31,7 @@ export function tooManyRequests(retryAfterSeconds: number) {
  */
 export function authorizeBooking(
     record: BookingRecord | null,
-    credentials: { token?: string | null; email?: string | null }
+    credentials: { token?: string | null; email?: string | null; vendorToken?: string | null }
 ): record is BookingRecord {
     if (!record) return false;
 
@@ -39,6 +40,17 @@ export function authorizeBooking(
 
     const email = credentials.email?.trim().toLowerCase();
     if (email && email === record.client.email.toLowerCase()) return true;
+
+    if (credentials.vendorToken) {
+        const vendor = getVendorFromToken(credentials.vendorToken);
+        if (vendor) {
+            const hub = record.rental.pickupHub.toLowerCase();
+            const vendorHub = vendor.cityHub.toLowerCase();
+            if (hub === vendorHub || hub.includes(vendorHub) || vendorHub.includes(hub)) {
+                return true;
+            }
+        }
+    }
 
     return false;
 }

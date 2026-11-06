@@ -7,7 +7,7 @@ import { NATIONAL_CONFIG } from '@/config/national';
 import { slugify } from '@/lib/slugify';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-    const baseUrl = 'https://taxifrance.fr';
+    const baseUrl = 'https://zwincar.com';
 
     // ========================================
     // 1. CORE STATIC PAGES

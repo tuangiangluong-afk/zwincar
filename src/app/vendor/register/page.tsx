@@ -107,7 +107,7 @@ export default function VendorRegisterPage() {
         setStep(3);
     };
 
-    const handleFinalSubmit = (e: React.FormEvent) => {
+    const handleFinalSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError(null);
 
@@ -123,42 +123,54 @@ export default function VendorRegisterPage() {
 
         setLoading(true);
 
-        const newProfile: VendorProfile = {
-            id: `vnd-${Date.now()}`,
-            agencyName,
-            cityHub,
-            iceNumber,
-            rcNumber: rcNumber || "En cours",
-            address: address || "Aéroport / Centre-ville",
-            managerName,
-            managerPhone,
-            managerEmail,
-            fleetSizeEstimate,
-            createdAt: new Date().toISOString(),
-        };
+        try {
+            const res = await fetch("/api/vendor/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    agencyName,
+                    cityHub,
+                    iceNumber,
+                    rcNumber,
+                    address,
+                    managerName,
+                    managerPhone,
+                    managerEmail,
+                    password,
+                    fleetSizeEstimate,
+                    firstCar: {
+                        model: firstCarModel,
+                        plate: firstCarPlate,
+                        color: firstCarColor,
+                        year: parseInt(firstCarYear, 10) || 2024,
+                        transmission: firstCarTransmission,
+                        fuel: firstCarFuel,
+                        dailyPriceMad: parseInt(firstCarPriceMad, 10) || 280,
+                    },
+                }),
+            });
 
-        const initialCar: VendorVehicle = {
-            id: `v-custom-${Date.now()}`,
-            name: firstCarModel,
-            plate: firstCarPlate,
-            color: firstCarColor,
-            year: parseInt(firstCarYear, 10) || 2024,
-            transmission: firstCarTransmission,
-            fuel: firstCarFuel,
-            dailyPriceMad: parseInt(firstCarPriceMad, 10) || 280,
-            dailyPriceEur: Math.round((parseInt(firstCarPriceMad, 10) || 280) / 11),
-            status: "available",
-            currentLocation: `Parking Aéroport (${cityHub.toUpperCase()})`,
-        };
+            const data = await res.json();
+            if (!res.ok) {
+                setError(data.error || "Une erreur est survenue lors de l'inscription.");
+                setLoading(false);
+                return;
+            }
 
-        const newFleet = [initialCar, ...INITIAL_VENDOR_FLEET.slice(0, 3)];
+            if (typeof window !== "undefined") {
+                if (data.token) {
+                    localStorage.setItem("zwincar_vendor_token", data.token);
+                }
+                if (data.agency) {
+                    saveVendorProfile(data.agency);
+                }
+            }
 
-        saveVendorProfile(newProfile);
-        saveVendorFleet(newFleet);
-
-        setTimeout(() => {
             router.push("/vendor/dashboard");
-        }, 800);
+        } catch {
+            setError("Connexion au serveur impossible. Vérifiez votre réseau.");
+            setLoading(false);
+        }
     };
 
     return (

@@ -1,5 +1,5 @@
-import { MOROCCAN_HUBS, VEHICLE_FLEET, type CityHub, type VehicleModel } from "./morocco-data";
-import type { VehicleRate } from "./booking-engine";
+import { MOROCCAN_HUBS, VEHICLE_FLEET, type CityHub, type VehicleModel } from "./morocco-data.ts";
+import type { VehicleRate } from "./booking-engine.ts";
 
 export function toVehicleRate(vehicle: VehicleModel): VehicleRate {
     return {

@@ -5,8 +5,8 @@ import { broadcastLeadToChannel, editLeadSold, sendDriverDM, sendClaimCheckout }
 
 const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY;
 const LEAD_PRICE_CENTS = Number(process.env.LEAD_PRICE_CENTS || 500); // 5.00 €
-const SUCCESS_URL = process.env.LEAD_SUCCESS_URL || "https://taxifrance.fr";
-const CANCEL_URL = process.env.LEAD_CANCEL_URL || "https://taxifrance.fr";
+const SUCCESS_URL = process.env.LEAD_SUCCESS_URL || "https://zwincar.com";
+const CANCEL_URL = process.env.LEAD_CANCEL_URL || "https://zwincar.com";
 const TELEGRAM_BOT_USERNAME = process.env.TELEGRAM_BOT_USERNAME; // ex: "TaxiFranceLeadsBot"
 
 export const LEAD_STATUS = {

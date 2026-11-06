@@ -22,7 +22,10 @@ export async function POST(request: Request, { params }: { params: Promise<{ ref
 
     const token = typeof body.token === "string" ? body.token : null;
     const email = typeof body.email === "string" ? body.email : null;
-    if (!authorizeBooking(record, { token, email })) return unauthorized();
+    const cookieHeader = request.headers.get("cookie") || "";
+    const cookieMatch = cookieHeader.match(/zwincar_vendor_token=([^;]+)/);
+    const vendorToken = request.headers.get("x-vendor-token") || (cookieMatch ? cookieMatch[1].trim() : null);
+    if (!authorizeBooking(record, { token, email, vendorToken })) return unauthorized();
 
     if (record.status !== "checked_in") {
         return jsonError("Le check-out exige un check-in préalable.", 409, { status: record.status });
