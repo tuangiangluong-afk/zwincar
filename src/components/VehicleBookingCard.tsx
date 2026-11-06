@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { usePathname } from "next/navigation";
-import { VehicleModel, MOROCCAN_HUBS, UPSELL_OPTIONS } from "@/lib/morocco-data";
+import { VehicleModel, MOROCCAN_HUBS, UPSELL_OPTIONS, getHubMeetingPoint } from "@/lib/morocco-data";
 import { DEFAULT_HUB_DISTRIBUTION, DEFAULT_VEHICLE_STOCK } from "@/lib/affiliate";
 import { Locale, getTranslation } from "@/lib/i18n";
 import UpsellSelector from "@/components/UpsellSelector";
@@ -208,7 +208,7 @@ export default function VehicleBookingCard({
                     <div className="flex items-center justify-between text-[10px] text-slate-500 mt-1.5 pt-1 border-t border-slate-100">
                         <span className="flex items-center gap-1 truncate pr-2">
                             <Check size={12} className="text-emerald-600 shrink-0" />
-                            <span className="truncate">{currentHub.meetingPointDetail}</span>
+                            <span className="truncate">{getHubMeetingPoint(currentHub, activeLocale)}</span>
                         </span>
                         <a
                             href={`/${activeLocale === "fr" ? "maroc" : activeLocale}/${currentHub.slug}/${vehicle.id}`}

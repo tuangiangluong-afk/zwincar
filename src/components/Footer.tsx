@@ -1,13 +1,111 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import Logo from "@/components/Logo";
 import { MOROCCAN_HUBS, VEHICLE_FLEET } from "@/lib/morocco-data";
-import { ShieldCheck, MessageCircle, MapPin, Check } from "lucide-react";
+import { ShieldCheck, MessageCircle } from "lucide-react";
+import { Locale } from "@/lib/i18n";
 
 interface FooterProps {
     config?: any;
+    locale?: Locale;
 }
 
-export default function Footer({ config }: FooterProps = {}) {
+export default function Footer({ config, locale: propLocale }: FooterProps = {}) {
+    const pathname = usePathname() || "";
+    let activeLocale: Locale = propLocale || "fr";
+    if (!propLocale) {
+        if (pathname.startsWith("/en")) activeLocale = "en";
+        else if (pathname.startsWith("/es")) activeLocale = "es";
+        else if (pathname.startsWith("/nl")) activeLocale = "nl";
+    }
+
+    const t = {
+        fr: {
+            bannerBadge: "Le Standard ZwinCar",
+            bannerTitle: "La sérénité totale pour votre roadtrip au Maroc",
+            bannerDesc: "Aucun blocage de carte bancaire, clés remises en main propre dès l'atterrissage et assistance locale francophone 24h/24.",
+            contactBtn: "Contacter notre équipe locale",
+            brandDesc: "Plateforme de réservation de voitures au Maroc auprès d'agences locales indépendantes vérifiées. Zéro caution bloquée sur carte de crédit.",
+            airportsTitle: "Aéroports & Villes",
+            vehiclesTitle: "Véhicules Recommandés",
+            transparencyTitle: "Transparence & Guides",
+            guidesLink: "Guides & Conseils Routiers",
+            zeroCautionLink: "Garantie 0€ Caution CB",
+            vendorSpace: "Espace Loueur Partenaire",
+            vendorJoin: "Rejoindre le Réseau ZwinCar",
+            terms: "Conditions Générales",
+            copyright: `© ${new Date().getFullYear()} ZwinCar.com • Tous droits réservés.`,
+            stripeSecure: "Paiement sécurisé par Stripe",
+            whatsappSupport: "Assistance WhatsApp 24/7",
+        },
+        en: {
+            bannerBadge: "The ZwinCar Standard",
+            bannerTitle: "Complete peace of mind for your Morocco roadtrip",
+            bannerDesc: "No credit card hold, hand-to-hand key handover upon landing, and 24/7 dedicated multilingual local support.",
+            contactBtn: "Contact our local team",
+            brandDesc: "Car rental platform in Morocco connecting you directly with verified independent local fleets. Zero credit card deposit hold.",
+            airportsTitle: "Airports & Cities",
+            vehiclesTitle: "Recommended Fleet",
+            transparencyTitle: "Transparency & Guides",
+            guidesLink: "Morocco Driving Guides & Tips",
+            zeroCautionLink: "Zero Credit Card Hold Guarantee",
+            vendorSpace: "Partner Fleet Portal",
+            vendorJoin: "Join the ZwinCar Network",
+            terms: "Terms & Conditions",
+            copyright: `© ${new Date().getFullYear()} ZwinCar.com • All rights reserved.`,
+            stripeSecure: "Secure payment powered by Stripe",
+            whatsappSupport: "24/7 WhatsApp VIP Support",
+        },
+        es: {
+            bannerBadge: "El Estándar ZwinCar",
+            bannerTitle: "Total tranquilidad para su roadtrip en Marruecos",
+            bannerDesc: "Sin bloqueo en tarjeta bancaria, entrega de llaves en mano al aterrizar y asistencia local 24h/24.",
+            contactBtn: "Contactar con nuestro equipo local",
+            brandDesc: "Plataforma de reserva de vehículos en Marruecos con agencias locales independientes verificadas. Cero fianza bloqueada en tarjeta de crédito.",
+            airportsTitle: "Aeropuertos y Ciudades",
+            vehiclesTitle: "Vehículos Recomendados",
+            transparencyTitle: "Transparencia y Guías",
+            guidesLink: "Guías y Consejos de Conducción",
+            zeroCautionLink: "Garantía Cero Fianza en Tarjeta",
+            vendorSpace: "Portal de Socios Locales",
+            vendorJoin: "Unirse a la Red ZwinCar",
+            terms: "Términos y Condiciones",
+            copyright: `© ${new Date().getFullYear()} ZwinCar.com • Todos los derechos reservados.`,
+            stripeSecure: "Pago seguro con Stripe",
+            whatsappSupport: "Asistencia WhatsApp 24/7",
+        },
+        nl: {
+            bannerBadge: "De ZwinCar Standaard",
+            bannerTitle: "Totale gemoedsrust voor uw roadtrip in Marokko",
+            bannerDesc: "Geen blokkade op uw creditcard, persoonlijke sleuteloverdracht bij landing en 24/7 lokale ondersteuning.",
+            contactBtn: "Neem contact op met ons lokale team",
+            brandDesc: "Autoverhuurplatform in Marokko dat u rechtstreeks verbindt met geverifieerde lokale verhuurders. Geen borg geblokkeerd op creditcard.",
+            airportsTitle: "Luchthavens & Steden",
+            vehiclesTitle: "Aanbevolen Voertuigen",
+            transparencyTitle: "Transparantie & Gidsen",
+            guidesLink: "Reisgidsen & Verkeersadvies",
+            zeroCautionLink: "Garantie Geen Creditcard Borg",
+            vendorSpace: "Partner Verhuurportaal",
+            vendorJoin: "Word Partner van ZwinCar",
+            terms: "Algemene Voorwaarden",
+            copyright: `© ${new Date().getFullYear()} ZwinCar.com • Alle rechten voorbehouden.`,
+            stripeSecure: "Veilig betalen via Stripe",
+            whatsappSupport: "24/7 WhatsApp Klantenservice",
+        },
+    }[activeLocale];
+
+    const waText = encodeURIComponent(
+        activeLocale === "en"
+            ? "Hello ZwinCar, I need assistance with a car rental"
+            : activeLocale === "es"
+            ? "Hola ZwinCar, necesito asistencia con un alquiler"
+            : activeLocale === "nl"
+            ? "Hallo ZwinCar, ik heb hulp nodig met autohuur"
+            : "Bonjour ZwinCar, je souhaite une assistance"
+    );
+
     return (
         <footer className="bg-[#12161E] text-slate-300 pt-16 pb-12 border-t border-slate-800">
             <div className="container mx-auto px-4 max-w-6xl">
@@ -16,24 +114,24 @@ export default function Footer({ config }: FooterProps = {}) {
                     <div className="space-y-1 text-center md:text-left">
                         <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#E58B24]">
                             <ShieldCheck size={14} />
-                            Le Standard ZwinCar
+                            {t.bannerBadge}
                         </div>
                         <h4 className="text-lg md:text-xl font-bold text-white tracking-tight">
-                            La sérénité totale pour votre roadtrip au Maroc
+                            {t.bannerTitle}
                         </h4>
                         <p className="text-xs text-slate-400 max-w-xl">
-                            Aucun blocage de carte bancaire, clés remises en main propre dès l'atterrissage et assistance locale francophone 24h/24.
+                            {t.bannerDesc}
                         </p>
                     </div>
 
                     <a
-                        href="https://wa.me/212600000000?text=Bonjour%20ZwinCar,%20je%20souhaite%20une%20assistance"
+                        href={`https://wa.me/212600000000?text=${waText}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="px-6 py-3 rounded-2xl bg-[#C9572C] hover:bg-[#B24922] text-white text-xs font-bold tracking-wide transition-all shrink-0 flex items-center gap-2"
                     >
                         <MessageCircle size={15} />
-                        <span>Contacter notre équipe locale</span>
+                        <span>{t.contactBtn}</span>
                     </a>
                 </div>
 
@@ -41,9 +139,9 @@ export default function Footer({ config }: FooterProps = {}) {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12 text-xs">
                     {/* Col 1: Brand & Promise */}
                     <div className="col-span-2 md:col-span-1 space-y-4">
-                        <Logo variant="full" theme="light" size="sm" />
+                        <Logo variant="full" theme="light" size="sm" locale={activeLocale} />
                         <p className="text-slate-400 text-xs leading-relaxed">
-                            Plateforme de réservation de voitures au Maroc auprès d'agences locales indépendantes vérifiées. Zéro caution bloquée sur carte de crédit.
+                            {t.brandDesc}
                         </p>
                         <div className="text-[11px] text-slate-500 font-mono">
                             Marrakech • Casablanca • Agadir • Tanger • Fès
@@ -53,13 +151,13 @@ export default function Footer({ config }: FooterProps = {}) {
                     {/* Col 2: Hubs & Aéroports */}
                     <div>
                         <h5 className="font-bold uppercase tracking-wider text-white text-[11px] mb-3">
-                            Aéroports & Villes
+                            {t.airportsTitle}
                         </h5>
                         <ul className="space-y-2 text-slate-400">
                             {MOROCCAN_HUBS.map((hub) => (
                                 <li key={hub.slug}>
                                     <Link
-                                        href={`/maroc/${hub.slug}`}
+                                        href={activeLocale === "fr" ? `/maroc/${hub.slug}` : `/${activeLocale}/${hub.slug}`}
                                         className="hover:text-white transition flex items-center justify-between"
                                     >
                                         <span>{hub.name}</span>
@@ -75,13 +173,13 @@ export default function Footer({ config }: FooterProps = {}) {
                     {/* Col 3: Modèles Phares */}
                     <div>
                         <h5 className="font-bold uppercase tracking-wider text-white text-[11px] mb-3">
-                            Véhicules Recommandés
+                            {t.vehiclesTitle}
                         </h5>
                         <ul className="space-y-2 text-slate-400">
                             {VEHICLE_FLEET.slice(0, 5).map((v) => (
                                 <li key={v.id}>
                                     <Link
-                                        href={`/vehicules/${v.id}`}
+                                        href={activeLocale === "fr" ? `/maroc/marrakech/${v.id}` : `/${activeLocale}/marrakech/${v.id}`}
                                         className="hover:text-white transition flex items-center justify-between"
                                     >
                                         <span className="truncate pr-1">{v.name}</span>
@@ -97,12 +195,15 @@ export default function Footer({ config }: FooterProps = {}) {
                     {/* Col 4: Transparence & IA */}
                     <div>
                         <h5 className="font-bold uppercase tracking-wider text-white text-[11px] mb-3">
-                            Transparence & Guides
+                            {t.transparencyTitle}
                         </h5>
                         <ul className="space-y-2 text-slate-400">
                             <li>
-                                <Link href="/guides" className="hover:text-white transition flex items-center gap-1.5">
-                                    <span>Guides & Conseils Routiers</span>
+                                <Link
+                                    href={activeLocale === "fr" ? "/guides" : `/${activeLocale}/guides`}
+                                    className="hover:text-white transition flex items-center gap-1.5"
+                                >
+                                    <span>{t.guidesLink}</span>
                                     <span className="text-[10px] px-1.5 py-0.2 rounded bg-[#C9572C]/20 text-[#C9572C] font-mono">2026</span>
                                 </Link>
                             </li>
@@ -112,23 +213,26 @@ export default function Footer({ config }: FooterProps = {}) {
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/#zero-caution" className="hover:text-white transition">
-                                    Garantie 0€ Caution CB
+                                <Link
+                                    href={activeLocale === "fr" ? "/#zero-caution" : `/${activeLocale}#zero-caution`}
+                                    className="hover:text-white transition"
+                                >
+                                    {t.zeroCautionLink}
                                 </Link>
                             </li>
                             <li>
                                 <Link href="/vendor/login" className="hover:text-white transition font-medium text-slate-300">
-                                    Espace Loueur Partenaire
+                                    {t.vendorSpace}
                                 </Link>
                             </li>
                             <li>
                                 <Link href="/vendor/register" className="hover:text-white transition text-[#E58B24]">
-                                    Rejoindre le Réseau ZwinCar
+                                    {t.vendorJoin}
                                 </Link>
                             </li>
                             <li>
                                 <Link href="/cgv" className="hover:text-white transition">
-                                    Conditions Générales
+                                    {t.terms}
                                 </Link>
                             </li>
                         </ul>
@@ -138,12 +242,12 @@ export default function Footer({ config }: FooterProps = {}) {
                 {/* Bottom Bar */}
                 <div className="pt-8 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-500">
                     <div>
-                        © {new Date().getFullYear()} ZwinCar.com • Tous droits réservés.
+                        {t.copyright}
                     </div>
                     <div className="flex items-center gap-4">
-                        <span>Paiement sécurisé par Stripe</span>
+                        <span>{t.stripeSecure}</span>
                         <span>•</span>
-                        <span>Assistance WhatsApp 24/7</span>
+                        <span>{t.whatsappSupport}</span>
                     </div>
                 </div>
             </div>

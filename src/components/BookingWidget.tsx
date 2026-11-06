@@ -246,7 +246,7 @@ export function BookingWidget({
                         <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">
                             {t.search.pickupDate}
                         </label>
-                        <div className="flex items-center h-[54px] rounded-2xl bg-[#FAF7F2] border border-[#E7DFD5] px-3 gap-2">
+                        <div className="flex items-center h-[54px] rounded-2xl bg-[#FAF7F2] border border-[#E7DFD5] px-3 gap-2 overflow-hidden">
                             <Calendar size={16} className="text-slate-400 shrink-0" />
                             <input
                                 type="date"
@@ -255,7 +255,7 @@ export function BookingWidget({
                                 onChange={(e) =>
                                     setState((prev) => ({ ...prev, pickupDate: e.target.value }))
                                 }
-                                className="w-full bg-transparent text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none"
+                                className="w-full min-w-0 bg-transparent text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none"
                             />
                             <input
                                 type="time"
@@ -263,7 +263,7 @@ export function BookingWidget({
                                 onChange={(e) =>
                                     setState((prev) => ({ ...prev, pickupTime: e.target.value }))
                                 }
-                                className="w-20 bg-transparent text-xs font-mono text-slate-700 focus:outline-none border-l border-slate-200 pl-2"
+                                className="w-[66px] shrink-0 bg-transparent text-xs font-mono text-slate-700 focus:outline-none border-l border-slate-200 pl-2 text-center"
                             />
                         </div>
                     </div>
@@ -277,7 +277,7 @@ export function BookingWidget({
                         <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">
                             {t.search.returnDate}
                         </label>
-                        <div className="flex items-center h-[54px] rounded-2xl bg-[#FAF7F2] border border-[#E7DFD5] px-3 gap-2">
+                        <div className="flex items-center h-[54px] rounded-2xl bg-[#FAF7F2] border border-[#E7DFD5] px-3 gap-2 overflow-hidden">
                             <Calendar size={16} className="text-slate-400 shrink-0" />
                             <input
                                 type="date"
@@ -286,7 +286,7 @@ export function BookingWidget({
                                 onChange={(e) =>
                                     setState((prev) => ({ ...prev, returnDate: e.target.value }))
                                 }
-                                className="w-full bg-transparent text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none"
+                                className="w-full min-w-0 bg-transparent text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none"
                             />
                             <input
                                 type="time"
@@ -294,7 +294,7 @@ export function BookingWidget({
                                 onChange={(e) =>
                                     setState((prev) => ({ ...prev, returnTime: e.target.value }))
                                 }
-                                className="w-20 bg-transparent text-xs font-mono text-slate-700 focus:outline-none border-l border-slate-200 pl-2"
+                                className="w-[66px] shrink-0 bg-transparent text-xs font-mono text-slate-700 focus:outline-none border-l border-slate-200 pl-2 text-center"
                             />
                         </div>
                     </div>
@@ -302,16 +302,16 @@ export function BookingWidget({
 
                 {/* Bottom Action Row */}
                 <div className="mt-5 flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-slate-100">
-                    <div className="flex items-center gap-3 text-xs text-slate-500">
-                        <span className="flex items-center gap-1">
+                    <div className="flex items-center gap-3 text-xs text-slate-500 flex-wrap">
+                        <span className="flex items-center gap-1 shrink-0">
                             <Check size={14} className="text-[#C9572C]" />
                             {t.search.exactModelPill}
                         </span>
-                        <span className="flex items-center gap-1">
+                        <span className="flex items-center gap-1 shrink-0">
                             <Check size={14} className="text-[#C9572C]" />
                             {t.search.freeCancellationPill}
                         </span>
-                        <span className="flex items-center gap-1 hidden sm:flex">
+                        <span className="flex items-center gap-1 shrink-0 hidden sm:flex">
                             <Check size={14} className="text-[#C9572C]" />
                             {t.search.airportDeliveryPill}
                         </span>
@@ -320,7 +320,7 @@ export function BookingWidget({
                     <button
                         type="button"
                         onClick={handleSearch}
-                        className="w-full sm:w-auto h-[52px] px-8 rounded-2xl bg-[#C9572C] hover:bg-[#B24922] text-white font-bold text-sm tracking-wide shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]"
+                        className="w-full sm:w-auto h-[52px] px-8 rounded-2xl bg-[#C9572C] hover:bg-[#B24922] text-white font-bold text-sm tracking-wide shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98] whitespace-nowrap shrink-0"
                     >
                         <Search size={16} />
                         <span>{isSearching ? t.search.searchingBtn : t.search.ctaButton}</span>

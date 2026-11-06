@@ -47,7 +47,7 @@ export default function LocalizedHubView({ hub, locale }: LocalizedHubViewProps)
                 ]}
             />
 
-            <Header />
+            <Header locale={locale} />
 
             {/* Breadcrumb */}
             <div className="border-b border-[#E7DFD5] bg-white py-3">
@@ -107,17 +107,38 @@ export default function LocalizedHubView({ hub, locale }: LocalizedHubViewProps)
                             </div>
                         </div>
 
-                        {/* Booking Widget Column */}
+                        {/* City Hero Visual */}
                         <div className="lg:col-span-5">
-                            <BookingWidget defaultHubSlug={hub.slug} />
+                            <div className="relative h-64 sm:h-80 rounded-3xl overflow-hidden border border-[#E7DFD5] shadow-lg">
+                                <img
+                                    src={hub.heroImage}
+                                    alt={`Location voiture ${hub.name}`}
+                                    className="w-full h-full object-cover"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                                <div className="absolute bottom-4 left-4 right-4 text-white">
+                                    <div className="text-xs font-semibold uppercase tracking-wider text-[#E58B24]">
+                                        {locale === "en" ? "Ideal Hub" : locale === "es" ? "Punto Ideal" : "Ideale Uitvalsbasis"}
+                                    </div>
+                                    <div className="text-xl font-black">{hub.name} • {hub.nameAr}</div>
+                                    <div className="text-xs text-white/80 mt-0.5">
+                                        {locale === "en" ? `From €${hub.avgDailyPriceEur} / day • Guaranteed model` : locale === "es" ? `Desde ${hub.avgDailyPriceEur} € / día • Modelo garantizado` : `Vanaf €${hub.avgDailyPriceEur} / dag • Gegarandeerd model`}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+
+                    {/* Booking Widget Pre-filtered Full Width */}
+                    <div className="pt-6">
+                        <BookingWidget defaultHubSlug={hub.slug} locale={locale} />
                     </div>
                 </div>
             </section>
 
             {/* Catalog Section */}
             <main className="py-12">
-                <VehicleCatalog pickupCity={hub.name} />
+                <VehicleCatalog pickupCity={hub.name} locale={locale} />
             </main>
 
             {/* Local Physical Points of Service (POS) */}
@@ -125,41 +146,66 @@ export default function LocalizedHubView({ hub, locale }: LocalizedHubViewProps)
                 <div className="container mx-auto px-4 max-w-6xl">
                     <div className="mb-8">
                         <span className="text-xs font-bold uppercase tracking-wider text-[#C9572C] block mb-1">
-                            {locale === "en" ? "Local Presence & Collection Hubs" : "Puntos de Recogida Locales"}
+                            {locale === "en" ? "Local Presence & Collection Hubs" : locale === "es" ? "Puntos de Recogida Locales" : "Lokale Ophaallocaties"}
                         </span>
                         <h2 className="text-2xl font-black text-slate-900 tracking-tight">
-                            {locale === "en" ? `Pick-up Locations in ${hub.name}` : `Puntos de Entrega en ${hub.name}`}
+                            {locale === "en" ? `Pick-up Locations in ${hub.name}` : locale === "es" ? `Puntos de Entrega en ${hub.name}` : `Ophaallocaties in ${hub.name}`}
                         </h2>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {localPosList.map((pos) => (
-                            <div key={pos.id} className="p-5 rounded-2xl bg-[#FAF7F2] border border-[#E7DFD5] space-y-3">
-                                <div className="flex items-center gap-2">
-                                    <div className="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-700">
-                                        {pos.type === "airport" ? <Plane size={16} /> : <MapPin size={16} />}
+                        {localPosList.map((pos) => {
+                            let meetingDetailText = pos.meetingDetail;
+                            if (locale !== "fr") {
+                                if (pos.type === "airport") {
+                                    meetingDetailText = locale === "en"
+                                        ? "Terminal 1 & 2 Arrivals Hall. Meet & Greet agent with personalized ZwinCar name board in front of Café Paul, key handover at Parking P2."
+                                        : locale === "es"
+                                        ? "Hall de Llegadas Terminal 1 y 2. Agente con cartel nominativo ZwinCar frente al Café Paul, entrega de llaves en Parking P2."
+                                        : "Aankomsthal Terminal 1 & 2. Agent met gepersonaliseerd ZwinCar naambordje voor Café Paul, sleuteloverdracht op Parking P2.";
+                                } else if (pos.type === "train_station") {
+                                    meetingDetailText = locale === "en"
+                                        ? "Main ONCF train station forecourt, directly in front of Starbucks coffee."
+                                        : locale === "es"
+                                        ? "Explanada principal de la estación ONCF, frente a la cafetería Starbucks."
+                                        : "Voorplein van het centrale ONCF-station, recht voor het Starbucks café.";
+                                } else if (pos.type === "medina_gate") {
+                                    meetingDetailText = locale === "en"
+                                        ? "Guarded parking outside the Medina Gate for convenient handover and direct luggage assistance to your Riad."
+                                        : locale === "es"
+                                        ? "Aparcamiento vigilado frente a la Puerta de la Medina para entrega cómoda y asistencia con equipaje a su Riad."
+                                        : "Bewaakte parkeerplaats voor de Medinapoort voor gemakkelijke overdracht en bagagehulp naar uw Riad.";
+                                }
+                            }
+
+                            return (
+                                <div key={pos.id} className="p-5 rounded-2xl bg-[#FAF7F2] border border-[#E7DFD5] space-y-3">
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-700">
+                                            {pos.type === "airport" ? <Plane size={16} /> : <MapPin size={16} />}
+                                        </div>
+                                        <div>
+                                            <h4 className="font-bold text-slate-900 text-xs sm:text-sm">
+                                                {pos.name}
+                                            </h4>
+                                            <span className="text-[10px] text-slate-400 font-mono">{pos.nameAr}</span>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <h4 className="font-bold text-slate-900 text-xs sm:text-sm">
-                                            {pos.name}
-                                        </h4>
-                                        <span className="text-[10px] text-slate-400 font-mono">{pos.nameAr}</span>
+                                    <p className="text-xs text-slate-600 leading-snug">
+                                        {meetingDetailText}
+                                    </p>
+                                    <div className="pt-2 border-t border-slate-200/80 flex items-center justify-between text-[11px] text-slate-500 font-medium">
+                                        <span>{pos.address}</span>
+                                        <span className="text-emerald-700 font-mono font-bold">24/7</span>
                                     </div>
                                 </div>
-                                <p className="text-xs text-slate-600 leading-snug">
-                                    {pos.meetingDetail}
-                                </p>
-                                <div className="pt-2 border-t border-slate-200/80 flex items-center justify-between text-[11px] text-slate-500 font-medium">
-                                    <span>{pos.address}</span>
-                                    <span className="text-emerald-700 font-mono font-bold">24/7</span>
-                                </div>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 </div>
             </section>
 
-            <Footer />
+            <Footer locale={locale} />
         </div>
     );
 }

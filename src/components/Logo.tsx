@@ -1,10 +1,13 @@
 import Link from "next/link";
+import { Locale } from "@/lib/i18n";
 
 interface LogoProps {
     variant?: "full" | "icon";
     theme?: "dark" | "light";
     className?: string;
     size?: "sm" | "md" | "lg";
+    locale?: Locale;
+    href?: string;
 }
 
 export default function Logo({
@@ -12,8 +15,11 @@ export default function Logo({
     theme = "dark",
     className = "",
     size = "md",
+    locale,
+    href,
 }: LogoProps) {
     const isDark = theme === "dark";
+    const destination = href || (locale && locale !== "fr" ? `/${locale}` : "/");
     
     // Size scales
     const iconSizes = {
@@ -32,7 +38,7 @@ export default function Logo({
 
     return (
         <Link
-            href="/"
+            href={destination}
             aria-label="ZwinCar.com - Location de voiture au Maroc sans caution"
             className={`group inline-flex items-center gap-2.5 transition-opacity hover:opacity-95 ${className}`}
         >

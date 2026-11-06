@@ -8,30 +8,40 @@ import Logo from "@/components/Logo";
 import { MOROCCAN_HUBS } from "@/lib/morocco-data";
 import { PURCHASE_INTENTS } from "@/lib/intent-data";
 import { SosModal } from "@/components/SosModal";
-import { Locale } from "@/lib/i18n";
+import { Locale, getTranslation } from "@/lib/i18n";
 
-export default function Header() {
+interface HeaderProps {
+    locale?: Locale;
+}
+
+export default function Header({ locale: propLocale }: HeaderProps = {}) {
     const pathname = usePathname();
     const router = useRouter();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [hubsDropdownOpen, setHubsDropdownOpen] = useState(false);
     const [sosModalOpen, setSosModalOpen] = useState(false);
 
-    // Detect current locale from pathname
-    const currentLocale: Locale = pathname?.startsWith("/en")
+    // Detect current locale from prop or pathname
+    const currentLocale: Locale = propLocale || (pathname?.startsWith("/en")
         ? "en"
         : pathname?.startsWith("/es")
         ? "es"
         : pathname?.startsWith("/nl")
         ? "nl"
-        : "fr";
+        : "fr");
+
+    const t = getTranslation(currentLocale);
+
+    const homeHref = currentLocale === "fr" ? "/" : `/${currentLocale}`;
+    const catalogHref = `${homeHref}#vehicle-catalog`;
+    const zeroCautionHref = `${homeHref}#zero-caution`;
+    const guidesHref = currentLocale === "fr" ? "/guides" : `/${currentLocale}/guides`;
 
     const handleLocaleSwitch = (newLocale: Locale) => {
         if (!pathname) return;
 
         // Extract hub and subslug if present
         const segments = pathname.split("/").filter(Boolean);
-        // segments might be: ["maroc", "marrakech", "sans-caution"] or ["en", "marrakech", "no-deposit"]
         let hub = "";
         let subslug = "";
 
@@ -39,8 +49,19 @@ export default function Header() {
             hub = segments[1] || "";
             subslug = segments[2] || "";
         } else if (["en", "es", "nl"].includes(segments[0])) {
+            if (segments[1] === "guides") {
+                const guideSlug = segments[2] || "";
+                const target = newLocale === "fr" ? (guideSlug ? `/guides/${guideSlug}` : "/guides") : (guideSlug ? `/${newLocale}/guides/${guideSlug}` : `/${newLocale}/guides`);
+                router.push(target);
+                return;
+            }
             hub = segments[1] || "";
             subslug = segments[2] || "";
+        } else if (segments[0] === "guides") {
+            const guideSlug = segments[1] || "";
+            const target = newLocale === "fr" ? (guideSlug ? `/guides/${guideSlug}` : "/guides") : (guideSlug ? `/${newLocale}/guides/${guideSlug}` : `/${newLocale}/guides`);
+            router.push(target);
+            return;
         }
 
         if (hub) {
@@ -62,7 +83,7 @@ export default function Header() {
                     return;
                 }
 
-                // If subslug is a vehicle (e.g. dacia-duster-4x4)
+                // If subslug is a vehicle (e.g. renault-clio-5-auto)
                 const targetUrl = newLocale === "fr" ? `/maroc/${hub}/${subslug}` : `/${newLocale}/${hub}/${subslug}`;
                 router.push(targetUrl);
                 return;
@@ -74,13 +95,23 @@ export default function Header() {
             return;
         }
 
-        // Default fallback
+        // On home or unknown root page: switch cleanly between /, /en, /es, /nl
         if (newLocale === "fr") {
             router.push("/");
         } else {
-            router.push(`/${newLocale}/marrakech`);
+            router.push(`/${newLocale}`);
         }
     };
+
+    const waText = encodeURIComponent(
+        currentLocale === "en"
+            ? "Hello ZwinCar, I would like information about a car rental in Morocco"
+            : currentLocale === "es"
+            ? "Hola ZwinCar, deseo información sobre un alquiler de coche en Marruecos"
+            : currentLocale === "nl"
+            ? "Hallo ZwinCar, ik wil graag informatie over autohuur in Marokko"
+            : "Bonjour ZwinCar, je souhaite des infos sur une location"
+    );
 
     return (
         <>
@@ -88,15 +119,15 @@ export default function Header() {
                 <div className="container mx-auto px-4 max-w-6xl h-20 flex items-center justify-between">
                     {/* Logo */}
                     <div className="flex items-center gap-8">
-                        <Logo variant="full" theme="dark" size="md" />
+                        <Logo variant="full" theme="dark" size="md" locale={currentLocale} />
 
                         {/* Desktop Navigation */}
                         <nav className="hidden md:flex items-center gap-6 text-sm font-semibold text-slate-700">
                             <Link
-                                href="/#vehicle-catalog"
+                                href={catalogHref}
                                 className="hover:text-[#C9572C] transition-colors"
                             >
-                                Flotte & Tarifs
+                                {t.nav.vehicles}
                             </Link>
 
                             {/* Hubs Dropdown */}
@@ -106,14 +137,20 @@ export default function Header() {
                                     onClick={() => setHubsDropdownOpen(!hubsDropdownOpen)}
                                     className="flex items-center gap-1 hover:text-[#C9572C] transition-colors cursor-pointer"
                                 >
-                                    <span>Aéroports & Villes</span>
+                                    <span>{t.nav.airports}</span>
                                     <ChevronDown size={14} className="text-slate-400" />
                                 </button>
 
                                 {hubsDropdownOpen && (
                                     <div className="absolute top-10 left-0 w-64 bg-white border border-[#E7DFD5] rounded-2xl shadow-xl p-2 z-50 animate-in fade-in">
                                         <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-3 py-1">
-                                            Livraison aéroport & riad
+                                            {currentLocale === "en"
+                                                ? "Airport & Riad delivery"
+                                                : currentLocale === "es"
+                                                ? "Entrega en aeropuerto y riad"
+                                                : currentLocale === "nl"
+                                                ? "Luchthaven & riad bezorging"
+                                                : "Livraison aéroport & riad"}
                                         </div>
                                         {MOROCCAN_HUBS.map((hub) => (
                                             <Link
@@ -131,26 +168,26 @@ export default function Header() {
                             </div>
 
                             <Link
-                                href="/guides"
+                                href={guidesHref}
                                 className="hover:text-[#C9572C] transition-colors flex items-center gap-1.5"
                             >
                                 <BookOpen size={15} className="text-[#C9572C]" />
-                                <span>Guides Maroc</span>
+                                <span>{t.nav.guides}</span>
                             </Link>
 
                             <Link
-                                href="/#zero-caution"
+                                href={zeroCautionHref}
                                 className="hover:text-[#C9572C] transition-colors flex items-center gap-1.5"
                             >
                                 <ShieldCheck size={15} className="text-emerald-600" />
-                                <span>Zéro Caution CB</span>
+                                <span>{t.nav.zeroDeposit}</span>
                             </Link>
 
                             <Link
                                 href="/vendor/login"
                                 className="hover:text-slate-900 text-slate-500 transition-colors text-xs font-bold uppercase tracking-wider"
                             >
-                                Espace Loueur
+                                {t.nav.vendorSpace}
                             </Link>
                         </nav>
                     </div>
@@ -188,7 +225,7 @@ export default function Header() {
 
                         {/* WhatsApp Direct Concierge */}
                         <a
-                            href="https://wa.me/212600000000?text=Bonjour%20ZwinCar,%20je%20souhaite%20des%20infos%20sur%20une%20location"
+                            href={`https://wa.me/212600000000?text=${waText}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-slate-900 hover:bg-[#C9572C] text-white text-xs font-bold tracking-wide transition-all shadow-xs cursor-pointer active:scale-95"
@@ -237,27 +274,27 @@ export default function Header() {
 
                         <div className="space-y-2">
                             <Link
-                                href="/#vehicle-catalog"
+                                href={catalogHref}
                                 onClick={() => setMobileMenuOpen(false)}
                                 className="block py-2 text-sm font-semibold text-slate-800 hover:text-[#C9572C]"
                             >
-                                Flotte & Modèles Disponibles
+                                {t.nav.vehicles}
                             </Link>
 
                             <Link
-                                href="/guides"
+                                href={guidesHref}
                                 onClick={() => setMobileMenuOpen(false)}
                                 className="block py-2 text-sm font-semibold text-slate-800 hover:text-[#C9572C]"
                             >
-                                Guides & Conseils Conduite Maroc
+                                {t.nav.guides}
                             </Link>
 
                             <Link
-                                href="/#zero-caution"
+                                href={zeroCautionHref}
                                 onClick={() => setMobileMenuOpen(false)}
                                 className="block py-2 text-sm font-semibold text-slate-800 hover:text-[#C9572C]"
                             >
-                                Garantie Zéro Caution CB
+                                {t.nav.zeroDeposit}
                             </Link>
 
                             <Link
@@ -265,7 +302,7 @@ export default function Header() {
                                 onClick={() => setMobileMenuOpen(false)}
                                 className="block py-2 text-sm font-bold text-slate-500 uppercase tracking-wider"
                             >
-                                Espace Loueur Partenaire
+                                {t.nav.vendorSpace}
                             </Link>
                         </div>
 
@@ -283,7 +320,7 @@ export default function Header() {
                             </button>
 
                             <a
-                                href="https://wa.me/212600000000?text=Bonjour%20ZwinCar,%20je%20souhaite%20des%20infos%20sur%20une%20location"
+                                href={`https://wa.me/212600000000?text=${waText}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="flex-1 py-2.5 rounded-xl bg-slate-900 text-white text-xs font-bold flex items-center justify-center gap-1.5"

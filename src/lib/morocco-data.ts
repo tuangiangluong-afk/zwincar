@@ -739,3 +739,50 @@ export const DIRECT_ANSWERS_AEO = {
         }
     ]
 };
+
+export function getHubMeetingPoint(hub: CityHub, locale: string = "fr"): string {
+    if (locale === "fr") return hub.meetingPointDetail;
+    const meetingMap: Record<string, Record<"en" | "es" | "nl", string>> = {
+        marrakech: {
+            en: "Terminal 1 Arrivals, main exit, Parking P2 (agent waiting with name board)",
+            es: "Terminal 1 Llegadas, salida principal, Parking P2 (agente con cartel nominativo)",
+            nl: "Terminal 1 Aankomst, hoofduitgang, Parking P2 (agent wacht met naambordje)",
+        },
+        agadir: {
+            en: "Al Massira Arrivals Hall, facing drop-off area (key handover in 3 min)",
+            es: "Hall de Llegadas Al Massira, frente a la zona de parada rápida (llaves en 3 min)",
+            nl: "Aankomsthal Al Massira, tegenover de kiss & ride (sleuteloverdracht in 3 min)",
+        },
+        casablanca: {
+            en: "Terminal 1 & 2 Arrivals area, meeting point facing ONCF / Official Taxis counter",
+            es: "Terminal 1 y 2 zona llegadas, punto de encuentro frente al mostrador ONCF / Taxis",
+            nl: "Terminal 1 & 2 Aankomstzone, ontmoetingspunt tegenover ONCF / Officiële taxi balie",
+        },
+        tanger: {
+            en: "Ibn Battouta Departures/Arrivals parking or Tanger-Ville Port ferry pier",
+            es: "Parking Salidas/Llegadas Ibn Battouta o muelle del Puerto Tanger-Ville",
+            nl: "Parkeerplaats Vertrek/Aankomst Ibn Battouta of havenkade Tanger-Ville",
+        },
+        fes: {
+            en: "Saïss Terminal Exit, designated parking for verified partner agencies",
+            es: "Salida Terminal Saïss, parking reservado para agencias verificadas",
+            nl: "Uitgang Saïss Terminal, gereserveerde parkeerplaats geverifieerde partners",
+        },
+        rabat: {
+            en: "Rabat-Salé Terminal, express drop-off area",
+            es: "Terminal Rabat-Salé, zona de parada exprés",
+            nl: "Terminal Rabat-Salé, express drop-off zone",
+        },
+        ouarzazate: {
+            en: "Ouarzazate OZZ main single arrivals hall",
+            es: "Hall único de Llegadas Ouarzazate OZZ",
+            nl: "Centrale Aankomsthal Ouarzazate OZZ",
+        },
+        nador: {
+            en: "Al Aroui parking facing arrivals or Beni Ensar ferry pier",
+            es: "Parking Al Aroui frente a llegadas o muelle ferry Beni Ensar",
+            nl: "Parkeerplaats Al Aroui tegenover aankomst of ferrykade Beni Ensar",
+        },
+    };
+    return meetingMap[hub.slug]?.[locale as "en" | "es" | "nl"] || hub.meetingPointDetail;
+}

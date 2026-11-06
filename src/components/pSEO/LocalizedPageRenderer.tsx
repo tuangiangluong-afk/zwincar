@@ -58,11 +58,11 @@ export default function LocalizedPageRenderer({
                         { name: intent.badge[locale], item: `https://zwincar.com/${locale}/${hub.slug}/${intent.slugs[locale]}` },
                     ]}
                 />
-                <Header />
+                <Header locale={locale} />
                 <main>
                     <IntentLandingView hub={hub} intent={intent} locale={locale} />
                 </main>
-                <Footer />
+                <Footer locale={locale} />
             </div>
         );
     }
@@ -83,7 +83,7 @@ export default function LocalizedPageRenderer({
                         { name: vehicle.name, item: `https://zwincar.com/${locale}/${hub.slug}/${vehicle.id}` },
                     ]}
                 />
-                <Header />
+                <Header locale={locale} />
 
                 {/* Localized Breadcrumb */}
                 <div className="border-b border-[#E7DFD5] bg-white">
@@ -227,7 +227,7 @@ export default function LocalizedPageRenderer({
                     </div>
                 </main>
 
-                <Footer />
+                <Footer locale={locale} />
             </div>
         );
     }

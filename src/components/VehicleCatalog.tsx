@@ -23,12 +23,29 @@ import UpsellSelector from "@/components/UpsellSelector";
 import { BookingCheckoutModal } from "@/components/BookingCheckoutModal";
 import { AffiliateExitDrawer } from "@/components/AffiliateExitDrawer";
 
+import { Locale, getTranslation } from "@/lib/i18n";
+import { usePathname } from "next/navigation";
+
 interface VehicleCatalogProps {
     days?: number;
     pickupCity?: string;
+    locale?: Locale;
 }
 
-export default function VehicleCatalog({ days = 6, pickupCity = "Marrakech" }: VehicleCatalogProps) {
+export default function VehicleCatalog({
+    days = 6,
+    pickupCity = "Marrakech",
+    locale: propLocale,
+}: VehicleCatalogProps) {
+    const pathname = usePathname() || "";
+    let activeLocale: Locale = propLocale || "fr";
+    if (!propLocale) {
+        if (pathname.startsWith("/en")) activeLocale = "en";
+        else if (pathname.startsWith("/es")) activeLocale = "es";
+        else if (pathname.startsWith("/nl")) activeLocale = "nl";
+    }
+
+    const t = getTranslation(activeLocale);
     const [selectedCategory, setSelectedCategory] = useState<string>("all");
     const [currency, setCurrency] = useState<"EUR" | "MAD" | "GBP" | "USD">("EUR");
     const [selectedVehicle, setSelectedVehicle] = useState<VehicleModel | null>(null);
@@ -124,13 +141,31 @@ export default function VehicleCatalog({ days = 6, pickupCity = "Marrakech" }: V
                     <div>
                         <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#C9572C] mb-2">
                             <ShieldCheck size={14} />
-                            Flotte Réelle • Modèle Garanti
+                            {activeLocale === "en"
+                                ? "Real Fleet • Guaranteed Model"
+                                : activeLocale === "es"
+                                ? "Flota Real • Modelo Garantizado"
+                                : activeLocale === "nl"
+                                ? "Echte Vloot • Gegarandeerd Model"
+                                : "Flotte Réelle • Modèle Garanti"}
                         </div>
                         <h2 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">
-                            Véhicules disponibles à {pickupCity}
+                            {activeLocale === "en"
+                                ? `Vehicles available in ${pickupCity}`
+                                : activeLocale === "es"
+                                ? `Vehículos disponibles en ${pickupCity}`
+                                : activeLocale === "nl"
+                                ? `Beschikbare auto's in ${pickupCity}`
+                                : `Véhicules disponibles à ${pickupCity}`}
                         </h2>
                         <p className="text-sm text-slate-600 mt-1">
-                            Modèles garantis, révisés pour le climat local et livrés sans attente à l'aéroport ou à votre riad.
+                            {activeLocale === "en"
+                                ? "Guaranteed exact models, climate-serviced and delivered without wait at the airport or your riad."
+                                : activeLocale === "es"
+                                ? "Modelos garantizados, revisados para el clima local y entregados sin esperas en el aeropuerto o riad."
+                                : activeLocale === "nl"
+                                ? "Gegarandeerde modellen, gecontroleerd voor lokaal klimaat en zonder wachttijd geleverd op de luchthaven of riad."
+                                : "Modèles garantis, révisés pour le climat local et livrés sans attente à l'aéroport ou à votre riad."}
                         </p>
                     </div>
 
@@ -138,11 +173,31 @@ export default function VehicleCatalog({ days = 6, pickupCity = "Marrakech" }: V
                     <div className="flex flex-wrap items-center gap-2.5">
                         <div className="inline-flex rounded-full bg-white p-1 border border-[#E7DFD5] shadow-xs text-xs">
                             {[
-                                { id: "all", label: "Tous" },
-                                { id: "auto", label: "Automatique" },
+                                { id: "all", label: t.catalog.all },
+                                { id: "auto", label: t.catalog.automatic },
                                 { id: "suv", label: "SUV & 4x4" },
-                                { id: "citadine", label: "Citadines" },
-                                { id: "family", label: "7 Places" },
+                                {
+                                    id: "citadine",
+                                    label:
+                                        activeLocale === "en"
+                                            ? "City Cars"
+                                            : activeLocale === "es"
+                                            ? "Urbanos"
+                                            : activeLocale === "nl"
+                                            ? "Stadsauto's"
+                                            : "Citadines",
+                                },
+                                {
+                                    id: "family",
+                                    label:
+                                        activeLocale === "en"
+                                            ? "7-Seaters"
+                                            : activeLocale === "es"
+                                            ? "7 Plazas"
+                                            : activeLocale === "nl"
+                                            ? "7 Zitplaatsen"
+                                            : "7 Places",
+                                },
                             ].map((tab) => (
                                 <button
                                     key={tab.id}
@@ -184,7 +239,21 @@ export default function VehicleCatalog({ days = 6, pickupCity = "Marrakech" }: V
                     {filteredVehicles.map((vehicle) => {
                         const totalEst = vehicle.dailyPriceEur * days;
                         const isAffiliate = hubMode === "affiliate" || DEFAULT_VEHICLE_STOCK[vehicle.id] === false;
-                        const vehicleLocalUrl = `/maroc/${currentHub.slug}/${vehicle.id}`;
+                        const vehicleLocalUrl = `/${activeLocale === "fr" ? "maroc" : activeLocale}/${currentHub.slug}/${vehicle.id}`;
+
+                        const categoryLabel = vehicle.category;
+                        const depositBadge = activeLocale === "en"
+                            ? "Deposit €0 or €300"
+                            : activeLocale === "es"
+                            ? "Fianza 0€ o 300€"
+                            : activeLocale === "nl"
+                            ? "Borg €0 of €300"
+                            : "Caution 0€ ou 300€";
+
+                        const seatsLabel = `${vehicle.seats} ${activeLocale === "en" ? "seats" : activeLocale === "es" ? "pl." : activeLocale === "nl" ? "zitpl." : "pl."}`;
+                        const transLabel = vehicle.transmission === "Automatique" ? "Auto." : (activeLocale === "en" ? "Manual" : activeLocale === "es" ? "Man." : activeLocale === "nl" ? "Hand." : "Manu.");
+                        const fuelLabel = vehicle.fuel === "Diesel" ? "Diesel" : (activeLocale === "en" ? "Petrol" : activeLocale === "es" ? "Gasolina" : activeLocale === "nl" ? "Benzine" : "Essence");
+                        const highlightText = (activeLocale !== "fr" && vehicle.highlightEn) ? vehicle.highlightEn : vehicle.highlight;
 
                         return (
                             <div
@@ -195,15 +264,15 @@ export default function VehicleCatalog({ days = 6, pickupCity = "Marrakech" }: V
                                     {/* Top badges */}
                                     <div className="flex items-center justify-between gap-2 mb-3">
                                         <span className="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-slate-100 text-slate-800">
-                                            {vehicle.category}
+                                            {categoryLabel}
                                         </span>
                                         {isAffiliate ? (
                                             <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-blue-50 border border-blue-200 text-blue-800">
-                                                Partenaire Vérifié
+                                                {t.catalog.verifiedPartner}
                                             </span>
                                         ) : (
                                             <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-[#FAF7F2] border border-[#E7DFD5] text-slate-700">
-                                                Caution 0€ ou 300€
+                                                {depositBadge}
                                             </span>
                                         )}
                                     </div>
@@ -216,7 +285,7 @@ export default function VehicleCatalog({ days = 6, pickupCity = "Marrakech" }: V
                                             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                                         />
                                         <div className="absolute bottom-2 left-2 bg-[#12161E]/80 backdrop-blur-xs text-white text-[10px] font-semibold px-2 py-0.5 rounded-md">
-                                            {vehicle.transmission}
+                                            {transLabel}
                                         </div>
                                     </Link>
 
@@ -228,26 +297,26 @@ export default function VehicleCatalog({ days = 6, pickupCity = "Marrakech" }: V
                                         </h3>
                                     </Link>
                                     <p className="text-xs text-slate-500 mt-1 line-clamp-2">
-                                        {vehicle.highlight}
+                                        {highlightText}
                                     </p>
 
                                     {/* Specs Pills */}
                                     <div className="grid grid-cols-4 gap-2 my-4 py-3 border-y border-slate-100 text-xs text-slate-600">
                                         <div className="flex flex-col items-center">
                                             <Users size={14} className="text-slate-400 mb-1" />
-                                            <span className="font-semibold">{vehicle.seats} pl.</span>
+                                            <span className="font-semibold">{seatsLabel}</span>
                                         </div>
                                         <div className="flex flex-col items-center">
                                             <Briefcase size={14} className="text-slate-400 mb-1" />
-                                            <span className="font-semibold">{vehicle.luggage} bag.</span>
+                                            <span className="font-semibold">{vehicle.luggage} {t.catalog.luggage}</span>
                                         </div>
                                         <div className="flex flex-col items-center">
                                             <Cog size={14} className="text-slate-400 mb-1" />
-                                            <span className="font-semibold">{vehicle.transmission.slice(0, 4)}.</span>
+                                            <span className="font-semibold">{transLabel}</span>
                                         </div>
                                         <div className="flex flex-col items-center">
                                             <Fuel size={14} className="text-slate-400 mb-1" />
-                                            <span className="font-semibold">{vehicle.fuel}</span>
+                                            <span className="font-semibold">{fuelLabel}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -256,23 +325,23 @@ export default function VehicleCatalog({ days = 6, pickupCity = "Marrakech" }: V
                                 <div>
                                     <div className="flex items-baseline justify-between mb-3.5">
                                         <div>
-                                            <div className="text-[11px] text-slate-400">Tarif par jour</div>
+                                            <div className="text-[11px] text-slate-400">{t.catalog.fromPerDay}</div>
                                             <div className="flex items-baseline gap-1.5">
                                                 <span className="text-2xl font-black text-slate-900">
                                                     {formatPrice(vehicle.dailyPriceEur, vehicle.dailyPriceMad)}
                                                 </span>
-                                                <span className="text-xs text-slate-500 font-medium">/ j</span>
+                                                <span className="text-xs text-slate-500 font-medium">/ {t.bookingWidget.perDay}</span>
                                                 <span className="text-xs font-mono text-slate-400 font-semibold ml-0.5">
-                                                    ({vehicle.dailyPriceMad} MAD)
+                                                    ({currency === "EUR" ? `${vehicle.dailyPriceMad} MAD` : `${vehicle.dailyPriceEur} €`})
                                                 </span>
                                             </div>
                                         </div>
                                         <div className="text-right">
                                             <div className="text-[11px] font-medium text-slate-500">
-                                                Livraison aéroport incluse
+                                                {activeLocale === "en" ? "Airport delivery included" : activeLocale === "es" ? "Entrega en aeropuerto incluida" : activeLocale === "nl" ? "Luchthavenbezorging inbegrepen" : "Livraison aéroport incluse"}
                                             </div>
                                             <div className="text-[10px] text-slate-400 mt-0.5 font-mono">
-                                                {days}j : ~{formatPrice(totalEst, totalEst * 11)}
+                                                {days}{activeLocale === "en" ? "d" : activeLocale === "es" ? "d" : activeLocale === "nl" ? "d" : "j"} : ~{formatPrice(totalEst, totalEst * 11)}
                                             </div>
                                         </div>
                                     </div>
@@ -286,7 +355,7 @@ export default function VehicleCatalog({ days = 6, pickupCity = "Marrakech" }: V
                                                 className="h-11 rounded-2xl bg-slate-900 hover:bg-[#C9572C] text-white font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-xs active:scale-[0.98]"
                                             >
                                                 <ExternalLink size={14} />
-                                                <span>Dispos Aéroport</span>
+                                                <span>{activeLocale === "en" ? "Check Partner Stock" : activeLocale === "es" ? "Disponibilidad" : activeLocale === "nl" ? "Beschikbaarheid" : "Dispos Aéroport"}</span>
                                             </button>
                                         ) : (
                                             <button
@@ -295,7 +364,7 @@ export default function VehicleCatalog({ days = 6, pickupCity = "Marrakech" }: V
                                                 className="h-11 rounded-2xl bg-[#C9572C] hover:bg-[#B24922] text-white font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-xs active:scale-[0.98]"
                                             >
                                                 <Zap size={14} />
-                                                <span>Réserver</span>
+                                                <span>{t.catalog.bookCar}</span>
                                             </button>
                                         )}
 
@@ -303,7 +372,7 @@ export default function VehicleCatalog({ days = 6, pickupCity = "Marrakech" }: V
                                             href={vehicleLocalUrl}
                                             className="h-11 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
                                         >
-                                            <span>Fiche & Avis</span>
+                                            <span>{t.catalog.viewDetails}</span>
                                             <ArrowRight size={14} />
                                         </Link>
                                     </div>
@@ -334,6 +403,7 @@ export default function VehicleCatalog({ days = 6, pickupCity = "Marrakech" }: V
                     balanceOnSiteEur={selectedVehicle.dailyPriceEur * days + vendorUpsellsEur - Math.round((selectedVehicle.dailyPriceEur * days + vendorUpsellsEur) * 0.2)}
                     balanceOnSiteMad={(selectedVehicle.dailyPriceEur * days + vendorUpsellsEur - Math.round((selectedVehicle.dailyPriceEur * days + vendorUpsellsEur) * 0.2)) * 11}
                     currency={currency === "MAD" ? "MAD" : "EUR"}
+                    locale={activeLocale}
                 />
             )}
 
