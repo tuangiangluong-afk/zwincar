@@ -241,6 +241,27 @@ export default function VendorLoginPage() {
                             Inscrire mon agence
                         </Link>
                     </div>
+
+                    {/* Partenariat Local & Engagements ZwinCar */}
+                    <div className="pt-4 border-t border-slate-100 space-y-2.5 text-left">
+                        <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                            Engagements Plateforme ZwinCar Pro
+                        </div>
+                        <ul className="space-y-1.5 text-xs text-slate-600 leading-snug">
+                            <li className="flex items-start gap-1.5">
+                                <span className="text-emerald-600 font-bold shrink-0">✓</span>
+                                <span><strong>Zéro abonnement :</strong> Inscription 100% gratuite pour les loueurs indépendants agréés au Maroc.</span>
+                            </li>
+                            <li className="flex items-start gap-1.5">
+                                <span className="text-emerald-600 font-bold shrink-0">✓</span>
+                                <span><strong>Acompte garanti :</strong> Chaque réservation transmise dispose d'un acompte validé et traçable.</span>
+                            </li>
+                            <li className="flex items-start gap-1.5">
+                                <span className="text-emerald-600 font-bold shrink-0">✓</span>
+                                <span><strong>Solde direct sur place :</strong> Vous encaissez le solde en direct (cash ou CB) à la livraison du véhicule.</span>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </main>
 

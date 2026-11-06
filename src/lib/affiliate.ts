@@ -92,8 +92,9 @@ export function buildAffiliateRentalUrl({
     const cleanMarker = marker || "zwincar";
 
     if (provider === "localrent") {
-        // Format Localrent Maroc par ville
-        return `https://localrent.com/fr/morocco/${citySlug}/?r=${cleanMarker}&date_from=${pickupDate}&date_to=${returnDate}`;
+        // Format Localrent direct affiliate link (ID 18961)
+        const localrentId = process.env.NEXT_PUBLIC_LOCALRENT_AFFILIATE_ID || "18961";
+        return `https://localrent.com/fr/morocco/${citySlug}/?r=${localrentId}&date_from=${pickupDate}&date_to=${returnDate}`;
     }
 
     if (provider === "economybookings") {

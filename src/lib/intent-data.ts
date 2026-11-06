@@ -77,10 +77,10 @@ export const PURCHASE_INTENTS: PurchaseIntent[] = [
             nl: "zonder-borg",
         },
         titles: {
-            fr: "Location Voiture {hub} Sans Caution CB • Cartes Débit & Cash | ZwinCar",
-            en: "Car Rental {hub} No Credit Card Deposit • Debit Cards & Cash | ZwinCar",
-            es: "Alquiler Coche {hub} Sin Fianza de Tarjeta • Débito y Efectivo | ZwinCar",
-            nl: "Autoverhuur {hub} Zonder Creditcard Borg • Betaalpas & Cash | ZwinCar",
+            fr: "Location Voiture {hub} Sans Caution CB | ZwinCar",
+            en: "Car Rental {hub} No Credit Card Deposit | ZwinCar",
+            es: "Alquiler Coche {hub} Sin Fianza Tarjeta | ZwinCar",
+            nl: "Autoverhuur {hub} Zonder Creditcard Borg | ZwinCar",
         },
         metaDescriptions: {
             fr: "Louez une voiture à {hub} sans bloquer 1 500 € sur votre carte. Cartes de débit (Revolut, N26, Visa) et espèces acceptées. Restitution sans stress.",
@@ -108,7 +108,7 @@ export const PURCHASE_INTENTS: PurchaseIntent[] = [
         },
         analysisTitle: {
             fr: "Pourquoi l'aéroport refuse votre carte de débit au Maroc ?",
-            en: "Why do airport rental desks reject European debit cards in Morocco?",
+            en: "Why airport desks reject European debit cards in Morocco",
             es: "¿Por qué el aeropuerto rechaza su tarjeta de débito en Marruecos?",
             nl: "Waarom weigeren traditionele verhuurders uw debetkaart in Marokko?",
         },
@@ -203,10 +203,10 @@ export const PURCHASE_INTENTS: PurchaseIntent[] = [
             nl: "automaat",
         },
         titles: {
-            fr: "Location Voiture Boîte Automatique {hub} • Modèle Garanti | ZwinCar",
-            en: "Automatic Car Rental {hub} • Guaranteed Automatic Models | ZwinCar",
-            es: "Alquiler Coche Automático {hub} • Modelo Automático Garantizado | ZwinCar",
-            nl: "Autoverhuur Automaat {hub} • Gegarandeerd Automatische Versnelling | ZwinCar",
+            fr: "Location Voiture Automatique {hub} | ZwinCar",
+            en: "Automatic Car Rental {hub} | ZwinCar",
+            es: "Alquiler Coche Automático {hub} | ZwinCar",
+            nl: "Autoverhuur Automaat {hub} | ZwinCar",
         },
         metaDescriptions: {
             fr: "Louez une voiture à boîte automatique garantie à {hub} (Clio 5 BVA, Tucson BVA). Conduite fluide dans les ronds-points et cols de montagne sans caler.",
@@ -301,10 +301,10 @@ export const PURCHASE_INTENTS: PurchaseIntent[] = [
             nl: "suv-4x4",
         },
         titles: {
-            fr: "Location SUV & 4x4 {hub} • Pistes Atlas & Désert Autorisées | ZwinCar",
-            en: "SUV & 4x4 Rental {hub} • Atlas Trails & Desert Authorized | ZwinCar",
-            es: "Alquiler SUV y 4x4 {hub} • Pistas del Atlas y Desierto Autorizadas | ZwinCar",
-            nl: "SUV & 4x4 Huren {hub} • Atlas Pistes & Woestijn Toegestaan | ZwinCar",
+            fr: "Location SUV & 4x4 {hub} Pistes Atlas | ZwinCar",
+            en: "SUV & 4x4 Rental {hub} Atlas Trails | ZwinCar",
+            es: "Alquiler SUV y 4x4 {hub} Pistas Atlas | ZwinCar",
+            nl: "SUV & 4x4 Huren {hub} Atlas Pistes | ZwinCar",
         },
         metaDescriptions: {
             fr: "Louez un SUV ou 4x4 à {hub} (Dacia Duster 4x4, Hyundai Tucson). Garde au sol 21 cm, pistes carrossables et désert d'Agafay autorisés sans surcoût.",
@@ -399,10 +399,10 @@ export const PURCHASE_INTENTS: PurchaseIntent[] = [
             nl: "7-persoons",
         },
         titles: {
-            fr: "Location Voiture 7 Places {hub} • Famille & Groupe | ZwinCar",
-            en: "7-Seater Car Rental {hub} • Family & Group Travel | ZwinCar",
-            es: "Alquiler Coche 7 Plazas {hub} • Familias y Grupos | ZwinCar",
-            nl: "7-Persoons Auto Huren {hub} • Familie & Groepsreizen | ZwinCar",
+            fr: "Location Voiture 7 Places {hub} | ZwinCar",
+            en: "7-Seater Car Rental {hub} Family | ZwinCar",
+            es: "Alquiler Coche 7 Plazas {hub} | ZwinCar",
+            nl: "7-Persoons Auto Huren {hub} | ZwinCar",
         },
         metaDescriptions: {
             fr: "Louez un véhicule 7 places spacieux à {hub} (Dacia Jogger 7). Évitez l'interdiction des petits taxis à 3 passagers. Sièges enfants ISOFIX disponibles.",
@@ -497,10 +497,10 @@ export const PURCHASE_INTENTS: PurchaseIntent[] = [
             nl: "riad-bezorging",
         },
         titles: {
-            fr: "Location Voiture avec Livraison Riad & Hôtel à {hub} | ZwinCar",
-            en: "Car Rental with Riad & Hotel Delivery in {hub} | ZwinCar",
-            es: "Alquiler Coche con Entrega en Riad y Hotel en {hub} | ZwinCar",
-            nl: "Autoverhuur met Riad & Hotel Bezorging in {hub} | ZwinCar",
+            fr: "Location Voiture {hub} Livraison Riad | ZwinCar",
+            en: "Car Rental {hub} Riad Delivery | ZwinCar",
+            es: "Alquiler Coche {hub} Entrega en Riad | ZwinCar",
+            nl: "Autoverhuur {hub} Riad Bezorging | ZwinCar",
         },
         metaDescriptions: {
             fr: "Faites-vous livrer votre voiture devant la porte de votre Riad ou hôtel à {hub}. Évitez le retour à l'aéroport et garez-vous dans les parkings gardés.",

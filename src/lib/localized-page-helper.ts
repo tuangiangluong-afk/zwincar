@@ -81,11 +81,11 @@ export function getLocalizedMetadata(
             : vehicle.name;
         const title = clampTitle(
             locale === "en"
-                ? `${vTitle} Rental ${hub.name} (${hub.airportCode}) • 0€ Deposit`
+                ? `${vTitle} Rental ${hub.name} (${hub.airportCode}) | ZwinCar`
                 : locale === "es"
-                ? `Alquiler ${vTitle} en ${hub.name} (${hub.airportCode}) • 0€ Fianza`
-                : `Huur ${vTitle} in ${hub.name} (${hub.airportCode}) • 0€ Borg`,
-            65
+                ? `Alquiler ${vTitle} ${hub.name} (${hub.airportCode}) | ZwinCar`
+                : `Huur ${vTitle} in ${hub.name} (${hub.airportCode}) | ZwinCar`,
+            58
         );
 
         const description = clampDescription(

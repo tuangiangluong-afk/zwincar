@@ -201,7 +201,7 @@ export default function LocalizedPageRenderer({
                         {/* Cross-linking to other models in this city */}
                         <div className="mt-16 pt-10 border-t border-[#E7DFD5] space-y-6">
                             <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-                                {locale === "en" ? `Other available cars in ${hub.name}` : locale === "es" ? `Otros vehículos disponibles en ${hub.name}` : locale === "nl" ? `Andere beschikbare auto's in ${hub.name}` : `Autres véhicules disponibles à ${hub.name}`}
+                                {locale === "en" ? `Alternatives to ${vehicle.name} in ${hub.name}` : locale === "es" ? `Alternativas a ${vehicle.name} en ${hub.name}` : locale === "nl" ? `Alternatieven voor ${vehicle.name} in ${hub.name}` : `Alternatives au ${vehicle.name} à ${hub.name}`}
                             </h2>
                             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5">
                                 {VEHICLE_FLEET.filter((v) => v.id !== vehicle.id).map((v) => (

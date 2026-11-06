@@ -66,8 +66,11 @@ export async function generateMetadata({
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://zwincar.com";
     const frUrl = guide.alternateSlug ? `${baseUrl}/guides/${guide.alternateSlug}` : `${baseUrl}/guides`;
 
+    const fullTitle = `${guide.shortTitle} • Morocco Guide | ZwinCar`;
+    const title = clampTitle(fullTitle.length <= 58 ? fullTitle : `${guide.shortTitle} | ZwinCar`, 58);
+
     return {
-        title: clampTitle(`${guide.shortTitle}: Morocco Driving & Car Rental Guide 2026 | ZwinCar`),
+        title,
         description: clampDescription(guide.metaDescription),
         alternates: {
             canonical: `${baseUrl}/en/guides/${guide.slug}`,

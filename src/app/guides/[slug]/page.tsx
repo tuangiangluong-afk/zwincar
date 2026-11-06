@@ -75,8 +75,11 @@ export async function generateMetadata({
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://zwincar.com";
     const enUrl = guide.alternateSlug ? `${baseUrl}/en/guides/${guide.alternateSlug}` : `${baseUrl}/en/guides`;
 
+    const fullTitle = `${guide.shortTitle} • Guide Maroc | ZwinCar`;
+    const title = clampTitle(fullTitle.length <= 58 ? fullTitle : `${guide.shortTitle} | ZwinCar`, 58);
+
     return {
-        title: clampTitle(`${guide.shortTitle} : Conseils Conduite Maroc 2026 | ZwinCar`),
+        title,
         description: clampDescription(guide.metaDescription),
         alternates: {
             canonical: `${baseUrl}/guides/${guide.slug}`,

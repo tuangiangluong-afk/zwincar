@@ -68,7 +68,32 @@ const nextConfig: NextConfig = {
       },
       {
         source: '/van-minibus',
-        destination: '/vehicules/dacia-jogger-7p',
+        destination: '/#vehicle-catalog',
+        permanent: true,
+      },
+      {
+        source: '/locations/:slug*',
+        destination: '/maroc/:slug*',
+        permanent: true,
+      },
+      {
+        source: '/vehicles/:slug*',
+        destination: '/maroc/marrakech/:slug*',
+        permanent: true,
+      },
+      {
+        source: '/home/cgv',
+        destination: '/cgv',
+        permanent: true,
+      },
+      {
+        source: '/home/mentions-legales',
+        destination: '/mentions-legales',
+        permanent: true,
+      },
+      {
+        source: '/home',
+        destination: '/',
         permanent: true,
       },
       {
