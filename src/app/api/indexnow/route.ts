@@ -1,34 +1,37 @@
 import { NextResponse } from 'next/server';
-import { NATIONAL_TARGETS } from '@/config/national-targets';
-import { SEO_GARES } from '@/lib/seo-gares';
+import { MOROCCAN_HUBS, VEHICLE_FLEET } from '@/lib/morocco-data';
 
 export async function GET() {
     const INDEXNOW_KEY = "451408f3764b4c80b96839be70de0056";
-    const HOST = "taxifrance.fr";
+    const HOST = "zwincar.com";
     const KEY_LOCATION = `https://${HOST}/${INDEXNOW_KEY}.txt`;
 
-    // Collect all URLs to ping
+    const locales = ["", "en", "es", "nl"];
+
     const urls = [
         `https://${HOST}/`,
-        ...NATIONAL_TARGETS.map(t => `https://${HOST}/ville/${t.slug}`),
-        ...SEO_GARES.map(g => `https://${HOST}/gare/${g.slug}`)
+        ...locales.filter(Boolean).map(l => `https://${HOST}/${l}`),
+        // Hub pages in all locales
+        ...MOROCCAN_HUBS.flatMap(hub =>
+            locales.map(l => l ? `https://${HOST}/${l}/${hub.slug}` : `https://${HOST}/maroc/${hub.slug}`)
+        ),
+        // Vehicle pages per hub (FR only for brevity — sitemap covers all)
+        ...MOROCCAN_HUBS.flatMap(hub =>
+            VEHICLE_FLEET.map(v => `https://${HOST}/maroc/${hub.slug}/${v.id}`)
+        ),
     ];
 
-    // Prepare IndexNow payload
     const payload = {
         host: HOST,
         key: INDEXNOW_KEY,
         keyLocation: KEY_LOCATION,
-        urlList: urls
+        urlList: urls.slice(0, 10000), // IndexNow limit
     };
 
     try {
-        // Ping Bing (Shared with Yandex and others)
         const response = await fetch("https://api.indexnow.org/indexnow", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json; charset=utf-8",
-            },
+            headers: { "Content-Type": "application/json; charset=utf-8" },
             body: JSON.stringify(payload),
         });
 
@@ -36,17 +39,9 @@ export async function GET() {
             throw new Error(`IndexNow Error: ${response.statusText}`);
         }
 
-        return NextResponse.json({
-            success: true,
-            provider: "IndexNow",
-            count: urls.length,
-            message: "Ping sent successfully"
-        });
-
-    } catch (error: any) {
-        return NextResponse.json({
-            success: false,
-            error: error.message
-        }, { status: 500 });
+        return NextResponse.json({ success: true, count: urls.length, message: "Ping sent" });
+    } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : "Unknown error";
+        return NextResponse.json({ success: false, error: message }, { status: 500 });
     }
 }

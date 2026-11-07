@@ -139,6 +139,10 @@ export const TRANSLATIONS: Record<
             agentAlertDesc: string;
             instantBridgeTitle: string;
             instantBridgeDesc: string;
+            leadTransmitted: string;
+            whatsappVerification: string;
+            viewVoucherBtn: string;
+            connectionError: string;
         };
         affiliateDrawer: {
             inventoryTitle: string;
@@ -384,6 +388,10 @@ export const TRANSLATIONS: Record<
             agentAlertDesc: "Notre équipe locale vérifie la disponibilité sans caution de votre {vehicle} à {hub} ({pickupDate} au {returnDate}) et vous contacte sur WhatsApp au {phone} d'ici 15 minutes.",
             instantBridgeTitle: "⚡ Besoin d'un véhicule garanti immédiatement ?",
             instantBridgeDesc: "En attendant notre confirmation WhatsApp, sécurisez instantanément une voiture disponible au Terminal {code} via nos partenaires officiels certifiés :",
+            leadTransmitted: "Demande #{ref} Transmise",
+            whatsappVerification: "Vérification WhatsApp en cours",
+            viewVoucherBtn: "Consulter mon bon de réservation #{ref}",
+            connectionError: "Connexion interrompue. Réessayez dans un instant.",
         },
         affiliateDrawer: {
             inventoryTitle: "Inventaire Partenaire Aéroport",
@@ -628,6 +636,10 @@ export const TRANSLATIONS: Record<
             agentAlertDesc: "Our local team is checking zero-deposit availability for your {vehicle} in {hub} ({pickupDate} to {returnDate}) and will contact you on WhatsApp at {phone} within 15 minutes.",
             instantBridgeTitle: "⚡ Need an instantly guaranteed vehicle?",
             instantBridgeDesc: "While waiting for our WhatsApp confirmation, instantly secure an available car at Terminal {code} via our certified official partners:",
+            leadTransmitted: "Request #{ref} Submitted",
+            whatsappVerification: "WhatsApp verification in progress",
+            viewVoucherBtn: "View my booking voucher #{ref}",
+            connectionError: "Connection interrupted. Please try again.",
         },
         affiliateDrawer: {
             inventoryTitle: "Airport Partner Inventory",
@@ -872,6 +884,10 @@ export const TRANSLATIONS: Record<
             agentAlertDesc: "Nuestro equipo local está verificando la disponibilidad sin fianza de su {vehicle} en {hub} ({pickupDate} al {returnDate}) y le contactará por WhatsApp al {phone} en 15 minutos.",
             instantBridgeTitle: "⚡ ¿Necesita un vehículo garantizado inmediatamente?",
             instantBridgeDesc: "Mientras espera nuestra confirmación por WhatsApp, asegure al instante un coche disponible en la Terminal {code} a través de nuestros socios oficiales certificados:",
+            leadTransmitted: "Solicitud #{ref} Enviada",
+            whatsappVerification: "Verificación WhatsApp en curso",
+            viewVoucherBtn: "Ver mi bono de reserva #{ref}",
+            connectionError: "Conexión interrumpida. Inténtelo de nuevo.",
         },
         affiliateDrawer: {
             inventoryTitle: "Inventario de Socios Aeropuerto",
@@ -1116,6 +1132,10 @@ export const TRANSLATIONS: Record<
             agentAlertDesc: "Ons lokale team controleert de beschikbaarheid zonder borg voor uw {vehicle} in {hub} ({pickupDate} tot {returnDate}) en neemt binnen 15 minuten contact met u op via WhatsApp op {phone}.",
             instantBridgeTitle: "⚡ Direct een gegarandeerd voertuig nodig?",
             instantBridgeDesc: "Terwijl u wacht op onze WhatsApp-bevestiging, kunt u direct een beschikbare auto op Terminal {code} reserveren via onze gecertificeerde partners:",
+            leadTransmitted: "Aanvraag #{ref} Verzonden",
+            whatsappVerification: "WhatsApp-verificatie bezig",
+            viewVoucherBtn: "Bekijk mijn boekingsvoucher #{ref}",
+            connectionError: "Verbinding onderbroken. Probeer het opnieuw.",
         },
         affiliateDrawer: {
             inventoryTitle: "Luchthaven Partner Inventaris",

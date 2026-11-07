@@ -849,58 +849,6 @@ export const CITIES: Record<string, CityConfig> = {
     "taxinanterre.fr": clone(_taxinanterre, "taxinanterre.fr", "taxinanterre_fr"),
     "taxivincennes.com": clone(_taxivincennes, "taxivincennes.com", "taxivincennes_com", "G-FZYD3C4XZF"),
 
-    // --- PARTNER CITIES (Ghost Broker - Auto-Generated) ---
-    ...generatePartnerCities(),
 };
 
-// ========================================
-// PARTNER CITY GENERATOR
-// ========================================
-import { NATIONAL_TARGETS, NationalTarget } from "@/config/national-targets";
-
-function generatePartnerCities(): Record<string, CityConfig> {
-    const result: Record<string, CityConfig> = {};
-
-    for (const target of NATIONAL_TARGETS) {
-        // Derive department from zip code (first 2 digits, or first 3 for DOM-TOM)
-        const dept = target.zip.startsWith('97') ? target.zip.substring(0, 3) : target.zip.substring(0, 2);
-
-        const config: CityConfig = {
-            slug: target.slug,
-            domain: `${target.slug.replace('taxi-', '')}.taxifrance.fr`, // Virtual subdomain
-            type: 'PARTNER',
-            partnerPhone: "+33970000000", // Default - Replace with real partner phone
-            name: `Taxi ${target.name}`,
-            city: target.name,
-            department: dept,
-            latitude: target.geo.lat,
-            longitude: target.geo.lng,
-            phoneNumber: "09 72 50 12 50", // National standard
-            email: "contact@taxifrance.fr",
-            heroImage: target.heroImage || "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?q=80&w=2940&auto=format&fit=crop",
-            description: `Réservez votre taxi à ${target.name}. Service de transport disponible 24h/24 avec nos partenaires locaux.`,
-            meta: {
-                title: target.heroTitle,
-                description: `Taxi ${target.name} : Réservation immédiate. Chauffeurs locaux indépendants. Transfert gares, aéroports et transport médical.`
-            },
-            features: ["Disponible 24h/24", "Prix Fixe", "Chauffeurs Locaux", "Transport Médical"],
-            pricing: {
-                base: `${target.price_start.toFixed(2)}€`,
-                description: "Prise en charge"
-            },
-            hospitals: [], // Will be enriched per-city
-            stations: target.top_places.filter(p => p.toLowerCase().includes('gare') || p.toLowerCase().includes('aéroport')),
-            neighborhoods: target.top_places.filter(p => !p.toLowerCase().includes('gare') && !p.toLowerCase().includes('aéroport')),
-            points_of_interest: {
-                hotels: [],
-                nightlife: [],
-                monuments: target.top_places,
-                parking_difficulty: "Variable"
-            }
-        };
-        result[target.slug] = config;
-    }
-
-    return result;
-}
 

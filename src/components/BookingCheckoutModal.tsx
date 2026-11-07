@@ -218,7 +218,7 @@ export function BookingCheckoutModal({
             }
         } catch {
             setIsSubmitting(false);
-            setErrorMessage("Connexion interrompue. Réessayez dans un instant.");
+            setErrorMessage(t.checkoutModal.connectionError);
         }
     };
 
@@ -249,10 +249,10 @@ export function BookingCheckoutModal({
                             </div>
                             <div>
                                 <div className="text-[10px] uppercase font-bold tracking-wider text-emerald-400">
-                                    Demande #{leadConfirmation.bookingRef} Transmise
+                                    {t.checkoutModal.leadTransmitted.replace("{ref}", leadConfirmation.bookingRef)}
                                 </div>
                                 <h3 className="text-base sm:text-lg font-black tracking-tight text-white">
-                                    Vérification WhatsApp en cours
+                                    {t.checkoutModal.whatsappVerification}
                                 </h3>
                             </div>
                         </div>
@@ -334,7 +334,7 @@ export function BookingCheckoutModal({
                                 }}
                                 className="w-full h-11 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-1.5 cursor-pointer"
                             >
-                                <span>Consulter mon bon de réservation #{leadConfirmation.bookingRef}</span>
+                                <span>{t.checkoutModal.viewVoucherBtn.replace("{ref}", leadConfirmation.bookingRef)}</span>
                                 <ArrowRight size={14} />
                             </button>
                         </div>
