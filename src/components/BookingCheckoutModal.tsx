@@ -240,9 +240,9 @@ export function BookingCheckoutModal({
         });
 
         return (
-            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-xs overflow-y-auto">
-                <div className="w-full max-w-lg bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden my-8 animate-in fade-in zoom-in-95 duration-150">
-                    <div className="bg-[#12161E] text-white p-5 flex items-center justify-between">
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 md:p-6 bg-black/65 backdrop-blur-xs">
+                <div className="w-full max-w-lg max-h-[92dvh] bg-white rounded-3xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+                    <div className="shrink-0 bg-[#12161E] text-white p-4 sm:p-5 flex items-center justify-between">
                         <div className="flex items-center gap-3">
                             <div className="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center font-bold">
                                 <CheckCircle2 size={20} />
@@ -265,7 +265,7 @@ export function BookingCheckoutModal({
                         </button>
                     </div>
 
-                    <div className="p-6 space-y-5">
+                    <div className="flex-1 overflow-y-auto overscroll-contain p-4 sm:p-6 space-y-4">
                         <div className="rounded-2xl bg-emerald-50 border border-emerald-200 p-4 space-y-1.5 text-xs text-emerald-950">
                             <div className="font-bold flex items-center gap-1.5 text-emerald-900">
                                 <MessageCircle size={15} />
@@ -297,19 +297,29 @@ export function BookingCheckoutModal({
                                     href={localrentUrl}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="min-h-[46px] py-2 px-3 rounded-xl bg-[#C9572C] hover:bg-[#B24922] text-white font-extrabold text-xs transition flex items-center justify-center gap-1.5 shadow-sm active:scale-95 text-center"
+                                    className="min-h-[50px] py-2 px-3 rounded-xl bg-[#C9572C] hover:bg-[#B24922] text-white transition flex items-center justify-center shadow-sm active:scale-95 text-center"
                                 >
-                                    <span className="whitespace-nowrap">{t.affiliateDrawer.localrentBtn}</span>
-                                    <ExternalLink size={13} className="shrink-0" />
+                                    <div className="flex flex-col items-center leading-tight">
+                                        <div className="flex items-center gap-1 font-black text-xs sm:text-sm">
+                                            <span>Localrent</span>
+                                            <ExternalLink size={12} className="shrink-0 opacity-80" />
+                                        </div>
+                                        <span className="text-[10px] font-semibold opacity-90">{t.affiliateDrawer.localrentSub}</span>
+                                    </div>
                                 </a>
                                 <a
                                     href={discoverCarsUrl}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="min-h-[46px] py-2 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs transition flex items-center justify-center gap-1.5 shadow-sm active:scale-95 text-center"
+                                    className="min-h-[50px] py-2 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white transition flex items-center justify-center shadow-sm active:scale-95 text-center"
                                 >
-                                    <span className="whitespace-nowrap">{t.affiliateDrawer.discoverCarsBtn}</span>
-                                    <ExternalLink size={13} className="shrink-0" />
+                                    <div className="flex flex-col items-center leading-tight">
+                                        <div className="flex items-center gap-1 font-black text-xs sm:text-sm">
+                                            <span>DiscoverCars</span>
+                                            <ExternalLink size={12} className="shrink-0 opacity-80" />
+                                        </div>
+                                        <span className="text-[10px] font-semibold opacity-90">{t.affiliateDrawer.discoverCarsSub}</span>
+                                    </div>
                                 </a>
                             </div>
                         </div>
@@ -335,10 +345,10 @@ export function BookingCheckoutModal({
     }
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-xs overflow-y-auto">
-            <div className="w-full max-w-xl bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden my-8 animate-in fade-in zoom-in-95 duration-150">
-                {/* Header */}
-                <div className="bg-[#12161E] text-white p-5 flex items-center justify-between">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-2.5 sm:p-4 md:p-6 bg-black/70 backdrop-blur-xs">
+            <div className="w-full max-w-xl max-h-[92dvh] bg-white rounded-3xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+                {/* Header (pinned) */}
+                <div className="shrink-0 bg-[#12161E] text-white p-4 sm:p-5 flex items-center justify-between">
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-xl bg-[#C9572C] flex items-center justify-center font-bold text-white shadow-xs">
                             <Lock size={18} />
@@ -362,26 +372,38 @@ export function BookingCheckoutModal({
                     </button>
                 </div>
 
-                {/* Caution & Conditions Claires */}
-                <div className="bg-[#FAF7F2] px-5 py-2.5 border-b border-[#ECE5D9] flex items-center justify-between text-xs text-slate-700">
+                {/* Caution & Conditions Claires (pinned) */}
+                <div className="shrink-0 bg-[#FAF7F2] px-4 sm:px-5 py-2.5 border-b border-[#ECE5D9] flex items-center justify-between text-xs text-slate-700">
                     <span className="font-semibold">
                         {hasFranchiseZero ? t.checkoutModal.depositSummaryZero : t.checkoutModal.depositSummaryStandard}
                     </span>
                     <span className="text-[11px] text-slate-500">{t.checkoutModal.acceptedCardsNotice}</span>
                 </div>
 
-                <form onSubmit={handleSubmit} className="p-6 space-y-5">
+                <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto overscroll-contain p-4 sm:p-6 space-y-4">
                     {/* 4 Guaranteed Free Perks reminder */}
                     <div className="rounded-2xl bg-emerald-50/80 border border-emerald-200/80 p-3 text-[11px] text-emerald-950 font-medium">
-                        <div className="font-bold text-[11px] text-emerald-900 mb-1 flex items-center gap-1.5">
+                        <div className="font-bold text-[11px] text-emerald-900 mb-1.5 flex items-center gap-1.5">
                             <Sparkles size={12} className="text-emerald-600" />
                             <span>{t.pricingTiers.includedPerksTitle}</span>
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 text-[10px] text-emerald-800">
-                            <span className="flex items-center gap-1">✓ {t.pricingTiers.perkDelivery}</span>
-                            <span className="flex items-center gap-1">✓ {t.pricingTiers.perkMileage}</span>
-                            <span className="flex items-center gap-1">✓ {t.pricingTiers.perkModel}</span>
-                            <span className="flex items-center gap-1">✓ {t.pricingTiers.perkSupport}</span>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-[10px] sm:text-[11px] text-emerald-800">
+                            <div className="flex items-start gap-1.5">
+                                <span className="font-bold text-emerald-600 shrink-0">✓</span>
+                                <span className="leading-snug break-words">{t.pricingTiers.perkDelivery}</span>
+                            </div>
+                            <div className="flex items-start gap-1.5">
+                                <span className="font-bold text-emerald-600 shrink-0">✓</span>
+                                <span className="leading-snug break-words">{t.pricingTiers.perkMileage}</span>
+                            </div>
+                            <div className="flex items-start gap-1.5">
+                                <span className="font-bold text-emerald-600 shrink-0">✓</span>
+                                <span className="leading-snug break-words">{t.pricingTiers.perkModel}</span>
+                            </div>
+                            <div className="flex items-start gap-1.5">
+                                <span className="font-bold text-emerald-600 shrink-0">✓</span>
+                                <span className="leading-snug break-words">{t.pricingTiers.perkSupport}</span>
+                            </div>
                         </div>
                     </div>
 

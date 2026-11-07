@@ -151,7 +151,9 @@ export const TRANSLATIONS: Record<
             esimTitle: string;
             esimDesc: string;
             localrentBtn: string;
+            localrentSub: string;
             discoverCarsBtn: string;
+            discoverCarsSub: string;
             instantConfirmationNote: string;
             closeAria: string;
         };
@@ -394,7 +396,9 @@ export const TRANSLATIONS: Record<
             esimTitle: "eSIM Maroc 20 Go 5G (Optionnel)",
             esimDesc: "Data immédiate dès la sortie de l'avion sans faire la queue",
             localrentBtn: "Localrent (Faible Caution)",
+            localrentSub: "Faible Caution",
             discoverCarsBtn: "DiscoverCars (Terminal)",
+            discoverCarsSub: "Au Terminal",
             instantConfirmationNote: "Inventaires officiels avec réservation instantanée et confirmation immédiate par email.",
             closeAria: "Fermer",
         },
@@ -636,7 +640,9 @@ export const TRANSLATIONS: Record<
             esimTitle: "Morocco eSIM 20 GB 5G (Optional)",
             esimDesc: "Instant mobile data upon landing without waiting in airport queues",
             localrentBtn: "Localrent (Low Deposit)",
+            localrentSub: "Low Deposit",
             discoverCarsBtn: "DiscoverCars (Terminal)",
+            discoverCarsSub: "Airport Terminal",
             instantConfirmationNote: "Official partner inventories with instant online booking and immediate email voucher.",
             closeAria: "Close",
         },
@@ -878,7 +884,9 @@ export const TRANSLATIONS: Record<
             esimTitle: "eSIM Marruecos 20 GB 5G (Opcional)",
             esimDesc: "Datos móviles inmediatos al aterrizar sin hacer colas",
             localrentBtn: "Localrent (Fianza Baja)",
+            localrentSub: "Fianza Reducida",
             discoverCarsBtn: "DiscoverCars (Terminal)",
+            discoverCarsSub: "En Terminal",
             instantConfirmationNote: "Inventarios oficiales con reserva instantánea y confirmación inmediata por email.",
             closeAria: "Cerrar",
         },
@@ -1120,7 +1128,9 @@ export const TRANSLATIONS: Record<
             esimTitle: "Marokko eSIM 20 GB 5G (Optioneel)",
             esimDesc: "Direct mobiele data bij landing, zonder wachttijden op het vliegveld",
             localrentBtn: "Localrent (Lage Borg)",
+            localrentSub: "Lage Borg",
             discoverCarsBtn: "DiscoverCars (Terminal)",
+            discoverCarsSub: "Op de Luchthaven",
             instantConfirmationNote: "Officiële partnerinventarissen met directe boeking en onmiddellijke bevestiging per e-mail.",
             closeAria: "Sluiten",
         },

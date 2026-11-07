@@ -221,12 +221,12 @@ export default function Footer({ config, locale: propLocale }: FooterProps = {})
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/vendor/login" className="hover:text-white transition font-medium text-slate-300">
+                                <Link href="/vendor/login" rel="nofollow" className="hover:text-white transition font-medium text-slate-300">
                                     {t.vendorSpace}
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/vendor/register" className="hover:text-white transition text-[#E58B24]">
+                                <Link href="/vendor/register" rel="nofollow" className="hover:text-white transition text-[#E58B24]">
                                     {t.vendorJoin}
                                 </Link>
                             </li>

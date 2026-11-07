@@ -115,10 +115,10 @@ export function AffiliateExitDrawer({
     };
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
-            <div className="w-full max-w-lg bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 md:p-6 bg-black/60 backdrop-blur-xs">
+            <div className="w-full max-w-lg max-h-[92dvh] bg-white rounded-3xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150">
                 {/* Header */}
-                <div className="bg-[#12161E] text-white p-5 flex items-center justify-between">
+                <div className="shrink-0 bg-[#12161E] text-white p-4 sm:p-5 flex items-center justify-between">
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-xl bg-blue-600/20 text-blue-400 flex items-center justify-center font-bold">
                             <Plane size={20} />
@@ -142,8 +142,8 @@ export function AffiliateExitDrawer({
                     </button>
                 </div>
 
-                {/* Transparency Notice */}
-                <div className="p-6 space-y-5">
+                {/* Content body */}
+                <div className="flex-1 overflow-y-auto overscroll-contain p-4 sm:p-6 space-y-4">
                     <div className="rounded-2xl bg-amber-50/70 border border-amber-200/80 p-4 space-y-1.5 text-xs text-amber-950">
                         <div className="font-bold flex items-center gap-1.5 text-amber-900">
                             <Info size={15} />
@@ -220,19 +220,29 @@ export function AffiliateExitDrawer({
                                 type="button"
                                 onClick={() => handleProceed(localrentUrl)}
                                 disabled={isRedirecting}
-                                className="min-h-[48px] py-2.5 px-3 rounded-2xl bg-[#C9572C] hover:bg-[#B24922] text-white font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-md cursor-pointer disabled:opacity-50 active:scale-95 text-center"
+                                className="min-h-[52px] py-2 px-3 rounded-2xl bg-[#C9572C] hover:bg-[#B24922] text-white transition-all flex items-center justify-center shadow-md cursor-pointer disabled:opacity-50 active:scale-95 text-center"
                             >
-                                <span className="font-extrabold whitespace-nowrap">{t.affiliateDrawer.localrentBtn}</span>
-                                <ExternalLink size={14} className="shrink-0" />
+                                <div className="flex flex-col items-center leading-tight">
+                                    <div className="flex items-center gap-1 font-black text-xs sm:text-sm">
+                                        <span>Localrent</span>
+                                        <ExternalLink size={12} className="shrink-0 opacity-80" />
+                                    </div>
+                                    <span className="text-[10px] font-semibold opacity-90">{t.affiliateDrawer.localrentSub}</span>
+                                </div>
                             </button>
                             <button
                                 type="button"
                                 onClick={() => handleProceed(discoverCarsUrl)}
                                 disabled={isRedirecting}
-                                className="min-h-[48px] py-2.5 px-3 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-md cursor-pointer disabled:opacity-50 active:scale-95 text-center"
+                                className="min-h-[52px] py-2 px-3 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white transition-all flex items-center justify-center shadow-md cursor-pointer disabled:opacity-50 active:scale-95 text-center"
                             >
-                                <span className="font-extrabold whitespace-nowrap">{t.affiliateDrawer.discoverCarsBtn}</span>
-                                <ExternalLink size={14} className="shrink-0" />
+                                <div className="flex flex-col items-center leading-tight">
+                                    <div className="flex items-center gap-1 font-black text-xs sm:text-sm">
+                                        <span>DiscoverCars</span>
+                                        <ExternalLink size={12} className="shrink-0 opacity-80" />
+                                    </div>
+                                    <span className="text-[10px] font-semibold opacity-90">{t.affiliateDrawer.discoverCarsSub}</span>
+                                </div>
                             </button>
                         </div>
                         <div className="text-center text-[10px] text-slate-400">
