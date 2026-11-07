@@ -38,24 +38,33 @@ export default function GuidesGridWithPagination({
     const [selectedCategory, setSelectedCategory] = useState<string>("all");
     const [currentPage, setCurrentPage] = useState<number>(1);
 
+    // Sort guides by publishedAt descending (most recent first)
+    const sortedGuides = useMemo(() => {
+        return [...guides].sort((a, b) => {
+            const timeA = new Date(a.publishedAt || a.updatedAt || 0).getTime();
+            const timeB = new Date(b.publishedAt || b.updatedAt || 0).getTime();
+            return timeB - timeA;
+        });
+    }, [guides]);
+
     // Categories mapping
     const categories = useMemo(() => {
-        const unique = Array.from(new Set(guides.map((g) => g.category)));
+        const unique = Array.from(new Set(sortedGuides.map((g) => g.category)));
         return [
-            { id: "all", label: isEn ? "All Guides" : "Tous les Guides", count: guides.length },
+            { id: "all", label: isEn ? "All Guides" : "Tous les Guides", count: sortedGuides.length },
             ...unique.map((cat) => ({
                 id: cat,
                 label: cat,
-                count: guides.filter((g) => g.category === cat).length,
+                count: sortedGuides.filter((g) => g.category === cat).length,
             })),
         ];
-    }, [guides, isEn]);
+    }, [sortedGuides, isEn]);
 
-    // Filtered guides
+    // Filtered guides (most recent first)
     const filteredGuides = useMemo(() => {
-        if (selectedCategory === "all") return guides;
-        return guides.filter((g) => g.category === selectedCategory);
-    }, [guides, selectedCategory]);
+        if (selectedCategory === "all") return sortedGuides;
+        return sortedGuides.filter((g) => g.category === selectedCategory);
+    }, [sortedGuides, selectedCategory]);
 
     // Total pages
     const totalPages = Math.ceil(filteredGuides.length / itemsPerPage);

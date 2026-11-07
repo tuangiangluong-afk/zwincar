@@ -23,6 +23,7 @@ import {
     Info,
     ExternalLink,
     Sparkles,
+    Star,
 } from "lucide-react";
 
 interface VehicleBookingCardProps {
@@ -73,6 +74,7 @@ export default function VehicleBookingCard({
     const [currency, setCurrency] = useState<"EUR" | "MAD">("EUR");
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [isAffiliateDrawerOpen, setIsAffiliateDrawerOpen] = useState(false);
+    const [isOptionsOpen, setIsOptionsOpen] = useState(false);
 
     // Calculate duration in days
     const d1 = new Date(pickupDate);
@@ -145,94 +147,35 @@ export default function VehicleBookingCard({
     const hasFranchiseZero = selectedUpsells.includes("franchise-zero");
     const isAffiliate = isHubInAffiliateFallback(pickupHub) || (DEFAULT_VEHICLE_STOCK[vehicle.id] === false);
 
-    return (
-        <div className="rounded-3xl bg-white border border-[#E7DFD5] p-6 shadow-xl space-y-6">
-            {/* Caution & Paiement Clairs / Fallback Partenaire */}
-            {isAffiliate ? (
-                <div className="rounded-2xl bg-blue-50/70 border border-blue-200 p-3.5 flex items-start gap-3 text-xs text-blue-950">
-                    <ShieldCheck size={18} className="text-blue-600 shrink-0 mt-0.5" />
-                    <div>
-                        <span className="font-bold block">
-                            {t.bookingWidget.partnerNetworkTitle.replace("{code}", currentHub.airportCode)}
-                        </span>
-                        <p className="text-[11px] text-blue-700 mt-0.5">
-                            {t.bookingWidget.partnerNetworkDesc}
-                        </p>
-                    </div>
-                </div>
-            ) : (
-                <div className="rounded-2xl bg-white border border-[#E7DFD5] p-3.5 flex items-start gap-3 text-xs text-slate-800">
-                    <ShieldCheck size={18} className="text-[#C9572C] shrink-0 mt-0.5" />
-                    <div>
-                        <span className="font-bold text-slate-900 block">
-                            {hasFranchiseZero ? t.bookingWidget.depositNoticeZero : t.bookingWidget.depositNoticeStandard}
-                        </span>
-                    </div>
-                </div>
-            )}
+    
+    const nonFranchiseUpsells = selectedUpsells.filter((id) => id !== "franchise-zero");
+    const nonFranchiseUpsellsTotalEur = UPSELL_OPTIONS
+        .filter((u) => nonFranchiseUpsells.includes(u.id))
+        .reduce((acc, u) => acc + (u.type === "per_day" ? u.priceEur * days : u.priceEur), 0);
+    const nonFranchiseUpsellsTotalMad = UPSELL_OPTIONS
+        .filter((u) => nonFranchiseUpsells.includes(u.id))
+        .reduce((acc, u) => acc + (u.type === "per_day" ? u.priceMad * days : u.priceMad), 0);
+    const franchiseZeroPriceEur = days * 8;
+    const franchiseZeroPriceMad = days * 90;
 
-            {/* Top Pricing Header (Enhanced Strikethrough & Savings) */}
-            <div className="pb-4 border-b border-slate-100">
-                <div className="bg-[#FAF7F2] border border-[#E7DFD5] rounded-2xl p-3 mb-3">
-                    <div className="flex items-center justify-between gap-1 mb-1.5">
-                        <span className="text-[11px] font-semibold text-slate-500">
-                            {t.catalog.airportCounterBenchmark} :
-                        </span>
-                        <div className="flex items-center gap-2">
-                            <span className="text-sm font-bold text-slate-400 line-through decoration-[#C9572C] decoration-2 font-mono">
-                                {currency === "EUR" ? `${vehicle.marketPriceEur} €` : `${vehicle.marketPriceMad} MAD`}
-                            </span>
-                            <span className="bg-[#C9572C] text-white text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider shadow-xs">
-                                -{Math.round(((vehicle.marketPriceEur - effectiveDailyPriceEur) / vehicle.marketPriceEur) * 100)}%
-                            </span>
-                        </div>
-                    </div>
-                    <div className="flex items-center justify-between text-xs font-bold text-emerald-700 pt-1.5 border-t border-[#EAE3D6]">
-                        <span>✓ {t.catalog.savingsTotalTrip.replace("{amount}", currency === "EUR" ? `${totalSavingsVsAirportEur} €` : `${totalSavingsVsAirportMad} MAD`)}</span>
-                        <span className="text-[10px] text-slate-500 font-medium">({days} {t.search.daysCount})</span>
-                    </div>
-                </div>
-
-                {/* Season & Duration Badges */}
-                {(season.multiplier !== 1 || durationDiscount > 0) && (
-                    <div className="flex flex-wrap items-center gap-1.5 mb-3">
-                        {season.multiplier !== 1 && (
-                            <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full border ${
-                                season.multiplier > 1
-                                    ? "bg-amber-50 text-amber-800 border-amber-200"
-                                    : "bg-blue-50 text-blue-800 border-blue-200"
-                            }`}>
-                                📅 {getSeasonLabel(season, activeLocale)}
-                            </span>
-                        )}
-                        {durationDiscount > 0 && (
-                            <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-center gap-1">
-                                <Sparkles size={12} className="text-emerald-600" />
-                                <span>{t.bookingWidget.longStayDiscountBadge.replace("{pct}", String(Math.round(durationDiscount * 100))).replace("{days}", String(days)).replace("{daysCount}", t.search.daysCount)}</span>
-                            </span>
-                        )}
-                    </div>
-                )}
-
-                <div className="flex items-baseline justify-between">
-                    <div>
-                        <div className="flex items-baseline gap-2 mt-0.5">
-                            <span className="text-3xl font-black text-slate-900 tracking-tight">
-                                {currency === "EUR" ? `${effectiveDailyPriceEur} €` : `${effectiveDailyPriceMad} MAD`}
-                            </span>
-                            <span className="text-xs text-slate-500 font-medium">/ {t.bookingWidget.perDay}</span>
-                        </div>
-                        <div className="text-[11px] font-semibold text-emerald-700 mt-1 flex items-center gap-1">
-                            <span>✓ {t.catalog.freeDeliveryIncluded}</span>
-                        </div>
+return (
+        <div className="rounded-3xl bg-white border border-[#E7DFD5] p-4 sm:p-6 shadow-xl space-y-4 sm:space-y-5">
+            {/* 1. Header: Social Proof & Clean Pricing */}
+            <div className="pb-3 border-b border-slate-100">
+                <div className="flex items-center justify-between gap-2 mb-2">
+                    <div className="flex items-center gap-1.5 text-xs text-amber-700 font-bold">
+                        <Star size={13} className="fill-amber-400 text-amber-400 shrink-0" />
+                        <span>4.9/5</span>
+                        <span className="text-slate-300 font-normal">•</span>
+                        <span className="text-slate-500 font-medium truncate">140+ avis vérifiés ({currentHub.name})</span>
                     </div>
 
                     {/* Currency switch */}
-                    <div className="inline-flex rounded-full bg-[#FAF7F2] p-1 border border-[#E7DFD5] text-xs font-bold">
+                    <div className="inline-flex rounded-full bg-[#FAF7F2] p-0.5 border border-[#E7DFD5] text-[11px] font-bold shrink-0">
                         <button
                             type="button"
                             onClick={() => setCurrency("EUR")}
-                            className={`px-2.5 py-1 rounded-full transition cursor-pointer ${
+                            className={`px-2 py-0.5 rounded-full transition cursor-pointer ${
                                 currency === "EUR" ? "bg-slate-900 text-white" : "text-slate-600"
                             }`}
                         >
@@ -241,7 +184,7 @@ export default function VehicleBookingCard({
                         <button
                             type="button"
                             onClick={() => setCurrency("MAD")}
-                            className={`px-2.5 py-1 rounded-full transition cursor-pointer ${
+                            className={`px-2 py-0.5 rounded-full transition cursor-pointer ${
                                 currency === "MAD" ? "bg-[#C9572C] text-white" : "text-slate-600"
                             }`}
                         >
@@ -249,19 +192,38 @@ export default function VehicleBookingCard({
                         </button>
                     </div>
                 </div>
+
+                <div className="flex items-baseline justify-between">
+                    <div>
+                        <div className="flex items-baseline gap-2">
+                            <span className="text-3xl font-black text-slate-900 tracking-tight">
+                                {currency === "EUR" ? `${effectiveDailyPriceEur} €` : `${effectiveDailyPriceMad} MAD`}
+                            </span>
+                            <span className="text-xs text-slate-500 font-medium">/ {t.bookingWidget.perDay}</span>
+                            <span className="text-xs font-semibold text-slate-400 line-through font-mono">
+                                {currency === "EUR" ? `${vehicle.marketPriceEur} €` : `${vehicle.marketPriceMad} MAD`}
+                            </span>
+                        </div>
+                        <div className="text-[11px] text-slate-500 font-medium mt-1 flex items-center gap-1.5">
+                            <span>{days}{activeLocale === "en" ? "d" : "j"} : ~{currency === "EUR" ? `${baseRentalEur} €` : `${baseRentalMad} MAD`}</span>
+                            <span className="text-slate-300">•</span>
+                            <span className="text-emerald-700 font-semibold">{t.catalog.freeDeliveryIncluded}</span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            {/* Quick Location & Dates Selector */}
-            <div className="space-y-3">
+            {/* 2. Hub & Dates Selector (Mobile Optimized 2-column) */}
+            <div className="space-y-2.5">
                 <div>
-                    <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">
+                    <label className="block text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">
                         {t.bookingWidget.pickupLocationLabel}
                     </label>
                     <div className="relative">
                         <select
                             value={pickupHub}
                             onChange={(e) => setPickupHub(e.target.value)}
-                            className="w-full h-11 pl-9 pr-4 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none focus:border-[#C9572C] appearance-none"
+                            className="w-full h-11 pl-9 pr-8 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none focus:border-[#C9572C] appearance-none"
                         >
                             {MOROCCAN_HUBS.map((hub) => (
                                 <option key={hub.slug} value={hub.slug}>
@@ -269,12 +231,12 @@ export default function VehicleBookingCard({
                                 </option>
                             ))}
                         </select>
-                        <MapPin size={16} className="absolute left-3 top-3 text-[#C9572C] pointer-events-none" />
+                        <MapPin size={15} className="absolute left-3 top-3 text-[#C9572C] pointer-events-none" />
                         <ChevronDown size={14} className="absolute right-3 top-3.5 text-slate-400 pointer-events-none" />
                     </div>
-                    <div className="flex items-center justify-between text-[10px] text-slate-500 mt-1.5 pt-1 border-t border-slate-100">
+                    <div className="flex items-center justify-between text-[10px] text-slate-500 mt-1 pt-0.5">
                         <span className="flex items-center gap-1 truncate pr-2">
-                            <Check size={12} className="text-emerald-600 shrink-0" />
+                            <Check size={11} className="text-emerald-600 shrink-0" />
                             <span className="truncate">{getHubMeetingPoint(currentHub, activeLocale)}</span>
                         </span>
                         <a
@@ -286,20 +248,20 @@ export default function VehicleBookingCard({
                     </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-2 sm:gap-3">
                     <div>
-                        <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">
+                        <label className="block text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">
                             {t.bookingWidget.pickupDateLabel}
                         </label>
                         <input
                             type="date"
                             value={pickupDate}
                             onChange={(e) => setPickupDate(e.target.value)}
-                            className="w-full h-10 px-3 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs font-semibold text-slate-900 focus:outline-none"
+                            className="w-full h-10 px-2.5 sm:px-3 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs font-semibold text-slate-900 focus:outline-none"
                         />
                     </div>
                     <div>
-                        <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">
+                        <label className="block text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">
                             {t.bookingWidget.returnDateLabel} ({days} {t.search.daysCount})
                         </label>
                         <input
@@ -307,67 +269,45 @@ export default function VehicleBookingCard({
                             value={returnDate}
                             min={pickupDate}
                             onChange={(e) => setReturnDate(e.target.value)}
-                            className="w-full h-10 px-3 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs font-semibold text-slate-900 focus:outline-none"
+                            className="w-full h-10 px-2.5 sm:px-3 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs font-semibold text-slate-900 focus:outline-none"
                         />
                     </div>
                 </div>
             </div>
 
-            {/* Subtilités Terrain Maroc (Carburant & Pistes) */}
-            <div className="rounded-2xl bg-amber-50/60 border border-amber-200/70 p-3.5 space-y-2 text-xs">
-                <div className="flex items-start gap-2">
-                    <Fuel size={15} className="text-amber-700 shrink-0 mt-0.5" />
-                    <div>
-                        <span className="font-bold text-amber-950">{t.bookingWidget.fuelPolicy}</span>
-                        <p className="text-[11px] text-amber-800 leading-snug mt-0.5">
-                            {t.bookingWidget.fuelPolicyDesc}
-                        </p>
+            {/* 3. Compact Trust & Perks Card */}
+            <div className="rounded-2xl bg-[#FAF7F2] border border-[#ECE5D9] p-3 text-xs space-y-2">
+                <div className="grid grid-cols-2 gap-1.5 text-[11px] font-medium text-slate-700">
+                    <div className="flex items-center gap-1.5 text-emerald-800 truncate">
+                        <Check size={12} className="text-emerald-600 shrink-0" />
+                        <span className="truncate">{t.pricingTiers.perkDelivery}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-emerald-800 truncate">
+                        <Check size={12} className="text-emerald-600 shrink-0" />
+                        <span className="truncate">{t.pricingTiers.perkMileage}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-emerald-800 truncate">
+                        <Check size={12} className="text-emerald-600 shrink-0" />
+                        <span className="truncate">{t.pricingTiers.perkModel}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-emerald-800 truncate">
+                        <Check size={12} className="text-emerald-600 shrink-0" />
+                        <span className="truncate">{t.pricingTiers.perkSupport}</span>
                     </div>
                 </div>
-
-                <div className="flex items-start gap-2 pt-2 border-t border-amber-200/50">
-                    <Compass size={15} className="text-amber-700 shrink-0 mt-0.5" />
-                    <div>
-                        <span className="font-bold text-amber-950">{t.bookingWidget.pistePolicy}</span>
-                        <p className="text-[11px] text-amber-800 leading-snug mt-0.5">
-                            {t.bookingWidget.pistePolicyDesc}
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            {/* 4 Guaranteed Free Perks Banner */}
-            <div className="rounded-2xl bg-emerald-50/70 border border-emerald-200/80 p-3.5 space-y-2 text-xs">
-                <div className="text-[11px] font-bold uppercase tracking-wider text-emerald-900 flex items-center gap-1.5">
-                    <Sparkles size={13} className="text-emerald-600" />
-                    <span>{t.pricingTiers.includedPerksTitle}</span>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-[11px] text-emerald-950 font-medium">
-                    <div className="flex items-center gap-1.5">
-                        <Check size={13} className="text-emerald-600 shrink-0" />
-                        <span>{t.pricingTiers.perkDelivery}</span>
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                        <Check size={13} className="text-emerald-600 shrink-0" />
-                        <span>{t.pricingTiers.perkMileage}</span>
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                        <Check size={13} className="text-emerald-600 shrink-0" />
-                        <span>{t.pricingTiers.perkModel}</span>
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                        <Check size={13} className="text-emerald-600 shrink-0" />
-                        <span>{t.pricingTiers.perkSupport}</span>
-                    </div>
+                <div className="pt-2 border-t border-[#EAE3D6] flex flex-wrap items-center justify-between text-[10px] text-slate-600 gap-1 font-medium">
+                    <span>⛽ Same-to-Same (photo au départ)</span>
+                    <span>🧭 Pistes d'auberges autorisées</span>
                 </div>
             </div>
 
-            {/* 2-Tier Formula Selector: Standard vs Pack Sérénité */}
-            <div className="space-y-2.5">
-                <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500">
-                    {activeLocale === "en" ? "Choose Your Protection & Deposit Tier" : activeLocale === "es" ? "Elija su Fórmula de Fianza y Seguro" : activeLocale === "nl" ? "Kies uw Borg- & Verzekeringsformule" : "Choisissez votre Formule Caution & Assurance"}
-                </label>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {/* 4. Protection & Deposit Formule Toggle */}
+            <div className="space-y-2">
+                <div className="flex items-center justify-between text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-500">
+                    <span>{activeLocale === "en" ? "Protection & Deposit" : "Caution & Assurance"}</span>
+                    <span className="text-emerald-700 font-semibold normal-case">Cartes de débit acceptées</span>
+                </div>
+                <div className="grid grid-cols-2 gap-2 sm:gap-3">
                     {/* Tier 1: Standard */}
                     <button
                         type="button"
@@ -376,24 +316,22 @@ export default function VehicleBookingCard({
                                 setSelectedUpsells((prev) => prev.filter((id) => id !== "franchise-zero"));
                             }
                         }}
-                        className={`p-3.5 rounded-2xl border text-left transition-all duration-150 cursor-pointer relative ${
+                        className={`p-3 rounded-2xl border text-left transition-all duration-150 cursor-pointer relative ${
                             !hasFranchiseZero
-                                ? "bg-[#FAF7F2] border-slate-900 ring-2 ring-slate-900/10 shadow-xs"
-                                : "bg-white border-slate-200 hover:border-slate-300"
+                                ? "bg-white border-slate-900 ring-2 ring-slate-900/10 shadow-xs"
+                                : "bg-[#FAF7F2] border-slate-200 hover:border-slate-300 opacity-80"
                         }`}
                     >
-                        <div className="flex items-center justify-between mb-1">
-                            <span className="font-bold text-xs text-slate-900">{t.pricingTiers.standardTitle}</span>
-                            <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-slate-100 text-slate-700">
-                                {t.pricingTiers.standardBadge}
-                            </span>
+                        <div className="font-bold text-xs text-slate-900 flex items-center justify-between">
+                            <span>Standard</span>
+                            {!hasFranchiseZero && <span className="w-2 h-2 rounded-full bg-slate-900"></span>}
                         </div>
-                        <div className="text-[11px] font-black text-slate-800 font-mono">
-                            {t.pricingTiers.standardDepositLabel}
+                        <div className="text-[11px] font-black text-slate-800 font-mono mt-0.5">
+                            Caution 300 €
                         </div>
-                        <p className="text-[10px] text-slate-500 mt-1 leading-snug">
-                            {t.pricingTiers.standardDesc}
-                        </p>
+                        <div className="text-[10px] text-slate-500 mt-0.5 leading-tight">
+                            Restituée au retour
+                        </div>
                     </button>
 
                     {/* Tier 2: Pack Sérénité Franchise Zéro */}
@@ -404,81 +342,97 @@ export default function VehicleBookingCard({
                                 setSelectedUpsells((prev) => [...prev, "franchise-zero"]);
                             }
                         }}
-                        className={`p-3.5 rounded-2xl border text-left transition-all duration-150 cursor-pointer relative ${
+                        className={`p-3 rounded-2xl border text-left transition-all duration-150 cursor-pointer relative ${
                             hasFranchiseZero
                                 ? "bg-amber-50/60 border-[#C9572C] ring-2 ring-[#C9572C]/20 shadow-xs"
-                                : "bg-white border-slate-200 hover:border-slate-300"
+                                : "bg-[#FAF7F2] border-slate-200 hover:border-slate-300 opacity-80"
                         }`}
                     >
-                        <div className="flex items-center justify-between mb-1">
-                            <span className="font-bold text-xs text-slate-900">{t.pricingTiers.serenityTitle}</span>
-                            <span className="text-[10px] font-black px-2 py-0.5 rounded-md bg-[#C9572C] text-white">
-                                {t.pricingTiers.serenityBadge}
-                            </span>
+                        <div className="font-bold text-xs text-[#C9572C] flex items-center justify-between">
+                            <span>Pack Sérénité</span>
+                            {hasFranchiseZero && <span className="w-2 h-2 rounded-full bg-[#C9572C]"></span>}
                         </div>
-                        <div className="text-[11px] font-black text-[#C9572C] font-mono">
-                            {t.pricingTiers.serenityDepositLabel} • +{currency === "EUR" ? "8 €" : "90 MAD"}/{t.bookingWidget.perDay}
+                        <div className="text-[11px] font-black text-[#C9572C] font-mono mt-0.5">
+                            Caution 0 €
                         </div>
-                        <p className="text-[10px] text-slate-600 mt-1 leading-snug">
-                            {t.pricingTiers.serenityDesc}
-                        </p>
+                        <div className="text-[10px] text-slate-600 mt-0.5 leading-tight font-medium">
+                            +{currency === "EUR" ? "8 €" : "90 MAD"}/j • Zéro blocage
+                        </div>
                     </button>
                 </div>
             </div>
 
-            {/* Upsell Options Selector */}
-            <div className="pt-2 border-t border-slate-100">
-                <UpsellSelector
-                    days={days}
-                    selectedUpsells={selectedUpsells}
-                    onToggle={handleToggleUpsell}
-                    currency={currency}
-                    locale={activeLocale}
-                    hideFranchiseZero={true}
-                />
+            {/* 5. Travel Options Accordion (Collapsible 1-click) */}
+            <div className="space-y-2">
+                <button
+                    type="button"
+                    onClick={() => setIsOptionsOpen((v) => !v)}
+                    className="w-full flex items-center justify-between py-2.5 px-3 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs font-semibold text-slate-700 hover:border-[#C9572C]/40 transition cursor-pointer"
+                >
+                    <span className="flex items-center gap-1.5 truncate pr-2">
+                        <Sparkles size={13} className="text-[#C9572C] shrink-0" />
+                        <span className="truncate">{activeLocale === "en" ? "Travel Options (eSIM, Child Seat, Jawaz...)" : "Options voyage (eSIM, Télépéage, Siège bébé...)"}</span>
+                        {nonFranchiseUpsells.length > 0 && (
+                            <span className="px-1.5 py-0.5 rounded-full bg-[#C9572C] text-white text-[10px] font-bold shrink-0">
+                                {nonFranchiseUpsells.length}
+                            </span>
+                        )}
+                    </span>
+                    <ChevronDown size={14} className={`transform transition-transform shrink-0 ${isOptionsOpen ? "rotate-180" : ""}`} />
+                </button>
+
+                {isOptionsOpen && (
+                    <div className="pt-1 animate-in fade-in duration-150">
+                        <UpsellSelector
+                            days={days}
+                            selectedUpsells={selectedUpsells}
+                            onToggle={handleToggleUpsell}
+                            currency={currency}
+                            locale={activeLocale}
+                            hideFranchiseZero={true}
+                        />
+                    </div>
+                )}
             </div>
 
-            {/* Split Financial Breakdown (Transparency & Max Cash Flow) */}
-            <div className="rounded-2xl bg-[#FAF7F2] border border-[#ECE5D9] p-4 space-y-2.5 text-xs">
+            {/* 6. Clarified Financial Split (No More Mystery +24€) */}
+            <div className="rounded-2xl bg-[#FAF7F2] border border-[#ECE5D9] p-3.5 space-y-2 text-xs">
                 <div className="flex justify-between text-slate-600">
-                    <span>{vehicle.name} ({days} {t.search.daysCount} x {currency === "EUR" ? `${effectiveDailyPriceEur} €` : `${effectiveDailyPriceMad} MAD`})</span>
+                    <span>{vehicle.name} ({days} {t.search.daysCount})</span>
                     <span className="font-semibold text-slate-900 font-mono">
                         {currency === "EUR" ? `${baseRentalEur} €` : `${baseRentalMad} MAD`}
                     </span>
                 </div>
 
-                {durationDiscount > 0 && (
-                    <div className="flex justify-between text-emerald-700 font-medium">
-                        <span className="flex items-center gap-1">
-                            <Sparkles size={12} />
-                            <span>{t.bookingWidget.longStayDiscountBreakdown.replace("{pct}", String(Math.round(durationDiscount * 100))).replace("{days}", String(days))}</span>
-                        </span>
-                        <span className="font-semibold font-mono">
-                            {currency === "EUR" ? `-${durationSavingsEur} €` : `-${durationSavingsMad} MAD`}
-                        </span>
-                    </div>
-                )}
-
-                {(vendorUpsellsEur > 0 || platformUpsellsEur > 0) && (
-                    <div className="flex justify-between text-slate-600">
-                        <span>{t.bookingWidget.selectedOptions}</span>
+                {/* Explicit Franchise Zéro Line */}
+                {hasFranchiseZero && (
+                    <div className="flex justify-between text-slate-700 font-medium">
+                        <span>Pack Sérénité (Caution 0 € • 8 €/j)</span>
                         <span className="font-semibold text-[#C9572C] font-mono">
-                            {currency === "EUR"
-                                ? `+${vendorUpsellsEur + platformUpsellsEur} €`
-                                : `+${vendorUpsellsMad + platformUpsellsMad} MAD`}
+                            +{currency === "EUR" ? `${franchiseZeroPriceEur} €` : `${franchiseZeroPriceMad} MAD`}
                         </span>
                     </div>
                 )}
 
-                <div className="flex justify-between text-slate-600">
+                {/* Non-Franchise Extra Upsells */}
+                {nonFranchiseUpsells.length > 0 && (
+                    <div className="flex justify-between text-slate-600">
+                        <span>Options complémentaires ({nonFranchiseUpsells.length})</span>
+                        <span className="font-semibold text-slate-900 font-mono">
+                            +{currency === "EUR" ? `${nonFranchiseUpsellsTotalEur} €` : `${nonFranchiseUpsellsTotalMad} MAD`}
+                        </span>
+                    </div>
+                )}
+
+                <div className="flex justify-between text-slate-600 pt-1 border-t border-slate-200/60">
                     <span>{t.bookingWidget.depositAtCounter}</span>
                     <span className="font-bold text-slate-900 font-mono">
                         {hasFranchiseZero ? t.bookingWidget.zeroDepositActive : "300 €"}
                     </span>
                 </div>
 
-                {/* The Split Deposit Line (100% Platform + 20% Base) */}
-                <div className="pt-3 border-t border-slate-200/80 flex items-baseline justify-between">
+                {/* 20% Deposit Today */}
+                <div className="pt-2 border-t border-slate-200/80 flex items-baseline justify-between">
                     <div>
                         <div className="font-black text-slate-900 text-sm">
                             {t.bookingWidget.payTodayStripe}
@@ -487,27 +441,26 @@ export default function VehicleBookingCard({
                             {t.bookingWidget.payTodayNote}
                         </div>
                     </div>
-                    <div className="text-xl font-black text-[#C9572C]">
+                    <div className="text-xl font-black text-[#C9572C] font-mono">
                         {currency === "EUR" ? `${depositAcompteEur} €` : `${depositAcompteMad} MAD`}
                     </div>
                 </div>
 
-                <div className="flex justify-between text-slate-500 pt-1 text-[11px]">
+                <div className="flex justify-between text-slate-500 text-[11px]">
                     <span>{t.bookingWidget.balanceOnSite}</span>
                     <span className="font-bold text-slate-800 font-mono">
                         {currency === "EUR" ? `${balanceOnSiteEur} €` : `${balanceOnSiteMad} MAD`} (~{balanceOnSiteMad} DH)
                     </span>
                 </div>
 
-                {/* 20% Deposit Trust Micro-Guarantee */}
-                <div className="pt-2 mt-1 border-t border-slate-200/80 flex flex-wrap items-center justify-between gap-1.5 text-[10px] text-emerald-800 font-semibold">
-                    <span>✓ {activeLocale === "en" ? "100% refundable up to 48h prior" : activeLocale === "es" ? "100% reembolsable hasta 48h antes" : activeLocale === "nl" ? "100% restitueerbaar tot 48u vooraf" : "Acompte 100% remboursable (48h)"}</span>
-                    <span>✓ {activeLocale === "en" ? "80% paid after car inspection" : activeLocale === "es" ? "80% tras revisar el coche" : activeLocale === "nl" ? "80% pas na auto-inspectie" : "80% payés après état des lieux"}</span>
+                <div className="pt-1.5 border-t border-slate-200/60 flex flex-wrap items-center justify-between gap-1 text-[10px] text-emerald-800 font-semibold">
+                    <span>✓ {activeLocale === "en" ? "Deposit 100% refundable (48h)" : "Acompte 100% remboursable (48h)"}</span>
+                    <span>✓ {activeLocale === "en" ? "80% on delivery after inspection" : "80% payés après état des lieux"}</span>
                 </div>
             </div>
 
-            {/* Action Buttons */}
-            <div className="space-y-2.5">
+            {/* 7. Action Buttons */}
+            <div className="space-y-2">
                 {isAffiliate ? (
                     <button
                         type="button"
@@ -521,7 +474,7 @@ export default function VehicleBookingCard({
                     <button
                         type="button"
                         onClick={() => setShowSuccessModal(true)}
-                        className="w-full h-12 rounded-2xl bg-[#C9572C] hover:bg-[#B24922] text-white font-bold text-sm tracking-wide shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]"
+                        className="w-full h-12 rounded-2xl bg-[#C9572C] hover:bg-[#B24922] text-white font-black text-sm tracking-wide shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]"
                     >
                         <Lock size={15} />
                         <span>{t.bookingWidget.lockVehicleBtn.replace("{amount}", currency === "EUR" ? `${depositAcompteEur} €` : `${depositAcompteMad} MAD`)}</span>
@@ -531,34 +484,30 @@ export default function VehicleBookingCard({
                 <a
                     href={`https://wa.me/212720794046?text=${encodeURIComponent(
                         activeLocale === "en"
-                            ? `Hello ZwinCar, I would like to book the ${vehicle.name} from ${pickupDate} to ${returnDate} in ${currentHub.name} with options: ${selectedUpsells.join(', ')}.`
-                            : activeLocale === "es"
-                            ? `Hola ZwinCar, deseo reservar el ${vehicle.name} del ${pickupDate} al ${returnDate} en ${currentHub.name} con opciones: ${selectedUpsells.join(', ')}.`
-                            : activeLocale === "nl"
-                            ? `Hallo ZwinCar, ik wil graag de ${vehicle.name} reserveren van ${pickupDate} tot ${returnDate} in ${currentHub.name} met opties: ${selectedUpsells.join(', ')}.`
-                            : `Bonjour ZwinCar, je souhaite bloquer la ${vehicle.name} du ${pickupDate} au ${returnDate} à ${currentHub.name} avec options : ${selectedUpsells.join(', ')}.`
+                            ? `Hello ZwinCar, I would like to book the ${vehicle.name} from ${pickupDate} to ${returnDate} in ${currentHub.name} with options: ${selectedUpsells.join(", ")}.`
+                            : `Bonjour ZwinCar, je souhaite bloquer la ${vehicle.name} du ${pickupDate} au ${returnDate} à ${currentHub.name} avec options : ${selectedUpsells.join(", ")}.`
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full h-11 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-xs cursor-pointer"
+                    className="w-full h-11 rounded-2xl bg-[#FAF7F2] hover:bg-slate-100 border border-[#E7DFD5] text-slate-800 font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-2xs cursor-pointer"
                 >
                     <MessageCircle size={15} className="text-emerald-600" />
                     <span>{t.bookingWidget.whatsappAvailabilityBtn}</span>
                 </a>
 
+                <div className="text-center text-[10px] text-slate-400 font-medium">
+                    ⚡ Réponse garantie en moins de 5 min sur WhatsApp
+                </div>
+
                 {!isAffiliate && (
                     <button
                         type="button"
                         onClick={() => setIsAffiliateDrawerOpen(true)}
-                        className="w-full py-1.5 text-[11px] font-semibold text-slate-500 hover:text-[#C9572C] transition flex items-center justify-center gap-1 cursor-pointer"
+                        className="w-full py-1 text-[11px] font-semibold text-slate-400 hover:text-[#C9572C] transition flex items-center justify-center gap-1 cursor-pointer"
                     >
                         <span>
                             {activeLocale === "en"
                                 ? `Or compare live ${currentHub.airportCode} terminal counters (Localrent / DiscoverCars)`
-                                : activeLocale === "es"
-                                ? `O comparar mostradores de la terminal ${currentHub.airportCode} (Localrent / DiscoverCars)`
-                                : activeLocale === "nl"
-                                ? `Of vergelijk balies op terminal ${currentHub.airportCode} (Localrent / DiscoverCars)`
                                 : `Ou comparer les comptoirs du terminal ${currentHub.airportCode} (Localrent / DiscoverCars)`}
                         </span>
                         <ExternalLink size={11} className="shrink-0" />
@@ -566,36 +515,7 @@ export default function VehicleBookingCard({
                 )}
             </div>
 
-            {/* Quick Guarantees */}
-            <div className="grid grid-cols-2 gap-2 text-[11px] text-slate-500 pt-1">
-                <span className="flex items-center gap-1.5">
-                    <Check size={13} className="text-emerald-600 shrink-0" />
-                    {t.bookingWidget.freeCancellationNotice}
-                </span>
-                <span className="flex items-center gap-1.5">
-                    <Check size={13} className="text-emerald-600 shrink-0" />
-                    {t.bookingWidget.stripeNotice}
-                </span>
-            </div>
-
-            {/* Différence avec les courtiers à bas coût */}
-            <div className="rounded-2xl bg-[#FAF7F2] border border-[#ECE5D9] p-3.5 space-y-2 text-[11px] text-slate-700">
-                <div className="font-bold text-slate-900 text-xs">
-                    {t.bookingWidget.brokerComparisonTitle}
-                </div>
-                <div className="space-y-1.5 text-slate-600 text-[11px]">
-                    <div className="flex items-start gap-1.5">
-                        <span className="text-slate-400 font-bold shrink-0">•</span>
-                        <span>{t.bookingWidget.brokerComparisonLegacy}</span>
-                    </div>
-                    <div className="flex items-start gap-1.5 pt-1.5 border-t border-[#E7DFD5]">
-                        <span className="text-[#C9572C] font-bold shrink-0">•</span>
-                        <span>{t.bookingWidget.brokerComparisonZwincar}</span>
-                    </div>
-                </div>
-            </div>
-
-            {/* Interactive Checkout Drawer / Modal */}
+            {/* Modals */}
             <BookingCheckoutModal
                 isOpen={showSuccessModal}
                 onClose={() => setShowSuccessModal(false)}
@@ -617,7 +537,6 @@ export default function VehicleBookingCard({
                 locale={activeLocale}
             />
 
-            {/* Fallback Affiliation Drawer */}
             {isAffiliateDrawerOpen && (
                 <AffiliateExitDrawer
                     isOpen={isAffiliateDrawerOpen}

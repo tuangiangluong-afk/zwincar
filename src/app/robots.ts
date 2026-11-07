@@ -3,33 +3,36 @@ import { MetadataRoute } from "next";
 export default function robots(): MetadataRoute.Robots {
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://zwincar.com";
 
+    const publicDisallows = [
+        "/admin/",
+        "/api/",
+        "/login",
+        "/booking/",
+        "/vendor/dashboard",
+        "/offline",
+        "/home/",
+        "/author/",
+    ];
+
     return {
         rules: [
             {
                 userAgent: "*",
                 allow: "/",
-                disallow: [
-                    "/admin/",
-                    "/api/",
-                    "/login",
-                    "/booking/",
-                    "/vendor/dashboard",
-                    "/offline",
-                    "/home/",
-                    "/author/",
-                ],
+                disallow: publicDisallows,
             },
             {
                 userAgent: [
                     "GPTBot",
+                    "OAI-SearchBot",
                     "ClaudeBot",
                     "PerplexityBot",
-                    "CCBot",
-                    "Applebot-Extended",
                     "Google-Extended",
+                    "Applebot-Extended",
+                    "CCBot",
                 ],
-                allow: ["/", "/llms.txt", "/guides/", "/en/guides/", "/maroc/"],
-                disallow: ["/admin/", "/api/", "/vendor/", "/offline", "/home/", "/author/"],
+                allow: "/",
+                disallow: ["/admin/", "/api/", "/vendor/", "/offline"],
             },
         ],
         sitemap: `${baseUrl}/sitemap.xml`,
