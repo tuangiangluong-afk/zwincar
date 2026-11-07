@@ -366,6 +366,20 @@ export function BookingCheckoutModal({
                 </div>
 
                 <form onSubmit={handleSubmit} className="p-6 space-y-5">
+                    {/* 4 Guaranteed Free Perks reminder */}
+                    <div className="rounded-2xl bg-emerald-50/80 border border-emerald-200/80 p-3 text-[11px] text-emerald-950 font-medium">
+                        <div className="font-bold text-[11px] text-emerald-900 mb-1 flex items-center gap-1.5">
+                            <Sparkles size={12} className="text-emerald-600" />
+                            <span>{t.pricingTiers.includedPerksTitle}</span>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 text-[10px] text-emerald-800">
+                            <span className="flex items-center gap-1">✓ {t.pricingTiers.perkDelivery}</span>
+                            <span className="flex items-center gap-1">✓ {t.pricingTiers.perkMileage}</span>
+                            <span className="flex items-center gap-1">✓ {t.pricingTiers.perkModel}</span>
+                            <span className="flex items-center gap-1">✓ {t.pricingTiers.perkSupport}</span>
+                        </div>
+                    </div>
+
                     {/* Recap Row */}
                     <div className="rounded-2xl bg-[#FAF7F2] border border-[#ECE5D9] p-3.5 grid grid-cols-2 gap-3 text-xs">
                         <div>

@@ -326,6 +326,96 @@ export default function VehicleBookingCard({
                 </div>
             </div>
 
+            {/* 4 Guaranteed Free Perks Banner */}
+            <div className="rounded-2xl bg-emerald-50/70 border border-emerald-200/80 p-3.5 space-y-2 text-xs">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-emerald-900 flex items-center gap-1.5">
+                    <Sparkles size={13} className="text-emerald-600" />
+                    <span>{t.pricingTiers.includedPerksTitle}</span>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-[11px] text-emerald-950 font-medium">
+                    <div className="flex items-center gap-1.5">
+                        <Check size={13} className="text-emerald-600 shrink-0" />
+                        <span>{t.pricingTiers.perkDelivery}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                        <Check size={13} className="text-emerald-600 shrink-0" />
+                        <span>{t.pricingTiers.perkMileage}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                        <Check size={13} className="text-emerald-600 shrink-0" />
+                        <span>{t.pricingTiers.perkModel}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                        <Check size={13} className="text-emerald-600 shrink-0" />
+                        <span>{t.pricingTiers.perkSupport}</span>
+                    </div>
+                </div>
+            </div>
+
+            {/* 2-Tier Formula Selector: Standard vs Pack Sérénité */}
+            <div className="space-y-2.5">
+                <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500">
+                    {activeLocale === "en" ? "Choose Your Protection & Deposit Tier" : activeLocale === "es" ? "Elija su Fórmula de Fianza y Seguro" : activeLocale === "nl" ? "Kies uw Borg- & Verzekeringsformule" : "Choisissez votre Formule Caution & Assurance"}
+                </label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {/* Tier 1: Standard */}
+                    <button
+                        type="button"
+                        onClick={() => {
+                            if (hasFranchiseZero) {
+                                setSelectedUpsells((prev) => prev.filter((id) => id !== "franchise-zero"));
+                            }
+                        }}
+                        className={`p-3.5 rounded-2xl border text-left transition-all duration-150 cursor-pointer relative ${
+                            !hasFranchiseZero
+                                ? "bg-[#FAF7F2] border-slate-900 ring-2 ring-slate-900/10 shadow-xs"
+                                : "bg-white border-slate-200 hover:border-slate-300"
+                        }`}
+                    >
+                        <div className="flex items-center justify-between mb-1">
+                            <span className="font-bold text-xs text-slate-900">{t.pricingTiers.standardTitle}</span>
+                            <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-slate-100 text-slate-700">
+                                {t.pricingTiers.standardBadge}
+                            </span>
+                        </div>
+                        <div className="text-[11px] font-black text-slate-800 font-mono">
+                            {t.pricingTiers.standardDepositLabel}
+                        </div>
+                        <p className="text-[10px] text-slate-500 mt-1 leading-snug">
+                            {t.pricingTiers.standardDesc}
+                        </p>
+                    </button>
+
+                    {/* Tier 2: Pack Sérénité Franchise Zéro */}
+                    <button
+                        type="button"
+                        onClick={() => {
+                            if (!hasFranchiseZero) {
+                                setSelectedUpsells((prev) => [...prev, "franchise-zero"]);
+                            }
+                        }}
+                        className={`p-3.5 rounded-2xl border text-left transition-all duration-150 cursor-pointer relative ${
+                            hasFranchiseZero
+                                ? "bg-amber-50/60 border-[#C9572C] ring-2 ring-[#C9572C]/20 shadow-xs"
+                                : "bg-white border-slate-200 hover:border-slate-300"
+                        }`}
+                    >
+                        <div className="flex items-center justify-between mb-1">
+                            <span className="font-bold text-xs text-slate-900">{t.pricingTiers.serenityTitle}</span>
+                            <span className="text-[10px] font-black px-2 py-0.5 rounded-md bg-[#C9572C] text-white">
+                                {t.pricingTiers.serenityBadge}
+                            </span>
+                        </div>
+                        <div className="text-[11px] font-black text-[#C9572C] font-mono">
+                            {t.pricingTiers.serenityDepositLabel} • +{currency === "EUR" ? "8 €" : "90 MAD"}/{t.bookingWidget.perDay}
+                        </div>
+                        <p className="text-[10px] text-slate-600 mt-1 leading-snug">
+                            {t.pricingTiers.serenityDesc}
+                        </p>
+                    </button>
+                </div>
+            </div>
+
             {/* Upsell Options Selector */}
             <div className="pt-2 border-t border-slate-100">
                 <UpsellSelector
@@ -334,6 +424,7 @@ export default function VehicleBookingCard({
                     onToggle={handleToggleUpsell}
                     currency={currency}
                     locale={activeLocale}
+                    hideFranchiseZero={true}
                 />
             </div>
 

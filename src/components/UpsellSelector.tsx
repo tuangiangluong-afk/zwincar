@@ -11,6 +11,7 @@ interface UpsellSelectorProps {
     onToggle: (id: string) => void;
     currency?: "EUR" | "MAD";
     locale?: Locale;
+    hideFranchiseZero?: boolean;
 }
 
 export default function UpsellSelector({
@@ -19,6 +20,7 @@ export default function UpsellSelector({
     onToggle,
     currency = "EUR",
     locale = "fr",
+    hideFranchiseZero = false,
 }: UpsellSelectorProps) {
     const t = getTranslation(locale);
 
@@ -78,7 +80,7 @@ export default function UpsellSelector({
             </div>
 
             <div className="space-y-2">
-                {UPSELL_OPTIONS.map((upsell) => {
+                {UPSELL_OPTIONS.filter((u) => !hideFranchiseZero || u.id !== "franchise-zero").map((upsell) => {
                     const isSelected = selectedUpsells.includes(upsell.id);
                     const totalCostEur =
                         upsell.type === "per_day" ? upsell.priceEur * days : upsell.priceEur;

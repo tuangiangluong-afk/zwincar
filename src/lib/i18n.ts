@@ -163,6 +163,78 @@ export const TRANSLATIONS: Record<
             stripeSecure: string;
             whatsappAssist: string;
         };
+        pricingTiers: {
+            includedPerksTitle: string;
+            perkDelivery: string;
+            perkMileage: string;
+            perkModel: string;
+            perkSupport: string;
+            standardTitle: string;
+            standardBadge: string;
+            standardDesc: string;
+            standardDepositLabel: string;
+            serenityTitle: string;
+            serenityBadge: string;
+            serenityDesc: string;
+            serenityDepositLabel: string;
+            switchStandard: string;
+            switchSerenity: string;
+        };
+        voucher: {
+            confirmedBadge: string;
+            voucherTitle: string;
+            downloadPdf: string;
+            print: string;
+            sosButton: string;
+            emailSentTo: string;
+            resendEmail: string;
+            resendSuccess: string;
+            statusTitle: string;
+            statusGuaranteed: string;
+            statusCheckedIn: string;
+            statusCompleted: string;
+            statusCancelled: string;
+            folderRef: string;
+            pickup: string;
+            returnDropoff: string;
+            meetingPointTitle: string;
+            customsAlertPrompt: string;
+            customsAlertBtn: string;
+            accountingTitle: string;
+            depositPaidOnline: string;
+            collectedByStripe: string;
+            balanceDueOnSite: string;
+            balancePaymentMethods: string;
+            depositAtDelivery: string;
+            depositZeroActive: string;
+            depositReturnedAtCheckout: string;
+            optionsIncluded: string;
+            progressTitle: string;
+            progressSubtitle: string;
+            kycTitle: string;
+            kycDesc: string;
+            kycUploadBtn: string;
+            kycUploading: string;
+            kycUploadedSuccess: string;
+            kycWhatsappBtn: string;
+            kycPrivacyNote: string;
+            flightTitle: string;
+            flightSubtitle: string;
+            flightRadarStatus: string;
+            flightRadarOnTime: string;
+            flightGuaranteeDesc: string;
+            cautionProtocolTitle: string;
+            cautionZeroDesc: string;
+            cautionStandardDesc: string;
+            sealedEnvelope1: string;
+            sealedEnvelope2: string;
+            sealedEnvelope3: string;
+            esimTitle: string;
+            esimSubtitle: string;
+            esimActive: string;
+            esimQrTitle: string;
+            esimQrDesc: string;
+        };
     }
 > = {
     fr: {
@@ -194,7 +266,7 @@ export const TRANSLATIONS: Record<
             searchingBtn: "Recherche en cours...",
             noDepositPill: "Zéro caution CB bloquée",
             exactModelPill: "Modèle ou équivalent garanti (surclassement offert)",
-            airportDeliveryPill: "Livraison aéroport & riad offerte",
+            airportDeliveryPill: "Livraison aéroport & riad offerte (Valeur 100 DH)",
             freeCancellationPill: "Annulation gratuite jusqu'à 48h",
         },
         catalog: {
@@ -312,6 +384,78 @@ export const TRANSLATIONS: Record<
             stripeSecure: "Paiement sécurisé par Stripe",
             whatsappAssist: "Assistance WhatsApp 24/7",
         },
+        pricingTiers: {
+            includedPerksTitle: "Inclus d'Office dans Tous Nos Tarifs",
+            perkDelivery: "Livraison Aéroport & Riad/Hôtel Offerte (Valeur 100 DH incluse)",
+            perkMileage: "Kilométrage Illimité Inclus",
+            perkModel: "Modèle Garanti ou Surclassement Offert",
+            perkSupport: "Assistance VIP & Conciergerie WhatsApp 24/7",
+            standardTitle: "Formule Standard",
+            standardBadge: "Tarif Économique",
+            standardDesc: "Caution 300 € (espèces ou carte débit). Restituée en main propre au retour sous protocole Enveloppe Scellée. Zéro empreinte de 1 500 €.",
+            standardDepositLabel: "Caution 300 € (restituée au retour)",
+            serenityTitle: "Pack Sérénité 0 € Franchise",
+            serenityBadge: "Le Choix Sérénité (Recommandé)",
+            serenityDesc: "Caution 0 € absolue. Rachat total franchise rayures, bris de glace et pneus. Restitution express en 2 minutes sans formalités.",
+            serenityDepositLabel: "Caution 0 € (Zéro blocage bancaire)",
+            switchStandard: "Choisir Formule Standard (Caution 300€)",
+            switchSerenity: "Activer Pack Sérénité (0€ Caution)",
+        },
+        voucher: {
+            confirmedBadge: "Réservation Confirmée • Modèle Garanti",
+            voucherTitle: "Voucher de Location",
+            downloadPdf: "Télécharger en PDF",
+            print: "Imprimer",
+            sosButton: "SOS 24/7",
+            emailSentTo: "Bon de réservation envoyé à",
+            resendEmail: "Renvoyer l'email de confirmation",
+            resendSuccess: "Email renvoyé avec succès !",
+            statusTitle: "Statut du dossier",
+            statusGuaranteed: "Véhicule Garanti & Prêt pour Livraison",
+            statusCheckedIn: "En cours de location • Clés remises au client",
+            statusCompleted: "Location clôturée • Caution restituée avec succès",
+            statusCancelled: "Dossier annulé",
+            folderRef: "Référence Dossier",
+            pickup: "Prise en charge",
+            returnDropoff: "Restitution",
+            meetingPointTitle: "Point de rencontre exact :",
+            customsAlertPrompt: "Valises récupérées ? Avertissez votre agent en 1 clic :",
+            customsAlertBtn: "Je viens de sortir de la douane",
+            accountingTitle: "Décompte Financier Transparent (Zéro Frais Caché)",
+            depositPaidOnline: "Acompte Réglé en Ligne",
+            collectedByStripe: "✓ Encaissé par Stripe",
+            balanceDueOnSite: "Solde à Régler à l'Arrivée",
+            balancePaymentMethods: "Espèces (EUR/MAD) ou Carte",
+            depositAtDelivery: "Caution à la Livraison",
+            depositZeroActive: "0 € (Pack Sérénité actif)",
+            depositReturnedAtCheckout: "Restituée immédiatement au retour",
+            optionsIncluded: "Options incluses :",
+            progressTitle: "Pré-Check-in Express (80% complété)",
+            progressSubtitle: "Plus qu'une étape pour votre remise des clés express sans guichet !",
+            kycTitle: "Permis de Conduire & Pièce d'Identité",
+            kycDesc: "Photographiez votre permis pour pré-imprimer votre contrat et récupérer vos clés en moins de 60 secondes au parking.",
+            kycUploadBtn: "Prendre en photo / Téléverser mon permis",
+            kycUploading: "Chiffrement et vérification sécurisée...",
+            kycUploadedSuccess: "✓ Permis enregistré ! Votre contrat est pré-imprimé pour une remise immédiate au parking.",
+            kycWhatsappBtn: "Envoyer mon permis sur WhatsApp au Loueur",
+            kycPrivacyNote: "Données chiffrées de bout en bout et automatiquement supprimées 48h après la fin de la location.",
+            flightTitle: "Suivi de Vol en Direct & Garantie Retard",
+            flightSubtitle: "Vol :",
+            flightRadarStatus: "Statut radar aéroportuaire :",
+            flightRadarOnTime: "À l'heure • Atterrissage surveillé sur FlightRadar24",
+            flightGuaranteeDesc: "Notre équipe locale surveille votre vol en continu sur FlightRadar24. En cas de retard de 1h, 2h ou 4h, votre véhicule reste garanti sans aucun frais supplémentaire.",
+            cautionProtocolTitle: "Protocole de Caution Transparent & Zéro Litige",
+            cautionZeroDesc: "Vous êtes 100% couvert par le Pack Sérénité ZwinCar. Aucun dépôt de garantie ne vous sera demandé sur le parking. Restitution en 2 minutes chrono.",
+            cautionStandardDesc: "Comment se passe la caution de 300 € à la remise des clés ?",
+            sealedEnvelope1: "1. Enveloppe Scellée : Vos 300 € (cash ou dirhams) sont placés dans une enveloppe ZwinCar scellée et signée sur le rabat.",
+            sealedEnvelope2: "2. Zéro Débit Bancaire : L'enveloppe reste sous scellé dans le coffre de l'agence. Rien n'est débité sur votre carte.",
+            sealedEnvelope3: "3. Restitution Immédiate : Au retour, après le tour du véhicule (2 min), l'enveloppe scellée vous est rendue intacte en main propre.",
+            esimTitle: "eSIM Maroc 20 Go 5G (Réseau Maroc Telecom / Orange)",
+            esimSubtitle: "Connexion data haut débit instantanée dès l'atterrissage sur le tarmac",
+            esimActive: "Activée & Prête",
+            esimQrTitle: "Votre QR Code d'activation eSIM Maroc",
+            esimQrDesc: "Scannez ce QR Code dans les réglages de votre téléphone : Réglages > Données cellulaires > Ajouter une eSIM.",
+        },
     },
     en: {
         nav: {
@@ -342,7 +486,7 @@ export const TRANSLATIONS: Record<
             searchingBtn: "Searching available cars...",
             noDepositPill: "No €1,500 credit card freeze",
             exactModelPill: "Model or equivalent guaranteed (free upgrade)",
-            airportDeliveryPill: "Free airport & riad delivery",
+            airportDeliveryPill: "Free airport & riad delivery (100 MAD value)",
             freeCancellationPill: "Free cancellation up to 48h",
         },
         catalog: {
@@ -460,6 +604,78 @@ export const TRANSLATIONS: Record<
             stripeSecure: "Secure payment by Stripe",
             whatsappAssist: "24/7 WhatsApp Support",
         },
+        pricingTiers: {
+            includedPerksTitle: "Included as Standard in All Our Rates",
+            perkDelivery: "Free Airport & Riad/Hotel Delivery (100 MAD value included)",
+            perkMileage: "Unlimited Mileage Included",
+            perkModel: "Guaranteed Model or Free Upgrade",
+            perkSupport: "24/7 VIP WhatsApp Concierge & Support",
+            standardTitle: "Standard Formula",
+            standardBadge: "Value Rate",
+            standardDesc: "Low €300 deposit (cash or debit card). Returned in hand upon checkout under Sealed Envelope protocol. Zero €1,500 bank hold.",
+            standardDepositLabel: "€300 Deposit (returned at checkout)",
+            serenityTitle: "Serenity Pack €0 Excess",
+            serenityBadge: "Peace of Mind (Recommended)",
+            serenityDesc: "Strict €0 deposit required. Zero deductible for scratches, glass, and tires. 2-minute express key return.",
+            serenityDepositLabel: "€0 Deposit (Zero card hold)",
+            switchStandard: "Choose Standard Formula (€300 deposit)",
+            switchSerenity: "Enable Serenity Pack (€0 deposit)",
+        },
+        voucher: {
+            confirmedBadge: "Booking Confirmed • Guaranteed Model",
+            voucherTitle: "Rental Voucher",
+            downloadPdf: "Download PDF",
+            print: "Print",
+            sosButton: "SOS 24/7",
+            emailSentTo: "Booking voucher sent to",
+            resendEmail: "Resend confirmation email",
+            resendSuccess: "Email resent successfully!",
+            statusTitle: "Booking Status",
+            statusGuaranteed: "Vehicle Guaranteed & Ready for Delivery",
+            statusCheckedIn: "Active Rental • Keys Handed to Customer",
+            statusCompleted: "Rental Completed • Deposit Returned Successfully",
+            statusCancelled: "Booking Cancelled",
+            folderRef: "Booking Reference",
+            pickup: "Pick-up",
+            returnDropoff: "Drop-off",
+            meetingPointTitle: "Exact meeting point:",
+            customsAlertPrompt: "Luggage collected? Notify your coordinator in 1 click:",
+            customsAlertBtn: "I just exited customs",
+            accountingTitle: "Transparent Financial Breakdown (Zero Hidden Fees)",
+            depositPaidOnline: "Deposit Paid Online",
+            collectedByStripe: "✓ Secured via Stripe",
+            balanceDueOnSite: "Balance Due on Arrival",
+            balancePaymentMethods: "Cash (EUR/MAD) or Card",
+            depositAtDelivery: "Security Deposit at Delivery",
+            depositZeroActive: "€0 (Serenity Pack active)",
+            depositReturnedAtCheckout: "Returned immediately upon checkout",
+            optionsIncluded: "Included options:",
+            progressTitle: "Express Pre-Check-in (80% completed)",
+            progressSubtitle: "Only one step left to collect your keys in 60 seconds with zero counter queue!",
+            kycTitle: "Driver's License & ID",
+            kycDesc: "Snap a photo of your driver's license to pre-print your contract and collect your car in under 60 seconds at the parking.",
+            kycUploadBtn: "Take photo / Upload license",
+            kycUploading: "Encrypting and verifying...",
+            kycUploadedSuccess: "✓ License registered! Your contract is pre-printed for instant car collection.",
+            kycWhatsappBtn: "Send license via WhatsApp to Coordinator",
+            kycPrivacyNote: "End-to-end encrypted and automatically deleted 48 hours after rental completion.",
+            flightTitle: "Live Flight Tracking & Delay Guarantee",
+            flightSubtitle: "Flight:",
+            flightRadarStatus: "Airport radar tracking:",
+            flightRadarOnTime: "On Time • Landing monitored on FlightRadar24",
+            flightGuaranteeDesc: "Our local team continuously tracks your flight on FlightRadar24. If your flight is delayed by 1h, 2h, or 4h, your car remains guaranteed with no extra fee.",
+            cautionProtocolTitle: "Transparent Deposit Protocol & Zero Dispute",
+            cautionZeroDesc: "You are 100% protected by the ZwinCar Serenity Pack. Zero deposit required upon arrival. 2-minute key return.",
+            cautionStandardDesc: "How does the €300 deposit work at key delivery?",
+            sealedEnvelope1: "1. Sealed Envelope: Your €300 (cash or dirhams) is placed inside a ZwinCar envelope, sealed and co-signed on the flap.",
+            sealedEnvelope2: "2. Zero Bank Charge: The envelope is kept sealed inside the agency safe. Nothing is charged to your card.",
+            sealedEnvelope3: "3. Immediate Hand-over: At checkout, after a quick 2-min vehicle walk-around, the sealed envelope is returned intact in your hands.",
+            esimTitle: "Morocco eSIM 20 GB 5G (Maroc Telecom / Orange Network)",
+            esimSubtitle: "Instant high-speed mobile data upon landing on the tarmac",
+            esimActive: "Activated & Ready",
+            esimQrTitle: "Your Morocco eSIM Activation QR Code",
+            esimQrDesc: "Scan this QR code in your phone settings: Settings > Cellular > Add eSIM.",
+        },
     },
     es: {
         nav: {
@@ -490,7 +706,7 @@ export const TRANSLATIONS: Record<
             searchingBtn: "Buscando coches disponibles...",
             noDepositPill: "Sin retención de 1.500 € en tarjeta",
             exactModelPill: "Modelo o equivalente garantizado (mejora gratis)",
-            airportDeliveryPill: "Entrega gratuita en aeropuerto y riad",
+            airportDeliveryPill: "Entrega gratis en aeropuerto y riad (Valor 100 DH)",
             freeCancellationPill: "Cancelación gratuita hasta 48h",
         },
         catalog: {
@@ -608,6 +824,78 @@ export const TRANSLATIONS: Record<
             stripeSecure: "Pago seguro con Stripe",
             whatsappAssist: "Asistencia WhatsApp 24/7",
         },
+        pricingTiers: {
+            includedPerksTitle: "Incluido de Serie en Todas Nuestras Tarifas",
+            perkDelivery: "Entrega Gratis en Aeropuerto y Riad/Hotel (Valor 100 DH incluido)",
+            perkMileage: "Kilometraje Ilimitado Incluido",
+            perkModel: "Modelo Garantizado o Mejora Gratuita (Upgrade)",
+            perkSupport: "Conserjería VIP y Asistencia WhatsApp 24/7",
+            standardTitle: "Fórmula Estándar",
+            standardBadge: "Tarifa Económica",
+            standardDesc: "Fianza reducida de 300 € (efectivo o tarjeta de débito). Devuelta en mano al regreso bajo protocolo de Sobre Sellado. Sin retención de 1.500 €.",
+            standardDepositLabel: "Fianza 300 € (devuelta a la entrega)",
+            serenityTitle: "Pack Serenidad 0 € Franquicia",
+            serenityBadge: "Máxima Tranquilidad (Recomendado)",
+            serenityDesc: "Fianza de 0 € absoluta. Cobertura total de arañazos, lunas y neumáticos. Devolución de llaves en 2 minutos sin colas.",
+            serenityDepositLabel: "Fianza 0 € (Sin retención bancaria)",
+            switchStandard: "Elegir Fórmula Estándar (Fianza 300€)",
+            switchSerenity: "Activar Pack Serenidad (0€ Fianza)",
+        },
+        voucher: {
+            confirmedBadge: "Reserva Confirmada • Modelo Garantizado",
+            voucherTitle: "Bono de Alquiler (Voucher)",
+            downloadPdf: "Descargar en PDF",
+            print: "Imprimir",
+            sosButton: "SOS 24/7",
+            emailSentTo: "Bono de reserva enviado a",
+            resendEmail: "Reenviar correo de confirmación",
+            resendSuccess: "¡Correo reenviado con éxito!",
+            statusTitle: "Estado de la reserva",
+            statusGuaranteed: "Vehículo Garantizado y Listo para Entrega",
+            statusCheckedIn: "Alquiler en Curso • Llaves entregadas al cliente",
+            statusCompleted: "Alquiler Finalizado • Fianza devuelta con éxito",
+            statusCancelled: "Reserva cancelada",
+            folderRef: "Referencia de Reserva",
+            pickup: "Recogida",
+            returnDropoff: "Devolución",
+            meetingPointTitle: "Punto de encuentro exacto :",
+            customsAlertPrompt: "¿Equipaje recogido? Avise a su agente en 1 clic :",
+            customsAlertBtn: "Acabo de salir de la aduana",
+            accountingTitle: "Desglose Financiero Transparente (Cero Costes Ocultos)",
+            depositPaidOnline: "Anticipo Pagado Online",
+            collectedByStripe: "✓ Procesado por Stripe",
+            balanceDueOnSite: "Saldo Restante a la Llegada",
+            balancePaymentMethods: "Efectivo (EUR/MAD) o Tarjeta",
+            depositAtDelivery: "Fianza a la Entrega de Llaves",
+            depositZeroActive: "0 € (Pack Serenidad activo)",
+            depositReturnedAtCheckout: "Devuelta inmediatamente a la entrega",
+            optionsIncluded: "Opciones incluidas :",
+            progressTitle: "Pre-Check-in Exprés (80% completado)",
+            progressSubtitle: "¡Solo un paso más para recoger sus llaves en 60 segundos sin pasar por ventanilla!",
+            kycTitle: "Permiso de Conducir y Documento de Identidad",
+            kycDesc: "Fotografíe su permiso para preimprimir el contrato y recoger su coche en menos de 60 segundos en el parking.",
+            kycUploadBtn: "Tomar foto / Subir permiso",
+            kycUploading: "Cifrado y verificación segura...",
+            kycUploadedSuccess: "✓ ¡Permiso registrado! Su contrato está preimpreso para una entrega inmediata.",
+            kycWhatsappBtn: "Enviar permiso por WhatsApp a la Agencia",
+            kycPrivacyNote: "Datos cifrados de extremo a extremo y eliminados automáticamente 48h tras el alquiler.",
+            flightTitle: "Seguimiento de Vuelo en Directo y Garantía de Retraso",
+            flightSubtitle: "Vuelo :",
+            flightRadarStatus: "Estado radar del aeropuerto :",
+            flightRadarOnTime: "A tiempo • Aterrizaje supervisado en FlightRadar24",
+            flightGuaranteeDesc: "Nuestro equipo local monitoriza su vuelo en directo en FlightRadar24. En caso de retraso de 1h, 2h o 4h, su vehículo queda garantizado sin recargo alguno.",
+            cautionProtocolTitle: "Protocolo de Fianza Transparente y Cero Disputas",
+            cautionZeroDesc: "Está 100% cubierto por el Pack Serenidad ZwinCar. No se le exigirá fianza en el parking. Devolución en 2 minutos.",
+            cautionStandardDesc: "¿Cómo funciona la fianza de 300 € a la entrega de llaves ?",
+            sealedEnvelope1: "1. Sobre Sellado : Sus 300 € (efectivo o dirhams) se colocan en un sobre ZwinCar precintado y firmado en la solapa.",
+            sealedEnvelope2: "2. Cero Cobro Bancario : El sobre queda precintado en la caja fuerte de la agencia. Nada se carga en su tarjeta.",
+            sealedEnvelope3: "3. Devolución Inmediata : A la devolución, tras revisar el coche (2 min), el sobre precintado se le devuelve intacto en mano.",
+            esimTitle: "eSIM Marruecos 20 GB 5G (Red Maroc Telecom / Orange)",
+            esimSubtitle: "Conexión de datos de alta velocidad inmediata al aterrizar",
+            esimActive: "Activada y Lista",
+            esimQrTitle: "Su Código QR de activación eSIM Marruecos",
+            esimQrDesc: "Escanee este código QR en los ajustes de su teléfono : Ajustes > Datos móviles > Añadir eSIM.",
+        },
     },
     nl: {
         nav: {
@@ -638,7 +926,7 @@ export const TRANSLATIONS: Record<
             searchingBtn: "Beschikbaarheid controleren...",
             noDepositPill: "Geen €1.500 creditcard blokkade",
             exactModelPill: "Model of gelijkwaardig gegarandeerd (gratis upgrade)",
-            airportDeliveryPill: "Gratis levering op luchthaven & riad",
+            airportDeliveryPill: "Gratis bezorging luchthaven & riad (Waarde 100 DH)",
             freeCancellationPill: "Gratis annuleren tot 48 uur",
         },
         catalog: {
@@ -755,6 +1043,78 @@ export const TRANSLATIONS: Record<
             rights: "ZwinCar.com • Alle rechten voorbehouden.",
             stripeSecure: "Veilig betalen via Stripe",
             whatsappAssist: "24/7 WhatsApp Klantenservice",
+        },
+        pricingTiers: {
+            includedPerksTitle: "Standaard Inbegrepen bij Al Onze Tarieven",
+            perkDelivery: "Gratis Levering Luchthaven & Riad/Hotel (Waarde 100 DH inbegrepen)",
+            perkMileage: "Onbeperkt Aantal Kilometers Inbegrepen",
+            perkModel: "Gegarandeerd Model of Gratis Upgrade",
+            perkSupport: "24/7 VIP WhatsApp Conciërge & Hulp",
+            standardTitle: "Standaard Formule",
+            standardBadge: "Voordelig Tarief",
+            standardDesc: "Lage borg van € 300 (contant of pinpas). Ter plaatse direct contant geretourneerd onder Verzegelde Envelop protocol. Geen blokkade van € 1.500.",
+            standardDepositLabel: "Borg € 300 (geretourneerd bij inlevering)",
+            serenityTitle: "Serenity Pakket €0 Eigen Risico",
+            serenityBadge: "Zorgeloos Reizen (Aanbevolen)",
+            serenityDesc: "Strikte borg van € 0. Volledige dekking voor krassen, glasbreuk en banden. Sleutels inleveren in 2 minuten zonder wachttijd.",
+            serenityDepositLabel: "Borg € 0 (Geen creditcardblokkade)",
+            switchStandard: "Kies Standaard Formule (€ 300 borg)",
+            switchSerenity: "Activeer Serenity Pakket (€ 0 borg)",
+        },
+        voucher: {
+            confirmedBadge: "Reservering Bevestigd • Gegarandeerd Model",
+            voucherTitle: "Huurvoucher",
+            downloadPdf: "Download PDF",
+            print: "Afdrukken",
+            sosButton: "SOS 24/7",
+            emailSentTo: "Reserveringsvoucher verzonden naar",
+            resendEmail: "Bevestigingsmail opnieuw verzenden",
+            resendSuccess: "E-mail succesvol opnieuw verzonden!",
+            statusTitle: "Status van het dossier",
+            statusGuaranteed: "Voertuig Gegarandeerd & Klaar voor Levering",
+            statusCheckedIn: "Lopende Huur • Sleutels overhandigd aan klant",
+            statusCompleted: "Huur Afgerond • Borg succesvol geretourneerd",
+            statusCancelled: "Dossier geannuleerd",
+            folderRef: "Dossierreferentie",
+            pickup: "Ophalen",
+            returnDropoff: "Inleveren",
+            meetingPointTitle: "Exact ontmoetingspunt :",
+            customsAlertPrompt: "Bagage opgehaald? Waarschuw uw contactpersoon in 1 klik :",
+            customsAlertBtn: "Ik ben zojuist door de douane gekomen",
+            accountingTitle: "Transparant Financieel Overzicht (Geen Verborgen Kosten)",
+            depositPaidOnline: "Aanbetaling Online Voldaan",
+            collectedByStripe: "✓ Beveiligd via Stripe",
+            balanceDueOnSite: "Resterend Saldo bij Aankomst",
+            balancePaymentMethods: "Contant (EUR/MAD) of Pinpas/Creditcard",
+            depositAtDelivery: "Borg bij Sleuteloverdracht",
+            depositZeroActive: "€ 0 (Serenity Pakket actief)",
+            depositReturnedAtCheckout: "Direct geretourneerd bij inlevering",
+            optionsIncluded: "Inbegrepen opties :",
+            progressTitle: "Express Pre-Check-in (80% voltooid)",
+            progressSubtitle: "Nog slechts één stap om uw sleutels binnen 60 seconden op te halen zonder balie-wachtrij!",
+            kycTitle: "Rijbewijs & Identiteitsbewijs",
+            kycDesc: "Maak een foto van uw rijbewijs om het contract vooraf in te vullen en uw wagen binnen 60 seconden op de parking mee te nemen.",
+            kycUploadBtn: "Foto maken / Rijbewijs uploaden",
+            kycUploading: "Beveiligde versleuteling en verificatie...",
+            kycUploadedSuccess: "✓ Rijbewijs geregistreerd! Uw contract is vooraf ingevuld voor directe sleuteloverdracht.",
+            kycWhatsappBtn: "Rijbewijs via WhatsApp sturen naar Verhuurder",
+            kycPrivacyNote: "End-to-end versleuteld en automatisch verwijderd 48 uur na afloop van de huur.",
+            flightTitle: "Live Vluchtvolging & Vertragingsgarantie",
+            flightSubtitle: "Vlucht :",
+            flightRadarStatus: "Luchthaven radarstatus :",
+            flightRadarOnTime: "Op tijd • Landing gevolgd op FlightRadar24",
+            flightGuaranteeDesc: "Ons lokale team volgt uw vlucht continu op FlightRadar24. Bij 1u, 2u of 4u vertraging blijft uw wagen gegarandeerd zonder extra kosten.",
+            cautionProtocolTitle: "Transparant Borgprotocol & Nul Geschillen",
+            cautionZeroDesc: "U bent 100% gedekt door het ZwinCar Serenity Pakket. Geen enkele borg vereist op de parking. Inleveren in 2 minuten.",
+            cautionStandardDesc: "Hoe werkt de borg van € 300 bij sleuteloverdracht ?",
+            sealedEnvelope1: "1. Verzegelde Envelop : Uw € 300 (contant of dirhams) wordt in een ZwinCar-envelop geplaatst, verzegeld en medeondertekend.",
+            sealedEnvelope2: "2. Geen Bankafschrijving : De envelop blijft verzegeld in de kluis van de verhuurder. Er wordt niets van uw rekening afgeschreven.",
+            sealedEnvelope3: "3. Directe Teruggave : Bij inlevering, na een korte controle (2 min), ontvangt u de verzegelde envelop direct intact terug in eigen hand.",
+            esimTitle: "Marokko eSIM 20 GB 5G (Maroc Telecom / Orange Netwerk)",
+            esimSubtitle: "Directe supersnelle mobiele data zodra u landt op het asfalt",
+            esimActive: "Geactiveerd & Klaar",
+            esimQrTitle: "Uw Marokko eSIM Activatie QR-code",
+            esimQrDesc: "Scan deze QR-code in uw telefooninstellingen : Instellingen > Mobiel netwerk > eSIM toevoegen.",
         },
     },
 };

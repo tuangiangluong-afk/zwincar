@@ -260,12 +260,12 @@ export default function VehicleCatalog({
 
                         const categoryLabel = vehicle.category;
                         const depositBadge = activeLocale === "en"
-                            ? "Deposit €0 or €300"
+                            ? "Deposit €300 or €0 (Zero Excess)"
                             : activeLocale === "es"
-                            ? "Fianza 0€ o 300€"
+                            ? "Fianza 300€ o 0€ (Sin Franquicia)"
                             : activeLocale === "nl"
-                            ? "Borg €0 of €300"
-                            : "Caution 0€ ou 300€";
+                            ? "Borg €300 of €0 (Geen Eigen Risico)"
+                            : "Caution 300€ ou 0€ (Franchise Zéro)";
 
                         const seatsLabel = `${vehicle.seats} ${activeLocale === "en" ? "seats" : activeLocale === "es" ? "pl." : activeLocale === "nl" ? "zitpl." : "pl."}`;
                         const transLabel = vehicle.transmission === "Automatique" ? "Auto." : (activeLocale === "en" ? "Manual" : activeLocale === "es" ? "Man." : activeLocale === "nl" ? "Hand." : "Manu.");

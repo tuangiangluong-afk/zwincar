@@ -106,6 +106,7 @@ export function CGVClientView() {
                         <div className="rounded-3xl border border-[#E7DFD5] bg-white p-6 sm:p-8 shadow-xs">
                             <h2 className="mb-3 text-lg font-bold text-slate-900">3. Politique de Caution & Transparence Tarifaire</h2>
                             <ul className="text-xs sm:text-sm text-slate-600 space-y-2.5">
+                                <li><strong>Services et Avantages Inclus d&apos;Office :</strong> Tous les tarifs affichés sur ZwinCar.com incluent automatiquement la livraison et restitution offertes à l&apos;aéroport ou à votre riad/hôtel (valeur de 100 MAD / 10 € incluse dans le tarif), le kilométrage illimité, le modèle garanti ou surclassement offert, et l&apos;assistance VIP WhatsApp 24/7.</li>
                                 <li><strong>Formule Franchise Zéro (Pack Sérénité) :</strong> Caution de 0 € bloquée sur carte bancaire. Aucune empreinte de 1 500 € exigée à l&apos;arrivée. Rachat total de franchise en cas d&apos;accrochage ou dommages carrosserie.</li>
                                 <li><strong>Formule Standard :</strong> Caution réduite plafonnée à 300 € (ou équivalent en dirhams 3 000 MAD), payable par carte de débit ou en espèces directement à l&apos;agence locale, intégralement restituée lors du check-out conforme du véhicule.</li>
                                 <li><strong>Règlement du Solde Restant :</strong> L&apos;acompte réglé en ligne via Stripe bloque la réservation. Le solde restant dû (80% du tarif loueur) s&apos;effectue directement auprès de l&apos;agent local lors de la prise en charge (espèces ou carte bancaire acceptées sans frais cachés).</li>
@@ -184,6 +185,7 @@ export function CGVClientView() {
                         <div className="rounded-3xl border border-[#E7DFD5] bg-white p-6 sm:p-8 shadow-xs">
                             <h2 className="mb-3 text-lg font-bold text-slate-900">3. Deposit Policy & Price Transparency</h2>
                             <ul className="text-xs sm:text-sm text-slate-600 space-y-2.5">
+                                <li><strong>Included Benefits as Standard:</strong> All rates displayed on ZwinCar.com systematically include free airport & riad/hotel delivery and return (100 MAD / €10 value included in the daily rate), unlimited mileage, guaranteed model or free upgrade, and 24/7 VIP WhatsApp support.</li>
                                 <li><strong>Zero-Excess Option (Serenity Pack):</strong> Strictly €0 deposit held on credit card. No €1,500 bank freeze required upon arrival. Complete damage & scratch waiver.</li>
                                 <li><strong>Standard Option:</strong> Low deposit capped at €300 (or 3,000 MAD), payable by debit card or cash, fully returned at checkout upon return of vehicle.</li>
                                 <li><strong>Remaining Balance:</strong> The online deposit via Stripe secures the booking. The remaining 80% balance is paid directly to the local agent upon vehicle collection (cash or card accepted).</li>
@@ -262,6 +264,7 @@ export function CGVClientView() {
                         <div className="rounded-3xl border border-[#E7DFD5] bg-white p-6 sm:p-8 shadow-xs">
                             <h2 className="mb-3 text-lg font-bold text-slate-900">3. Política de Fianza y Transparencia</h2>
                             <ul className="text-xs sm:text-sm text-slate-600 space-y-2.5">
+                                <li><strong>Ventajas Incluidas de Serie:</strong> Todas las tarifas de ZwinCar.com incluyen sistemáticamente la entrega y devolución gratuitas en el aeropuerto o riad/hotel (valor de 100 MAD / 10 € incluido en la tarifa diaria), kilometraje ilimitado, modelo garantizado o mejora gratuita (upgrade), y asistencia VIP WhatsApp 24/7.</li>
                                 <li><strong>Opción Cero Fianza:</strong> Fianza de 0 € en tarjeta. Sin retención bancaria de 1.500 € a la llegada. Cobertura total de daños.</li>
                                 <li><strong>Opción Estándar:</strong> Fianza reducida de 300 € (o 3.000 MAD), en tarjeta de débito o efectivo, reembolsada íntegramente a la devolución.</li>
                                 <li><strong>Saldo restante:</strong> El anticipo abonado online asegura la reserva; el saldo restante (80%) se abona directamente al socio local en la entrega.</li>
@@ -332,6 +335,7 @@ export function CGVClientView() {
                         <div className="rounded-3xl border border-[#E7DFD5] bg-white p-6 sm:p-8 shadow-xs">
                             <h2 className="mb-3 text-lg font-bold text-slate-900">3. Borg & Prijstransparantie</h2>
                             <ul className="text-xs sm:text-sm text-slate-600 space-y-2.5">
+                                <li><strong>Standaard Inbegrepen Voordelen:</strong> Alle vermelde tarieven op ZwinCar.com zijn inclusief gratis levering en inlevering op de luchthaven of riad/hotel (waarde van 100 MAD / € 10 verwerkt in de dagprijs), onbeperkt aantal kilometers, gegarandeerd model of gratis upgrade, en 24/7 VIP WhatsApp klantenservice.</li>
                                 <li><strong>Geen Eigen Risico Optie:</strong> Strikte borg van € 0 op creditcard. Geen blokkade van € 1.500 bij aankomst.</li>
                                 <li><strong>Standaard Optie:</strong> Verlaagde borg van € 300 (of 3.000 MAD), betaalbaar per betaalpas of contant, volledig geretourneerd bij inlevering.</li>
                                 <li><strong>Restbetaling:</strong> De online aanbetaling blokkeert de boeking; het resterende saldo (80%) wordt direct voldaan aan de lokale partner bij overdracht.</li>

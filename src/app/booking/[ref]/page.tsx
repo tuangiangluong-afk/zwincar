@@ -30,6 +30,9 @@ import {
     Lock,
     Compass,
     Palmtree,
+    Check,
+    Camera,
+    Edit3,
 } from "lucide-react";
 import Header from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -38,6 +41,7 @@ import BookingManager from "@/components/BookingManager";
 import { MOROCCAN_HUBS, VEHICLE_FLEET } from "@/lib/morocco-data";
 import { trackPurchase } from "@/lib/gtm";
 import { buildAffiliateRentalUrl, buildAffiliateEsimUrl } from "@/lib/affiliate";
+import { Locale, getTranslation, SUPPORTED_LOCALES, LOCALE_LABELS } from "@/lib/i18n";
 
 const HUB_EXCURSIONS: Record<string, { title: string; duration: string; tag: string; viatorQuery: string }[]> = {
     marrakech: [
@@ -74,12 +78,70 @@ export default function BookingVoucherPage() {
     const searchParams = useSearchParams();
     const ref = (params?.ref as string) || "ZW-78421";
 
-    const [bookingData, setBookingData] = useState<any>(null);
+    const defaultVehicle = VEHICLE_FLEET[0];
+    const defaultHub = MOROCCAN_HUBS[0];
+    const initialBooking = {
+        ref,
+        createdAt: "2026-11-07T12:00:00.000Z",
+        client: {
+            fullName: "Thomas Martin",
+            phone: "+33 6 12 34 56 78",
+            email: "thomas.martin@gmail.com",
+            flightNumber: "FR2104 (Paris Beauvais)",
+            notes: "Siège bébé souhaité si possible",
+        },
+        rental: {
+            vehicleId: defaultVehicle.id,
+            vehicleName: defaultVehicle.name,
+            vehicleCategory: defaultVehicle.category,
+            vehicleImage: defaultVehicle.image,
+            pickupHub: defaultHub.slug,
+            hubName: defaultHub.name,
+            airportName: defaultHub.airportName,
+            airportCode: defaultHub.airportCode,
+            meetingPointDetail: defaultHub.meetingPointDetail,
+            pickupDate: "2026-11-12",
+            returnDate: "2026-11-19",
+            days: 7,
+            fuelPolicy: defaultVehicle.fuelPolicy,
+            depositPolicy: defaultVehicle.depositPolicy,
+        },
+        financials: {
+            currency: "EUR",
+            dailyPriceEur: defaultVehicle.dailyPriceEur,
+            dailyPriceMad: defaultVehicle.dailyPriceMad,
+            vendorUpsellsEur: 0,
+            vendorUpsellsMad: 0,
+            platformUpsellsEur: 19,
+            platformUpsellsMad: 210,
+            depositAcompteEur: 51,
+            depositAcompteMad: 560,
+            balanceOnSiteEur: 129,
+            balanceOnSiteMad: 1420,
+            selectedUpsells: ["Pack Sérénité 0€ Franchise", "eSIM 20 Go Data"],
+        },
+        status: "confirmed",
+    };
+
+    const [bookingData, setBookingData] = useState<any>(initialBooking);
     const [liveStatus, setLiveStatus] = useState<string>("confirmed");
     const [kycUploaded, setKycUploaded] = useState(false);
     const [kycUploading, setKycUploading] = useState(false);
+    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
     const [sosModalOpen, setSosModalOpen] = useState(false);
     const [emailResent, setEmailResent] = useState(false);
+
+    // Internationalization state
+    const urlLang = searchParams.get("lang") || searchParams.get("locale");
+    const [locale, setLocale] = useState<Locale>(
+        SUPPORTED_LOCALES.includes(urlLang as Locale) ? (urlLang as Locale) : "fr"
+    );
+    const t = getTranslation(locale);
+
+    // Flight number edit state
+    const [flightNumberInput, setFlightNumberInput] = useState(initialBooking.client.flightNumber);
+    const [isEditingFlight, setIsEditingFlight] = useState(false);
+    const [flightSaved, setFlightSaved] = useState(false);
 
     const handleResendEmail = async () => {
         if (!bookingData) return;
@@ -105,7 +167,7 @@ export default function BookingVoucherPage() {
                     hasFranchiseZero: bookingData.financials.selectedUpsells?.some((u: string) =>
                         u.toLowerCase().includes("franchise")
                     ),
-                    locale: bookingData.locale || "fr",
+                    locale: locale || "fr",
                 }),
             });
             setEmailResent(true);
@@ -132,14 +194,20 @@ export default function BookingVoucherPage() {
                         const data = await res.json();
                         if (data?.voucher) {
                             setBookingData(data.voucher);
+                            if (data.voucher.locale && SUPPORTED_LOCALES.includes(data.voucher.locale as Locale) && !urlLang) {
+                                setLocale(data.voucher.locale as Locale);
+                            }
+                            if (data.voucher.client?.flightNumber) {
+                                setFlightNumberInput(data.voucher.client.flightNumber);
+                            }
                             if (data.booking?.status) {
                                 setLiveStatus(data.booking.status);
                             }
-                            if (data.booking?.kyc?.verified) {
+                            if (data.booking?.kyc?.verified || data.booking?.kyc?.uploadedAt) {
                                 setKycUploaded(true);
                             }
 
-                            // Tracking e-commerce GA4 / GTM (Achat confirmé & Panier Moyen)
+                            // Tracking e-commerce GA4 / GTM
                             if (data.booking?.status === "confirmed" || data.booking?.status === "checked_in" || data.booking?.status === "completed") {
                                 trackPurchase({
                                     transactionId: data.voucher.ref,
@@ -167,66 +235,39 @@ export default function BookingVoucherPage() {
                 if (typeof window !== "undefined") {
                     const stored = localStorage.getItem(`zwincar_booking_${ref}`);
                     if (stored) {
-                        setBookingData(JSON.parse(stored));
+                        const parsed = JSON.parse(stored);
+                        setBookingData(parsed);
+                        if (parsed.locale && SUPPORTED_LOCALES.includes(parsed.locale as Locale) && !urlLang) {
+                            setLocale(parsed.locale as Locale);
+                        }
+                        if (parsed.client?.flightNumber) {
+                            setFlightNumberInput(parsed.client.flightNumber);
+                        }
                         return;
                     }
                 }
             } catch {
                 // fallback
             }
-
-            // Default mock if accessed directly
-            const defaultVehicle = VEHICLE_FLEET[0];
-            const defaultHub = MOROCCAN_HUBS[0];
-            setBookingData({
-                ref,
-                createdAt: new Date().toISOString(),
-                client: {
-                    fullName: "Thomas Martin",
-                    phone: "+33 6 12 34 56 78",
-                    email: "thomas.martin@gmail.com",
-                    flightNumber: "FR2104 (Paris Beauvais)",
-                    notes: "Siège bébé souhaité si possible",
-                },
-                rental: {
-                    vehicleId: defaultVehicle.id,
-                    vehicleName: defaultVehicle.name,
-                    vehicleCategory: defaultVehicle.category,
-                    vehicleImage: defaultVehicle.image,
-                    pickupHub: defaultHub.slug,
-                    hubName: defaultHub.name,
-                    airportName: defaultHub.airportName,
-                    airportCode: defaultHub.airportCode,
-                    meetingPointDetail: defaultHub.meetingPointDetail,
-                    pickupDate: "2026-11-12",
-                    returnDate: "2026-11-19",
-                    days: 7,
-                    fuelPolicy: defaultVehicle.fuelPolicy,
-                    depositPolicy: defaultVehicle.depositPolicy,
-                },
-                financials: {
-                    currency: "EUR",
-                    dailyPriceEur: defaultVehicle.dailyPriceEur,
-                    dailyPriceMad: defaultVehicle.dailyPriceMad,
-                    vendorUpsellsEur: 0,
-                    vendorUpsellsMad: 0,
-                    platformUpsellsEur: 19,
-                    platformUpsellsMad: 210,
-                    depositAcompteEur: 51,
-                    depositAcompteMad: 560,
-                    balanceOnSiteEur: 129,
-                    balanceOnSiteMad: 1420,
-                    selectedUpsells: ["Pack Sérénité 0€ Franchise", "eSIM 20 Go Data"],
-                },
-                status: "confirmed",
-            });
         }
 
         fetchRealBooking();
-    }, [ref, searchParams]);
+    }, [ref, searchParams, urlLang]);
 
     const handleKycUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
+            const file = e.target.files[0];
+            // Immediate client-side thumbnail preview
+            try {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    setPreviewUrl(reader.result as string);
+                };
+                reader.readAsDataURL(file);
+            } catch {
+                // ignore
+            }
+
             setKycUploading(true);
             const token =
                 searchParams.get("t") ||
@@ -235,7 +276,7 @@ export default function BookingVoucherPage() {
                     : "");
 
             try {
-                const res = await fetch(`/api/bookings/${ref}/kyc`, {
+                await fetch(`/api/bookings/${ref}/kyc`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
@@ -244,17 +285,35 @@ export default function BookingVoucherPage() {
                         driverAge: 28,
                     }),
                 });
-                if (res.ok) {
-                    setKycUploaded(true);
-                } else {
-                    setKycUploaded(true);
-                }
+                setKycUploaded(true);
             } catch {
                 setKycUploaded(true);
             } finally {
                 setKycUploading(false);
             }
         }
+    };
+
+    const handleSaveFlightNumber = () => {
+        if (!bookingData) return;
+        const updated = {
+            ...bookingData,
+            client: {
+                ...bookingData.client,
+                flightNumber: flightNumberInput,
+            },
+        };
+        setBookingData(updated);
+        try {
+            if (typeof window !== "undefined") {
+                localStorage.setItem(`zwincar_booking_${ref}`, JSON.stringify(updated));
+            }
+        } catch {
+            // ignore
+        }
+        setIsEditingFlight(false);
+        setFlightSaved(true);
+        setTimeout(() => setFlightSaved(false), 2500);
     };
 
     if (!bookingData) {
@@ -266,6 +325,29 @@ export default function BookingVoucherPage() {
     }
 
     const { client, rental, financials } = bookingData;
+    const hasFranchiseZero = financials?.selectedUpsells?.some(
+        (u: string) => u.toLowerCase().includes("franchise") || u.toLowerCase().includes("sérénité") || u === "franchise-zero"
+    );
+
+    // Pre-filled WhatsApp KYC message localized
+    const kycWhatsappMessage =
+        locale === "en"
+            ? `Hello, here is my driver's license photo for ZwinCar express pick-up booking #${ref} (${rental.vehicleName}) - ${client.fullName}`
+            : locale === "es"
+            ? `Hola, adjunto la foto de mi permiso de conducir para la entrega exprés de la reserva ZwinCar #${ref} (${rental.vehicleName}) - ${client.fullName}`
+            : locale === "nl"
+            ? `Hallo, hier is een foto van mijn rijbewijs voor de express afhaling van ZwinCar boeking #${ref} (${rental.vehicleName}) - ${client.fullName}`
+            : `Salam, voici la photo de mon permis de conduire pour la remise express réservation ZwinCar #${ref} (${rental.vehicleName}) - ${client.fullName}`;
+
+    // Pre-filled WhatsApp customs message localized
+    const customsWhatsappMessage =
+        locale === "en"
+            ? `Hello Youssef, I am ${client.fullName} (ZwinCar booking #${ref}). I just passed customs at ${rental.hubName} airport. Heading towards the meeting point.`
+            : locale === "es"
+            ? `Hola Youssef, soy ${client.fullName} (reserva ZwinCar #${ref}). Acabo de cruzar la aduana en el aeropuerto de ${rental.hubName}. Me dirijo al punto de encuentro.`
+            : locale === "nl"
+            ? `Hallo Youssef, ik ben ${client.fullName} (ZwinCar boeking #${ref}). Ik ben zojuist door de douane gekomen op de luchthaven van ${rental.hubName}. Ik loop nu naar het ontmoetingspunt.`
+            : `Salam Youssef, je suis ${client.fullName} (réservation ZwinCar #${ref}). Je viens de franchir la douane à l'aéroport de ${rental.hubName}. Je me dirige vers le point de rencontre.`;
 
     return (
         <div className="min-h-screen bg-[#FAF7F2] text-slate-900 flex flex-col font-sans">
@@ -274,7 +356,7 @@ export default function BookingVoucherPage() {
             </div>
 
             <main className="flex-1 pb-20 print:p-0 print:pb-0">
-                {/* Top Success Banner */}
+                {/* Top Success Banner with Language Selector */}
                 <div className="bg-[#12161E] text-white py-8 border-b border-slate-800 print:hidden">
                     <div className="container mx-auto px-4 max-w-4xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div className="flex items-center gap-3.5">
@@ -283,44 +365,62 @@ export default function BookingVoucherPage() {
                             </div>
                             <div>
                                 <div className="inline-flex items-center gap-2 text-xs uppercase font-bold tracking-wider text-emerald-400">
-                                    <span>Réservation Confirmée • Modèle Garanti</span>
+                                    <span>{t.voucher.confirmedBadge}</span>
                                 </div>
                                 <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white">
-                                    Voucher de Location #{ref}
+                                    {t.voucher.voucherTitle} #{ref}
                                 </h1>
                             </div>
                         </div>
 
-                        {/* Download PDF, Print & SOS buttons */}
-                        <div className="flex items-center gap-2.5">
+                        {/* Language Selector + Download PDF, Print & SOS buttons */}
+                        <div className="flex flex-wrap items-center gap-2">
+                            {/* Multilingual Switcher Pill */}
+                            <div className="inline-flex items-center bg-white/10 rounded-xl p-0.5 border border-white/10">
+                                {SUPPORTED_LOCALES.map((l) => (
+                                    <button
+                                        key={l}
+                                        type="button"
+                                        onClick={() => setLocale(l)}
+                                        className={`px-2 py-1 rounded-lg text-xs font-bold transition cursor-pointer flex items-center gap-1 ${
+                                            locale === l ? "bg-[#C9572C] text-white shadow-xs" : "text-slate-300 hover:text-white"
+                                        }`}
+                                        title={LOCALE_LABELS[l].name}
+                                    >
+                                        <span>{LOCALE_LABELS[l].flag}</span>
+                                        <span className="uppercase text-[10px]">{l}</span>
+                                    </button>
+                                ))}
+                            </div>
+
                             <button
                                 type="button"
                                 onClick={() => {
                                     if (typeof window !== "undefined") window.print();
                                 }}
-                                className="px-4 py-2 rounded-xl bg-[#C9572C] hover:bg-[#B24922] text-white text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-95"
-                                title="Télécharger le bon de réservation officiel en format PDF"
+                                className="px-3.5 py-2 rounded-xl bg-[#C9572C] hover:bg-[#B24922] text-white text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-95"
+                                title="Download PDF"
                             >
-                                <Download size={15} />
-                                <span>Télécharger en PDF</span>
+                                <Download size={14} />
+                                <span className="hidden sm:inline">{t.voucher.downloadPdf}</span>
                             </button>
                             <button
                                 type="button"
                                 onClick={() => {
                                     if (typeof window !== "undefined") window.print();
                                 }}
-                                className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
+                                className="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
                             >
-                                <Printer size={15} />
-                                <span className="hidden sm:inline">Imprimer</span>
+                                <Printer size={14} />
+                                <span className="hidden sm:inline">{t.voucher.print}</span>
                             </button>
                             <button
                                 type="button"
                                 onClick={() => setSosModalOpen(true)}
-                                className="px-3.5 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-xs"
+                                className="px-3 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-xs"
                             >
-                                <ShieldAlert size={15} />
-                                <span>SOS 24/7</span>
+                                <ShieldAlert size={14} />
+                                <span>{t.voucher.sosButton}</span>
                             </button>
                         </div>
                     </div>
@@ -332,7 +432,7 @@ export default function BookingVoucherPage() {
                         <div className="flex items-center gap-2.5 text-slate-700">
                             <Mail size={16} className="text-[#C9572C] shrink-0" />
                             <span>
-                                Bon de réservation envoyé à <strong>{client.email}</strong>
+                                {t.voucher.emailSentTo} <strong>{client.email}</strong>
                             </span>
                         </div>
                         <button
@@ -340,62 +440,138 @@ export default function BookingVoucherPage() {
                             onClick={handleResendEmail}
                             className="text-[#C9572C] hover:text-[#B24922] font-bold text-xs underline cursor-pointer self-start sm:self-auto"
                         >
-                            {emailResent ? "Email renvoyé avec succès !" : "Renvoyer l'email de confirmation"}
+                            {emailResent ? t.voucher.resendSuccess : t.voucher.resendEmail}
                         </button>
                     </div>
 
-                    {/* Gestion du dossier : statut réel, modification de dates, annulation */}
+                    {/* Booking Manager: status, cancel, modify dates */}
                     <div className="print:hidden">
                         <BookingManager refId={ref} />
                     </div>
 
-                    {/* Lead-Gen & Immediate Airport Affiliate Bridge Banner */}
-                    <div className="rounded-3xl bg-linear-to-r from-amber-500/10 via-orange-500/10 to-amber-500/5 border-2 border-amber-500/30 p-5 sm:p-6 shadow-sm print:hidden">
-                        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-                            <div className="space-y-1.5">
-                                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500 text-white text-[11px] font-bold uppercase tracking-wider shadow-2xs">
-                                    <span className="w-2 h-2 rounded-full bg-white animate-ping" />
-                                    <span>Vérification WhatsApp en cours</span>
+                    {/* GAMIFIED PROGRESS BAR & FRICTIONLESS KYC ONBOARDING */}
+                    <div className="rounded-3xl bg-linear-to-r from-slate-900 to-[#1b2230] text-white p-6 sm:p-7 shadow-xl border border-slate-800 print:hidden relative overflow-hidden">
+                        {/* Background subtle ambient effect */}
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-[#C9572C]/10 rounded-full blur-3xl pointer-events-none" />
+
+                        <div className="relative z-10 space-y-5">
+                            {/* Header Row */}
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+                                <div className="space-y-1">
+                                    <div className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-emerald-400">
+                                        <Sparkles size={14} />
+                                        <span>{kycUploaded ? "100% Complété • Clés Prêtes" : t.voucher.progressTitle}</span>
+                                    </div>
+                                    <h2 className="text-base sm:text-lg font-black text-white">
+                                        {kycUploaded
+                                            ? t.voucher.kycUploadedSuccess
+                                            : t.voucher.progressSubtitle}
+                                    </h2>
                                 </div>
-                                <h3 className="text-base sm:text-lg font-black text-slate-900">
-                                    Besoin d&apos;une voiture garantie immédiatement au Terminal {rental.airportCode} ?
-                                </h3>
-                                <p className="text-xs text-slate-600 max-w-xl leading-relaxed">
-                                    Notre équipe locale vérifie les stocks ZwinCar sans caution et vous contacte sur WhatsApp au <strong>{client.phone}</strong>. En attendant notre confirmation, sécurisez instantanément un véhicule disponible à l&apos;aéroport via nos partenaires officiels :
-                                </p>
+                                <div className="flex items-center gap-2 shrink-0">
+                                    <span className={`px-3 py-1 rounded-full text-xs font-black tracking-wide ${
+                                        kycUploaded
+                                            ? "bg-emerald-500 text-white shadow-lg"
+                                            : "bg-[#C9572C] text-white animate-pulse"
+                                    }`}>
+                                        {kycUploaded ? "✓ 100%" : "80%"}
+                                    </span>
+                                </div>
                             </div>
-                            <div className="flex flex-wrap items-center gap-2.5 shrink-0">
-                                <a
-                                    href={buildAffiliateRentalUrl({
-                                        provider: "localrent",
-                                        hubCode: rental.airportCode || "RAK",
-                                        citySlug: rental.hubName?.toLowerCase().includes("marrakech") ? "marrakech" : rental.hubName?.toLowerCase().includes("agadir") ? "agadir" : rental.hubName?.toLowerCase().includes("casablanca") ? "casablanca" : "marrakech",
-                                        pickupDate: rental.pickupDate || new Date().toISOString().split("T")[0],
-                                        returnDate: rental.returnDate || new Date(Date.now() + 86400000 * 3).toISOString().split("T")[0],
-                                    })}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-[#C9572C] text-white text-xs font-bold transition flex items-center gap-1.5 shadow-sm active:scale-95"
-                                >
-                                    <span>Localrent (Faible Caution)</span>
-                                    <ExternalLink size={14} />
-                                </a>
-                                <a
-                                    href={buildAffiliateRentalUrl({
-                                        provider: "discovercars",
-                                        hubCode: rental.airportCode || "RAK",
-                                        citySlug: rental.hubName?.toLowerCase() || "marrakech",
-                                        pickupDate: rental.pickupDate || new Date().toISOString().split("T")[0],
-                                        returnDate: rental.returnDate || new Date(Date.now() + 86400000 * 3).toISOString().split("T")[0],
-                                    })}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-sm active:scale-95"
-                                >
-                                    <span>DiscoverCars (Terminal)</span>
-                                    <ExternalLink size={14} />
-                                </a>
+
+                            {/* Animated Visual Progress Bar */}
+                            <div className="w-full bg-slate-800 rounded-full h-3.5 p-0.5 overflow-hidden border border-slate-700/80">
+                                <div
+                                    className={`h-full rounded-full transition-all duration-700 ${
+                                        kycUploaded
+                                            ? "w-full bg-gradient-to-r from-emerald-500 to-teal-400 shadow-[0_0_15px_rgba(16,185,129,0.5)]"
+                                            : "w-4/5 bg-gradient-to-r from-amber-500 via-[#C9572C] to-emerald-400"
+                                    }`}
+                                />
                             </div>
+
+                            {/* KYC Content / Dual Frictionless Action */}
+                            {!kycUploaded ? (
+                                <div className="bg-white/5 border border-white/10 rounded-2xl p-5 space-y-4">
+                                    <div className="space-y-1">
+                                        <div className="text-xs font-bold text-slate-200">
+                                            {t.voucher.kycTitle}
+                                        </div>
+                                        <p className="text-[11px] text-slate-300 leading-relaxed">
+                                            {t.voucher.kycDesc}
+                                        </p>
+                                    </div>
+
+                                    {/* 2 Frictionless Choices: Camera / Upload OR WhatsApp */}
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                                        {/* Option A: 1-Click Camera / Photo Upload */}
+                                        <label className="h-12 px-4 rounded-xl bg-white hover:bg-slate-100 text-slate-900 text-xs font-black transition flex items-center justify-center gap-2 cursor-pointer shadow-md active:scale-95 text-center">
+                                            <Camera size={16} className="text-[#C9572C] shrink-0" />
+                                            <span>{kycUploading ? t.voucher.kycUploading : t.voucher.kycUploadBtn}</span>
+                                            <input
+                                                type="file"
+                                                accept="image/*,application/pdf"
+                                                capture="environment"
+                                                onChange={handleKycUpload}
+                                                className="hidden"
+                                                disabled={kycUploading}
+                                            />
+                                        </label>
+
+                                        {/* Option B: Direct WhatsApp Send */}
+                                        <a
+                                            href={`https://wa.me/212600000000?text=${encodeURIComponent(kycWhatsappMessage)}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            onClick={() => setKycUploaded(true)}
+                                            className="h-12 px-4 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs font-black transition flex items-center justify-center gap-2 shadow-md active:scale-95 text-center"
+                                        >
+                                            <MessageCircle size={16} className="shrink-0" />
+                                            <span>{t.voucher.kycWhatsappBtn}</span>
+                                        </a>
+                                    </div>
+
+                                    <div className="text-[10px] text-slate-400 flex items-center gap-1.5 pt-1">
+                                        <Lock size={11} className="shrink-0 text-slate-500" />
+                                        <span>{t.voucher.kycPrivacyNote}</span>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+                                    <div className="flex items-center gap-3">
+                                        {previewUrl ? (
+                                            <div className="w-14 h-14 rounded-xl overflow-hidden border border-emerald-400 shrink-0 relative bg-slate-800">
+                                                <img
+                                                    src={previewUrl}
+                                                    alt="Permis de conduire"
+                                                    className="w-full h-full object-cover"
+                                                />
+                                            </div>
+                                        ) : (
+                                            <div className="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center shrink-0">
+                                                <CheckCircle2 size={20} />
+                                            </div>
+                                        )}
+                                        <div>
+                                            <div className="font-bold text-emerald-300 text-xs">
+                                                {t.voucher.kycUploadedSuccess}
+                                            </div>
+                                            <div className="text-[11px] text-slate-300 mt-0.5">
+                                                {locale === "en"
+                                                    ? "Present your original card for 10 seconds at the parking lot to collect your keys."
+                                                    : locale === "es"
+                                                    ? "Presente su original durante 10 segundos en el parking para recoger sus llaves."
+                                                    : locale === "nl"
+                                                    ? "Toon uw origineel gedurende 10 seconden op de parking om uw sleutels te ontvangen."
+                                                    : "Présentez simplement votre original 10 secondes au parking pour prendre la route."}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <span className="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[11px] font-bold shrink-0">
+                                        ✓ Fast-Track 60s
+                                    </span>
+                                </div>
+                            )}
                         </div>
                     </div>
 
@@ -405,25 +581,25 @@ export default function BookingVoucherPage() {
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-slate-100 gap-4">
                             <div>
                                 <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
-                                    Statut du dossier
+                                    {t.voucher.statusTitle}
                                 </span>
                                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold mt-1">
                                     <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                                     <span>
                                         {liveStatus === "checked_in"
-                                            ? "En cours de location • Clés remises au client"
+                                            ? t.voucher.statusCheckedIn
                                             : liveStatus === "completed"
-                                            ? "Location clôturée • Caution restituée avec succès"
+                                            ? t.voucher.statusCompleted
                                             : liveStatus === "cancelled"
-                                            ? "Dossier annulé"
-                                            : "Véhicule Garanti & Prêt pour Livraison"}
+                                            ? t.voucher.statusCancelled
+                                            : t.voucher.statusGuaranteed}
                                     </span>
                                 </div>
                             </div>
 
                             <div className="text-left sm:text-right">
                                 <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
-                                    Référence Dossier
+                                    {t.voucher.folderRef}
                                 </span>
                                 <span className="text-xl sm:text-2xl font-black text-slate-900 font-mono tracking-wider">
                                     {ref}
@@ -454,7 +630,7 @@ export default function BookingVoucherPage() {
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-slate-600">
                                     <div className="p-3 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] space-y-1">
                                         <div className="text-[10px] font-bold uppercase text-slate-400">
-                                            Prise en charge
+                                            {t.voucher.pickup}
                                         </div>
                                         <div className="font-bold text-slate-900">
                                             {rental.hubName} — {rental.airportCode}
@@ -464,7 +640,7 @@ export default function BookingVoucherPage() {
 
                                     <div className="p-3 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] space-y-1">
                                         <div className="text-[10px] font-bold uppercase text-slate-400">
-                                            Restitution ({rental.days} jours)
+                                            {t.voucher.returnDropoff} ({rental.days} {t.search.daysCount})
                                         </div>
                                         <div className="font-bold text-slate-900">
                                             {rental.hubName} — {rental.airportCode}
@@ -477,7 +653,7 @@ export default function BookingVoucherPage() {
                                     <div className="flex items-start gap-2">
                                         <MapPin size={16} className="text-[#C9572C] shrink-0 mt-0.5" />
                                         <div>
-                                            <strong>Point de rencontre exact : </strong>
+                                            <strong>{t.voucher.meetingPointTitle} </strong>
                                             <span>{rental.meetingPointDetail}</span>
                                         </div>
                                     </div>
@@ -485,18 +661,16 @@ export default function BookingVoucherPage() {
                                     {/* 1-Tap Arrival Notification */}
                                     <div className="pt-2 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-2.5">
                                         <span className="text-[11px] text-slate-500 font-medium">
-                                            Valises récupérées ? Avertissez votre agent en 1 clic :
+                                            {t.voucher.customsAlertPrompt}
                                         </span>
                                         <a
-                                            href={`https://wa.me/212600000000?text=${encodeURIComponent(
-                                                `Salam Youssef, je suis ${client.fullName} (réservation ZwinCar ${ref}). Je viens de franchir la douane à l'aéroport de ${rental.hubName}. Je me dirige vers le point de rencontre.`
-                                            )}`}
+                                            href={`https://wa.me/212600000000?text=${encodeURIComponent(customsWhatsappMessage)}`}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-bold shadow-xs transition cursor-pointer active:scale-95"
                                         >
                                             <MessageCircle size={13} />
-                                            <span>Je viens de sortir de la douane</span>
+                                            <span>{t.voucher.customsAlertBtn}</span>
                                         </a>
                                     </div>
                                 </div>
@@ -506,158 +680,129 @@ export default function BookingVoucherPage() {
                         {/* Split Financial Accounting Breakdown */}
                         <div className="rounded-2xl bg-[#FAF7F2] border border-[#ECE5D9] p-5 space-y-3">
                             <div className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                                Décompte Financier Transparent (Zéro Frais Caché)
+                                {t.voucher.accountingTitle}
                             </div>
 
                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
                                 <div className="p-3 rounded-xl bg-white border border-[#E7DFD5]">
                                     <div className="text-[10px] font-bold uppercase text-slate-400">
-                                        Acompte Réglé en Ligne
+                                        {t.voucher.depositPaidOnline}
                                     </div>
                                     <div className="text-lg font-black text-[#C9572C] font-mono mt-0.5">
                                         {financials.depositAcompteEur} € ({financials.depositAcompteMad} MAD)
                                     </div>
                                     <div className="text-[10px] text-emerald-700 font-semibold mt-1">
-                                        ✓ Encaissé par Stripe
+                                        {t.voucher.collectedByStripe}
                                     </div>
                                 </div>
 
                                 <div className="p-3 rounded-xl bg-white border border-[#E7DFD5]">
                                     <div className="text-[10px] font-bold uppercase text-slate-400">
-                                        Solde à Régler à l'Arrivée
+                                        {t.voucher.balanceDueOnSite}
                                     </div>
                                     <div className="text-lg font-black text-slate-900 font-mono mt-0.5">
                                         {financials.balanceOnSiteEur} € (~{financials.balanceOnSiteMad} MAD)
                                     </div>
                                     <div className="text-[10px] text-slate-500 mt-1">
-                                        Espèces (EUR/MAD) ou Carte
+                                        {t.voucher.balancePaymentMethods}
                                     </div>
                                 </div>
 
                                 <div className="p-3 rounded-xl bg-white border border-[#E7DFD5]">
                                     <div className="text-[10px] font-bold uppercase text-slate-400">
-                                        Caution à la Livraison
+                                        {t.voucher.depositAtDelivery}
                                     </div>
                                     <div className="text-lg font-black text-slate-900 font-mono mt-0.5">
-                                        {financials.selectedUpsells?.some((u: string) => u.toLowerCase().includes("franchise") || u.toLowerCase().includes("sérénité") || u === "franchise-zero")
-                                            ? "0 €"
-                                            : "300 €"}
+                                        {hasFranchiseZero ? "0 €" : "300 €"}
                                     </div>
                                     <div className="text-[10px] text-slate-500 mt-1">
-                                        {financials.selectedUpsells?.some((u: string) => u.toLowerCase().includes("franchise") || u.toLowerCase().includes("sérénité") || u === "franchise-zero")
-                                            ? "Franchise Zéro active"
-                                            : "Restituée au retour"}
+                                        {hasFranchiseZero
+                                            ? t.voucher.depositZeroActive
+                                            : t.voucher.depositReturnedAtCheckout}
                                     </div>
                                 </div>
                             </div>
 
                             {financials.selectedUpsells && financials.selectedUpsells.length > 0 && (
-                                <div className="pt-2 text-xs text-slate-600 flex items-center gap-2">
-                                    <span className="font-bold text-slate-700">Options incluses :</span>
+                                <div className="pt-2 text-xs text-slate-600 flex items-center gap-2 flex-wrap">
+                                    <span className="font-bold text-slate-700">{t.voucher.optionsIncluded}</span>
                                     <span>{financials.selectedUpsells.join(" • ")}</span>
                                 </div>
                             )}
                         </div>
                     </div>
 
-                    {/* Interactive KYC Pre-Check-in (Retrait Express 60s) */}
+                    {/* LIVE FLIGHT TRACKER & RADAR GUARANTEE */}
                     <div className="rounded-3xl bg-white border border-[#ECE5D9] p-6 sm:p-8 shadow-sm space-y-4">
                         <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-xl bg-[#C9572C]/10 text-[#C9572C] flex items-center justify-center font-bold">
-                                    <FileText size={20} />
+                                <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold">
+                                    <Plane size={20} />
                                 </div>
                                 <div>
                                     <h3 className="text-base sm:text-lg font-black text-slate-900">
-                                        Pré-Check-in Express (Optionnel mais Recommandé)
+                                        {t.voucher.flightTitle}
                                     </h3>
-                                    <p className="text-xs text-slate-500">
-                                        Déposez vos pièces maintenant pour récupérer vos clés en moins de 60 secondes sans formalités sur le parking.
-                                    </p>
+                                    <div className="text-xs text-slate-500 flex items-center gap-2 mt-0.5">
+                                        <span>{t.voucher.flightSubtitle}</span>
+                                        <strong>{client.flightNumber || (locale === "en" ? "To be specified" : "À préciser")}</strong>
+                                        <button
+                                            type="button"
+                                            onClick={() => setIsEditingFlight(!isEditingFlight)}
+                                            className="text-[#C9572C] hover:underline text-[11px] font-bold flex items-center gap-1 cursor-pointer"
+                                        >
+                                            <Edit3 size={11} />
+                                            <span>{isEditingFlight ? "Annuler" : "Modifier"}</span>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
 
-                            {kycUploaded && (
-                                <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold flex items-center gap-1.5">
-                                    <CheckCircle2 size={14} />
-                                    Dossier Validé
+                            {flightSaved && (
+                                <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold animate-in fade-in">
+                                    ✓ N° de vol enregistré
                                 </span>
                             )}
                         </div>
 
-                        {!kycUploaded ? (
-                            <div className="border-2 border-dashed border-slate-300 hover:border-[#C9572C] rounded-2xl p-6 text-center space-y-3 transition bg-slate-50/50">
-                                <Upload size={28} className="text-slate-400 mx-auto" />
-                                <div className="text-xs text-slate-600 font-medium">
-                                    Glissez ou sélectionnez la photo de votre <strong>Permis de Conduire</strong> et <strong>Passeport / CNI</strong>
-                                </div>
-                                <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 pt-1">
-                                    <label className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-[#C9572C] text-white text-xs font-bold transition cursor-pointer shadow-xs active:scale-95">
-                                        <span>{kycUploading ? "Chiffrement et vérification..." : "Téléverser mon permis (Photo/PDF)"}</span>
-                                        <input
-                                            type="file"
-                                            accept="image/*,application/pdf"
-                                            multiple
-                                            onChange={handleKycUpload}
-                                            className="hidden"
-                                        />
-                                    </label>
-                                    <a
-                                        href={`https://wa.me/212600000000?text=${encodeURIComponent(`Salam, voici mon permis pour le Fast-Track réservation ZwinCar ${ref}`)}`}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs font-bold transition shadow-xs active:scale-95"
+                        {isEditingFlight && (
+                            <div className="p-4 rounded-2xl bg-[#FAF7F2] border border-[#E7DFD5] space-y-3">
+                                <label className="block text-xs font-bold text-slate-700">
+                                    {locale === "en" ? "Enter your flight number (e.g. AF1234, TO4560, FR789):" : locale === "es" ? "Indique su número de vuelo:" : locale === "nl" ? "Vul uw vluchtnummer in:" : "Indiquez votre numéro de vol (ex: AF1234, TO4560, FR789) :"}
+                                </label>
+                                <div className="flex gap-2">
+                                    <input
+                                        type="text"
+                                        value={flightNumberInput}
+                                        onChange={(e) => setFlightNumberInput(e.target.value.toUpperCase())}
+                                        placeholder="ex: AF1234, TO4560"
+                                        className="h-10 px-3.5 rounded-xl bg-white border border-[#E7DFD5] text-xs font-bold text-slate-900 focus:outline-none focus:border-[#C9572C] flex-1 max-w-xs font-mono"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={handleSaveFlightNumber}
+                                        className="px-4 py-2 rounded-xl bg-[#C9572C] hover:bg-[#B24922] text-white text-xs font-bold transition shadow-xs cursor-pointer"
                                     >
-                                        <MessageCircle size={14} />
-                                        <span>Envoyer par WhatsApp au Loueur</span>
-                                    </a>
-                                </div>
-                                <div className="text-[10px] text-slate-400">
-                                    Données chiffrées de bout en bout et automatiquement supprimées 48h après restitution.
-                                </div>
-                            </div>
-                        ) : (
-                            <div className="rounded-2xl bg-emerald-50 border border-emerald-200 p-4 flex items-center justify-between text-xs text-emerald-950 font-semibold">
-                                <div className="flex items-center gap-2.5">
-                                    <CheckCircle2 size={18} className="text-emerald-600 shrink-0" />
-                                    <span>
-                                        Vos documents sont pré-enregistrés ! Votre contrat est pré-imprimé. Présentez simplement votre original au parking.
-                                    </span>
+                                        {locale === "en" ? "Save Flight" : locale === "es" ? "Guardar Vuelo" : locale === "nl" ? "Vlucht Opslaan" : "Enregistrer"}
+                                    </button>
                                 </div>
                             </div>
                         )}
-                    </div>
-
-                    {/* Live Flight Tracker Simulator */}
-                    <div className="rounded-3xl bg-white border border-[#ECE5D9] p-6 sm:p-8 shadow-sm space-y-4">
-                        <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold">
-                                <Plane size={20} />
-                            </div>
-                            <div>
-                                <h3 className="text-base sm:text-lg font-black text-slate-900">
-                                    Suivi de Vol en Direct & Garantie Retard
-                                </h3>
-                                <p className="text-xs text-slate-500">
-                                    Vol : <strong>{client.flightNumber || "À préciser"}</strong>
-                                </p>
-                            </div>
-                        </div>
 
                         <div className="rounded-2xl bg-blue-50/60 border border-blue-200/80 p-4 space-y-2 text-xs text-blue-950">
                             <div className="flex items-center justify-between font-bold">
-                                <span>Statut radar aéroportuaire :</span>
-                                <span className="text-emerald-700 bg-emerald-100 px-2.5 py-0.5 rounded-full text-[11px]">
-                                    À l'heure • Atterrissage prévu
+                                <span>{t.voucher.flightRadarStatus}</span>
+                                <span className="text-emerald-700 bg-emerald-100 px-2.5 py-0.5 rounded-full text-[11px] font-bold">
+                                    {t.voucher.flightRadarOnTime}
                                 </span>
                             </div>
                             <p className="text-slate-600 leading-relaxed text-[11px]">
-                                Notre équipe locale surveille votre numéro de vol en continu sur FlightRadar24. En cas de retard de 1h, 2h ou 4h, votre véhicule reste automatiquement réservé sans aucun frais supplémentaire.
+                                {t.voucher.flightGuaranteeDesc}
                             </p>
                         </div>
                     </div>
 
-                    {/* Caution Protocol Card (Enveloppe Scellée vs Franchise Zéro) */}
+                    {/* CAUTION PROTOCOL CARD (Enveloppe Scellée vs Franchise Zéro) */}
                     <div className="rounded-3xl bg-white border border-[#ECE5D9] p-6 sm:p-8 shadow-sm space-y-4">
                         <div className="flex items-center gap-3">
                             <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center font-bold">
@@ -665,43 +810,46 @@ export default function BookingVoucherPage() {
                             </div>
                             <div>
                                 <h3 className="text-base sm:text-lg font-black text-slate-900">
-                                    Protocole de Caution Transparent & Zéro Litige
+                                    {t.voucher.cautionProtocolTitle}
                                 </h3>
                                 <p className="text-xs text-slate-500">
-                                    {financials.selectedUpsells?.some((u: string) => u.toLowerCase().includes("franchise") || u === "franchise-zero")
-                                        ? "Option Franchise Zéro active • Zéro caution demandée"
-                                        : "Formule Standard • Caution de 300 € sécurisée sous protocole Enveloppe Scellée"}
+                                    {hasFranchiseZero
+                                        ? t.pricingTiers.serenityDesc
+                                        : t.pricingTiers.standardDesc}
                                 </p>
                             </div>
                         </div>
 
-                        {financials.selectedUpsells?.some((u: string) => u.toLowerCase().includes("franchise") || u === "franchise-zero") ? (
+                        {hasFranchiseZero ? (
                             <div className="rounded-2xl bg-emerald-50 border border-emerald-200 p-4 text-xs text-emerald-950 font-medium space-y-1">
                                 <div className="font-bold flex items-center gap-2 text-emerald-900">
                                     <CheckCircle2 size={16} className="text-emerald-600" />
-                                    Vous êtes 100% couvert par le Pack Sérénité ZwinCar
+                                    <span>{t.voucher.cautionZeroDesc}</span>
                                 </div>
                                 <p className="text-emerald-800 text-[11px] leading-relaxed">
-                                    Aucun dépôt de garantie ne vous sera demandé sur le parking. Restitution en 2 minutes chrono : l'agent reprend simplement les clés.
+                                    {locale === "en"
+                                        ? "Zero credit card block. Key return in under 2 minutes: your local agent inspects the vehicle and you're good to go."
+                                        : locale === "es"
+                                        ? "Sin retención bancaria. Devolución de llaves en 2 minutos: su agente revisa el coche y listo."
+                                        : locale === "nl"
+                                        ? "Geen enkele creditcardblokkade. Sleutels inleveren binnen 2 minuten: uw verhuurder controleert de wagen en u kunt direct vertrekken."
+                                        : "Aucun dépôt de garantie ne vous sera demandé sur le parking. Restitution en 2 minutes chrono : l'agent reprend simplement les clés."}
                                 </p>
                             </div>
                         ) : (
                             <div className="rounded-2xl bg-amber-50/70 border border-amber-200 p-4 text-xs text-amber-950 space-y-3">
                                 <div className="font-bold text-amber-900">
-                                    Comment se passe la caution de 300 € à la remise des clés ?
+                                    {t.voucher.cautionStandardDesc}
                                 </div>
                                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-[11px]">
                                     <div className="p-2.5 rounded-xl bg-white/80 border border-amber-200/60">
-                                        <strong className="block text-slate-900 mb-0.5">1. Enveloppe Scellée</strong>
-                                        Vos 300 € (cash ou dirhams) sont placés dans une enveloppe ZwinCar scellée et signée sur le rabat.
+                                        <p className="text-slate-800 leading-snug">{t.voucher.sealedEnvelope1}</p>
                                     </div>
                                     <div className="p-2.5 rounded-xl bg-white/80 border border-amber-200/60">
-                                        <strong className="block text-slate-900 mb-0.5">2. Zéro Prélèvement</strong>
-                                        L'enveloppe reste sous scellé dans le coffre de l'agence. Rien n'est débité sur votre compte.
+                                        <p className="text-slate-800 leading-snug">{t.voucher.sealedEnvelope2}</p>
                                     </div>
                                     <div className="p-2.5 rounded-xl bg-white/80 border border-amber-200/60">
-                                        <strong className="block text-slate-900 mb-0.5">3. Restitution Immédiate</strong>
-                                        Au retour, après 2 min de tour du véhicule, l'enveloppe signée vous est rendue intacte en main propre.
+                                        <p className="text-slate-800 leading-snug">{t.voucher.sealedEnvelope3}</p>
                                     </div>
                                 </div>
                             </div>
@@ -717,17 +865,17 @@ export default function BookingVoucherPage() {
                                 </div>
                                 <div>
                                     <h3 className="text-base sm:text-lg font-black text-slate-900">
-                                        eSIM Maroc 20 Go 5G (Réseau Maroc Telecom / Orange)
+                                        {t.voucher.esimTitle}
                                     </h3>
                                     <p className="text-xs text-slate-500">
-                                        Connexion data haut débit instantanée dès l'atterrissage sur le tarmac
+                                        {t.voucher.esimSubtitle}
                                     </p>
                                 </div>
                             </div>
 
                             {financials.selectedUpsells?.some((u: string) => u.toLowerCase().includes("esim")) ? (
                                 <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold">
-                                    Activée & Prête
+                                    {t.voucher.esimActive}
                                 </span>
                             ) : null}
                         </div>
@@ -740,10 +888,10 @@ export default function BookingVoucherPage() {
                                     </div>
                                     <div className="space-y-1.5 text-[11px] text-slate-600">
                                         <div className="font-bold text-slate-900 text-xs">
-                                            Votre QR Code d'activation eSIM Maroc
+                                            {t.voucher.esimQrTitle}
                                         </div>
                                         <p>
-                                            Scannez ce QR Code dans les réglages de votre téléphone : <em>Réglages &gt; Données cellulaires &gt; Ajouter une eSIM</em>.
+                                            {t.voucher.esimQrDesc}
                                         </p>
                                         <div className="font-mono text-[10px] bg-white px-2 py-1 rounded border border-slate-200 inline-block text-slate-800">
                                             LPA:1$smdp.maroctelecom.ma$ZW-{ref}-ESIM20
@@ -758,10 +906,10 @@ export default function BookingVoucherPage() {
                             <div className="rounded-2xl bg-[#FAF7F2] border border-[#E7DFD5] p-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
                                 <div>
                                     <div className="font-bold text-slate-900">
-                                        Pas encore de data pour le GPS et WhatsApp au Maroc ?
+                                        {locale === "en" ? "Need mobile data for GPS & WhatsApp in Morocco?" : locale === "es" ? "¿Necesita datos móviles para GPS y WhatsApp?" : locale === "nl" ? "Mobiele data nodig voor GPS & WhatsApp in Marokko?" : "Pas encore de data pour le GPS et WhatsApp au Maroc ?"}
                                     </div>
                                     <p className="text-[11px] text-slate-500 mt-0.5">
-                                        Évitez les 45 min de queue aux guichets de l'aéroport. Recevez votre QR code eSIM 20 Go 5G instantanément.
+                                        {locale === "en" ? "Skip 45-min airport queues. Get your 20 GB 5G eSIM QR code instantly." : locale === "es" ? "Evite 45 min de cola en el aeropuerto. Reciba su QR eSIM 20 GB 5G al instante." : locale === "nl" ? "Vermijd 45 min wachten op de luchthaven. Ontvang direct uw 20 GB 5G eSIM QR-code." : "Évitez les 45 min de queue aux guichets de l'aéroport. Recevez votre QR code eSIM 20 Go 5G instantanément."}
                                     </p>
                                 </div>
                                 <a
@@ -770,7 +918,7 @@ export default function BookingVoucherPage() {
                                     rel="noopener noreferrer"
                                     className="shrink-0 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-[#C9572C] text-white text-xs font-bold transition shadow-xs cursor-pointer active:scale-95"
                                 >
-                                    Ajouter l'eSIM (+19 €)
+                                    {locale === "en" ? "Add eSIM (+€19)" : locale === "es" ? "Añadir eSIM (+19 €)" : locale === "nl" ? "eSIM Toevoegen (+€ 19)" : "Ajouter l'eSIM (+19 €)"}
                                 </a>
                             </div>
                         )}
@@ -806,20 +954,20 @@ export default function BookingVoucherPage() {
                             </div>
 
                             <a
-                                href={`https://www.booking.com/searchresults.${bookingData?.locale === "en" ? "en-gb" : bookingData?.locale === "es" ? "es" : bookingData?.locale === "nl" ? "nl" : "fr"}.html?ss=${encodeURIComponent(
+                                href={`https://www.booking.com/searchresults.${locale === "en" ? "en-gb" : locale === "es" ? "es" : locale === "nl" ? "nl" : "fr"}.html?ss=${encodeURIComponent(
                                     rental.hubName + ", Maroc"
                                 )}&checkin=${rental.pickupDate}&checkout=${rental.returnDate}&aid=zwincar`}
                                 target="_blank"
                                 rel="noopener noreferrer nofollow"
                                 className="shrink-0 inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-md transition cursor-pointer active:scale-95"
                             >
-                                <span>Voir les Riads avec Parking</span>
+                                <span>{locale === "en" ? "View Riads with Parking" : locale === "es" ? "Ver Riads con Parking" : locale === "nl" ? "Bekijk Riads met Parking" : "Voir les Riads avec Parking"}</span>
                                 <ExternalLink size={14} />
                             </a>
                         </div>
                     </div>
 
-                    {/* Excursions & Activités Hub (Viator / GetYourGuide Affiliation) */}
+                    {/* Excursions & Activities Hub (Viator Affiliation) */}
                     <div className="rounded-3xl bg-white border border-[#ECE5D9] p-6 sm:p-8 shadow-sm space-y-4">
                         <div className="flex items-center gap-3">
                             <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center font-bold">
@@ -866,7 +1014,7 @@ export default function BookingVoucherPage() {
                         </div>
                     </div>
 
-                    {/* Dedicated Local Agent Card (WhatsApp & Phone) */}
+                    {/* Dedicated Local Coordinator Card */}
                     <div className="rounded-3xl bg-white border border-[#ECE5D9] p-6 sm:p-8 shadow-sm space-y-5">
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                             <div className="flex items-center gap-3.5">
@@ -875,14 +1023,14 @@ export default function BookingVoucherPage() {
                                 </div>
                                 <div>
                                     <div className="text-[10px] uppercase font-bold text-slate-400">
-                                        Votre Contact Dédié sur Place
+                                        {locale === "en" ? "Your Dedicated Local Coordinator" : locale === "es" ? "Su Coordinador Local Dedicado" : locale === "nl" ? "Uw Lokale Contactpersoon" : "Votre Contact Dédié sur Place"}
                                     </div>
                                     <h4 className="text-base font-black text-slate-900">
-                                        Youssef — Responsable Flotte {rental.hubName}
+                                        Youssef — {locale === "en" ? `Fleet Manager ${rental.hubName}` : locale === "es" ? `Responsable de Flota ${rental.hubName}` : locale === "nl" ? `Vlootbeheerder ${rental.hubName}` : `Responsable Flotte ${rental.hubName}`}
                                     </h4>
                                     <div className="text-xs text-emerald-600 font-semibold flex items-center gap-1">
                                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                                        <span>En attente au Parking P2</span>
+                                        <span>{locale === "en" ? "Waiting at Parking P2" : locale === "es" ? "Esperando en Parking P2" : locale === "nl" ? "Wachtend op Parking P2" : "En attente au Parking P2"}</span>
                                     </div>
                                 </div>
                             </div>
@@ -890,7 +1038,13 @@ export default function BookingVoucherPage() {
                             <div className="flex items-center gap-3">
                                 <a
                                     href={`https://wa.me/212600000000?text=${encodeURIComponent(
-                                        `Bonjour Youssef, je suis le client du dossier ${ref} (${rental.vehicleName}). Je confirme mon arrivée sur le vol ${client.flightNumber}.`
+                                        locale === "en"
+                                            ? `Hello Youssef, I am the customer for booking #${ref} (${rental.vehicleName}). Confirming arrival on flight ${client.flightNumber}.`
+                                            : locale === "es"
+                                            ? `Hola Youssef, soy el cliente de la reserva #${ref} (${rental.vehicleName}). Confirmo mi llegada en el vuelo ${client.flightNumber}.`
+                                            : locale === "nl"
+                                            ? `Hallo Youssef, ik ben de klant van boeking #${ref} (${rental.vehicleName}). Ik bevestig mijn aankomst met vlucht ${client.flightNumber}.`
+                                            : `Bonjour Youssef, je suis le client du dossier ${ref} (${rental.vehicleName}). Je confirme mon arrivée sur le vol ${client.flightNumber}.`
                                     )}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
@@ -905,7 +1059,7 @@ export default function BookingVoucherPage() {
                                     className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-900 text-xs font-bold transition flex items-center gap-2"
                                 >
                                     <Phone size={15} />
-                                    <span>Appeler</span>
+                                    <span>{locale === "en" ? "Call" : locale === "es" ? "Llamar" : locale === "nl" ? "Bellen" : "Appeler"}</span>
                                 </a>
                             </div>
                         </div>
