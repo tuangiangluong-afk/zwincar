@@ -536,6 +536,26 @@ export function BookingCheckoutModal({
                                 {hasFranchiseZero ? t.bookingWidget.zeroDepositActive : "300 €"}
                             </span>
                         </div>
+                        <div className="pt-2 border-t border-emerald-200/60 flex flex-wrap items-center justify-between gap-1 text-[10px] font-bold text-emerald-800">
+                            <span>
+                                {locale === "en"
+                                    ? "✓ 20% Deposit 100% refundable up to 48h prior"
+                                    : locale === "es"
+                                    ? "✓ Anticipo 20% 100% reembolsable hasta 48h antes"
+                                    : locale === "nl"
+                                    ? "✓ 20% Aanbetaling 100% terugbetaalbaar tot 48u vooraf"
+                                    : "✓ Acompte 20% remboursable à 100% jusqu'à 48h avant"}
+                            </span>
+                            <span>
+                                {locale === "en"
+                                    ? "✓ 80% paid after airport car inspection"
+                                    : locale === "es"
+                                    ? "✓ 80% al recibir e inspeccionar el coche"
+                                    : locale === "nl"
+                                    ? "✓ 80% pas na auto-inspectie op luchthaven"
+                                    : "✓ Solde 80% après inspection du véhicule"}
+                            </span>
+                        </div>
                     </div>
 
                     {errorMessage && (
@@ -562,6 +582,20 @@ export function BookingCheckoutModal({
                                 </>
                             )}
                         </button>
+                        <div className="flex flex-wrap items-center justify-center gap-1.5 text-[10px] font-semibold text-slate-500">
+                            <span className="px-2 py-0.5 rounded bg-slate-100 text-slate-700 font-bold">🔒 Stripe SSL 256-bit</span>
+                            <span className="px-2 py-0.5 rounded bg-slate-100 text-slate-700">Visa / Mastercard</span>
+                            <span className="px-2 py-0.5 rounded bg-slate-100 text-slate-700">Apple Pay</span>
+                            <span className="px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200">
+                                {locale === "en"
+                                    ? "80% On-Site: Cash EUR/MAD or Debit Card"
+                                    : locale === "es"
+                                    ? "80% En destino: Efectivo EUR/MAD o Débito"
+                                    : locale === "nl"
+                                    ? "80% Ter plaatse: Cash EUR/MAD of Pinpas"
+                                    : "80% Sur place : Cash EUR/MAD ou CB Débit"}
+                            </span>
+                        </div>
                         <div className="text-center text-[10px] text-slate-400">
                             {t.checkoutModal.cancelFreeNotice} • {t.checkoutModal.securePaymentNotice}
                         </div>

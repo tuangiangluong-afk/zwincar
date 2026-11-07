@@ -498,10 +498,16 @@ export default function VehicleBookingCard({
                         {currency === "EUR" ? `${balanceOnSiteEur} €` : `${balanceOnSiteMad} MAD`} (~{balanceOnSiteMad} DH)
                     </span>
                 </div>
+
+                {/* 20% Deposit Trust Micro-Guarantee */}
+                <div className="pt-2 mt-1 border-t border-slate-200/80 flex flex-wrap items-center justify-between gap-1.5 text-[10px] text-emerald-800 font-semibold">
+                    <span>✓ {activeLocale === "en" ? "100% refundable up to 48h prior" : activeLocale === "es" ? "100% reembolsable hasta 48h antes" : activeLocale === "nl" ? "100% restitueerbaar tot 48u vooraf" : "Acompte 100% remboursable (48h)"}</span>
+                    <span>✓ {activeLocale === "en" ? "80% paid after car inspection" : activeLocale === "es" ? "80% tras revisar el coche" : activeLocale === "nl" ? "80% pas na auto-inspectie" : "80% payés après état des lieux"}</span>
+                </div>
             </div>
 
             {/* Action Buttons */}
-            <div className="space-y-3">
+            <div className="space-y-2.5">
                 {isAffiliate ? (
                     <button
                         type="button"
@@ -539,6 +545,25 @@ export default function VehicleBookingCard({
                     <MessageCircle size={15} className="text-emerald-600" />
                     <span>{t.bookingWidget.whatsappAvailabilityBtn}</span>
                 </a>
+
+                {!isAffiliate && (
+                    <button
+                        type="button"
+                        onClick={() => setIsAffiliateDrawerOpen(true)}
+                        className="w-full py-1.5 text-[11px] font-semibold text-slate-500 hover:text-[#C9572C] transition flex items-center justify-center gap-1 cursor-pointer"
+                    >
+                        <span>
+                            {activeLocale === "en"
+                                ? `Or compare live ${currentHub.airportCode} terminal counters (Localrent / DiscoverCars)`
+                                : activeLocale === "es"
+                                ? `O comparar mostradores de la terminal ${currentHub.airportCode} (Localrent / DiscoverCars)`
+                                : activeLocale === "nl"
+                                ? `Of vergelijk balies op terminal ${currentHub.airportCode} (Localrent / DiscoverCars)`
+                                : `Ou comparer les comptoirs du terminal ${currentHub.airportCode} (Localrent / DiscoverCars)`}
+                        </span>
+                        <ExternalLink size={11} className="shrink-0" />
+                    </button>
+                )}
             </div>
 
             {/* Quick Guarantees */}

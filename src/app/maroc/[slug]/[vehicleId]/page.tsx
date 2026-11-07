@@ -276,6 +276,46 @@ export default async function CityVehicleDetailPage({ params }: CityVehiclePageP
                                         <div className="text-[10px] text-slate-500">Protection sous-moteur</div>
                                     </div>
                                 </div>
+
+                                {/* Moroccan Terrain Suitability Scores */}
+                                <div className="pt-3 border-t border-[#ECE5D9] grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+                                    <div>
+                                        <div className="flex justify-between text-[11px] font-semibold text-slate-700 mb-1">
+                                            <span>Autoroute</span>
+                                            <span className="font-mono font-bold text-[#C9572C]">{vehicle.moroccoRoadRating.highway}/10</span>
+                                        </div>
+                                        <div className="h-1.5 rounded-full bg-slate-100 overflow-hidden">
+                                            <div className="h-full bg-[#C9572C] rounded-full" style={{ width: `${vehicle.moroccoRoadRating.highway * 10}%` }} />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div className="flex justify-between text-[11px] font-semibold text-slate-700 mb-1">
+                                            <span>Haut-Atlas</span>
+                                            <span className="font-mono font-bold text-[#C9572C]">{vehicle.moroccoRoadRating.mountainAtlas}/10</span>
+                                        </div>
+                                        <div className="h-1.5 rounded-full bg-slate-100 overflow-hidden">
+                                            <div className="h-full bg-[#C9572C] rounded-full" style={{ width: `${vehicle.moroccoRoadRating.mountainAtlas * 10}%` }} />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div className="flex justify-between text-[11px] font-semibold text-slate-700 mb-1">
+                                            <span>Parking Médina</span>
+                                            <span className="font-mono font-bold text-emerald-600">{vehicle.moroccoRoadRating.medinaParking}/10</span>
+                                        </div>
+                                        <div className="h-1.5 rounded-full bg-slate-100 overflow-hidden">
+                                            <div className="h-full bg-emerald-600 rounded-full" style={{ width: `${vehicle.moroccoRoadRating.medinaParking * 10}%` }} />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div className="flex justify-between text-[11px] font-semibold text-slate-700 mb-1">
+                                            <span>Pistes Carrossables</span>
+                                            <span className="font-mono font-bold text-amber-600">{vehicle.moroccoRoadRating.desertPiste}/10</span>
+                                        </div>
+                                        <div className="h-1.5 rounded-full bg-slate-100 overflow-hidden">
+                                            <div className="h-full bg-amber-500 rounded-full" style={{ width: `${vehicle.moroccoRoadRating.desertPiste * 10}%` }} />
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             {/* Conditions de Prise en Charge à l'Aéroport */}
@@ -291,6 +331,23 @@ export default async function CityVehicleDetailPage({ params }: CityVehiclePageP
                                     <strong>Point de rendez-vous : </strong>{hub.meetingPointDetail}. Un agent de notre agence partenaire locale vous attend avec une pancarte nominative à votre nom. Le tour du véhicule prend 5 minutes, vous signez le contrat sur smartphone et partez directement sans passer par un guichet.
                                 </p>
                             </div>
+
+                            {/* Verdict Terrain & FAQ du modèle */}
+                            {vehicle.faqs && vehicle.faqs.length > 0 && (
+                                <div className="rounded-3xl bg-white border border-[#E7DFD5] p-6 space-y-4 shadow-2xs">
+                                    <h2 className="text-base font-bold text-slate-900">
+                                        Questions fréquentes • {vehicleShortName} à {hub.name}
+                                    </h2>
+                                    <div className="space-y-3">
+                                        {vehicle.faqs.map((f, idx) => (
+                                            <div key={idx} className="p-3.5 rounded-2xl bg-[#FAF7F2] border border-[#ECE5D9]">
+                                                <div className="text-xs font-bold text-slate-900">{f.q}</div>
+                                                <p className="text-xs text-slate-600 mt-1 leading-relaxed">{f.a}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
                         </div>
 
                         {/* Right Column: Sticky Booking Widget Card */}
