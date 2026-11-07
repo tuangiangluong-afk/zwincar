@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { VehicleModel, MOROCCAN_HUBS, UPSELL_OPTIONS, getHubMeetingPoint, getLocalizedAirportName } from "@/lib/morocco-data";
-import { DEFAULT_HUB_DISTRIBUTION, DEFAULT_VEHICLE_STOCK } from "@/lib/affiliate";
+import { DEFAULT_HUB_DISTRIBUTION, DEFAULT_VEHICLE_STOCK, isHubInAffiliateFallback } from "@/lib/affiliate";
 import { Locale, getTranslation } from "@/lib/i18n";
-import { seasonFor, longStayDiscount } from "@/lib/booking-engine";
+import { seasonFor, longStayDiscount, getSeasonLabel } from "@/lib/booking-engine";
 import UpsellSelector from "@/components/UpsellSelector";
 import { BookingCheckoutModal } from "@/components/BookingCheckoutModal";
 import { AffiliateExitDrawer } from "@/components/AffiliateExitDrawer";
@@ -133,7 +133,7 @@ export default function VehicleBookingCard({
 
     const currentHub = MOROCCAN_HUBS.find((h) => h.slug === pickupHub) || MOROCCAN_HUBS[0];
     const hasFranchiseZero = selectedUpsells.includes("franchise-zero");
-    const isAffiliate = (DEFAULT_HUB_DISTRIBUTION[pickupHub] === "affiliate") || (DEFAULT_VEHICLE_STOCK[vehicle.id] === false);
+    const isAffiliate = isHubInAffiliateFallback(pickupHub) || (DEFAULT_VEHICLE_STOCK[vehicle.id] === false);
 
     return (
         <div className="rounded-3xl bg-white border border-[#E7DFD5] p-6 shadow-xl space-y-6">
@@ -178,7 +178,7 @@ export default function VehicleBookingCard({
                         </div>
                     </div>
                     <div className="flex items-center justify-between text-xs font-bold text-emerald-700 pt-1.5 border-t border-[#EAE3D6]">
-                        <span>✓ Économisez ~{currency === "EUR" ? `${totalSavingsVsAirportEur} €` : `${totalSavingsVsAirportMad} MAD`} vs aéroport</span>
+                        <span>✓ {t.catalog.savingsTotalTrip.replace("{amount}", currency === "EUR" ? `${totalSavingsVsAirportEur} €` : `${totalSavingsVsAirportMad} MAD`)}</span>
                         <span className="text-[10px] text-slate-500 font-medium">({days} {t.search.daysCount})</span>
                     </div>
                 </div>
@@ -192,13 +192,13 @@ export default function VehicleBookingCard({
                                     ? "bg-amber-50 text-amber-800 border-amber-200"
                                     : "bg-blue-50 text-blue-800 border-blue-200"
                             }`}>
-                                📅 {season.label}
+                                📅 {getSeasonLabel(season, activeLocale)}
                             </span>
                         )}
                         {durationDiscount > 0 && (
                             <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-center gap-1">
                                 <Sparkles size={12} className="text-emerald-600" />
-                                <span>Remise Long Séjour : -{Math.round(durationDiscount * 100)}% ({days} jours)</span>
+                                <span>{t.bookingWidget.longStayDiscountBadge.replace("{pct}", String(Math.round(durationDiscount * 100))).replace("{days}", String(days)).replace("{daysCount}", t.search.daysCount)}</span>
                             </span>
                         )}
                     </div>
@@ -350,7 +350,7 @@ export default function VehicleBookingCard({
                     <div className="flex justify-between text-emerald-700 font-medium">
                         <span className="flex items-center gap-1">
                             <Sparkles size={12} />
-                            <span>Remise Long Séjour ({days} j. : -{Math.round(durationDiscount * 100)}%)</span>
+                            <span>{t.bookingWidget.longStayDiscountBreakdown.replace("{pct}", String(Math.round(durationDiscount * 100))).replace("{days}", String(days))}</span>
                         </span>
                         <span className="font-semibold font-mono">
                             {currency === "EUR" ? `-${durationSavingsEur} €` : `-${durationSavingsMad} MAD`}
@@ -408,7 +408,7 @@ export default function VehicleBookingCard({
                         className="w-full h-12 rounded-2xl bg-slate-900 hover:bg-[#C9572C] text-white font-bold text-sm tracking-wide shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]"
                     >
                         <ExternalLink size={16} />
-                        <span>Voir les disponibilités aéroport (Partenaire)</span>
+                        <span>{t.bookingWidget.partnerCheckStockBtn}</span>
                     </button>
                 ) : (
                     <button
@@ -423,7 +423,13 @@ export default function VehicleBookingCard({
 
                 <a
                     href={`https://wa.me/212600000000?text=${encodeURIComponent(
-                        `Bonjour ZwinCar, je souhaite bloquer la ${vehicle.name} du ${pickupDate} au ${returnDate} à ${currentHub.name} avec options : ${selectedUpsells.join(', ')}.`
+                        activeLocale === "en"
+                            ? `Hello ZwinCar, I would like to book the ${vehicle.name} from ${pickupDate} to ${returnDate} in ${currentHub.name} with options: ${selectedUpsells.join(', ')}.`
+                            : activeLocale === "es"
+                            ? `Hola ZwinCar, deseo reservar el ${vehicle.name} del ${pickupDate} al ${returnDate} en ${currentHub.name} con opciones: ${selectedUpsells.join(', ')}.`
+                            : activeLocale === "nl"
+                            ? `Hallo ZwinCar, ik wil graag de ${vehicle.name} reserveren van ${pickupDate} tot ${returnDate} in ${currentHub.name} met opties: ${selectedUpsells.join(', ')}.`
+                            : `Bonjour ZwinCar, je souhaite bloquer la ${vehicle.name} du ${pickupDate} au ${returnDate} à ${currentHub.name} avec options : ${selectedUpsells.join(', ')}.`
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"

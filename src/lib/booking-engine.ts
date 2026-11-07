@@ -156,6 +156,46 @@ export function seasonFor(pickupDate: string): SeasonRule {
     );
 }
 
+export function getSeasonLabel(season: SeasonRule, locale: string = "fr"): string {
+    if (season.multiplier === 1) {
+        if (locale === "en") return "Standard Season";
+        if (locale === "es") return "Temporada Estándar";
+        if (locale === "nl") return "Standaard Seizoen";
+        return "Saison standard";
+    }
+    if (season.months.includes(7) || season.months.includes(8)) {
+        if (locale === "en") return "High Season (Summer)";
+        if (locale === "es") return "Temporada Alta (Verano)";
+        if (locale === "nl") return "Hoogseizoen (Zomer)";
+        return "Haute saison (été)";
+    }
+    if (season.months.includes(12)) {
+        if (locale === "en") return "Year-End Holidays";
+        if (locale === "es") return "Fiestas de Fin de Año";
+        if (locale === "nl") return "Feestdagen";
+        return "Fêtes de fin d'année";
+    }
+    if (season.months.includes(4)) {
+        if (locale === "en") return "Spring Holidays";
+        if (locale === "es") return "Vacaciones de Primavera";
+        if (locale === "nl") return "Voorjaarsvakantie";
+        return "Vacances de printemps";
+    }
+    if (season.months.includes(5) || season.months.includes(10)) {
+        if (locale === "en") return "Mid Season";
+        if (locale === "es") return "Temporada Media";
+        if (locale === "nl") return "Tussenseizoen";
+        return "Moyenne saison";
+    }
+    if (season.months.includes(1) || season.months.includes(2)) {
+        if (locale === "en") return "Low Season";
+        if (locale === "es") return "Temporada Baja";
+        if (locale === "nl") return "Laagseizoen";
+        return "Basse saison";
+    }
+    return season.label;
+}
+
 /** Remise longue durée : dégressive et cumulable avec la saison. */
 export function longStayDiscount(days: number): number {
     if (days >= 28) return 0.25;

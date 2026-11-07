@@ -104,6 +104,9 @@ export const TRANSLATIONS: Record<
             whatsappAvailabilityBtn: string;
             freeCancellationNotice: string;
             stripeNotice: string;
+            longStayDiscountBadge: string;
+            longStayDiscountBreakdown: string;
+            partnerCheckStockBtn: string;
             brokerComparisonTitle: string;
             brokerComparisonLegacy: string;
             brokerComparisonZwincar: string;
@@ -250,6 +253,9 @@ export const TRANSLATIONS: Record<
             whatsappAvailabilityBtn: "Demander disponibilité sur WhatsApp",
             freeCancellationNotice: "Annulation sans frais jusqu'à 48h",
             stripeNotice: "Paiement sécurisé par Stripe",
+            longStayDiscountBadge: "Remise Long Séjour : -{pct}% ({days} {daysCount})",
+            longStayDiscountBreakdown: "Remise Long Séjour ({days} j. : -{pct}%)",
+            partnerCheckStockBtn: "Voir les disponibilités aéroport (Partenaire)",
             brokerComparisonTitle: "Rappel transparence caution",
             brokerComparisonLegacy: "Courtiers classiques : Bloquent 1 500 € à 2 500 € sur carte de crédit physique obligatoire à l'arrivée.",
             brokerComparisonZwincar: "ZwinCar : 0 € de caution avec Franchise Zéro (ou 300 € en formule standard). Cartes de débit & espèces acceptées. Remise directe au parking.",
@@ -395,6 +401,9 @@ export const TRANSLATIONS: Record<
             whatsappAvailabilityBtn: "Check availability on WhatsApp",
             freeCancellationNotice: "Free cancellation up to 48h",
             stripeNotice: "Secure payment powered by Stripe",
+            longStayDiscountBadge: "Long Stay Discount: -{pct}% ({days} {daysCount})",
+            longStayDiscountBreakdown: "Long Stay Discount ({days} d. : -{pct}%)",
+            partnerCheckStockBtn: "Check Airport Availability (Partner)",
             brokerComparisonTitle: "Deposit transparency reminder",
             brokerComparisonLegacy: "Standard brokers: Block €1,500 to €2,500 on a mandatory physical credit card upon arrival.",
             brokerComparisonZwincar: "ZwinCar: €0 deposit with Zero-Excess (or €300 standard). Debit cards & cash accepted. Direct lot handover.",
@@ -540,6 +549,9 @@ export const TRANSLATIONS: Record<
             whatsappAvailabilityBtn: "Consultar disponibilidad por WhatsApp",
             freeCancellationNotice: "Cancelación gratuita hasta 48h",
             stripeNotice: "Pago seguro con Stripe",
+            longStayDiscountBadge: "Descuento Larga Estancia: -{pct}% ({days} {daysCount})",
+            longStayDiscountBreakdown: "Descuento Larga Estancia ({days} d. : -{pct}%)",
+            partnerCheckStockBtn: "Ver disponibilidad aeropuerto (Socio)",
             brokerComparisonTitle: "Recordatorio de transparencia de fianza",
             brokerComparisonLegacy: "Brokers habituales: Bloquean de 1.500 € a 2.500 € en tarjeta de crédito física obligatoria a la llegada.",
             brokerComparisonZwincar: "ZwinCar: 0 € de fianza con Franquicia Cero (o 300 € estándar). Débito y efectivo aceptados. Entrega directa en parking.",
@@ -685,6 +697,9 @@ export const TRANSLATIONS: Record<
             whatsappAvailabilityBtn: "Beschikbaarheid vragen via WhatsApp",
             freeCancellationNotice: "Gratis annuleren tot 48 uur",
             stripeNotice: "Veilige betaling via Stripe",
+            longStayDiscountBadge: "Lang Verblijf Korting: -{pct}% ({days} {daysCount})",
+            longStayDiscountBreakdown: "Lang Verblijf Korting ({days} d. : -{pct}%)",
+            partnerCheckStockBtn: "Bekijk luchthaven beschikbaarheid (Partner)",
             brokerComparisonTitle: "Transparantie over borgsommen",
             brokerComparisonLegacy: "Klassieke brokers: Blokkeren € 1.500 tot € 2.500 op verplichte fysieke creditcard bij aankomst.",
             brokerComparisonZwincar: "ZwinCar: € 0 borg met Geen Eigen Risico (of € 300 standaard). Betaalpas & contant geaccepteerd. Directe overdracht op parking.",

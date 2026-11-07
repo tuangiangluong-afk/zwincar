@@ -79,8 +79,6 @@ export function BookingCheckoutModal({
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [leadConfirmation, setLeadConfirmation] = useState<{ bookingRef: string; token: string } | null>(null);
 
-    if (!isOpen) return null;
-
     const currentHub =
         MOROCCAN_HUBS.find((h) => h.slug === pickupHubSlug) || MOROCCAN_HUBS[0];
     const hasFranchiseZero = selectedUpsells.includes("franchise-zero");
@@ -88,6 +86,9 @@ export function BookingCheckoutModal({
 
     React.useEffect(() => {
         if (!isOpen) return;
+
+        const originalOverflow = document.body.style.overflow;
+        document.body.style.overflow = "hidden";
 
         trackBeginCheckout({
             vehicleId: vehicle.id,
@@ -107,8 +108,13 @@ export function BookingCheckoutModal({
             }
         };
         window.addEventListener("keydown", handleKeyDown);
-        return () => window.removeEventListener("keydown", handleKeyDown);
+        return () => {
+            document.body.style.overflow = originalOverflow;
+            window.removeEventListener("keydown", handleKeyDown);
+        };
     }, [isOpen, onClose, vehicle, depositAcompteEur, balanceOnSiteEur, currency, days, currentHub.slug, hasFranchiseZero]);
+
+    if (!isOpen) return null;
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();

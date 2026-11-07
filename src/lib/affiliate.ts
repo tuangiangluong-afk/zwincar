@@ -51,11 +51,17 @@ export const DEFAULT_HUB_DISTRIBUTION: Record<string, DistributionMode> = {
     agadir: "hybrid", // Très demandé par surfeurs et vacanciers
     casablanca: "hybrid", // Mix business et diaspora
     tanger: "hybrid", // Hub Nord et ferry
-    fes: "direct", // Agences locales prioritaires
-    rabat: "direct", // Capitale administrative
-    ouarzazate: "direct", // Spécialiste 4x4 grand sud
+    fes: "hybrid", // Bascule fluide local / affiliation Travelpayouts
+    rabat: "hybrid", // Capitale administrative
+    ouarzazate: "hybrid", // Spécialiste 4x4 grand sud
     nador: "affiliate", // Pas encore de loueur signé -> 100% Affiliation
 };
+
+/** Vérifie si un hub doit basculer en mode affiliation intégrale */
+export function isHubInAffiliateFallback(hubSlug: string): boolean {
+    if (process.env.NEXT_PUBLIC_FORCE_AFFILIATE_MODE === "true") return true;
+    return DEFAULT_HUB_DISTRIBUTION[hubSlug] === "affiliate";
+}
 
 // Stock local par modèle (permet de déclarer un modèle en rupture en haute saison)
 export const DEFAULT_VEHICLE_STOCK: Record<string, boolean> = {

@@ -11,11 +11,20 @@ interface SosModalProps {
 export function SosModal({ isOpen, onClose }: SosModalProps) {
     const [activeTab, setActiveTab] = useState<"numbers" | "accident" | "control">("numbers");
 
+    React.useEffect(() => {
+        if (!isOpen) return;
+        const originalOverflow = document.body.style.overflow;
+        document.body.style.overflow = "hidden";
+        return () => {
+            document.body.style.overflow = originalOverflow;
+        };
+    }, [isOpen]);
+
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/65 backdrop-blur-xs">
-            <div className="w-full max-w-lg max-h-[calc(100dvh-1.5rem)] flex flex-col bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200 animate-in fade-in zoom-in-95 duration-150 my-auto">
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/65 backdrop-blur-xs">
+            <div className="w-full max-w-lg max-h-[90dvh] sm:max-h-[85dvh] flex flex-col bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-hidden border border-slate-200 animate-in fade-in duration-150">
                 {/* Deep Architectural Header */}
                 <div className="shrink-0 bg-[#12161E] p-4 sm:p-5 text-white flex items-center justify-between border-b border-slate-800">
                     <div className="flex items-center gap-3">
@@ -158,7 +167,7 @@ export function SosModal({ isOpen, onClose }: SosModalProps) {
                                     rel="noopener noreferrer"
                                     className="inline-flex items-center justify-center w-full py-2.5 px-3 rounded-xl bg-[#C9572C] hover:bg-[#B24922] text-white font-bold text-xs tracking-wide transition cursor-pointer text-center"
                                 >
-                                    Contacter l'astreinte WhatsApp (+212 6 00 00 00 00)
+                                    Contacter l'astreinte WhatsApp 24/7 (Réponse immédiate)
                                 </a>
                             </div>
                         </div>

@@ -24,13 +24,16 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
     const [sosModalOpen, setSosModalOpen] = useState(false);
     const [lookupModalOpen, setLookupModalOpen] = useState(false);
 
-    // Lock background scroll when mobile menu or modal is open
+    // Lock background scroll and touch bubbling when mobile menu or modal is open
     useEffect(() => {
         if (mobileMenuOpen || sosModalOpen || lookupModalOpen) {
             const originalOverflow = document.body.style.overflow;
+            const originalTouchAction = document.body.style.touchAction;
             document.body.style.overflow = "hidden";
+            document.body.style.touchAction = "none";
             return () => {
                 document.body.style.overflow = originalOverflow;
+                document.body.style.touchAction = originalTouchAction;
             };
         }
     }, [mobileMenuOpen, sosModalOpen, lookupModalOpen]);
@@ -132,7 +135,7 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
             <header className="sticky top-0 z-40 bg-[#FAF7F2]/95 backdrop-blur-md border-b border-[#EAE3D6] transition-colors">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl h-20 flex items-center justify-between gap-2 xl:gap-4">
                     {/* Logo & Desktop Nav */}
-                    <div className="flex items-center gap-3.5 xl:gap-6 shrink-0">
+                    <div className="flex items-center gap-2.5 xl:gap-6 min-w-0">
                         <Logo variant="full" theme="dark" size="md" locale={currentLocale} />
 
                         {/* Desktop Navigation */}

@@ -18,7 +18,7 @@ import {
     Zap,
 } from "lucide-react";
 import { VEHICLE_FLEET, VehicleModel, UPSELL_OPTIONS, MOROCCAN_HUBS, CityHub } from "@/lib/morocco-data";
-import { DEFAULT_HUB_DISTRIBUTION, DEFAULT_VEHICLE_STOCK } from "@/lib/affiliate";
+import { DEFAULT_HUB_DISTRIBUTION, DEFAULT_VEHICLE_STOCK, isHubInAffiliateFallback } from "@/lib/affiliate";
 import UpsellSelector from "@/components/UpsellSelector";
 import { BookingCheckoutModal } from "@/components/BookingCheckoutModal";
 import { AffiliateExitDrawer } from "@/components/AffiliateExitDrawer";
@@ -217,15 +217,15 @@ export default function VehicleCatalog({
                             </div>
                         </div>
 
-                        {/* Currency selector */}
-                        <div className="flex items-center shrink-0">
-                            <div className="inline-flex items-center rounded-full bg-white p-1 border border-[#E7DFD5] shadow-xs text-xs font-semibold text-slate-700">
-                                {(["EUR", "MAD", "GBP", "USD"] as const).map((c) => (
+                        {/* Currency selector - Fully responsive, cleanly padded */}
+                        <div className="flex items-center self-start sm:self-auto shrink-0">
+                            <div className="inline-flex items-center gap-0.5 rounded-full bg-white p-1 border border-[#E7DFD5] shadow-xs text-xs font-semibold text-slate-700">
+                                {([ "EUR", "MAD", "GBP", "USD" ] as const).map((c) => (
                                     <button
                                         key={c}
                                         type="button"
                                         onClick={() => setCurrency(c)}
-                                        className={`px-2.5 py-1 rounded-full cursor-pointer transition text-[11px] font-bold ${
+                                        className={`px-3 py-1 rounded-full cursor-pointer transition text-[11px] font-bold ${
                                             currency === c
                                                 ? "bg-[#C9572C] text-white shadow-2xs"
                                                 : "text-slate-600 hover:text-slate-900"
@@ -243,7 +243,7 @@ export default function VehicleCatalog({
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {filteredVehicles.map((vehicle) => {
                         const totalEst = vehicle.dailyPriceEur * days;
-                        const isAffiliate = hubMode === "affiliate" || DEFAULT_VEHICLE_STOCK[vehicle.id] === false;
+                        const isAffiliate = isHubInAffiliateFallback(currentHub.slug) || DEFAULT_VEHICLE_STOCK[vehicle.id] === false;
                         const vehicleLocalUrl = `/${activeLocale === "fr" ? "maroc" : activeLocale}/${currentHub.slug}/${vehicle.id}`;
 
                         const categoryLabel = vehicle.category;
