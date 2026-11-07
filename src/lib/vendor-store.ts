@@ -567,3 +567,16 @@ export function setVendorAgencyStatus(agencyId: string, status: "active" | "susp
     globalVendors.__zwincarAgencies!.set(agencyId, agency);
     return true;
 }
+
+/**
+ * Récupère le numéro WhatsApp du gérant de l'agence affiliée au hub.
+ */
+export function getVendorPhoneForHub(cityHub: string): string | null {
+    const hubNorm = cityHub.trim().toLowerCase();
+    for (const a of globalVendors.__zwincarAgencies!.values()) {
+        if (a.cityHub.toLowerCase() === hubNorm && a.status === "active") {
+            return a.managerPhone;
+        }
+    }
+    return null;
+}

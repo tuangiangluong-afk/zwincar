@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { getBookingStore } from "@/lib/booking-store";
+import { notifyVendorNewBooking } from "@/lib/whatsapp";
+import { getVendorPhoneForHub } from "@/lib/vendor-store";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -118,6 +120,28 @@ export async function POST(request: NextRequest) {
                                 locale: updated.locale || "fr",
                             }),
                         }).catch((err) => console.error("Webhook async email error:", err));
+
+                        // Alerte instantanée WhatsApp au loueur du hub (ou au numéro officiel ZwinCar)
+                        const vendorPhone = getVendorPhoneForHub(updated.rental.pickupHub) || "212720794046";
+                        notifyVendorNewBooking({
+                            ref: updated.ref,
+                            clientName: updated.client.fullName,
+                            clientPhone: updated.client.phone,
+                            vehicleName: updated.rental.vehicleName,
+                            hubName: updated.rental.hubName,
+                            airportCode: updated.rental.airportCode,
+                            meetingPointDetail: updated.rental.meetingPointDetail,
+                            pickupDate: updated.rental.pickupDate,
+                            pickupTime: updated.rental.pickupTime,
+                            returnDate: updated.rental.returnDate,
+                            returnTime: updated.rental.returnTime,
+                            days: updated.rental.days,
+                            balanceOnSiteMad: updated.quote.balanceMad,
+                            balanceOnSiteEur: updated.quote.balanceEur,
+                            hasFranchiseZero: updated.quote.hasZeroDeposit,
+                            flightNumber: updated.client.flightNumber,
+                            vendorPhone,
+                        }).catch((err) => console.error("Webhook async WhatsApp alert error:", err));
                     } catch (error) {
                         // Double livraison du webhook : ce n'est pas une erreur bloquante.
                         console.warn("Webhook: dossier déjà mis à jour", ref, error);
