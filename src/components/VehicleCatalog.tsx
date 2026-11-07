@@ -497,6 +497,7 @@ export default function VehicleCatalog({
                     hub={currentHub}
                     pickupDate={pickupDate}
                     returnDate={returnDate}
+                    locale={activeLocale}
                 />
             )}
         </section>

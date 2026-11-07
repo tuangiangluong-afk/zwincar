@@ -153,10 +153,10 @@ export default function VehicleBookingCard({
                     <ShieldCheck size={18} className="text-blue-600 shrink-0 mt-0.5" />
                     <div>
                         <span className="font-bold block">
-                            Réseau Partenaire Aéroport ({currentHub.airportCode})
+                            {t.bookingWidget.partnerNetworkTitle.replace("{code}", currentHub.airportCode)}
                         </span>
                         <p className="text-[11px] text-blue-700 mt-0.5">
-                            Flotte directe locale réservée pour cette période. Disponibilités garanties via nos partenaires vérifiés à l'aéroport.
+                            {t.bookingWidget.partnerNetworkDesc}
                         </p>
                     </div>
                 </div>
@@ -601,6 +601,7 @@ export default function VehicleBookingCard({
                     hub={currentHub}
                     pickupDate={pickupDate}
                     returnDate={returnDate}
+                    locale={activeLocale}
                 />
             )}
         </div>

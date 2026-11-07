@@ -269,10 +269,15 @@ export function BookingCheckoutModal({
                         <div className="rounded-2xl bg-emerald-50 border border-emerald-200 p-4 space-y-1.5 text-xs text-emerald-950">
                             <div className="font-bold flex items-center gap-1.5 text-emerald-900">
                                 <MessageCircle size={15} />
-                                <span>Alerte envoyée aux agents {currentHub.name}</span>
+                                <span>{t.checkoutModal.agentAlertTitle.replace("{hub}", currentHub.name)}</span>
                             </div>
                             <p className="text-[11px] text-emerald-900/80 leading-relaxed">
-                                Notre équipe locale vérifie la disponibilité sans caution de votre <strong>{vehicle.name}</strong> à {currentHub.name} ({pickupDate} au {returnDate}) et vous contacte sur WhatsApp au <strong>{phone}</strong> d&apos;ici 15 minutes.
+                                {t.checkoutModal.agentAlertDesc
+                                    .replace("{vehicle}", vehicle.name)
+                                    .replace("{hub}", currentHub.name)
+                                    .replace("{pickupDate}", pickupDate)
+                                    .replace("{returnDate}", returnDate)
+                                    .replace("{phone}", phone)}
                             </p>
                         </div>
 
@@ -280,10 +285,10 @@ export function BookingCheckoutModal({
                         <div className="rounded-2xl bg-linear-to-b from-[#FAF7F2] to-amber-500/10 border-2 border-amber-500/30 p-4 space-y-3">
                             <div>
                                 <div className="text-[10px] font-bold uppercase text-amber-800 tracking-wider">
-                                    ⚡ Besoin d&apos;un véhicule garanti immédiatement ?
+                                    {t.checkoutModal.instantBridgeTitle}
                                 </div>
                                 <p className="text-xs text-slate-700 mt-1 leading-relaxed">
-                                    En attendant notre confirmation WhatsApp, sécurisez instantanément une voiture disponible au Terminal {currentHub.airportCode} via nos partenaires officiels certifiés :
+                                    {t.checkoutModal.instantBridgeDesc.replace("{code}", currentHub.airportCode)}
                                 </p>
                             </div>
 
@@ -294,7 +299,7 @@ export function BookingCheckoutModal({
                                     rel="noopener noreferrer"
                                     className="min-h-[46px] py-2 px-3 rounded-xl bg-[#C9572C] hover:bg-[#B24922] text-white font-extrabold text-xs transition flex items-center justify-center gap-1.5 shadow-sm active:scale-95 text-center"
                                 >
-                                    <span className="whitespace-nowrap">Localrent (Faible Caution)</span>
+                                    <span className="whitespace-nowrap">{t.affiliateDrawer.localrentBtn}</span>
                                     <ExternalLink size={13} className="shrink-0" />
                                 </a>
                                 <a
@@ -303,7 +308,7 @@ export function BookingCheckoutModal({
                                     rel="noopener noreferrer"
                                     className="min-h-[46px] py-2 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs transition flex items-center justify-center gap-1.5 shadow-sm active:scale-95 text-center"
                                 >
-                                    <span className="whitespace-nowrap">DiscoverCars (Terminal)</span>
+                                    <span className="whitespace-nowrap">{t.affiliateDrawer.discoverCarsBtn}</span>
                                     <ExternalLink size={13} className="shrink-0" />
                                 </a>
                             </div>

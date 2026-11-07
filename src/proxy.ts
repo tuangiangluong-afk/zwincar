@@ -41,8 +41,8 @@ export default async function middleware(req: NextRequest) {
     const searchParams = req.nextUrl.searchParams.toString();
     const path = `${url.pathname}${searchParams.length > 0 ? `?${searchParams}` : ""}`;
 
-    // A. Sitemap Rewrite
-    if (path === "/sitemap.xml") {
+    // A. Sitemap & Robots
+    if (path === "/sitemap.xml" || path === "/robots.txt") {
         return NextResponse.next();
     }
 

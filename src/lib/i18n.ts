@@ -108,6 +108,8 @@ export const TRANSLATIONS: Record<
             longStayDiscountBadge: string;
             longStayDiscountBreakdown: string;
             partnerCheckStockBtn: string;
+            partnerNetworkTitle: string;
+            partnerNetworkDesc: string;
             brokerComparisonTitle: string;
             brokerComparisonLegacy: string;
             brokerComparisonZwincar: string;
@@ -133,6 +135,25 @@ export const TRANSLATIONS: Record<
             payStripeBtn: string;
             securePaymentNotice: string;
             cancelFreeNotice: string;
+            agentAlertTitle: string;
+            agentAlertDesc: string;
+            instantBridgeTitle: string;
+            instantBridgeDesc: string;
+        };
+        affiliateDrawer: {
+            inventoryTitle: string;
+            fleetFullTitle: string;
+            fleetFullDesc: string;
+            requestedModel: string;
+            periodLabel: string;
+            untilDate: string;
+            terminalLabel: string;
+            esimTitle: string;
+            esimDesc: string;
+            localrentBtn: string;
+            discoverCarsBtn: string;
+            instantConfirmationNote: string;
+            closeAria: string;
         };
         sosModal: {
             badge: string;
@@ -330,6 +351,8 @@ export const TRANSLATIONS: Record<
             longStayDiscountBadge: "Remise Long Séjour : -{pct}% ({days} {daysCount})",
             longStayDiscountBreakdown: "Remise Long Séjour ({days} j. : -{pct}%)",
             partnerCheckStockBtn: "Voir les disponibilités aéroport (Partenaire)",
+            partnerNetworkTitle: "Réseau Partenaire Aéroport ({code})",
+            partnerNetworkDesc: "Flotte directe locale réservée pour cette période. Disponibilités garanties via nos partenaires vérifiés à l'aéroport.",
             brokerComparisonTitle: "Rappel transparence caution",
             brokerComparisonLegacy: "Courtiers classiques : Bloquent 1 500 € à 2 500 € sur carte de crédit physique obligatoire à l'arrivée.",
             brokerComparisonZwincar: "ZwinCar : 0 € de caution avec Franchise Zéro (ou 300 € en formule standard). Cartes de débit & espèces acceptées. Remise directe au parking.",
@@ -355,6 +378,25 @@ export const TRANSLATIONS: Record<
             payStripeBtn: "Régler l'acompte et bloquer le véhicule",
             securePaymentNotice: "Paiement sécurisé par carte bancaire (Stripe 256-bit).",
             cancelFreeNotice: "Annulation gratuite jusqu'à 48h avant l'arrivée.",
+            agentAlertTitle: "Alerte envoyée aux agents {hub}",
+            agentAlertDesc: "Notre équipe locale vérifie la disponibilité sans caution de votre {vehicle} à {hub} ({pickupDate} au {returnDate}) et vous contacte sur WhatsApp au {phone} d'ici 15 minutes.",
+            instantBridgeTitle: "⚡ Besoin d'un véhicule garanti immédiatement ?",
+            instantBridgeDesc: "En attendant notre confirmation WhatsApp, sécurisez instantanément une voiture disponible au Terminal {code} via nos partenaires officiels certifiés :",
+        },
+        affiliateDrawer: {
+            inventoryTitle: "Inventaire Partenaire Aéroport",
+            fleetFullTitle: "Flotte locale ZwinCar complète sur ces dates",
+            fleetFullDesc: "Pour vous garantir une solution de mobilité à l'arrivée, nous interrogeons en direct l'inventaire des comptoirs officiels du terminal ({code}) via notre partenaire DiscoverCars.",
+            requestedModel: "Modèle recherché",
+            periodLabel: "Période",
+            untilDate: "Au {date}",
+            terminalLabel: "Terminal {code}",
+            esimTitle: "eSIM Maroc 20 Go 5G (Optionnel)",
+            esimDesc: "Data immédiate dès la sortie de l'avion sans faire la queue",
+            localrentBtn: "Localrent (Faible Caution)",
+            discoverCarsBtn: "DiscoverCars (Terminal)",
+            instantConfirmationNote: "Inventaires officiels avec réservation instantanée et confirmation immédiate par email.",
+            closeAria: "Fermer",
         },
         sosModal: {
             badge: "Assistance Voyageur Maroc 24/7",
@@ -551,6 +593,8 @@ export const TRANSLATIONS: Record<
             longStayDiscountBadge: "Long Stay Discount: -{pct}% ({days} {daysCount})",
             longStayDiscountBreakdown: "Long Stay Discount ({days} d. : -{pct}%)",
             partnerCheckStockBtn: "Check Airport Availability (Partner)",
+            partnerNetworkTitle: "Airport Partner Network ({code})",
+            partnerNetworkDesc: "Direct local fleet fully booked for these dates. Guaranteed availability via our verified airport partners.",
             brokerComparisonTitle: "Deposit transparency reminder",
             brokerComparisonLegacy: "Standard brokers: Block €1,500 to €2,500 on a mandatory physical credit card upon arrival.",
             brokerComparisonZwincar: "ZwinCar: €0 deposit with Zero-Excess (or €300 standard). Debit cards & cash accepted. Direct lot handover.",
@@ -576,6 +620,25 @@ export const TRANSLATIONS: Record<
             payStripeBtn: "Pay down-payment & lock vehicle",
             securePaymentNotice: "Secure online payment powered by Stripe (256-bit encryption).",
             cancelFreeNotice: "Free cancellation up to 48 hours prior to arrival.",
+            agentAlertTitle: "Alert dispatched to {hub} agents",
+            agentAlertDesc: "Our local team is checking zero-deposit availability for your {vehicle} in {hub} ({pickupDate} to {returnDate}) and will contact you on WhatsApp at {phone} within 15 minutes.",
+            instantBridgeTitle: "⚡ Need an instantly guaranteed vehicle?",
+            instantBridgeDesc: "While waiting for our WhatsApp confirmation, instantly secure an available car at Terminal {code} via our certified official partners:",
+        },
+        affiliateDrawer: {
+            inventoryTitle: "Airport Partner Inventory",
+            fleetFullTitle: "ZwinCar local fleet fully booked on these dates",
+            fleetFullDesc: "To guarantee you a mobility solution upon arrival, we check in real time the live inventory of official airport terminal counters ({code}) via our partner DiscoverCars.",
+            requestedModel: "Requested Model",
+            periodLabel: "Rental Period",
+            untilDate: "To {date}",
+            terminalLabel: "Terminal {code}",
+            esimTitle: "Morocco eSIM 20 GB 5G (Optional)",
+            esimDesc: "Instant mobile data upon landing without waiting in airport queues",
+            localrentBtn: "Localrent (Low Deposit)",
+            discoverCarsBtn: "DiscoverCars (Terminal)",
+            instantConfirmationNote: "Official partner inventories with instant online booking and immediate email voucher.",
+            closeAria: "Close",
         },
         sosModal: {
             badge: "Morocco 24/7 Traveler Assistance",
@@ -772,6 +835,8 @@ export const TRANSLATIONS: Record<
             longStayDiscountBadge: "Descuento Larga Estancia: -{pct}% ({days} {daysCount})",
             longStayDiscountBreakdown: "Descuento Larga Estancia ({days} d. : -{pct}%)",
             partnerCheckStockBtn: "Ver disponibilidad aeropuerto (Socio)",
+            partnerNetworkTitle: "Red de Socios Aeropuerto ({code})",
+            partnerNetworkDesc: "Flota local directa completa para estas fechas. Disponibilidad garantizada a través de nuestros socios verificados en el aeropuerto.",
             brokerComparisonTitle: "Recordatorio de transparencia de fianza",
             brokerComparisonLegacy: "Brokers habituales: Bloquean de 1.500 € a 2.500 € en tarjeta de crédito física obligatoria a la llegada.",
             brokerComparisonZwincar: "ZwinCar: 0 € de fianza con Franquicia Cero (o 300 € estándar). Débito y efectivo aceptados. Entrega directa en parking.",
@@ -797,6 +862,25 @@ export const TRANSLATIONS: Record<
             payStripeBtn: "Pagar anticipo y bloquear vehículo",
             securePaymentNotice: "Pago seguro con tarjeta bancaria mediante Stripe (encriptación de 256 bits).",
             cancelFreeNotice: "Cancelación gratuita hasta 48 horas antes de la llegada.",
+            agentAlertTitle: "Alerta enviada a los agentes de {hub}",
+            agentAlertDesc: "Nuestro equipo local está verificando la disponibilidad sin fianza de su {vehicle} en {hub} ({pickupDate} al {returnDate}) y le contactará por WhatsApp al {phone} en 15 minutos.",
+            instantBridgeTitle: "⚡ ¿Necesita un vehículo garantizado inmediatamente?",
+            instantBridgeDesc: "Mientras espera nuestra confirmación por WhatsApp, asegure al instante un coche disponible en la Terminal {code} a través de nuestros socios oficiales certificados:",
+        },
+        affiliateDrawer: {
+            inventoryTitle: "Inventario de Socios Aeropuerto",
+            fleetFullTitle: "Flota local ZwinCar completa en estas fechas",
+            fleetFullDesc: "Para garantizarle una solución de movilidad a su llegada, consultamos en directo el inventario de los mostradores oficiales de la terminal ({code}) a través de nuestro socio DiscoverCars.",
+            requestedModel: "Modelo Solicitado",
+            periodLabel: "Período de Alquiler",
+            untilDate: "Hasta el {date}",
+            terminalLabel: "Terminal {code}",
+            esimTitle: "eSIM Marruecos 20 GB 5G (Opcional)",
+            esimDesc: "Datos móviles inmediatos al aterrizar sin hacer colas",
+            localrentBtn: "Localrent (Fianza Baja)",
+            discoverCarsBtn: "DiscoverCars (Terminal)",
+            instantConfirmationNote: "Inventarios oficiales con reserva instantánea y confirmación inmediata por email.",
+            closeAria: "Cerrar",
         },
         sosModal: {
             badge: "Asistencia al Viajero en Marruecos 24/7",
@@ -993,6 +1077,8 @@ export const TRANSLATIONS: Record<
             longStayDiscountBadge: "Lang Verblijf Korting: -{pct}% ({days} {daysCount})",
             longStayDiscountBreakdown: "Lang Verblijf Korting ({days} d. : -{pct}%)",
             partnerCheckStockBtn: "Bekijk luchthaven beschikbaarheid (Partner)",
+            partnerNetworkTitle: "Luchthaven Partnernetwerk ({code})",
+            partnerNetworkDesc: "Directe lokale vloot volgeboekt voor deze periode. Gegarandeerde beschikbaarheid via onze geverifieerde partners op de luchthaven.",
             brokerComparisonTitle: "Transparantie over borgsommen",
             brokerComparisonLegacy: "Klassieke brokers: Blokkeren € 1.500 tot € 2.500 op verplichte fysieke creditcard bij aankomst.",
             brokerComparisonZwincar: "ZwinCar: € 0 borg met Geen Eigen Risico (of € 300 standaard). Betaalpas & contant geaccepteerd. Directe overdracht op parking.",
@@ -1018,6 +1104,25 @@ export const TRANSLATIONS: Record<
             payStripeBtn: "Aanbetaling voldoen & auto vastleggen",
             securePaymentNotice: "Veilig online betalen via Stripe (256-bit encryptie).",
             cancelFreeNotice: "Kosteloos annuleren tot 48 uur voor aankomst.",
+            agentAlertTitle: "Melding verzonden naar agenten in {hub}",
+            agentAlertDesc: "Ons lokale team controleert de beschikbaarheid zonder borg voor uw {vehicle} in {hub} ({pickupDate} tot {returnDate}) en neemt binnen 15 minuten contact met u op via WhatsApp op {phone}.",
+            instantBridgeTitle: "⚡ Direct een gegarandeerd voertuig nodig?",
+            instantBridgeDesc: "Terwijl u wacht op onze WhatsApp-bevestiging, kunt u direct een beschikbare auto op Terminal {code} reserveren via onze gecertificeerde partners:",
+        },
+        affiliateDrawer: {
+            inventoryTitle: "Luchthaven Partner Inventaris",
+            fleetFullTitle: "ZwinCar lokale vloot volgeboekt op deze data",
+            fleetFullDesc: "Om u bij aankomst gegarandeerd van mobiliteit te voorzien, raadplegen wij rechtstreeks de voorraad van officiële terminalbalies ({code}) via onze partner DiscoverCars.",
+            requestedModel: "Gevraagd Model",
+            periodLabel: "Huurperiode",
+            untilDate: "Tot {date}",
+            terminalLabel: "Terminal {code}",
+            esimTitle: "Marokko eSIM 20 GB 5G (Optioneel)",
+            esimDesc: "Direct mobiele data bij landing, zonder wachttijden op het vliegveld",
+            localrentBtn: "Localrent (Lage Borg)",
+            discoverCarsBtn: "DiscoverCars (Terminal)",
+            instantConfirmationNote: "Officiële partnerinventarissen met directe boeking en onmiddellijke bevestiging per e-mail.",
+            closeAria: "Sluiten",
         },
         sosModal: {
             badge: "24/7 Reishulp Marokko",

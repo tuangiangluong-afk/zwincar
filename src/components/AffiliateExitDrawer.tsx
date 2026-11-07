@@ -13,8 +13,10 @@ import {
     ShieldAlert,
     Info,
 } from "lucide-react";
-import { VehicleModel, CityHub } from "@/lib/morocco-data";
+import { VehicleModel, CityHub, getLocalizedAirportName } from "@/lib/morocco-data";
 import { buildAffiliateRentalUrl, buildAffiliateEsimUrl } from "@/lib/affiliate";
+import { Locale, getTranslation } from "@/lib/i18n";
+import { usePathname } from "next/navigation";
 
 interface AffiliateExitDrawerProps {
     isOpen: boolean;
@@ -23,6 +25,7 @@ interface AffiliateExitDrawerProps {
     hub: CityHub;
     pickupDate: string;
     returnDate: string;
+    locale?: Locale;
 }
 
 export function AffiliateExitDrawer({
@@ -32,7 +35,17 @@ export function AffiliateExitDrawer({
     hub,
     pickupDate,
     returnDate,
+    locale: propLocale,
 }: AffiliateExitDrawerProps) {
+    const pathname = usePathname() || "";
+    let activeLocale: Locale = propLocale || "fr";
+    if (!propLocale) {
+        if (pathname.startsWith("/en")) activeLocale = "en";
+        else if (pathname.startsWith("/es")) activeLocale = "es";
+        else if (pathname.startsWith("/nl")) activeLocale = "nl";
+    }
+
+    const t = getTranslation(activeLocale);
     const [includeEsim, setIncludeEsim] = useState(false);
     const [isRedirecting, setIsRedirecting] = useState(false);
 
@@ -112,10 +125,10 @@ export function AffiliateExitDrawer({
                         </div>
                         <div>
                             <div className="text-[10px] uppercase font-bold tracking-wider text-slate-400">
-                                Inventaire Partenaire Aéroport
+                                {t.affiliateDrawer.inventoryTitle}
                             </div>
                             <h3 className="text-base sm:text-lg font-black tracking-tight text-white">
-                                {hub.airportName} ({hub.airportCode})
+                                {getLocalizedAirportName(hub, activeLocale)} ({hub.airportCode})
                             </h3>
                         </div>
                     </div>
@@ -123,7 +136,7 @@ export function AffiliateExitDrawer({
                         type="button"
                         onClick={onClose}
                         className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition cursor-pointer"
-                        aria-label="Fermer"
+                        aria-label={t.affiliateDrawer.closeAria}
                     >
                         <X size={18} />
                     </button>
@@ -134,10 +147,10 @@ export function AffiliateExitDrawer({
                     <div className="rounded-2xl bg-amber-50/70 border border-amber-200/80 p-4 space-y-1.5 text-xs text-amber-950">
                         <div className="font-bold flex items-center gap-1.5 text-amber-900">
                             <Info size={15} />
-                            <span>Flotte locale ZwinCar complète sur ces dates</span>
+                            <span>{t.affiliateDrawer.fleetFullTitle}</span>
                         </div>
                         <p className="text-[11px] text-amber-900/80 leading-relaxed">
-                            Pour vous garantir une solution de mobilité à l'arrivée, nous interrogeons en direct l'inventaire des comptoirs officiels du terminal ({hub.airportCode}) via notre partenaire DiscoverCars.
+                            {t.affiliateDrawer.fleetFullDesc.replace("{code}", hub.airportCode)}
                         </p>
                     </div>
 
@@ -145,7 +158,7 @@ export function AffiliateExitDrawer({
                     <div className="rounded-2xl bg-[#FAF7F2] border border-[#ECE5D9] p-4 grid grid-cols-2 gap-3 text-xs">
                         <div>
                             <span className="text-[10px] font-bold uppercase text-slate-400 block">
-                                Modèle recherché
+                                {t.affiliateDrawer.requestedModel}
                             </span>
                             <span className="font-bold text-slate-900 block truncate">
                                 {vehicle.name}
@@ -154,12 +167,12 @@ export function AffiliateExitDrawer({
                         </div>
                         <div>
                             <span className="text-[10px] font-bold uppercase text-slate-400 block">
-                                Période ({pickupDate})
+                                {t.affiliateDrawer.periodLabel} ({pickupDate})
                             </span>
                             <span className="font-bold text-slate-900 block truncate">
-                                Au {returnDate}
+                                {t.affiliateDrawer.untilDate.replace("{date}", returnDate)}
                             </span>
-                            <span className="text-[11px] text-slate-500">Terminal {hub.airportCode}</span>
+                            <span className="text-[11px] text-slate-500">{t.affiliateDrawer.terminalLabel.replace("{code}", hub.airportCode)}</span>
                         </div>
                     </div>
 
@@ -178,10 +191,10 @@ export function AffiliateExitDrawer({
                             </div>
                             <div>
                                 <div className="text-xs sm:text-sm font-bold text-slate-900">
-                                    eSIM Maroc 20 Go 5G (Optionnel)
+                                    {t.affiliateDrawer.esimTitle}
                                 </div>
                                 <div className="text-[11px] text-slate-500">
-                                    Data immédiate dès la sortie de l'avion sans faire la queue
+                                    {t.affiliateDrawer.esimDesc}
                                 </div>
                             </div>
                         </div>
@@ -209,7 +222,7 @@ export function AffiliateExitDrawer({
                                 disabled={isRedirecting}
                                 className="min-h-[48px] py-2.5 px-3 rounded-2xl bg-[#C9572C] hover:bg-[#B24922] text-white font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-md cursor-pointer disabled:opacity-50 active:scale-95 text-center"
                             >
-                                <span className="font-extrabold whitespace-nowrap">Localrent (Faible Caution)</span>
+                                <span className="font-extrabold whitespace-nowrap">{t.affiliateDrawer.localrentBtn}</span>
                                 <ExternalLink size={14} className="shrink-0" />
                             </button>
                             <button
@@ -218,12 +231,12 @@ export function AffiliateExitDrawer({
                                 disabled={isRedirecting}
                                 className="min-h-[48px] py-2.5 px-3 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-md cursor-pointer disabled:opacity-50 active:scale-95 text-center"
                             >
-                                <span className="font-extrabold whitespace-nowrap">DiscoverCars (Terminal)</span>
+                                <span className="font-extrabold whitespace-nowrap">{t.affiliateDrawer.discoverCarsBtn}</span>
                                 <ExternalLink size={14} className="shrink-0" />
                             </button>
                         </div>
                         <div className="text-center text-[10px] text-slate-400">
-                            Inventaires officiels avec réservation instantanée et confirmation immédiate par email.
+                            {t.affiliateDrawer.instantConfirmationNote}
                         </div>
                     </div>
                 </div>

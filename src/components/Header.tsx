@@ -208,12 +208,12 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
                         <button
                             type="button"
                             onClick={() => setLookupModalOpen(true)}
-                            className="inline-flex items-center gap-1.5 px-2.5 xl:px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition cursor-pointer whitespace-nowrap active:scale-95 shrink-0"
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition cursor-pointer whitespace-nowrap active:scale-95 shrink-0"
                             title={t.nav.findBooking}
                             aria-label={t.nav.findBooking}
                         >
                             <FileText size={14} className="text-[#C9572C] shrink-0" />
-                            <span className="hidden 2xl:inline">{t.nav.myVoucher}</span>
+                            <span>{t.nav.myVoucher}</span>
                         </button>
 
                         {/* SOS Urgence Button */}
@@ -258,12 +258,24 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
                     </div>
 
                     {/* Mobile Controls & Hamburger Button */}
-                    <div className="flex lg:hidden items-center gap-2">
+                    <div className="flex lg:hidden items-center gap-1.5 sm:gap-2">
+                        {/* Quick Mon Bon button for mobile header */}
+                        <button
+                            type="button"
+                            onClick={() => setLookupModalOpen(true)}
+                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 text-[11px] font-bold transition cursor-pointer active:scale-95 shrink-0"
+                            title={t.nav.findBooking}
+                            aria-label={t.nav.findBooking}
+                        >
+                            <FileText size={13} className="text-[#C9572C]" />
+                            <span>{t.nav.myVoucher}</span>
+                        </button>
+
                         {/* Quick SOS button for mobile header */}
                         <button
                             type="button"
                             onClick={() => setSosModalOpen(true)}
-                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-red-50 text-red-700 border border-red-200 text-[11px] font-bold"
+                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-red-50 text-red-700 border border-red-200 text-[11px] font-bold shrink-0"
                         >
                             <ShieldAlert size={13} className="text-red-600" />
                             <span>SOS</span>
