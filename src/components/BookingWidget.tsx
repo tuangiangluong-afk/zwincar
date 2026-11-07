@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { MOROCCAN_HUBS, getLocalizedAirportName } from "@/lib/morocco-data";
 import { Locale, getTranslation } from "@/lib/i18n";
+import { buildAffiliateRentalUrl, isPopTabOnSearchEnabled } from "@/lib/affiliate";
 
 interface BookingWidgetProps {
     onSearch?: (searchState: SearchState) => void;
@@ -85,6 +86,24 @@ export function BookingWidget({
     const currentHub = MOROCCAN_HUBS.find((h) => h.slug === state.pickupHub) || MOROCCAN_HUBS[0];
 
     const handleSearch = () => {
+        // Option 2 : Ouverture pop-tab synchrone sur geste utilisateur (Kayak/Skyscanner compliant)
+        if (typeof window !== "undefined" && isPopTabOnSearchEnabled()) {
+            try {
+                const affiliateUrl = buildAffiliateRentalUrl({
+                    provider: "discovercars",
+                    hubCode: currentHub.airportCode,
+                    citySlug: currentHub.slug,
+                    pickupDate: state.pickupDate,
+                    returnDate: state.returnDate,
+                    pickupTime: state.pickupTime,
+                    returnTime: state.returnTime,
+                });
+                window.open(affiliateUrl, "_blank", "noopener,noreferrer");
+            } catch {
+                // ignore
+            }
+        }
+
         setIsSearching(true);
         if (onSearch) {
             onSearch(state);

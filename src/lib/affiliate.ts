@@ -57,19 +57,93 @@ export const DEFAULT_HUB_DISTRIBUTION: Record<string, DistributionMode> = {
     nador: "affiliate", // Pas encore de loueur signé -> 100% Affiliation
 };
 
+export type GlobalDistributionMode = "affiliate" | "hybrid" | "direct";
+
+export const DISTRIBUTION_COOKIE_NAME = "zwincar_distribution_mode";
+export const POPTAB_COOKIE_NAME = "zwincar_poptab_enabled";
+
+// Active le mode 100% affiliation par défaut dès maintenant
+export const DEFAULT_GLOBAL_MODE: GlobalDistributionMode = "affiliate";
+
+/** Lit le mode global de distribution (client ou SSR) */
+export function getGlobalDistributionMode(): GlobalDistributionMode {
+    if (typeof window !== "undefined") {
+        try {
+            const stored = localStorage.getItem(DISTRIBUTION_COOKIE_NAME);
+            if (stored === "affiliate" || stored === "hybrid" || stored === "direct") {
+                return stored;
+            }
+            const cookieMatch = document.cookie.match(new RegExp(`(^| )${DISTRIBUTION_COOKIE_NAME}=([^;]+)`));
+            if (cookieMatch && (cookieMatch[2] === "affiliate" || cookieMatch[2] === "hybrid" || cookieMatch[2] === "direct")) {
+                return cookieMatch[2] as GlobalDistributionMode;
+            }
+        } catch {
+            // ignore
+        }
+    }
+    if (process.env.NEXT_PUBLIC_FORCE_AFFILIATE_MODE === "false") return "hybrid";
+    return DEFAULT_GLOBAL_MODE;
+}
+
 /** Vérifie si un hub doit basculer en mode affiliation intégrale */
 export function isHubInAffiliateFallback(hubSlug: string): boolean {
-    if (process.env.NEXT_PUBLIC_FORCE_AFFILIATE_MODE === "true") return true;
+    const globalMode = getGlobalDistributionMode();
+    if (globalMode === "affiliate") return true;
+    if (globalMode === "direct") return false;
     return DEFAULT_HUB_DISTRIBUTION[hubSlug] === "affiliate";
+}
+
+/** Vérifie si l'ouverture pop-tab en arrière-plan est activée au clic recherche */
+export function isPopTabOnSearchEnabled(): boolean {
+    if (typeof window !== "undefined") {
+        try {
+            const stored = localStorage.getItem(POPTAB_COOKIE_NAME);
+            if (stored !== null) return stored === "true";
+            const cookieMatch = document.cookie.match(new RegExp(`(^| )${POPTAB_COOKIE_NAME}=([^;]+)`));
+            if (cookieMatch) return cookieMatch[2] === "true";
+        } catch {
+            // ignore
+        }
+    }
+    // Activé par défaut pour monétiser immédiatement le trafic
+    return true;
+}
+
+/** Définit le mode global de distribution et persiste en localStorage + cookie */
+export function setGlobalDistributionMode(mode: GlobalDistributionMode) {
+    if (typeof window !== "undefined") {
+        try {
+            localStorage.setItem(DISTRIBUTION_COOKIE_NAME, mode);
+            document.cookie = `${DISTRIBUTION_COOKIE_NAME}=${mode}; path=/; max-age=31536000; SameSite=Lax`;
+        } catch {
+            // ignore
+        }
+    }
+}
+
+/** Active / Désactive l'option 2 (pop-tab au clic recherche) */
+export function setPopTabOnSearchEnabled(enabled: boolean) {
+    if (typeof window !== "undefined") {
+        try {
+            localStorage.setItem(POPTAB_COOKIE_NAME, String(enabled));
+            document.cookie = `${POPTAB_COOKIE_NAME}=${enabled}; path=/; max-age=31536000; SameSite=Lax`;
+        } catch {
+            // ignore
+        }
+    }
 }
 
 // Stock local par modèle (permet de déclarer un modèle en rupture en haute saison)
 export const DEFAULT_VEHICLE_STOCK: Record<string, boolean> = {
+    "hyundai-i10": true,
     "dacia-sandero-stepway": true,
     "renault-clio-5-auto": true,
-    "dacia-duster-4x4": true,
-    "hyundai-tucson-auto": true,
     "peugeot-208-puretech": true,
+    "hyundai-accent": true,
+    "dacia-duster-4x4": true,
+    "dacia-jogger": true,
+    "dacia-jogger-7places": true,
+    "hyundai-tucson-auto": true,
     "toyota-prado-tx-7places": true,
 };
 

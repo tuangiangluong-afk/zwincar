@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     Share2,
     ToggleLeft,
@@ -15,17 +15,26 @@ import {
     Sparkles,
     Settings,
     HelpCircle,
+    Zap,
+    Flame,
 } from "lucide-react";
 import { MOROCCAN_HUBS, VEHICLE_FLEET } from "@/lib/morocco-data";
 import {
     DEFAULT_HUB_DISTRIBUTION,
     DEFAULT_VEHICLE_STOCK,
     DistributionMode,
+    GlobalDistributionMode,
     AFFILIATE_PROVIDERS,
     buildAffiliateRentalUrl,
+    getGlobalDistributionMode,
+    setGlobalDistributionMode,
+    isPopTabOnSearchEnabled,
+    setPopTabOnSearchEnabled,
 } from "@/lib/affiliate";
 
 export default function AdminAffiliationPage() {
+    const [globalMode, setGlobalMode] = useState<GlobalDistributionMode>("affiliate");
+    const [popTabOnSearch, setPopTabOnSearch] = useState<boolean>(true);
     const [hubDistribution, setHubDistribution] = useState<Record<string, DistributionMode>>(
         DEFAULT_HUB_DISTRIBUTION
     );
@@ -33,8 +42,53 @@ export default function AdminAffiliationPage() {
         DEFAULT_VEHICLE_STOCK
     );
     const [selectedProvider, setSelectedProvider] = useState<"discovercars" | "localrent" | "economybookings">("discovercars");
-    const [markerId, setMarkerId] = useState("zwincar");
-    const [savedNotification, setSavedNotification] = useState(false);
+    const [markerId, setMarkerId] = useState("596733");
+    const [savedNotification, setSavedNotification] = useState<string | null>(null);
+
+    // Initial load from storage / API
+    useEffect(() => {
+        setGlobalMode(getGlobalDistributionMode());
+        setPopTabOnSearch(isPopTabOnSearchEnabled());
+
+        fetch("/api/admin/distribution")
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.globalMode) setGlobalMode(data.globalMode);
+                if (typeof data.popTabOnSearch === "boolean") setPopTabOnSearch(data.popTabOnSearch);
+            })
+            .catch(() => {});
+    }, []);
+
+    const handleGlobalModeSwitch = async (mode: GlobalDistributionMode) => {
+        setGlobalMode(mode);
+        setGlobalDistributionMode(mode);
+        try {
+            await fetch("/api/admin/distribution", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ globalMode: mode, popTabOnSearch }),
+            });
+            showNotification(`Mode global basculé sur : ${mode === "affiliate" ? "100% Affiliation" : mode === "hybrid" ? "Hybride Intelligent" : "100% Flotte Directe"}`);
+        } catch {
+            showNotification("Mode appliqué localement.");
+        }
+    };
+
+    const handlePopTabToggle = async () => {
+        const next = !popTabOnSearch;
+        setPopTabOnSearch(next);
+        setPopTabOnSearchEnabled(next);
+        try {
+            await fetch("/api/admin/distribution", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ globalMode, popTabOnSearch: next }),
+            });
+            showNotification(`Pop-Tab au clic recherche : ${next ? "ACTIVÉ (Option 2)" : "DÉSACTIVÉ"}`);
+        } catch {
+            showNotification("Option Pop-Tab mise à jour localement.");
+        }
+    };
 
     const handleHubModeChange = (slug: string, mode: DistributionMode) => {
         setHubDistribution((prev) => ({
@@ -50,9 +104,24 @@ export default function AdminAffiliationPage() {
         }));
     };
 
-    const handleSave = () => {
-        setSavedNotification(true);
-        setTimeout(() => setSavedNotification(false), 2500);
+    const showNotification = (msg: string) => {
+        setSavedNotification(msg);
+        setTimeout(() => setSavedNotification(null), 3000);
+    };
+
+    const handleSaveAll = async () => {
+        setGlobalDistributionMode(globalMode);
+        setPopTabOnSearchEnabled(popTabOnSearch);
+        try {
+            await fetch("/api/admin/distribution", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ globalMode, popTabOnSearch, hubDistribution, vehicleStock }),
+            });
+            showNotification("Tous les paramètres ont été enregistrés et sont actifs sur le site.");
+        } catch {
+            showNotification("Paramètres sauvegardés localement.");
+        }
     };
 
     // Live generated test URL
@@ -78,59 +147,154 @@ export default function AdminAffiliationPage() {
                         Distribution Directe & Affiliation Travelpayouts
                     </h1>
                     <p className="text-xs sm:text-sm text-slate-500 mt-1">
-                        Basculez chaque aéroport en Direct, Hybride ou 100% Affiliation pour ne perdre aucune réservation en haute saison.
+                        Basculez l'ensemble du site en 1 clic entre le mode 100% Affiliation et la Flotte Directe.
                     </p>
                 </div>
 
                 <button
                     type="button"
-                    onClick={handleSave}
+                    onClick={handleSaveAll}
                     className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-[#C9572C] text-white text-xs font-bold transition shadow-xs cursor-pointer self-start sm:self-auto"
                 >
                     <Save size={15} />
-                    <span>{savedNotification ? "Modifications Enregistrées !" : "Sauvegarder les Paramètres"}</span>
+                    <span>Sauvegarder les Paramètres</span>
                 </button>
             </div>
 
             {/* Notification alert */}
             {savedNotification && (
                 <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-950 font-semibold text-xs flex items-center gap-2 animate-in fade-in">
-                    <CheckCircle2 size={18} className="text-emerald-600" />
-                    <span>Configuration de distribution mise à jour avec succès sur l'ensemble du réseau ZwinCar.</span>
+                    <CheckCircle2 size={18} className="text-emerald-600 shrink-0" />
+                    <span>{savedNotification}</span>
                 </div>
             )}
 
-            {/* 3 Situations Explanation Box */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-                <div className="p-4.5 rounded-2xl bg-white border border-slate-200 space-y-1.5 shadow-2xs">
-                    <div className="font-bold text-slate-900 flex items-center gap-1.5">
-                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
-                        <span>Mode 1 : Direct Local (100%)</span>
+            {/* MASTER GLOBAL TOGGLE: 3 CARDS */}
+            <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                        Interrupteur Maître — Mode de Monétisation Global
+                    </span>
+                    <span className="text-[11px] font-bold text-[#C9572C]">
+                        Prend effet instantanément sans redémarrage
+                    </span>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {/* Mode 1: 100% Affiliation (RECOMMENDED BEFORE PARTNERS) */}
+                    <div
+                        onClick={() => handleGlobalModeSwitch("affiliate")}
+                        className={`p-5 rounded-3xl border-2 transition-all cursor-pointer relative ${
+                            globalMode === "affiliate"
+                                ? "bg-amber-50/50 border-amber-500 shadow-md ring-2 ring-amber-500/20"
+                                : "bg-white border-slate-200 hover:border-slate-300"
+                        }`}
+                    >
+                        <div className="flex items-center justify-between mb-3">
+                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-amber-500 text-white">
+                                <Zap size={13} />
+                                100% Affiliation
+                            </span>
+                            {globalMode === "affiliate" && (
+                                <span className="text-[10px] font-black uppercase tracking-wider text-amber-700 bg-amber-100 px-2 py-0.5 rounded-md">
+                                    ACTIF
+                                </span>
+                            )}
+                        </div>
+                        <h3 className="font-black text-slate-900 text-base mb-1">
+                            Mode Zéro Gestion Locale
+                        </h3>
+                        <p className="text-slate-600 text-xs leading-relaxed">
+                            <strong>Idéal dès maintenant :</strong> Toutes les demandes de réservation et boutons du catalogue ouvrent directement DiscoverCars ou Localrent avec vos liens Travelpayouts trackés. 25 € à 55 € de commission par réservation.
+                        </p>
                     </div>
-                    <p className="text-slate-500 leading-relaxed text-[11px]">
-                        Vos agences partenaires locales encaissent le client. Marge max ZwinCar (acompte 20% + options 100% Stripe). Idéal en basse/moyenne saison.
+
+                    {/* Mode 2: Hybride Intelligent */}
+                    <div
+                        onClick={() => handleGlobalModeSwitch("hybrid")}
+                        className={`p-5 rounded-3xl border-2 transition-all cursor-pointer relative ${
+                            globalMode === "hybrid"
+                                ? "bg-blue-50/50 border-blue-500 shadow-md ring-2 ring-blue-500/20"
+                                : "bg-white border-slate-200 hover:border-slate-300"
+                        }`}
+                    >
+                        <div className="flex items-center justify-between mb-3">
+                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-blue-600 text-white">
+                                <Sparkles size={13} />
+                                Hybride Intelligent
+                            </span>
+                            {globalMode === "hybrid" && (
+                                <span className="text-[10px] font-black uppercase tracking-wider text-blue-700 bg-blue-100 px-2 py-0.5 rounded-md">
+                                    ACTIF
+                                </span>
+                            )}
+                        </div>
+                        <h3 className="font-black text-slate-900 text-base mb-1">
+                            Bascule Dynamique
+                        </h3>
+                        <p className="text-slate-600 text-xs leading-relaxed">
+                            Flotte ZwinCar en priorité si vous avez un loueur partenaire sur la ville. Si le modèle est en rupture ou le hub non couvert, bascule automatique sur DiscoverCars/Localrent.
+                        </p>
+                    </div>
+
+                    {/* Mode 3: 100% Flotte Directe */}
+                    <div
+                        onClick={() => handleGlobalModeSwitch("direct")}
+                        className={`p-5 rounded-3xl border-2 transition-all cursor-pointer relative ${
+                            globalMode === "direct"
+                                ? "bg-emerald-50/50 border-emerald-500 shadow-md ring-2 ring-emerald-500/20"
+                                : "bg-white border-slate-200 hover:border-slate-300"
+                        }`}
+                    >
+                        <div className="flex items-center justify-between mb-3">
+                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-emerald-600 text-white">
+                                <ShieldCheck size={13} />
+                                Flotte Directe (100%)
+                            </span>
+                            {globalMode === "direct" && (
+                                <span className="text-[10px] font-black uppercase tracking-wider text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md">
+                                    ACTIF
+                                </span>
+                            )}
+                        </div>
+                        <h3 className="font-black text-slate-900 text-base mb-1">
+                            Encaissement 100% ZwinCar
+                        </h3>
+                        <p className="text-slate-600 text-xs leading-relaxed">
+                            Réservations directes avec paiement de l'acompte sur votre Stripe ZwinCar + suivi WhatsApp VIP avec vos chauffeurs/agences locales sous contrat.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {/* OPTION 2: POP-TAB AU CLIC RECHERCHE */}
+            <div className="p-6 rounded-3xl bg-white border border-slate-200 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                        <span className="px-2 py-0.5 rounded-full bg-purple-100 text-purple-800 text-[10px] font-black uppercase tracking-wider">
+                            Option 2 • Technique Kayak / Skyscanner
+                        </span>
+                        <span className="text-xs font-bold text-slate-900">
+                            Pop-Tab en arrière-plan au clic « Trouver mon véhicule »
+                        </span>
+                    </div>
+                    <p className="text-xs text-slate-500 leading-relaxed max-w-2xl">
+                        Dès qu'un visiteur valide sa recherche de dates dans le moteur principal, ZwinCar scrolle vers les offres du site <strong>ET ouvre en même temps DiscoverCars dans un 2ème onglet</strong> avec les dates et l'aéroport pré-remplis. Le cookie d'affiliation Travelpayouts (30 jours) est posé d'office.
                     </p>
                 </div>
 
-                <div className="p-4.5 rounded-2xl bg-white border border-slate-200 space-y-1.5 shadow-2xs">
-                    <div className="font-bold text-slate-900 flex items-center gap-1.5">
-                        <span className="w-2.5 h-2.5 rounded-full bg-blue-500" />
-                        <span>Mode 2 : Hybride Intelligent</span>
-                    </div>
-                    <p className="text-slate-500 leading-relaxed text-[11px]">
-                        Flotte ZwinCar en priorité. Si le stock est épuisé sur un modèle ou des dates saturées, bascule automatique sur DiscoverCars avec deep-link tracké.
-                    </p>
-                </div>
-
-                <div className="p-4.5 rounded-2xl bg-white border border-slate-200 space-y-1.5 shadow-2xs">
-                    <div className="font-bold text-slate-900 flex items-center gap-1.5">
-                        <span className="w-2.5 h-2.5 rounded-full bg-amber-500" />
-                        <span>Mode 3 : 100% Affiliation</span>
-                    </div>
-                    <p className="text-slate-500 leading-relaxed text-[11px]">
-                        Pour les aéroports sans agence signée (ex: Nador, Oujda) ou saturation estivale complète. Zéro logistique, 30 € à 55 € de com' par résa.
-                    </p>
-                </div>
+                <button
+                    type="button"
+                    onClick={handlePopTabToggle}
+                    className={`inline-flex items-center gap-2 px-5 py-3 rounded-2xl text-xs font-bold transition cursor-pointer shrink-0 ${
+                        popTabOnSearch
+                            ? "bg-purple-600 hover:bg-purple-700 text-white shadow-md"
+                            : "bg-slate-100 hover:bg-slate-200 text-slate-700"
+                    }`}
+                >
+                    {popTabOnSearch ? <ToggleRight size={20} /> : <ToggleLeft size={20} />}
+                    <span>{popTabOnSearch ? "Pop-Tab ACTIVÉ" : "Pop-Tab DÉSACTIVÉ"}</span>
+                </button>
             </div>
 
             {/* Hub Distribution Management Grid */}
@@ -138,10 +302,10 @@ export default function AdminAffiliationPage() {
                 <div className="flex items-center justify-between">
                     <div>
                         <h2 className="text-base font-black text-slate-900">
-                            Distribution par Aéroport & Ville
+                            Distribution par Aéroport & Ville (Mode Hybride Uniquement)
                         </h2>
                         <p className="text-xs text-slate-500">
-                            Configurez le comportement de chaque hub en un clic.
+                            Actif quand le Master Switch est sur « Hybride Intelligent ».
                         </p>
                     </div>
                 </div>
@@ -316,7 +480,7 @@ export default function AdminAffiliationPage() {
                             type="text"
                             value={markerId}
                             onChange={(e) => setMarkerId(e.target.value)}
-                            placeholder="ex: zwincar ou 612480"
+                            placeholder="ex: 596733"
                             className="w-full h-11 px-3 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-900 font-mono focus:outline-none focus:border-[#C9572C]"
                         />
                     </div>

@@ -24,16 +24,13 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
     const [sosModalOpen, setSosModalOpen] = useState(false);
     const [lookupModalOpen, setLookupModalOpen] = useState(false);
 
-    // Lock background scroll and touch bubbling when mobile menu or modal is open
+    // Lock background scroll when mobile menu or modal is open
     useEffect(() => {
         if (mobileMenuOpen || sosModalOpen || lookupModalOpen) {
             const originalOverflow = document.body.style.overflow;
-            const originalTouchAction = document.body.style.touchAction;
             document.body.style.overflow = "hidden";
-            document.body.style.touchAction = "none";
             return () => {
                 document.body.style.overflow = originalOverflow;
-                document.body.style.touchAction = originalTouchAction;
             };
         }
     }, [mobileMenuOpen, sosModalOpen, lookupModalOpen]);
@@ -133,13 +130,13 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
     return (
         <>
             <header className="sticky top-0 z-40 bg-[#FAF7F2]/95 backdrop-blur-md border-b border-[#EAE3D6] transition-colors">
-                <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl h-20 flex items-center justify-between gap-2 xl:gap-4">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl h-20 flex items-center justify-between gap-3 xl:gap-6">
                     {/* Logo & Desktop Nav */}
-                    <div className="flex items-center gap-2.5 xl:gap-6 min-w-0">
+                    <div className="flex items-center gap-3 xl:gap-5 2xl:gap-8 shrink-0">
                         <Logo variant="full" theme="dark" size="md" locale={currentLocale} />
 
                         {/* Desktop Navigation */}
-                        <nav className="hidden lg:flex items-center gap-2.5 xl:gap-4.5 text-xs xl:text-sm font-semibold text-slate-700 whitespace-nowrap">
+                        <nav className="hidden lg:flex items-center gap-2.5 xl:gap-4 2xl:gap-5 text-xs xl:text-xs 2xl:text-sm font-semibold text-slate-700 whitespace-nowrap">
                             <Link
                                 href={catalogHref}
                                 className="hover:text-[#C9572C] transition-colors whitespace-nowrap"
@@ -154,7 +151,10 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
                                     onClick={() => setHubsDropdownOpen(!hubsDropdownOpen)}
                                     className="flex items-center gap-1 hover:text-[#C9572C] transition-colors cursor-pointer whitespace-nowrap"
                                 >
-                                    <span>{t.nav.airports}</span>
+                                    <span className="inline 2xl:hidden">
+                                        {currentLocale === "en" ? "Airports" : currentLocale === "es" ? "Aeropuertos" : currentLocale === "nl" ? "Luchthavens" : "Aéroports"}
+                                    </span>
+                                    <span className="hidden 2xl:inline">{t.nav.airports}</span>
                                     <ChevronDown size={14} className="text-slate-400" />
                                 </button>
 
@@ -196,38 +196,38 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
                                 href={zeroCautionHref}
                                 className="hover:text-[#C9572C] transition-colors flex items-center gap-1.5 whitespace-nowrap"
                             >
-                                <ShieldCheck size={14} className="text-emerald-600" />
-                                <span>{t.nav.zeroDeposit}</span>
+                                <ShieldCheck size={14} className="text-emerald-600 shrink-0" />
+                                <span className="shrink-0">{t.nav.zeroDeposit}</span>
                             </Link>
                         </nav>
                     </div>
 
                     {/* Right controls: Language, Mon Bon, SOS & WhatsApp VIP */}
-                    <div className="hidden lg:flex items-center gap-1.5 xl:gap-2.5 shrink-0">
+                    <div className="hidden lg:flex items-center gap-2 xl:gap-2.5 2xl:gap-3 shrink-0">
                         {/* Retrouver mon bon de réservation */}
                         <button
                             type="button"
                             onClick={() => setLookupModalOpen(true)}
-                            className="inline-flex items-center gap-1.5 px-2 xl:px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition cursor-pointer whitespace-nowrap active:scale-95"
+                            className="inline-flex items-center gap-1.5 px-2.5 xl:px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition cursor-pointer whitespace-nowrap active:scale-95 shrink-0"
                             title={t.nav.findBooking}
                             aria-label={t.nav.findBooking}
                         >
-                            <FileText size={14} className="text-[#C9572C]" />
-                            <span className="hidden xl:inline">{t.nav.myVoucher}</span>
+                            <FileText size={14} className="text-[#C9572C] shrink-0" />
+                            <span className="hidden 2xl:inline">{t.nav.myVoucher}</span>
                         </button>
 
                         {/* SOS Urgence Button */}
                         <button
                             type="button"
                             onClick={() => setSosModalOpen(true)}
-                            className="inline-flex items-center gap-1.5 px-2.5 xl:px-3 py-1.5 rounded-full bg-red-50 hover:bg-red-100 text-red-700 border border-red-200/80 text-xs font-bold transition cursor-pointer whitespace-nowrap"
+                            className="inline-flex items-center gap-1.5 px-2.5 xl:px-3 py-1.5 rounded-full bg-red-50 hover:bg-red-100 text-red-700 border border-red-200/80 text-xs font-bold transition cursor-pointer whitespace-nowrap shrink-0"
                         >
-                            <ShieldAlert size={14} className="text-red-600" />
+                            <ShieldAlert size={14} className="text-red-600 shrink-0" />
                             <span>SOS 24/7</span>
                         </button>
 
                         {/* Language Switch - Compact, clean, zero overflow */}
-                        <div className="inline-flex items-center p-0.5 rounded-full bg-slate-100 border border-slate-200/80 text-slate-700">
+                        <div className="inline-flex items-center p-0.5 rounded-full bg-slate-100 border border-slate-200/80 text-slate-700 shrink-0">
                             {(["fr", "en", "es", "nl"] as const).map((l) => (
                                 <button
                                     key={l}
@@ -250,10 +250,10 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
                             target="_blank"
                             rel="noopener noreferrer"
                             onClick={() => trackWhatsAppClick("header_desktop")}
-                            className="inline-flex items-center gap-1.5 px-2.5 xl:px-3.5 py-2 rounded-2xl bg-slate-900 hover:bg-[#C9572C] text-white text-xs font-bold tracking-wide transition-all shadow-xs cursor-pointer active:scale-95 whitespace-nowrap"
+                            className="inline-flex items-center gap-1.5 px-2.5 xl:px-3.5 py-2 rounded-2xl bg-slate-900 hover:bg-[#C9572C] text-white text-xs font-bold tracking-wide transition-all shadow-xs cursor-pointer active:scale-95 whitespace-nowrap shrink-0"
                         >
-                            <MessageCircle size={15} className="text-emerald-400" />
-                            <span className="hidden xl:inline">WhatsApp VIP</span>
+                            <MessageCircle size={15} className="text-emerald-400 shrink-0" />
+                            <span className="hidden 2xl:inline">WhatsApp VIP</span>
                         </a>
                     </div>
 
@@ -283,7 +283,7 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
 
             {/* FULL SCREEN DEDICATED MOBILE DRAWER (OUTSIDE HEADER, SOLID BACKGROUND, Z-INDEX 100) */}
             {mobileMenuOpen && (
-                <div className="lg:hidden fixed inset-0 z-[100] flex flex-col bg-white animate-in fade-in duration-150">
+                <div className="lg:hidden fixed inset-0 w-full h-[100dvh] z-[100] flex flex-col bg-white">
                     {/* Drawer Header (Exact match of real header height & layout) */}
                     <div className="h-20 px-4 sm:px-6 flex items-center justify-between border-b border-slate-100 bg-[#FAF7F2] shrink-0">
                         <Logo variant="full" theme="dark" size="md" locale={currentLocale} />
@@ -311,7 +311,7 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
                     </div>
 
                     {/* Drawer Scrollable Content */}
-                    <div className="flex-1 overflow-y-auto overscroll-contain p-5 pb-24 space-y-4 bg-white">
+                    <div className="flex-1 overflow-y-auto overscroll-contain touch-pan-y p-5 pb-32 space-y-4 bg-white">
                         <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                             <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
                                 {currentLocale === "en" ? "Language" : currentLocale === "es" ? "Idioma" : currentLocale === "nl" ? "Taal" : "Langue"}
