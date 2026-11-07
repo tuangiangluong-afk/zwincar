@@ -556,6 +556,26 @@ export function BookingCheckoutModal({
                                     : "✓ Solde 80% après inspection du véhicule"}
                             </span>
                         </div>
+                        <div className="pt-1.5 border-t border-slate-200/60 flex flex-wrap items-center justify-between gap-1 text-[10px] font-medium text-slate-600">
+                            <span>
+                                {locale === "en"
+                                    ? "✈️ Flight delay guarantee: live tracking on FlightRadar, zero late fees"
+                                    : locale === "es"
+                                    ? "✈️ Garantía vuelo retrasado: rastreo en vivo, sin gastos por retraso"
+                                    : locale === "nl"
+                                    ? "✈️ Vluchtvertraging garantie: live tracking, geen no-show kosten"
+                                    : "✈️ Garantie vol retardé : suivi en direct FlightRadar, zéro frais de retard"}
+                            </span>
+                            <span>
+                                {locale === "en"
+                                    ? "⛽ Same-to-Same fuel policy (photo check-in)"
+                                    : locale === "es"
+                                    ? "⛽ Combustible Mismo-a-Mismo (foto en entrega)"
+                                    : locale === "nl"
+                                    ? "⛽ Zelfde brandstofniveau retour (foto bij check-in)"
+                                    : "⛽ Carburant Niveau Identique (photo au départ)"}
+                            </span>
+                        </div>
                     </div>
 
                     {errorMessage && (

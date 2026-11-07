@@ -48,7 +48,11 @@ export default async function AdminLayout({
                         <LayoutDashboard size={18} />
                         Dashboard National
                     </Link>
-                    <Link href="/vendor/dashboard" target="_blank" className="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-emerald-400 hover:bg-white/5 transition">
+                    <Link href="/admin/whatsapp" className="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-emerald-400 hover:bg-white/5 transition">
+                        <MessageCircle size={18} />
+                        WhatsApp Studio Live
+                    </Link>
+                    <Link href="/vendor/dashboard" target="_blank" className="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-blue-400 hover:bg-white/5 transition">
                         <Building2 size={18} />
                         Portail Loueurs Live
                     </Link>

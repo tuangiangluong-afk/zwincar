@@ -62,8 +62,8 @@ export type GlobalDistributionMode = "affiliate" | "hybrid" | "direct";
 export const DISTRIBUTION_COOKIE_NAME = "zwincar_distribution_mode";
 export const POPTAB_COOKIE_NAME = "zwincar_poptab_enabled";
 
-// Active le mode 100% affiliation par défaut dès maintenant
-export const DEFAULT_GLOBAL_MODE: GlobalDistributionMode = "affiliate";
+// Mode hybride par défaut : direct prioritaire avec 20% acompte Stripe, affiliation en fallback propre
+export const DEFAULT_GLOBAL_MODE: GlobalDistributionMode = "hybrid";
 
 /** Lit le mode global de distribution (client ou SSR) */
 export function getGlobalDistributionMode(): GlobalDistributionMode {
@@ -105,8 +105,8 @@ export function isPopTabOnSearchEnabled(): boolean {
             // ignore
         }
     }
-    // Activé par défaut pour monétiser immédiatement le trafic
-    return true;
+    // Désactivé par défaut pour préserver la confiance et la conversion en réservation directe 20%
+    return false;
 }
 
 /** Définit le mode global de distribution et persiste en localStorage + cookie */
@@ -143,6 +143,9 @@ export const DEFAULT_VEHICLE_STOCK: Record<string, boolean> = {
     "dacia-duster-4x4": true,
     "dacia-jogger": true,
     "dacia-jogger-7places": true,
+    "hyundai-staria-9places": true,
+    "toyota-hilux-4x4": true,
+    "volkswagen-golf-8-auto": true,
     "hyundai-tucson-auto": true,
     "toyota-prado-tx-7places": true,
 };
