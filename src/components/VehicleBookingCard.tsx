@@ -200,10 +200,10 @@ return (
                             <span className="text-xs text-slate-500 font-medium">/ {t.bookingWidget.perDay}</span>
                             {discountPct > 0 && (
                                 <div className="inline-flex items-center gap-1.5 ml-1">
-                                    <span className="text-sm font-bold text-slate-400 line-through decoration-red-500/80 decoration-[1.5px] font-mono whitespace-nowrap">
+                                    <span className="text-sm font-bold text-red-400 line-through decoration-red-500 decoration-2 font-mono whitespace-nowrap">
                                         {currency === "EUR" ? `${vehicle.marketPriceEur} €` : `${vehicle.marketPriceMad} MAD`}
                                     </span>
-                                    <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-black uppercase tracking-wider whitespace-nowrap shadow-xs">
+                                    <span className="px-2 py-0.5 rounded-full bg-red-100 text-red-700 text-[10px] font-black uppercase tracking-wider whitespace-nowrap shadow-xs">
                                         -{discountPct}%
                                     </span>
                                 </div>
@@ -460,7 +460,7 @@ return (
                             {t.bookingWidget.payTodayNote}
                         </div>
                     </div>
-                    <div className="text-xl font-black text-[#C9572C] font-mono whitespace-nowrap shrink-0">
+                    <div className="text-lg sm:text-xl font-black text-[#C9572C] font-mono whitespace-nowrap shrink-0">
                         {currency === "EUR" ? `${depositAcompteEur} €` : `${depositAcompteMad} MAD`}
                     </div>
                 </div>

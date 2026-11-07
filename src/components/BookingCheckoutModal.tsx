@@ -386,27 +386,27 @@ export function BookingCheckoutModal({
                             {/* Financial Split Box - Perfectly Aligned Table */}
                             <div className="rounded-2xl bg-[#FAF7F2] border border-[#ECE5D9] p-4 space-y-3 text-xs">
                                 {/* Row 1: Acompte */}
-                                <div className="flex items-baseline justify-between gap-3">
-                                    <div className="min-w-0 pr-1">
-                                        <div className="font-bold text-slate-900 text-xs">
+                                <div className="flex items-baseline justify-between gap-2">
+                                    <div className="min-w-0">
+                                        <div className="font-bold text-slate-900 text-xs leading-tight">
                                             {t.checkoutModal.depositSplitTitle}
                                         </div>
-                                        <div className="text-[10px] text-slate-500">
+                                        <div className="text-[10px] text-slate-500 leading-tight">
                                             {t.checkoutModal.depositSplitSubtitle}
                                         </div>
                                     </div>
-                                    <div className="text-lg font-black text-[#C9572C] font-mono whitespace-nowrap shrink-0">
+                                    <div className="text-base sm:text-lg font-black text-[#C9572C] font-mono whitespace-nowrap shrink-0">
                                         {currency === "EUR" ? `${depositAcompteEur} €` : `${depositAcompteMad} MAD`}
                                     </div>
                                 </div>
 
                                 {/* Row 2: Solde */}
-                                <div className="flex items-baseline justify-between gap-3 pt-2.5 border-t border-slate-200/70 text-[11px]">
-                                    <div className="min-w-0 pr-1">
-                                        <div className="font-bold text-slate-800">
+                                <div className="flex items-baseline justify-between gap-2 pt-2.5 border-t border-slate-200/70 text-[11px]">
+                                    <div className="min-w-0">
+                                        <div className="font-bold text-slate-800 leading-tight">
                                             {t.checkoutModal.balanceSplitTitle}
                                         </div>
-                                        <div className="text-[10px] text-slate-500">
+                                        <div className="text-[10px] text-slate-500 leading-tight">
                                             {t.checkoutModal.balanceSplitSubtitle}
                                         </div>
                                     </div>
@@ -416,7 +416,7 @@ export function BookingCheckoutModal({
                                 </div>
 
                                 {/* Row 3: Caution */}
-                                <div className="flex items-baseline justify-between gap-3 pt-2.5 border-t border-slate-200/70 text-[11px]">
+                                <div className="flex items-baseline justify-between gap-2 pt-2.5 border-t border-slate-200/70 text-[11px]">
                                     <div className="text-slate-700 font-medium">
                                         {t.checkoutModal.cautionSplitTitle}
                                     </div>

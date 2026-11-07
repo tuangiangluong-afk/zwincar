@@ -392,10 +392,10 @@ export default function VehicleCatalog({
                                                 <span className="text-xs text-slate-500 font-medium">/ {t.bookingWidget.perDay}</span>
                                                 {discountPct > 0 && (
                                                     <div className="inline-flex items-center gap-1 ml-0.5">
-                                                        <span className="text-xs font-bold text-slate-400 line-through decoration-red-500/80 decoration-[1.5px] font-mono whitespace-nowrap">
+                                                        <span className="text-xs font-bold text-red-400 line-through decoration-red-500 decoration-2 font-mono whitespace-nowrap">
                                                             {formatPrice(vehicle.marketPriceEur, vehicle.marketPriceMad)}
                                                         </span>
-                                                        <span className="px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[9px] font-black uppercase tracking-wider whitespace-nowrap">
+                                                        <span className="px-1.5 py-0.5 rounded-full bg-red-100 text-red-700 text-[9px] font-black uppercase tracking-wider whitespace-nowrap">
                                                             -{discountPct}%
                                                         </span>
                                                     </div>
