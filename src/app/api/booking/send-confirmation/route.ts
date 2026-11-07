@@ -164,18 +164,22 @@ export async function POST(request: NextRequest) {
             locale = "fr";
         }
 
-        // Tenter de retrouver la langue exacte stockée dans le dossier si non spécifiée
-        if (!body.locale) {
-            try {
-                const store = getBookingStore();
-                const record = await store.get(bookingRef.toUpperCase());
-                if (record?.locale && ["fr", "en", "es", "nl"].includes(record.locale)) {
-                    locale = record.locale;
-                }
-            } catch {
-                // fallback to locale
+        // Tenter de retrouver le dossier et sa langue exacte
+        let record = null;
+        try {
+            const store = getBookingStore();
+            record = await store.get(bookingRef.toUpperCase());
+            if (record?.locale && ["fr", "en", "es", "nl"].includes(record.locale) && !body.locale) {
+                locale = record.locale;
             }
+        } catch {
+            // fallback to locale
         }
+
+        const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://zwincar.com";
+        const voucherUrl = record?.accessToken
+            ? `${siteUrl}/booking/${bookingRef}?t=${record.accessToken}&lang=${locale}`
+            : `${siteUrl}/booking/${bookingRef}?lang=${locale}`;
 
         const t = EMAIL_I18N[locale] || EMAIL_I18N.fr;
         const resendApiKey = process.env.RESEND_API_KEY;
@@ -232,7 +236,7 @@ export async function POST(request: NextRequest) {
                         </p>
 
                         <div style="text-align: center;">
-                            <a href="https://zwincar.com/booking/${bookingRef}" class="btn">
+                            <a href="${voucherUrl}" class="btn">
                                 ${t.btnVoucher}
                             </a>
                         </div>

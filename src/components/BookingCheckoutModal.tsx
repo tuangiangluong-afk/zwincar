@@ -243,10 +243,10 @@ export function BookingCheckoutModal({
                             </div>
                             <div>
                                 <div className="text-[10px] uppercase font-bold tracking-wider text-emerald-400">
-                                    Demande #{leadConfirmation.bookingRef} Transmise
+                                    {t.checkoutModal.leadTransmitted.replace("{ref}", leadConfirmation.bookingRef)}
                                 </div>
                                 <h3 className="text-base sm:text-lg font-black tracking-tight text-white">
-                                    Réservation Enregistrée !
+                                    {t.checkoutModal.leadTitle}
                                 </h3>
                             </div>
                         </div>
@@ -264,21 +264,24 @@ export function BookingCheckoutModal({
                         <div className="rounded-2xl bg-emerald-50 border border-emerald-200 p-4 space-y-2 text-xs text-emerald-950">
                             <div className="font-bold flex items-center gap-1.5 text-emerald-900 text-sm">
                                 <Check size={16} className="text-emerald-600 shrink-0" />
-                                <span>Votre véhicule est bloqué pour vous</span>
+                                <span>{t.checkoutModal.leadHeld}</span>
                             </div>
                             <p className="text-[11px] text-emerald-900/90 leading-relaxed">
-                                Votre dossier pour la <strong>{vehicle.name}</strong> à <strong>{currentHub.name}</strong> ({pickupDate} au {returnDate}) a bien été transmis à nos agents locaux.
+                                {t.checkoutModal.leadNotice
+                                    .replace("{car}", vehicle.name)
+                                    .replace("{hub}", currentHub.name)
+                                    .replace("{dates}", `${pickupDate} ${locale === "en" ? "to" : locale === "es" ? "al" : locale === "nl" ? "tot" : "au"} ${returnDate}`)}
                             </p>
                             <div className="pt-2 border-t border-emerald-200/80 flex items-center justify-between text-[11px]">
-                                <span>Acompte de blocage : <strong>{currency === "EUR" ? `${depositAcompteEur} €` : `${depositAcompteMad} MAD`}</strong></span>
-                                <span>Caution : <strong>{hasFranchiseZero ? "0 € (Franchise Zéro)" : "300 €"}</strong></span>
+                                <span>{t.checkoutModal.leadAcompteLabel} <strong>{currency === "EUR" ? `${depositAcompteEur} €` : `${depositAcompteMad} MAD`}</strong></span>
+                                <span>{t.checkoutModal.leadCautionLabel} <strong>{hasFranchiseZero ? t.checkoutModal.cautionZeroValue : t.checkoutModal.cautionStandardValue}</strong></span>
                             </div>
                         </div>
 
                         {/* WhatsApp Priority Action */}
                         <div className="rounded-2xl bg-[#FAF7F2] border border-[#E7DFD5] p-4 space-y-2.5">
                             <div className="text-xs text-slate-700 leading-relaxed font-medium">
-                                Pour accélérer la remise des clés et finaliser votre bon, ouvrez directement l&apos;échange avec votre agent WhatsApp dédié :
+                                {t.checkoutModal.leadWaPrompt}
                             </div>
                             <a
                                 href={`https://wa.me/212720794046?text=${waLeadText}`}
@@ -287,10 +290,10 @@ export function BookingCheckoutModal({
                                 className="w-full py-3.5 px-4 rounded-2xl bg-[#25D366] hover:bg-[#20BD5A] text-white font-black text-xs sm:text-sm tracking-wide transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer active:scale-98"
                             >
                                 <MessageCircle size={18} />
-                                <span>Valider sur WhatsApp en 1-clic</span>
+                                <span>{t.checkoutModal.leadWaBtn}</span>
                             </a>
                             <div className="text-center text-[10px] text-slate-400 font-medium">
-                                ⚡ Réponse garantie en moins de 5 min (7j/7 24h/24)
+                                {t.checkoutModal.leadWaGuarantee}
                             </div>
                         </div>
 
@@ -300,11 +303,11 @@ export function BookingCheckoutModal({
                                 type="button"
                                 onClick={() => {
                                     onClose();
-                                    router.push(`/booking/${leadConfirmation.bookingRef}?t=${leadConfirmation.token}`);
+                                    router.push(`/booking/${leadConfirmation.bookingRef}?t=${leadConfirmation.token}&lang=${locale}`);
                                 }}
                                 className="w-full h-11 rounded-xl bg-slate-900 hover:bg-[#C9572C] text-white font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
                             >
-                                <span>Consulter mon bon de réservation #{leadConfirmation.bookingRef}</span>
+                                <span>{t.checkoutModal.viewVoucherBtn.replace("{ref}", leadConfirmation.bookingRef)}</span>
                                 <ArrowRight size={14} />
                             </button>
                         </div>
@@ -367,7 +370,7 @@ export function BookingCheckoutModal({
                                     </div>
                                     <div className="text-right">
                                         <span className="text-slate-400 text-[10px] uppercase font-bold block">
-                                            Durée
+                                            {t.checkoutModal.durationLabel}
                                         </span>
                                         <span className="font-bold text-slate-900 text-xs font-mono">
                                             {days} {t.search.daysCount}
@@ -375,8 +378,8 @@ export function BookingCheckoutModal({
                                     </div>
                                 </div>
                                 <div className="flex items-center justify-between text-[11px] text-slate-600 font-medium">
-                                    <span>Du <strong>{pickupDate}</strong></span>
-                                    <span>Au <strong>{returnDate}</strong></span>
+                                    <span>{t.checkoutModal.fromDate} <strong>{pickupDate}</strong></span>
+                                    <span>{t.checkoutModal.toDate} <strong>{returnDate}</strong></span>
                                 </div>
                             </div>
 
@@ -386,10 +389,10 @@ export function BookingCheckoutModal({
                                 <div className="flex items-baseline justify-between gap-3">
                                     <div className="min-w-0 pr-1">
                                         <div className="font-bold text-slate-900 text-xs">
-                                            Acompte de réservation (20%)
+                                            {t.checkoutModal.depositSplitTitle}
                                         </div>
                                         <div className="text-[10px] text-slate-500">
-                                            Bloque fermement votre véhicule
+                                            {t.checkoutModal.depositSplitSubtitle}
                                         </div>
                                     </div>
                                     <div className="text-lg font-black text-[#C9572C] font-mono whitespace-nowrap shrink-0">
@@ -401,10 +404,10 @@ export function BookingCheckoutModal({
                                 <div className="flex items-baseline justify-between gap-3 pt-2.5 border-t border-slate-200/70 text-[11px]">
                                     <div className="min-w-0 pr-1">
                                         <div className="font-bold text-slate-800">
-                                            Solde à la remise des clés (80%)
+                                            {t.checkoutModal.balanceSplitTitle}
                                         </div>
                                         <div className="text-[10px] text-slate-500">
-                                            Espèces ou carte débit après état des lieux
+                                            {t.checkoutModal.balanceSplitSubtitle}
                                         </div>
                                     </div>
                                     <div className="font-bold text-slate-900 font-mono whitespace-nowrap shrink-0">
@@ -415,10 +418,10 @@ export function BookingCheckoutModal({
                                 {/* Row 3: Caution */}
                                 <div className="flex items-baseline justify-between gap-3 pt-2.5 border-t border-slate-200/70 text-[11px]">
                                     <div className="text-slate-700 font-medium">
-                                        Caution à la remise des clés
+                                        {t.checkoutModal.cautionSplitTitle}
                                     </div>
                                     <div className="font-bold text-slate-900 font-mono whitespace-nowrap shrink-0">
-                                        {hasFranchiseZero ? "0 € (Franchise Zéro)" : "300 € (Standard)"}
+                                        {hasFranchiseZero ? t.checkoutModal.cautionZeroValue : t.checkoutModal.cautionStandardValue}
                                     </div>
                                 </div>
 
@@ -426,19 +429,19 @@ export function BookingCheckoutModal({
                                 <div className="pt-2.5 border-t border-emerald-200/60 flex flex-col gap-1 text-[10px] text-emerald-800 font-semibold">
                                     <div className="flex items-center gap-1.5">
                                         <Check size={12} className="text-emerald-600 shrink-0" />
-                                        <span>Acompte 100% remboursable jusqu&apos;à 48h avant</span>
+                                        <span>{t.checkoutModal.depositRefundGuarantee}</span>
                                     </div>
                                     <div className="flex items-center gap-1.5">
                                         <Check size={12} className="text-emerald-600 shrink-0" />
-                                        <span>Solde 80% réglé après vérification du véhicule</span>
+                                        <span>{t.checkoutModal.balanceInspectGuarantee}</span>
                                     </div>
                                 </div>
                             </div>
 
                             {/* Trust badges strip */}
                             <div className="flex flex-wrap items-center justify-between text-[10px] text-slate-500 font-medium px-1">
-                                <span>✈️ Suivi de vol direct FlightRadar</span>
-                                <span>⛽ Same-to-same carburant</span>
+                                <span>{t.checkoutModal.flightRadarBadge}</span>
+                                <span>{t.checkoutModal.fuelBadge}</span>
                             </div>
                         </div>
 

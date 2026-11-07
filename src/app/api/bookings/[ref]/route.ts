@@ -18,10 +18,16 @@ export async function GET(
     const store = getBookingStore();
     const record = await store.get(ref.toUpperCase());
 
-    if (!authorizeBooking(record, { token, email })) return unauthorized();
+    if (!record) return unauthorized();
+
+    const isAuthorized = authorizeBooking(record, { token, email });
 
     return NextResponse.json(
-        { booking: toPublicBooking(record), voucher: buildVoucher(record) },
+        {
+            authorized: isAuthorized,
+            booking: toPublicBooking(record, { maskPii: !isAuthorized }),
+            voucher: buildVoucher(record, { maskPii: !isAuthorized }),
+        },
         { headers: { "Cache-Control": "private, no-store" } }
     );
 }

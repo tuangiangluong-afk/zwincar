@@ -158,6 +158,28 @@ export const TRANSLATIONS: Record<
             whatsappVerification: string;
             viewVoucherBtn: string;
             connectionError: string;
+            durationLabel: string;
+            fromDate: string;
+            toDate: string;
+            depositSplitTitle: string;
+            depositSplitSubtitle: string;
+            balanceSplitTitle: string;
+            balanceSplitSubtitle: string;
+            cautionSplitTitle: string;
+            cautionZeroValue: string;
+            cautionStandardValue: string;
+            depositRefundGuarantee: string;
+            balanceInspectGuarantee: string;
+            flightRadarBadge: string;
+            fuelBadge: string;
+            leadTitle: string;
+            leadHeld: string;
+            leadNotice: string;
+            leadAcompteLabel: string;
+            leadCautionLabel: string;
+            leadWaPrompt: string;
+            leadWaBtn: string;
+            leadWaGuarantee: string;
         };
         affiliateDrawer: {
             inventoryTitle: string;
@@ -422,6 +444,28 @@ export const TRANSLATIONS: Record<
             whatsappVerification: "Vérification WhatsApp en cours",
             viewVoucherBtn: "Consulter mon bon de réservation #{ref}",
             connectionError: "Connexion interrompue. Réessayez dans un instant.",
+            durationLabel: "Durée",
+            fromDate: "Du",
+            toDate: "Au",
+            depositSplitTitle: "Acompte de réservation (20%)",
+            depositSplitSubtitle: "Bloque fermement votre véhicule",
+            balanceSplitTitle: "Solde à la remise des clés (80%)",
+            balanceSplitSubtitle: "Espèces ou carte débit après état des lieux",
+            cautionSplitTitle: "Caution à la remise des clés",
+            cautionZeroValue: "0 € (Franchise Zéro)",
+            cautionStandardValue: "300 € (Standard)",
+            depositRefundGuarantee: "Acompte 100% remboursable jusqu'à 48h avant",
+            balanceInspectGuarantee: "Solde 80% réglé après vérification du véhicule",
+            flightRadarBadge: "✈️ Suivi de vol direct FlightRadar",
+            fuelBadge: "⛽ Same-to-same carburant",
+            leadTitle: "Réservation Enregistrée !",
+            leadHeld: "Votre véhicule est bloqué pour vous",
+            leadNotice: "Votre dossier pour la {car} à {hub} ({dates}) a bien été transmis à nos agents locaux.",
+            leadAcompteLabel: "Acompte de blocage :",
+            leadCautionLabel: "Caution :",
+            leadWaPrompt: "Pour accélérer la remise des clés et finaliser votre bon, ouvrez directement l'échange avec votre agent WhatsApp dédié :",
+            leadWaBtn: "Valider sur WhatsApp en 1-clic",
+            leadWaGuarantee: "⚡ Réponse garantie en moins de 5 min (7j/7 24h/24)",
         },
         affiliateDrawer: {
             inventoryTitle: "Inventaire Partenaire Aéroport",
@@ -685,6 +729,28 @@ export const TRANSLATIONS: Record<
             whatsappVerification: "WhatsApp verification in progress",
             viewVoucherBtn: "View my booking voucher #{ref}",
             connectionError: "Connection interrupted. Please try again.",
+            durationLabel: "Duration",
+            fromDate: "From",
+            toDate: "To",
+            depositSplitTitle: "Booking deposit (20%)",
+            depositSplitSubtitle: "Firmly locks your vehicle",
+            balanceSplitTitle: "Balance at key handover (80%)",
+            balanceSplitSubtitle: "Cash or debit card after vehicle inspection",
+            cautionSplitTitle: "Security deposit at pick-up",
+            cautionZeroValue: "€0 (Zero Excess)",
+            cautionStandardValue: "€300 (Standard)",
+            depositRefundGuarantee: "Deposit 100% refundable up to 48h prior",
+            balanceInspectGuarantee: "80% balance paid after vehicle inspection",
+            flightRadarBadge: "✈️ Live FlightRadar flight tracking",
+            fuelBadge: "⛽ Same-to-same fuel policy",
+            leadTitle: "Booking Registered!",
+            leadHeld: "Your vehicle is held for you",
+            leadNotice: "Your request for the {car} in {hub} ({dates}) has been forwarded to our local team.",
+            leadAcompteLabel: "Holding deposit:",
+            leadCautionLabel: "Security deposit:",
+            leadWaPrompt: "To fast-track key handover and finalize your voucher, open a direct chat with your dedicated WhatsApp concierge:",
+            leadWaBtn: "Confirm on WhatsApp in 1-Click",
+            leadWaGuarantee: "⚡ Guaranteed reply under 5 min (24/7)",
         },
         affiliateDrawer: {
             inventoryTitle: "Airport Partner Inventory",
@@ -948,6 +1014,28 @@ export const TRANSLATIONS: Record<
             whatsappVerification: "Verificación WhatsApp en curso",
             viewVoucherBtn: "Ver mi bono de reserva #{ref}",
             connectionError: "Conexión interrumpida. Inténtelo de nuevo.",
+            durationLabel: "Duración",
+            fromDate: "Del",
+            toDate: "Al",
+            depositSplitTitle: "Anticipo de reserva (20%)",
+            depositSplitSubtitle: "Bloquea firmemente su vehículo",
+            balanceSplitTitle: "Saldo a la entrega de llaves (80%)",
+            balanceSplitSubtitle: "Efectivo o tarjeta débito tras revisión",
+            cautionSplitTitle: "Fianza a la entrega de llaves",
+            cautionZeroValue: "0 € (Franquicia Cero)",
+            cautionStandardValue: "300 € (Estándar)",
+            depositRefundGuarantee: "Anticipo 100% reembolsable hasta 48h antes",
+            balanceInspectGuarantee: "Saldo 80% pagado tras verificar el vehículo",
+            flightRadarBadge: "✈️ Seguimiento de vuelo FlightRadar",
+            fuelBadge: "⛽ Mismo nivel de combustible",
+            leadTitle: "¡Reserva Registrada!",
+            leadHeld: "Su vehículo está bloqueado para usted",
+            leadNotice: "Su solicitud para el {car} en {hub} ({dates}) ha sido enviada a nuestros agentes locales.",
+            leadAcompteLabel: "Anticipo de bloqueo:",
+            leadCautionLabel: "Fianza:",
+            leadWaPrompt: "Para acelerar la entrega de llaves y finalizar su bono, abra un chat directo con su agente de WhatsApp:",
+            leadWaBtn: "Confirmar en WhatsApp en 1-clic",
+            leadWaGuarantee: "⚡ Respuesta garantizada en menos de 5 min (24/7)",
         },
         affiliateDrawer: {
             inventoryTitle: "Inventario de Socios Aeropuerto",
@@ -1211,6 +1299,28 @@ export const TRANSLATIONS: Record<
             whatsappVerification: "WhatsApp-verificatie bezig",
             viewVoucherBtn: "Bekijk mijn boekingsvoucher #{ref}",
             connectionError: "Verbinding onderbroken. Probeer het opnieuw.",
+            durationLabel: "Duur",
+            fromDate: "Van",
+            toDate: "Tot",
+            depositSplitTitle: "Aanbetaling boeking (20%)",
+            depositSplitSubtitle: "Vergrendelt definitief uw voertuig",
+            balanceSplitTitle: "Saldo bij sleuteloverdracht (80%)",
+            balanceSplitSubtitle: "Contant of pinpas na voertuiginspectie",
+            cautionSplitTitle: "Waarborgsom bij overdracht",
+            cautionZeroValue: "€0 (Geen Eigen Risico)",
+            cautionStandardValue: "€300 (Standaard)",
+            depositRefundGuarantee: "Aanbetaling 100% restitueerbaar tot 48u vooraf",
+            balanceInspectGuarantee: "80% saldo betaald na inspectie van het voertuig",
+            flightRadarBadge: "✈️ Live FlightRadar vluchtmonitoring",
+            fuelBadge: "⛽ Gelijk brandstofniveau (Same-to-same)",
+            leadTitle: "Reservering Geregistreerd!",
+            leadHeld: "Uw voertuig is voor u vastgehouden",
+            leadNotice: "Uw aanvraag voor de {car} in {hub} ({dates}) is doorgestuurd naar ons lokale team.",
+            leadAcompteLabel: "Aanbetaling reservering:",
+            leadCautionLabel: "Waarborgsom:",
+            leadWaPrompt: "Om de sleuteloverdracht te versnellen en uw voucher af te ronden, chat direct met uw WhatsApp-contactpersoon:",
+            leadWaBtn: "Bevestig via WhatsApp in 1 klik",
+            leadWaGuarantee: "⚡ Gegarandeerd antwoord binnen 5 min (24/7)",
         },
         affiliateDrawer: {
             inventoryTitle: "Luchthaven Partner Inventaris",

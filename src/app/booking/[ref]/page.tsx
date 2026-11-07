@@ -78,52 +78,8 @@ export default function BookingVoucherPage() {
     const searchParams = useSearchParams();
     const ref = (params?.ref as string) || "ZW-78421";
 
-    const defaultVehicle = VEHICLE_FLEET[0];
-    const defaultHub = MOROCCAN_HUBS[0];
-    const initialBooking = {
-        ref,
-        createdAt: "2026-11-07T12:00:00.000Z",
-        client: {
-            fullName: "Thomas Martin",
-            phone: "+33 6 12 34 56 78",
-            email: "thomas.martin@gmail.com",
-            flightNumber: "FR2104 (Paris Beauvais)",
-            notes: "Siège bébé souhaité si possible",
-        },
-        rental: {
-            vehicleId: defaultVehicle.id,
-            vehicleName: defaultVehicle.name,
-            vehicleCategory: defaultVehicle.category,
-            vehicleImage: defaultVehicle.image,
-            pickupHub: defaultHub.slug,
-            hubName: defaultHub.name,
-            airportName: defaultHub.airportName,
-            airportCode: defaultHub.airportCode,
-            meetingPointDetail: defaultHub.meetingPointDetail,
-            pickupDate: "2026-11-12",
-            returnDate: "2026-11-19",
-            days: 7,
-            fuelPolicy: defaultVehicle.fuelPolicy,
-            depositPolicy: defaultVehicle.depositPolicy,
-        },
-        financials: {
-            currency: "EUR",
-            dailyPriceEur: defaultVehicle.dailyPriceEur,
-            dailyPriceMad: defaultVehicle.dailyPriceMad,
-            vendorUpsellsEur: 0,
-            vendorUpsellsMad: 0,
-            platformUpsellsEur: 19,
-            platformUpsellsMad: 210,
-            depositAcompteEur: 51,
-            depositAcompteMad: 560,
-            balanceOnSiteEur: 129,
-            balanceOnSiteMad: 1420,
-            selectedUpsells: ["Pack Sérénité 0€ Franchise", "eSIM 20 Go Data"],
-        },
-        status: "confirmed",
-    };
-
-    const [bookingData, setBookingData] = useState<any>(initialBooking);
+    const [bookingData, setBookingData] = useState<any>(null);
+    const [notFound, setNotFound] = useState(false);
     const [liveStatus, setLiveStatus] = useState<string>("confirmed");
     const [kycUploaded, setKycUploaded] = useState(false);
     const [kycUploading, setKycUploading] = useState(false);
@@ -139,7 +95,7 @@ export default function BookingVoucherPage() {
     const t = getTranslation(locale);
 
     // Flight number edit state
-    const [flightNumberInput, setFlightNumberInput] = useState(initialBooking.client.flightNumber);
+    const [flightNumberInput, setFlightNumberInput] = useState("");
     const [isEditingFlight, setIsEditingFlight] = useState(false);
     const [flightSaved, setFlightSaved] = useState(false);
 
@@ -186,48 +142,51 @@ export default function BookingVoucherPage() {
                     : null);
             const emailParam = searchParams.get("email");
 
-            if (token || emailParam) {
-                try {
-                    const query = token ? `t=${encodeURIComponent(token)}` : `email=${encodeURIComponent(emailParam || "")}`;
-                    const res = await fetch(`/api/bookings/${ref}?${query}`);
-                    if (res.ok) {
-                        const data = await res.json();
-                        if (data?.voucher) {
-                            setBookingData(data.voucher);
-                            if (data.voucher.locale && SUPPORTED_LOCALES.includes(data.voucher.locale as Locale) && !urlLang) {
-                                setLocale(data.voucher.locale as Locale);
-                            }
-                            if (data.voucher.client?.flightNumber) {
-                                setFlightNumberInput(data.voucher.client.flightNumber);
-                            }
-                            if (data.booking?.status) {
-                                setLiveStatus(data.booking.status);
-                            }
-                            if (data.booking?.kyc?.verified || data.booking?.kyc?.uploadedAt) {
-                                setKycUploaded(true);
-                            }
-
-                            // Tracking e-commerce GA4 / GTM
-                            if (data.booking?.status === "confirmed" || data.booking?.status === "checked_in" || data.booking?.status === "completed") {
-                                trackPurchase({
-                                    transactionId: data.voucher.ref,
-                                    valueEur: data.voucher.financials?.totalEur || 0,
-                                    currency: "EUR",
-                                    vehicleId: data.voucher.rental?.vehicleId || "vehicle",
-                                    vehicleName: data.voucher.rental?.vehicleName || "Véhicule",
-                                    acompteEur: data.voucher.financials?.depositAcompteEur || 0,
-                                    balanceEur: data.voucher.financials?.balanceOnSiteEur || 0,
-                                    days: data.voucher.rental?.days || 1,
-                                    pickupHub: data.voucher.rental?.pickupHub || "maroc",
-                                    hasZeroDeposit: data.voucher.financials?.cautionEur === 0,
-                                });
-                            }
-                            return;
+            try {
+                const query = token
+                    ? `t=${encodeURIComponent(token)}`
+                    : emailParam
+                    ? `email=${encodeURIComponent(emailParam)}`
+                    : "";
+                const res = await fetch(`/api/bookings/${ref}${query ? `?${query}` : ""}`);
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data?.voucher) {
+                        setBookingData(data.voucher);
+                        const effectiveLocale = (data.voucher.locale || data.booking?.locale) as Locale | undefined;
+                        if (effectiveLocale && SUPPORTED_LOCALES.includes(effectiveLocale) && !urlLang) {
+                            setLocale(effectiveLocale);
                         }
+                        if (data.voucher.client?.flightNumber) {
+                            setFlightNumberInput(data.voucher.client.flightNumber);
+                        }
+                        if (data.booking?.status) {
+                            setLiveStatus(data.booking.status);
+                        }
+                        if (data.booking?.kyc?.verified || data.booking?.kyc?.uploadedAt) {
+                            setKycUploaded(true);
+                        }
+
+                        // Tracking e-commerce GA4 / GTM
+                        if (data.booking?.status === "confirmed" || data.booking?.status === "checked_in" || data.booking?.status === "completed") {
+                            trackPurchase({
+                                transactionId: data.voucher.ref,
+                                valueEur: data.voucher.financials?.totalEur || 0,
+                                currency: "EUR",
+                                vehicleId: data.voucher.rental?.vehicleId || "vehicle",
+                                vehicleName: data.voucher.rental?.vehicleName || "Véhicule",
+                                acompteEur: data.voucher.financials?.depositAcompteEur || 0,
+                                balanceEur: data.voucher.financials?.balanceOnSiteEur || 0,
+                                days: data.voucher.rental?.days || 1,
+                                pickupHub: data.voucher.rental?.pickupHub || "maroc",
+                                hasZeroDeposit: data.voucher.financials?.cautionEur === 0,
+                            });
+                        }
+                        return;
                     }
-                } catch {
-                    // fallback
                 }
+            } catch {
+                // fallback
             }
 
             // Try reading from localStorage
@@ -249,6 +208,8 @@ export default function BookingVoucherPage() {
             } catch {
                 // fallback
             }
+
+            setNotFound(true);
         }
 
         fetchRealBooking();
@@ -280,9 +241,11 @@ export default function BookingVoucherPage() {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
-                        token,
+                        token: token || undefined,
+                        email: bookingData?.client?.email,
                         licenseNumber: "Permis Conforme (Vérification Digitale)",
                         driverAge: 28,
+                        licenseFile: file.name,
                     }),
                 });
                 setKycUploaded(true);
@@ -316,10 +279,52 @@ export default function BookingVoucherPage() {
         setTimeout(() => setFlightSaved(false), 2500);
     };
 
+    if (notFound) {
+        return (
+            <div className="min-h-screen bg-[#FAF7F2] flex flex-col justify-between">
+                <Header />
+                <div className="container mx-auto px-4 max-w-md py-16 text-center">
+                    <div className="bg-white rounded-3xl border border-[#ECE5D9] p-8 shadow-sm space-y-4">
+                        <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center mx-auto font-black text-xl">
+                            !
+                        </div>
+                        <h2 className="text-lg font-black text-slate-900">
+                            {locale === "en" ? "Booking Reference Not Found" : locale === "es" ? "Reserva no encontrada" : locale === "nl" ? "Boeking niet gevonden" : "Dossier introuvable"}
+                        </h2>
+                        <p className="text-xs text-slate-500 leading-relaxed">
+                            {locale === "en"
+                                ? `No booking was found matching reference #${ref}. Please check your confirmation email or enter your booking reference again.`
+                                : locale === "es"
+                                ? `No se encontró ninguna reserva para la referencia #${ref}. Verifique el código en su correo de confirmación.`
+                                : locale === "nl"
+                                ? `Geen boeking gevonden voor referentie #${ref}. Controleer uw referentie in uw bevestigingsmail.`
+                                : `Aucun dossier trouvé pour la référence #${ref}. Veuillez vérifier la référence reçue dans votre email de confirmation.`}
+                        </p>
+                        <a
+                            href="/"
+                            className="inline-block px-5 py-2.5 rounded-xl bg-[#C9572C] hover:bg-[#B24922] text-white text-xs font-bold transition shadow-xs"
+                        >
+                            {locale === "en" ? "Return to homepage" : locale === "es" ? "Volver al inicio" : locale === "nl" ? "Terug naar startpagina" : "Retour à l'accueil"}
+                        </a>
+                    </div>
+                </div>
+                <Footer />
+            </div>
+        );
+    }
+
     if (!bookingData) {
         return (
             <div className="min-h-screen bg-[#FAF7F2] flex items-center justify-center">
-                <div className="text-slate-500 font-bold text-sm">Chargement de votre bon de réservation...</div>
+                <div className="text-slate-500 font-bold text-xs uppercase tracking-wider animate-pulse">
+                    {locale === "en"
+                        ? "Loading booking voucher..."
+                        : locale === "es"
+                        ? "Cargando bono de reserva..."
+                        : locale === "nl"
+                        ? "Boekingsvoucher laden..."
+                        : "Chargement du bon de réservation..."}
+                </div>
             </div>
         );
     }
@@ -752,7 +757,11 @@ export default function BookingVoucherPage() {
                                             className="text-[#C9572C] hover:underline text-[11px] font-bold flex items-center gap-1 cursor-pointer"
                                         >
                                             <Edit3 size={11} />
-                                            <span>{isEditingFlight ? "Annuler" : "Modifier"}</span>
+                                            <span>
+                                                {isEditingFlight
+                                                    ? (locale === "en" ? "Cancel" : locale === "es" ? "Cancelar" : locale === "nl" ? "Annuleren" : "Annuler")
+                                                    : (locale === "en" ? "Edit" : locale === "es" ? "Modificar" : locale === "nl" ? "Wijzigen" : "Modifier")}
+                                            </span>
                                         </button>
                                     </div>
                                 </div>
@@ -760,7 +769,7 @@ export default function BookingVoucherPage() {
 
                             {flightSaved && (
                                 <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold animate-in fade-in">
-                                    ✓ N° de vol enregistré
+                                    {locale === "en" ? "✓ Flight number saved" : locale === "es" ? "✓ Nº de vuelo guardado" : locale === "nl" ? "✓ Vluchtnummer opgeslagen" : "✓ N° de vol enregistré"}
                                 </span>
                             )}
                         </div>
@@ -897,7 +906,13 @@ export default function BookingVoucherPage() {
                                             LPA:1$smdp.maroctelecom.ma$ZW-{ref}-ESIM20
                                         </div>
                                         <div className="text-emerald-700 font-semibold">
-                                            ✓ Valable 30 jours • Partage de connexion (Hotspot) autorisé
+                                            {locale === "en"
+                                                ? "✓ Valid 30 days • Hotspot tethering supported"
+                                                : locale === "es"
+                                                ? "✓ Válido 30 días • Zona Wi-Fi (Hotspot) permitida"
+                                                : locale === "nl"
+                                                ? "✓ 30 dagen geldig • Hotspot tethering toegestaan"
+                                                : "✓ Valable 30 jours • Partage de connexion (Hotspot) autorisé"}
                                         </div>
                                     </div>
                                 </div>
@@ -913,7 +928,15 @@ export default function BookingVoucherPage() {
                                     </p>
                                 </div>
                                 <a
-                                    href={`https://wa.me/212720794046?text=${encodeURIComponent(`Salam, je souhaite ajouter l'eSIM Maroc 20 Go (19 €) à ma réservation ${ref}`)}`}
+                                    href={`https://wa.me/212720794046?text=${encodeURIComponent(
+                                        locale === "en"
+                                            ? `Hello, I would like to add the Morocco 20 GB eSIM (€19) to my booking #${ref}`
+                                            : locale === "es"
+                                            ? `Hola, deseo añadir la eSIM Marruecos 20 GB (19 €) a mi reserva #${ref}`
+                                            : locale === "nl"
+                                            ? `Hallo, ik wil graag de Marokko 20 GB eSIM (€ 19) toevoegen aan mijn boeking #${ref}`
+                                            : `Salam, je souhaite ajouter l'eSIM Maroc 20 Go (19 €) à ma réservation ${ref}`
+                                    )}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="shrink-0 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-[#C9572C] text-white text-xs font-bold transition shadow-xs cursor-pointer active:scale-95"
@@ -932,10 +955,22 @@ export default function BookingVoucherPage() {
                             </div>
                             <div>
                                 <h3 className="text-base sm:text-lg font-black text-slate-900">
-                                    Riads & Hôtels Recommandés à {rental.hubName}
+                                    {locale === "en"
+                                        ? `Recommended Riads & Hotels in ${rental.hubName}`
+                                        : locale === "es"
+                                        ? `Riads y Hoteles Recomendados en ${rental.hubName}`
+                                        : locale === "nl"
+                                        ? `Aanbevolen Riads & Hotels in ${rental.hubName}`
+                                        : `Riads & Hôtels Recommandés à ${rental.hubName}`}
                                 </h3>
                                 <p className="text-xs text-slate-500">
-                                    Établissements avec accès voiture facile et parking gardé 24/7 pour vos dates ({rental.pickupDate} au {rental.returnDate})
+                                    {locale === "en"
+                                        ? `Accommodations with easy car access and 24/7 secured parking for your dates (${rental.pickupDate} to ${rental.returnDate})`
+                                        : locale === "es"
+                                        ? `Alojamientos con fácil acceso en coche y parking vigilado 24/7 (${rental.pickupDate} al ${rental.returnDate})`
+                                        : locale === "nl"
+                                        ? `Accommodaties met gemakkelijke toegang en 24/7 beveiligde parkeergelegenheid (${rental.pickupDate} tot ${rental.returnDate})`
+                                        : `Établissements avec accès voiture facile et parking gardé 24/7 pour vos dates (${rental.pickupDate} au ${rental.returnDate})`}
                                 </p>
                             </div>
                         </div>
@@ -943,13 +978,19 @@ export default function BookingVoucherPage() {
                         <div className="rounded-2xl bg-[#FAF7F2] border border-[#E7DFD5] p-5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
                             <div className="space-y-1">
                                 <span className="text-[10px] uppercase font-bold text-[#C9572C] tracking-wider">
-                                    Partenaire Hébergement ZwinCar
+                                    {locale === "en" ? "ZwinCar Accommodation Partner" : locale === "es" ? "Socio de Alojamiento ZwinCar" : locale === "nl" ? "ZwinCar Verblijfspartner" : "Partenaire Hébergement ZwinCar"}
                                 </span>
                                 <div className="font-black text-slate-900 text-sm">
-                                    Trouvez votre hébergement idéal à {rental.hubName}
+                                    {locale === "en" ? `Find your ideal stay in ${rental.hubName}` : locale === "es" ? `Encuentre su estancia ideal en ${rental.hubName}` : locale === "nl" ? `Vind uw ideale verblijf in ${rental.hubName}` : `Trouvez votre hébergement idéal à ${rental.hubName}`}
                                 </div>
                                 <p className="text-[11px] text-slate-600 max-w-lg leading-relaxed">
-                                    Ne laissez pas votre voiture sans surveillance dans les ruelles étroites. Découvrez notre sélection de Riads et Hôtels partenaires équipés d'un stationnement sécurisé vérifié.
+                                    {locale === "en"
+                                        ? "Keep your rental car safe. Discover our curated selection of partner Riads and hotels featuring verified secured parking."
+                                        : locale === "es"
+                                        ? "Mantenga su coche seguro. Descubra nuestra selección de Riads y hoteles asociados con aparcamiento vigilado."
+                                        : locale === "nl"
+                                        ? "Laat uw huurauto veilig achter. Bekijk onze selectie partner-riads en hotels met beveiligde parkeergelegenheid."
+                                        : "Ne laissez pas votre voiture sans surveillance dans les ruelles étroites. Découvrez notre sélection de Riads et Hôtels partenaires équipés d'un stationnement sécurisé vérifié."}
                                 </p>
                             </div>
 
@@ -975,10 +1016,22 @@ export default function BookingVoucherPage() {
                             </div>
                             <div>
                                 <h3 className="text-base sm:text-lg font-black text-slate-900">
-                                    Excursions & Activités Incontournables à {rental.hubName}
+                                    {locale === "en"
+                                        ? `Must-Do Excursions & Activities in ${rental.hubName}`
+                                        : locale === "es"
+                                        ? `Excursiones y Actividades Imprescindibles en ${rental.hubName}`
+                                        : locale === "nl"
+                                        ? `Top Excursies & Activiteiten in ${rental.hubName}`
+                                        : `Excursions & Activités Incontournables à ${rental.hubName}`}
                                 </h3>
                                 <p className="text-xs text-slate-500">
-                                    Sélection d'activités vérifiées au départ de {rental.hubName} avec guides certifiés et annulation gratuite
+                                    {locale === "en"
+                                        ? `Handpicked certified experiences departing from ${rental.hubName} with free cancellation`
+                                        : locale === "es"
+                                        ? `Selección de actividades verificadas desde ${rental.hubName} con cancelación gratuita`
+                                        : locale === "nl"
+                                        ? `Geverifieerde activiteiten met vertrek vanuit ${rental.hubName} met gratis annuleren`
+                                        : `Sélection d'activités vérifiées au départ de ${rental.hubName} avec guides certifiés et annulation gratuite`}
                                 </p>
                             </div>
                         </div>
@@ -1006,7 +1059,9 @@ export default function BookingVoucherPage() {
                                         </h4>
                                     </div>
                                     <div className="pt-3 mt-3 border-t border-slate-200/70 flex items-center justify-between text-[11px] font-bold text-slate-700 group-hover:text-[#C9572C]">
-                                        <span>Réserver sur Viator</span>
+                                        <span>
+                                            {locale === "en" ? "Book on Viator" : locale === "es" ? "Reservar en Viator" : locale === "nl" ? "Boeken op Viator" : "Réserver sur Viator"}
+                                        </span>
                                         <ExternalLink size={12} />
                                     </div>
                                 </a>

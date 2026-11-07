@@ -376,3 +376,20 @@ test("aucune fuite du token d'accès dans les projections publiques", () => {
     assert.equal(voucher.includes(record.accessToken), false);
     assert.equal(publicBooking.includes("events"), false);
 });
+
+test("buildVoucher propage fidèlement la locale et applique le masquage PII quand demandé", () => {
+    const record = makeRecord({ locale: "en" });
+    const fullVoucher = buildVoucher(record);
+    assert.equal(fullVoucher.locale, "en");
+    assert.equal(fullVoucher.rental.fuelPolicy, "Same-to-Same fuel level");
+    assert.equal(fullVoucher.client.fullName, "Thomas Martin");
+    assert.equal(fullVoucher.client.email, "thomas@example.com");
+
+    const maskedVoucher = buildVoucher(record, { maskPii: true });
+    assert.equal(maskedVoucher.locale, "en");
+    assert.equal(maskedVoucher.client.fullName.includes("Thomas"), false);
+    assert.equal(maskedVoucher.client.email.includes("thomas@"), false);
+    assert.equal(maskedVoucher.client.phone.includes("0612345678"), false);
+    assert.equal(maskedVoucher.rental.vehicleName, record.rental.vehicleName);
+    assert.equal(maskedVoucher.financials.depositAcompteEur, record.quote.acompteEur);
+});

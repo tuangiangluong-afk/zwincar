@@ -1025,14 +1025,43 @@ export interface PublicBooking {
     lifecycle: LifecycleEmail[];
 }
 
-export function toPublicBooking(record: BookingRecord): PublicBooking {
+export function maskPiiName(name: string): string {
+    const parts = name.trim().split(/\s+/);
+    return parts.map((p) => (p.length <= 2 ? `${p[0]}*` : `${p[0]}***${p[p.length - 1]}`)).join(" ");
+}
+
+export function maskPiiPhone(phone: string): string {
+    const digits = phone.replace(/\s+/g, "");
+    if (digits.length <= 4) return "****";
+    return `${digits.slice(0, 4)} ** ** ${digits.slice(-2)}`;
+}
+
+export function maskPiiEmail(email: string): string {
+    const parts = email.split("@");
+    if (parts.length !== 2) return "***@***.***";
+    const [user, domain] = parts;
+    const maskedUser = user.length <= 2 ? `${user[0]}*` : `${user[0]}***${user[user.length - 1]}`;
+    return `${maskedUser}@${domain}`;
+}
+
+export function toPublicBooking(record: BookingRecord, options?: { maskPii?: boolean }): PublicBooking {
+    const client = options?.maskPii
+        ? {
+            fullName: maskPiiName(record.client.fullName),
+            phone: maskPiiPhone(record.client.phone),
+            email: maskPiiEmail(record.client.email),
+            flightNumber: record.client.flightNumber,
+            notes: "",
+        }
+        : record.client;
+
     return {
         ref: record.ref,
         status: record.status,
         locale: record.locale,
         createdAt: record.createdAt,
         updatedAt: record.updatedAt,
-        client: record.client,
+        client,
         rental: record.rental,
         quote: record.quote,
         paidEur: record.paidEur,
@@ -1040,20 +1069,48 @@ export function toPublicBooking(record: BookingRecord): PublicBooking {
     };
 }
 
-/** Adaptateur vers l'ancien format "voucher" consommé par /booking/[ref]. */
-export function buildVoucher(record: BookingRecord) {
+/** Adaptateur vers le format "voucher" consommé par /booking/[ref]. */
+export function buildVoucher(record: BookingRecord, options?: { maskPii?: boolean }) {
     const { rental, quote } = record;
-    return {
-        ref: record.ref,
-        createdAt: record.createdAt,
-        status: record.status,
-        client: {
+    const locale = (record.locale as Locale) || "fr";
+
+    const client = options?.maskPii
+        ? {
+            fullName: maskPiiName(record.client.fullName),
+            phone: maskPiiPhone(record.client.phone),
+            email: maskPiiEmail(record.client.email),
+            flightNumber: record.client.flightNumber,
+            notes: "",
+        }
+        : {
             fullName: record.client.fullName,
             phone: record.client.phone,
             email: record.client.email,
-            flightNumber: record.client.flightNumber ?? "À préciser",
+            flightNumber:
+                record.client.flightNumber ??
+                (locale === "en" ? "To be specified" : locale === "es" ? "Por especificar" : locale === "nl" ? "Nog op te geven" : "À préciser"),
             notes: record.client.notes ?? "",
-        },
+        };
+
+    const fuelPolicy =
+        locale === "en"
+            ? "Same-to-Same fuel level"
+            : locale === "es"
+            ? "Mismo nivel de combustible (Same-to-same)"
+            : locale === "nl"
+            ? "Gelijk brandstofniveau (Same-to-same)"
+            : "Niveau identique (Same-to-Same)";
+
+    const depositPolicy = quote.hasZeroDeposit
+        ? (locale === "en" ? "€0 security deposit" : locale === "es" ? "0 € de fianza" : locale === "nl" ? "€0 borgsom" : "0 € de caution")
+        : (locale === "en" ? `€${quote.depositEur} security deposit` : locale === "es" ? `${quote.depositEur} € de fianza` : locale === "nl" ? `€${quote.depositEur} borgsom` : `${quote.depositEur} € de caution`);
+
+    return {
+        ref: record.ref,
+        locale: record.locale,
+        createdAt: record.createdAt,
+        status: record.status,
+        client,
         rental: {
             vehicleId: rental.vehicleId,
             vehicleName: rental.vehicleName,
@@ -1067,8 +1124,8 @@ export function buildVoucher(record: BookingRecord) {
             pickupDate: rental.pickupDate,
             returnDate: rental.returnDate,
             days: rental.days,
-            fuelPolicy: "Niveau identique (Same-to-Same)",
-            depositPolicy: quote.hasZeroDeposit ? "0 € de caution" : `${quote.depositEur} € de caution`,
+            fuelPolicy,
+            depositPolicy,
         },
         financials: {
             currency: quote.currency,
