@@ -63,6 +63,7 @@ export const TRANSLATIONS: Record<
             fromPerDay: string;
             totalEstimate: string;
             bookCar: string;
+            checkAvailability: string;
             viewDetails: string;
             verifiedPartner: string;
             orEquivalent: string;
@@ -284,6 +285,7 @@ export const TRANSLATIONS: Record<
             fromPerDay: "par jour",
             totalEstimate: "Estimation séjour",
             bookCar: "Réserver",
+            checkAvailability: "Vérifier Disponibilité",
             viewDetails: "Fiche & Détails",
             verifiedPartner: "Partenaire Vérifié",
             orEquivalent: "ou modèle équivalent même catégorie",
@@ -504,6 +506,7 @@ export const TRANSLATIONS: Record<
             fromPerDay: "per day",
             totalEstimate: "Total estimated",
             bookCar: "Book Car",
+            checkAvailability: "Check Availability",
             viewDetails: "Details & Specs",
             verifiedPartner: "Verified Partner",
             orEquivalent: "or equivalent model in same category",
@@ -724,6 +727,7 @@ export const TRANSLATIONS: Record<
             fromPerDay: "por día",
             totalEstimate: "Total estimado",
             bookCar: "Reservar",
+            checkAvailability: "Ver Disponibilidad",
             viewDetails: "Detalles y Ficha",
             verifiedPartner: "Socio Verificado",
             orEquivalent: "o modelo equivalente misma categoría",
@@ -944,6 +948,7 @@ export const TRANSLATIONS: Record<
             fromPerDay: "per dag",
             totalEstimate: "Geschat totaal",
             bookCar: "Reserveren",
+            checkAvailability: "Beschikbaarheid Bekijken",
             viewDetails: "Details & Specificaties",
             verifiedPartner: "Geverifieerde Partner",
             orEquivalent: "of gelijkwaardig model zelfde categorie",

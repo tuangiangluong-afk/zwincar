@@ -122,6 +122,34 @@ export default function AdminLoginPage() {
                         </p>
                     </div>
                 </div>
+
+                {/* Security Protocol & Fleet Management Charter */}
+                <div className="mt-8 bg-slate-900/60 rounded-2xl p-5 border border-slate-800 text-[11px] text-slate-400 space-y-3">
+                    <div className="flex items-center gap-2 text-slate-200 font-bold uppercase tracking-wider text-[10px]">
+                        <ShieldCheck size={14} className="text-[#E58B24]" />
+                        <span>Protocole de Sécurité Opérationnelle & Supervision Flotte</span>
+                    </div>
+                    <p className="leading-relaxed">
+                        Ce portail de supervision centralise l&apos;affectation des véhicules ZwinCar à travers l&apos;ensemble des hubs aéroportuaires et métropolitains du Royaume du Maroc (Marrakech-Ménara, Casablanca Mohammed V, Fès-Saïss, Agadir Al Massira, Tanger Ibn Battouta, Rabat-Salé et Nador Al Aroui). L&apos;accès à cet espace est strictement restreint aux gestionnaires de flotte assermentés, directeurs d&apos;agences locales et administrateurs accrédités.
+                    </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-slate-800/80 text-[10px]">
+                        <div>
+                            <span className="font-bold text-slate-300 block mb-0.5">Vérification KYC & Contrats</span>
+                            <span className="text-slate-400 leading-normal">
+                                Tout bon de réservation fait l&apos;objet d&apos;une double validation documentaire : permis de conduire valide (ancienneté minimale 1 an) et passeport ou pièce d&apos;identité nationale en cours de validité.
+                            </span>
+                        </div>
+                        <div>
+                            <span className="font-bold text-slate-300 block mb-0.5">Protection des Données (CNDP)</span>
+                            <span className="text-slate-400 leading-normal">
+                                Les coordonnées et justificatifs des locataires sont protégés conformément à la loi marocaine n° 09-08 relative à la protection des personnes physiques à l&apos;égard du traitement des données à caractère personnel.
+                            </span>
+                        </div>
+                    </div>
+                    <p className="text-[10px] text-slate-400 leading-normal pt-1">
+                        Toute tentative d&apos;intrusion, usurpation d&apos;identifiant ou accès non autorisé fait l&apos;objet d&apos;un journal d&apos;audit cryptographique immuable avec horodatage UTC, adresse IP source et empreinte TLS, transmis automatiquement aux autorités judiciaires compétentes.
+                    </p>
+                </div>
             </div>
         </div>
     );

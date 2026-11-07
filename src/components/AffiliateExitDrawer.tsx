@@ -36,6 +36,25 @@ export function AffiliateExitDrawer({
     const [includeEsim, setIncludeEsim] = useState(false);
     const [isRedirecting, setIsRedirecting] = useState(false);
 
+    React.useEffect(() => {
+        if (!isOpen) return;
+
+        const originalOverflow = document.body.style.overflow;
+        document.body.style.overflow = "hidden";
+
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === "Escape") {
+                onClose();
+            }
+        };
+        window.addEventListener("keydown", handleKeyDown);
+
+        return () => {
+            document.body.style.overflow = originalOverflow;
+            window.removeEventListener("keydown", handleKeyDown);
+        };
+    }, [isOpen, onClose]);
+
     if (!isOpen) return null;
 
     const localrentUrl = buildAffiliateRentalUrl({
@@ -188,18 +207,18 @@ export function AffiliateExitDrawer({
                                 type="button"
                                 onClick={() => handleProceed(localrentUrl)}
                                 disabled={isRedirecting}
-                                className="h-12 px-3.5 rounded-2xl bg-[#C9572C] hover:bg-[#B24922] text-white font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 shadow-md cursor-pointer disabled:opacity-50 active:scale-95"
+                                className="min-h-[48px] py-2.5 px-3 rounded-2xl bg-[#C9572C] hover:bg-[#B24922] text-white font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-md cursor-pointer disabled:opacity-50 active:scale-95 text-center"
                             >
-                                <span className="truncate">Localrent (Faible Caution)</span>
+                                <span className="font-extrabold whitespace-nowrap">Localrent (Faible Caution)</span>
                                 <ExternalLink size={14} className="shrink-0" />
                             </button>
                             <button
                                 type="button"
                                 onClick={() => handleProceed(discoverCarsUrl)}
                                 disabled={isRedirecting}
-                                className="h-12 px-3.5 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 shadow-md cursor-pointer disabled:opacity-50 active:scale-95"
+                                className="min-h-[48px] py-2.5 px-3 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-md cursor-pointer disabled:opacity-50 active:scale-95 text-center"
                             >
-                                <span className="truncate">DiscoverCars (Terminal)</span>
+                                <span className="font-extrabold whitespace-nowrap">DiscoverCars (Terminal)</span>
                                 <ExternalLink size={14} className="shrink-0" />
                             </button>
                         </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { VehicleModel, MOROCCAN_HUBS, UPSELL_OPTIONS, getHubMeetingPoint, getLocalizedAirportName } from "@/lib/morocco-data";
 import { DEFAULT_HUB_DISTRIBUTION, DEFAULT_VEHICLE_STOCK, isHubInAffiliateFallback } from "@/lib/affiliate";
@@ -49,13 +49,23 @@ export default function VehicleBookingCard({
     const tomorrow = new Date(today);
     tomorrow.setDate(today.getDate() + 2);
     const returnDay = new Date(today);
-    returnDay.setDate(today.getDate() + 8);
+    returnDay.setDate(today.getDate() + 5);
 
     const formatDateInput = (d: Date) => d.toISOString().split("T")[0];
 
     const [pickupHub, setPickupHub] = useState(defaultHubSlug);
     const [pickupDate, setPickupDate] = useState(formatDateInput(tomorrow));
     const [returnDate, setReturnDate] = useState(formatDateInput(returnDay));
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            const params = new URLSearchParams(window.location.search);
+            const p = params.get("pickupDate");
+            const r = params.get("returnDate");
+            if (p) setPickupDate(p);
+            if (r) setReturnDate(r);
+        }
+    }, []);
     const [selectedUpsells, setSelectedUpsells] = useState<string[]>([
         "franchise-zero",
         "conducteur-additionnel",

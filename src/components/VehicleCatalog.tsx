@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
     Users,
@@ -33,7 +33,7 @@ interface VehicleCatalogProps {
 }
 
 export default function VehicleCatalog({
-    days = 6,
+    days: propDays,
     pickupCity: propPickupCity,
     locale: propLocale,
 }: VehicleCatalogProps) {
@@ -107,15 +107,33 @@ export default function VehicleCatalog({
         );
     };
 
-    // Dates
+    // Dates calculation: defaults to realistic 3-day short trip, hydrates from URL params on client
     const today = new Date();
-    const pickupDateObj = new Date(today);
-    pickupDateObj.setDate(today.getDate() + 2);
-    const returnDateObj = new Date(today);
-    returnDateObj.setDate(today.getDate() + 2 + days);
+    const defaultPickupObj = new Date(today);
+    defaultPickupObj.setDate(today.getDate() + 2);
+    const defaultReturnObj = new Date(today);
+    defaultReturnObj.setDate(today.getDate() + 5);
 
-    const pickupDate = pickupDateObj.toISOString().split("T")[0];
-    const returnDate = returnDateObj.toISOString().split("T")[0];
+    const [pickupDate, setPickupDate] = useState(defaultPickupObj.toISOString().split("T")[0]);
+    const [returnDate, setReturnDate] = useState(defaultReturnObj.toISOString().split("T")[0]);
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            const params = new URLSearchParams(window.location.search);
+            const p = params.get("pickupDate");
+            const r = params.get("returnDate");
+            if (p) setPickupDate(p);
+            if (r) setReturnDate(r);
+        }
+    }, []);
+
+    let days = propDays;
+    if (!days) {
+        const d1 = new Date(pickupDate);
+        const d2 = new Date(returnDate);
+        const diffTime = Math.abs(d2.getTime() - d1.getTime());
+        days = Math.max(1, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
+    }
 
     // Split upsell accounting for modal
     let platformUpsellsEur = 0;
@@ -417,7 +435,7 @@ export default function VehicleCatalog({
                                                 className="h-11 px-3 rounded-2xl bg-slate-900 hover:bg-[#C9572C] text-white font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-xs active:scale-[0.98] whitespace-nowrap"
                                             >
                                                 <ExternalLink size={14} className="shrink-0" />
-                                                <span className="truncate">{activeLocale === "en" ? "Check Stock" : activeLocale === "es" ? "Disponibilidad" : activeLocale === "nl" ? "Beschikbaarheid" : "Dispos Hub"}</span>
+                                                <span className="truncate">{t.catalog.checkAvailability}</span>
                                             </button>
                                         ) : (
                                             <button

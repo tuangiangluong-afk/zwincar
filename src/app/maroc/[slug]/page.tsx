@@ -262,7 +262,7 @@ export default async function CityHubPage({ params }: CityPageProps) {
             </section>
 
             {/* Vehicle Fleet */}
-            <VehicleCatalog days={6} pickupCity={hub.name} />
+            <VehicleCatalog pickupCity={hub.name} />
 
             {/* AEO Local Section */}
             <LocalAeoSection hubSlug={hub.slug} />

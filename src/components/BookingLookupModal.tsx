@@ -101,6 +101,17 @@ export function BookingLookupModal({ isOpen, onClose, locale = "fr" }: BookingLo
 
     useEffect(() => {
         if (!isOpen) return;
+
+        const originalOverflow = document.body.style.overflow;
+        document.body.style.overflow = "hidden";
+
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === "Escape") {
+                onClose();
+            }
+        };
+        window.addEventListener("keydown", handleKeyDown);
+
         try {
             const lastRef = localStorage.getItem("zwincar_last_booking_ref");
             if (lastRef) {
@@ -112,7 +123,12 @@ export function BookingLookupModal({ isOpen, onClose, locale = "fr" }: BookingLo
         } catch {
             // ignore
         }
-    }, [isOpen]);
+
+        return () => {
+            document.body.style.overflow = originalOverflow;
+            window.removeEventListener("keydown", handleKeyDown);
+        };
+    }, [isOpen, onClose]);
 
     if (!isOpen) return null;
 

@@ -292,18 +292,18 @@ export function BookingCheckoutModal({
                                     href={localrentUrl}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="h-11 px-3 rounded-xl bg-[#C9572C] hover:bg-[#B24922] text-white font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-1.5 shadow-sm active:scale-95"
+                                    className="min-h-[46px] py-2 px-3 rounded-xl bg-[#C9572C] hover:bg-[#B24922] text-white font-extrabold text-xs transition flex items-center justify-center gap-1.5 shadow-sm active:scale-95 text-center"
                                 >
-                                    <span className="truncate">Localrent (Faible Caution)</span>
+                                    <span className="whitespace-nowrap">Localrent (Faible Caution)</span>
                                     <ExternalLink size={13} className="shrink-0" />
                                 </a>
                                 <a
                                     href={discoverCarsUrl}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="h-11 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-1.5 shadow-sm active:scale-95"
+                                    className="min-h-[46px] py-2 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs transition flex items-center justify-center gap-1.5 shadow-sm active:scale-95 text-center"
                                 >
-                                    <span className="truncate">DiscoverCars (Terminal)</span>
+                                    <span className="whitespace-nowrap">DiscoverCars (Terminal)</span>
                                     <ExternalLink size={13} className="shrink-0" />
                                 </a>
                             </div>
