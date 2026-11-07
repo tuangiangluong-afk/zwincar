@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     if (!hub) return { title: "Aeropuerto no encontrado" };
 
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://zwincar.com";
-    const title = clampTitle(`Alquiler Coche ${hub.name} (${hub.airportCode}) Sin Fianza • ZwinCar`);
+    const title = clampTitle(`Alquiler Coche ${hub.name} (${hub.airportCode}) Sin Fianza Tarjeta • ZwinCar`);
     const description = clampDescription(
         `Alquile coche en ${hub.name} (${hub.airportName}) sin bloqueo de tarjeta de crédito. Tarjetas de débito y efectivo aceptados. Entrega rápida en aeropuerto y riad.`
     );

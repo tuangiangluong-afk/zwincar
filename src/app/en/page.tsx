@@ -4,7 +4,7 @@ import HomePage from "@/components/HomePage";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-    title: "Car Rental Morocco No Deposit • ZwinCar",
+    title: "Car Rental Morocco No Credit Card Hold • ZwinCar",
     description: "Rent a car in Morocco with no €1,500 deposit. Direct airport handover in Marrakech, Agadir, Casablanca & Tangier. Zero excess & guaranteed models.",
     alternates: {
         canonical: "https://zwincar.com/en",

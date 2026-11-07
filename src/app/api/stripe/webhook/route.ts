@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { getBookingStore } from "@/lib/booking-store";
-import { handleCheckoutSuccess } from "@/lib/lead-dispatch";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -127,19 +126,6 @@ export async function POST(request: NextRequest) {
             } catch (error) {
                 console.error("Webhook booking update error:", error);
                 return NextResponse.json({ error: "Mise à jour impossible" }, { status: 500 });
-            }
-        }
-
-        // Compatibilité tunnel taxi existant.
-        if (typeof metadata.booking_id === "string") {
-            try {
-                await handleCheckoutSuccess({
-                    id: String(session.id ?? ""),
-                    client_reference_id: metadata.booking_id,
-                    payment_intent: typeof session.payment_intent === "string" ? session.payment_intent : undefined,
-                });
-            } catch (error) {
-                console.error("Legacy lead dispatch error:", error);
             }
         }
     }

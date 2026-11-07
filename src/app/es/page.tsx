@@ -4,7 +4,7 @@ import HomePage from "@/components/HomePage";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-    title: "Alquiler Coche Marruecos Sin Fianza • ZwinCar",
+    title: "Alquiler Coche Marruecos Sin Fianza en Tarjeta • ZwinCar",
     description: "Alquile un coche en Marruecos sin bloqueo de fianza en tarjeta. Entrega directa en Marrakech, Casablanca, Agadir y Tánger. Modelos garantizados.",
     alternates: {
         canonical: "https://zwincar.com/es",

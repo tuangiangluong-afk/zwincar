@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     if (!hub) return { title: "Airport not found" };
 
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://zwincar.com";
-    const title = clampTitle(`Car Rental ${hub.name} (${hub.airportCode}) No Deposit • ZwinCar`);
+    const title = clampTitle(`Car Rental ${hub.name} (${hub.airportCode}) No Card Hold • ZwinCar`);
     const description = clampDescription(
         `Rent a car in ${hub.name} (${hub.airportName}) with zero credit card block. Debit cards & cash accepted, exact model guaranteed. Fast airport & riad delivery.`
     );

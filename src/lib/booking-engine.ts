@@ -527,7 +527,7 @@ export function cancellationPolicy(booking: BookingRecord, now: Date = new Date(
             refundMad: roundEur(paidEur * MAD_PER_EUR),
             retainedEur: 0,
             creditNoteEur: paidEur,
-            message: "Annulation gratuite : acompte remboursé en totalité sous 5 jours ouvrés.",
+            message: "Annulation gratuite : acompte remboursé en totalité sur votre carte (5 à 10 jours ouvrés selon votre banque).",
         };
     }
 

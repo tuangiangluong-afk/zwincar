@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: VehiclePageProps): Promise<Me
 
     const title = clampTitle(`Location ${vehicle.name} Maroc • Sans Caution CB | ZwinCar`);
     const description = clampDescription(
-        `Louez la ${vehicle.name} (${vehicle.transmission}, ${vehicle.fuel}) au Maroc. ${vehicle.engine}, coffre ${vehicle.trunkLiters}L, 0€ de caution bloquée sur CB. Livraison aéroport et riad offerte.`
+        `Louez la ${vehicle.name} (${vehicle.transmission}, ${vehicle.fuel}) au Maroc. ${vehicle.engine}, coffre ${vehicle.trunkLiters}L, 0€ de caution avec Franchise Zéro (sinon 300 €). Livraison aéroport et riad offerte.`
     );
 
     return {

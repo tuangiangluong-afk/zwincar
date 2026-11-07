@@ -85,13 +85,6 @@ export default function SchemaJSON({
                     closes: "23:59",
                 },
             ],
-            aggregateRating: {
-                "@type": "AggregateRating",
-                ratingValue: "4.9",
-                reviewCount: "318",
-                bestRating: "5",
-                worstRating: "1",
-            },
             makesOffer: {
                 "@type": "Offer",
                 itemOffered: {
@@ -118,7 +111,7 @@ export default function SchemaJSON({
                 ? `Location ${vehicle.name} — ${hub.name} (${hub.airportCode})`
                 : `Location ${vehicle.name} au Maroc Sans Caution CB`,
             image: [toAbsoluteUrl(vehicle.image)],
-            description: `${vehicle.highlight} ${vehicle.idealFor} Caution 0€ avec Pack Sérénité, livraison aéroport et riad offerte, kilométrage illimité.`,
+            description: `${vehicle.highlight} ${vehicle.idealFor} Caution 0€ avec l'option Franchise Zéro (sinon 300 €), livraison aéroport et riad offerte, kilométrage illimité.`,
             sku: skuCode,
             mpn: skuCode,
             brand: {
@@ -132,71 +125,12 @@ export default function SchemaJSON({
                 priceCurrency: "EUR",
                 priceValidUntil: "2027-12-31",
                 availability: "https://schema.org/InStock",
-                itemCondition: "https://schema.org/NewCondition",
                 seller: {
                     "@type": "Organization",
                     name: "ZwinCar",
                     url: baseUrl,
                 },
-                shippingDetails: {
-                    "@type": "OfferShippingDetails",
-                    shippingRate: {
-                        "@type": "MonetaryAmount",
-                        value: "0",
-                        currency: "EUR",
-                    },
-                    shippingDestination: {
-                        "@type": "DefinedRegion",
-                        addressCountry: "MA",
-                    },
-                    deliveryTime: {
-                        "@type": "ShippingDeliveryTime",
-                        handlingTime: {
-                            "@type": "QuantitativeValue",
-                            minValue: 0,
-                            maxValue: 0,
-                            unitCode: "DAY",
-                        },
-                        transitTime: {
-                            "@type": "QuantitativeValue",
-                            minValue: 0,
-                            maxValue: 0,
-                            unitCode: "DAY",
-                        },
-                    },
-                },
-                hasMerchantReturnPolicy: {
-                    "@type": "MerchantReturnPolicy",
-                    applicableCountry: "MA",
-                    returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnWindow",
-                    merchantReturnDays: 2,
-                    returnMethod: "https://schema.org/ReturnByMail",
-                    returnFees: "https://schema.org/FreeReturn",
-                },
             },
-            aggregateRating: {
-                "@type": "AggregateRating",
-                ratingValue: "4.9",
-                reviewCount: "84",
-                bestRating: "5",
-                worstRating: "1",
-            },
-            review: [
-                {
-                    "@type": "Review",
-                    author: {
-                        "@type": "Person",
-                        name: "Thomas L.",
-                    },
-                    datePublished: "2026-09-18",
-                    reviewBody: `Livraison ponctuelle de notre ${vehicle.name} directement sur le parking du terminal ${hub ? hub.airportCode : "aéroport"}. Aucune caution bloquée sur ma carte Visa débit, état des lieux en 5 minutes sur WhatsApp.`,
-                    reviewRating: {
-                        "@type": "Rating",
-                        ratingValue: "5",
-                        bestRating: "5",
-                    },
-                },
-            ],
             speakable: speakableSpecification(["h1", "[data-speakable]"]),
         });
     }
@@ -208,10 +142,6 @@ export default function SchemaJSON({
             name: "ZwinCar",
             url: baseUrl,
             logo: `${baseUrl}/logo.svg`,
-            sameAs: [
-                "https://www.instagram.com/zwincar",
-                "https://twitter.com/zwincar",
-            ],
             contactPoint: {
                 "@type": "ContactPoint",
                 telephone: "+212720794046",

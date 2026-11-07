@@ -95,7 +95,7 @@ export async function generateMetadata({ params }: CityVehiclePageProps): Promis
         const vehicleTitleName = vehicle.id === "toyota-prado-tx-7places" ? "Toyota Prado 7 Places" : vehicle.name;
         const title = clampTitle(`Location ${vehicleTitleName} ${hub.name} (${hub.airportCode}) | ZwinCar`, 58);
         const description = clampDescription(
-            `Louez la ${vehicle.name} à ${hub.name} (${hub.airportName}). 0€ caution bloquée sur CB, modèle exact garanti, livraison aéroport et riad gratuite. Dès ${vehicle.dailyPriceEur} €/j.`
+            `Louez la ${vehicle.name} à ${hub.name} (${hub.airportName}). 0€ de caution avec Franchise Zéro, modèle exact garanti, livraison aéroport et riad gratuite. Dès ${vehicle.dailyPriceEur} €/j.`
         );
 
         return {
@@ -445,7 +445,7 @@ export default async function CityVehicleDetailPage({ params }: CityVehiclePageP
                                         {h.airportCode}
                                     </div>
                                     <div className="text-[10px] text-emerald-600 font-semibold mt-1">
-                                        0€ Caution
+                                        Option 0€ Caution
                                     </div>
                                 </Link>
                             ))}

@@ -344,7 +344,7 @@ export default function LocalizedPageRenderer({
                                             {h.airportCode}
                                         </div>
                                         <div className="text-[10px] text-emerald-600 font-semibold mt-1">
-                                            {locale === "en" ? "€0 Deposit" : locale === "es" ? "0€ Fianza" : locale === "nl" ? "€0 Borg" : "0€ Caution"}
+                                            {locale === "en" ? "€0 Deposit Option" : locale === "es" ? "Opción 0€ Fianza" : locale === "nl" ? "Optie €0 Borg" : "Option 0€ Caution"}
                                         </div>
                                     </Link>
                                 ))}

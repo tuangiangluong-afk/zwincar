@@ -442,7 +442,7 @@ export default async function GuideDetailPage({
                                                 {hub.name} ({hub.airportCode})
                                             </div>
                                             <div className="text-[11px] text-slate-500 mt-1">
-                                                Dès {hub.avgDailyPriceEur} €/j • 0€ Caution
+                                                Dès {hub.avgDailyPriceEur} €/j • Option 0€ Caution
                                             </div>
                                         </Link>
                                     ))}
