@@ -1,5 +1,5 @@
 import { speakableSpecification } from "@/lib/seo-meta";
-import { CityHub, VehicleModel } from "@/lib/morocco-data";
+import { CityHub, VehicleModel, SOCIAL_SAME_AS } from "@/lib/morocco-data";
 
 interface SchemaJSONProps {
     type?: "AutoRental" | "LocalBusiness" | "Vehicle" | "Breadcrumb" | "FAQPage" | "Organization" | "Custom";
@@ -46,6 +46,7 @@ export default function SchemaJSON({
             url: canonicalUrl,
             telephone: "+212720794046",
             email: "hello@zwincar.com",
+            sameAs: SOCIAL_SAME_AS,
             image: toAbsoluteUrl(hub?.heroImage),
             priceRange: "26€ - 95€",
             currenciesAccepted: "EUR, MAD, USD, GBP",
@@ -129,6 +130,7 @@ export default function SchemaJSON({
                     "@type": "Organization",
                     name: "ZwinCar",
                     url: baseUrl,
+                    sameAs: SOCIAL_SAME_AS,
                 },
             },
             speakable: speakableSpecification(["h1", "[data-speakable]"]),
@@ -142,6 +144,7 @@ export default function SchemaJSON({
             name: "ZwinCar",
             url: baseUrl,
             logo: `${baseUrl}/logo.svg`,
+            sameAs: SOCIAL_SAME_AS,
             contactPoint: {
                 "@type": "ContactPoint",
                 telephone: "+212720794046",

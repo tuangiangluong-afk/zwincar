@@ -10,6 +10,20 @@ export const ZWINCAR_PHONE_TEL = "+212720794046";
 export const ZWINCAR_WHATSAPP_NUMBER = "212720794046";
 export const ZWINCAR_WHATSAPP_LINK = "https://wa.me/212720794046";
 
+export const SOCIAL_LINKS = {
+    facebook: "https://www.facebook.com/zwincar/",
+    instagram: "https://www.instagram.com/zwincar/",
+    youtube: "https://www.youtube.com/@ZwinCarcom",
+    tiktok: "https://www.tiktok.com/@zwincar",
+} as const;
+
+export const SOCIAL_SAME_AS: string[] = [
+    "https://www.facebook.com/zwincar/",
+    "https://www.instagram.com/zwincar/",
+    "https://www.youtube.com/@ZwinCarcom",
+    "https://www.tiktok.com/@zwincar",
+];
+
 export interface CityHub {
     slug: string;
     name: string;

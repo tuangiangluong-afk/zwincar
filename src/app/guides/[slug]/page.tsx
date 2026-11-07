@@ -21,7 +21,7 @@ import {
 import Header from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { MOROCCO_GUIDES, getGuideBySlug } from "@/data/morocco-guides";
-import { MOROCCAN_HUBS, VEHICLE_FLEET } from "@/lib/morocco-data";
+import { MOROCCAN_HUBS, VEHICLE_FLEET, SOCIAL_SAME_AS } from "@/lib/morocco-data";
 import { clampTitle, clampDescription } from "@/lib/seo-meta";
 import SchemaJSON from "@/components/SchemaJSON";
 import GuideInfographic from "@/components/GuideInfographic";
@@ -150,6 +150,8 @@ export default async function GuideDetailPage({
                         "@type": "Organization",
                         name: "ZwinCar Maroc",
                         url: "https://zwincar.com",
+                        logo: "https://zwincar.com/logo.svg",
+                        sameAs: SOCIAL_SAME_AS,
                     },
                     mainEntityOfPage: {
                         "@type": "WebPage",
