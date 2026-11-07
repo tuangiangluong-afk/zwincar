@@ -385,15 +385,20 @@ export default function VehicleCatalog({
                                     {/* Clean, Non-Slop Pricing Block */}
                                     <div className="py-2.5 px-3 bg-[#FAF7F2] border border-[#ECE5D9] rounded-2xl mb-3 flex items-center justify-between">
                                         <div>
-                                            <div className="flex items-baseline gap-1.5">
-                                                <span className="text-2xl font-black text-slate-900 tracking-tight">
+                                            <div className="flex flex-wrap items-baseline gap-1.5">
+                                                <span className="text-2xl font-black text-slate-900 tracking-tight whitespace-nowrap">
                                                     {formatPrice(vehicle.dailyPriceEur, vehicle.dailyPriceMad)}
                                                 </span>
                                                 <span className="text-xs text-slate-500 font-medium">/ {t.bookingWidget.perDay}</span>
                                                 {discountPct > 0 && (
-                                                    <span className="text-xs font-semibold text-slate-400 line-through font-mono ml-0.5">
-                                                        {formatPrice(vehicle.marketPriceEur, vehicle.marketPriceMad)}
-                                                    </span>
+                                                    <div className="inline-flex items-center gap-1 ml-0.5">
+                                                        <span className="text-xs font-bold text-slate-400 line-through decoration-red-500/80 decoration-[1.5px] font-mono whitespace-nowrap">
+                                                            {formatPrice(vehicle.marketPriceEur, vehicle.marketPriceMad)}
+                                                        </span>
+                                                        <span className="px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[9px] font-black uppercase tracking-wider whitespace-nowrap">
+                                                            -{discountPct}%
+                                                        </span>
+                                                    </div>
                                                 )}
                                             </div>
                                             <div className="text-[11px] text-slate-500 font-medium mt-0.5 flex items-center gap-1">

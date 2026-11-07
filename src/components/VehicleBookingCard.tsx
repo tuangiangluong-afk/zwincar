@@ -99,6 +99,7 @@ export default function VehicleBookingCard({
 
     const totalSavingsVsAirportEur = (vehicle.marketPriceEur * days) - baseRentalEur;
     const totalSavingsVsAirportMad = (vehicle.marketPriceMad * days) - baseRentalMad;
+    const discountPct = Math.round(((vehicle.marketPriceEur - effectiveDailyPriceEur) / vehicle.marketPriceEur) * 100);
 
     let platformUpsellsEur = 0;
     let platformUpsellsMad = 0;
@@ -192,19 +193,40 @@ return (
 
                 <div className="flex items-baseline justify-between">
                     <div>
-                        <div className="flex items-baseline gap-2">
-                            <span className="text-3xl font-black text-slate-900 tracking-tight">
+                        <div className="flex flex-wrap items-baseline gap-2">
+                            <span className="text-3xl font-black text-slate-900 tracking-tight whitespace-nowrap">
                                 {currency === "EUR" ? `${effectiveDailyPriceEur} €` : `${effectiveDailyPriceMad} MAD`}
                             </span>
                             <span className="text-xs text-slate-500 font-medium">/ {t.bookingWidget.perDay}</span>
-                            <span className="text-xs font-semibold text-slate-400 line-through font-mono">
-                                {currency === "EUR" ? `${vehicle.marketPriceEur} €` : `${vehicle.marketPriceMad} MAD`}
-                            </span>
+                            {discountPct > 0 && (
+                                <div className="inline-flex items-center gap-1.5 ml-1">
+                                    <span className="text-sm font-bold text-slate-400 line-through decoration-red-500/80 decoration-[1.5px] font-mono whitespace-nowrap">
+                                        {currency === "EUR" ? `${vehicle.marketPriceEur} €` : `${vehicle.marketPriceMad} MAD`}
+                                    </span>
+                                    <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-black uppercase tracking-wider whitespace-nowrap shadow-xs">
+                                        -{discountPct}%
+                                    </span>
+                                </div>
+                            )}
                         </div>
-                        <div className="text-[11px] text-slate-500 font-medium mt-1 flex items-center gap-1.5">
+                        <div className="text-[11px] text-slate-500 font-medium mt-1 flex flex-wrap items-center gap-1.5">
                             <span>{days}{activeLocale === "en" ? "d" : "j"} : ~{currency === "EUR" ? `${baseRentalEur} €` : `${baseRentalMad} MAD`}</span>
                             <span className="text-slate-300">•</span>
                             <span className="text-emerald-700 font-semibold">{t.catalog.freeDeliveryIncluded}</span>
+                            {totalSavingsVsAirportEur > 0 && (
+                                <>
+                                    <span className="text-slate-300">•</span>
+                                    <span className="text-[#C9572C] font-bold">
+                                        {activeLocale === "en"
+                                            ? `Save ~€${totalSavingsVsAirportEur} vs airport counters`
+                                            : activeLocale === "es"
+                                            ? `Ahorro ~${totalSavingsVsAirportEur} € frente al mostrador`
+                                            : activeLocale === "nl"
+                                            ? `Bespaar ~€${totalSavingsVsAirportEur} t.o.v. balie`
+                                            : `Économie ~${totalSavingsVsAirportEur} € vs guichet`}
+                                    </span>
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -394,18 +416,18 @@ return (
 
             {/* 6. Clarified Financial Split (No More Mystery +24€) */}
             <div className="rounded-2xl bg-[#FAF7F2] border border-[#ECE5D9] p-3.5 space-y-2 text-xs">
-                <div className="flex justify-between text-slate-600">
-                    <span>{vehicle.name} ({days} {t.search.daysCount})</span>
-                    <span className="font-semibold text-slate-900 font-mono">
+                <div className="flex items-baseline justify-between gap-3 text-slate-600">
+                    <span className="min-w-0 pr-1">{vehicle.name} ({days} {t.search.daysCount})</span>
+                    <span className="font-semibold text-slate-900 font-mono whitespace-nowrap shrink-0">
                         {currency === "EUR" ? `${baseRentalEur} €` : `${baseRentalMad} MAD`}
                     </span>
                 </div>
 
                 {/* Explicit Franchise Zéro Line */}
                 {hasFranchiseZero && (
-                    <div className="flex justify-between text-slate-700 font-medium">
-                        <span>{t.bookingWidget.serenityLabel} ({t.bookingWidget.serenityDeposit} • 8 €/j)</span>
-                        <span className="font-semibold text-[#C9572C] font-mono">
+                    <div className="flex items-baseline justify-between gap-3 text-slate-700 font-medium">
+                        <span className="min-w-0 pr-1">{t.bookingWidget.serenityLabel} ({t.bookingWidget.serenityDeposit} • 8 €/j)</span>
+                        <span className="font-semibold text-[#C9572C] font-mono whitespace-nowrap shrink-0">
                             +{currency === "EUR" ? `${franchiseZeroPriceEur} €` : `${franchiseZeroPriceMad} MAD`}
                         </span>
                     </div>
@@ -413,24 +435,24 @@ return (
 
                 {/* Non-Franchise Extra Upsells */}
                 {nonFranchiseUpsells.length > 0 && (
-                    <div className="flex justify-between text-slate-600">
-                        <span>{t.bookingWidget.optionsExtra} ({nonFranchiseUpsells.length})</span>
-                        <span className="font-semibold text-slate-900 font-mono">
+                    <div className="flex items-baseline justify-between gap-3 text-slate-600">
+                        <span className="min-w-0 pr-1">{t.bookingWidget.optionsExtra} ({nonFranchiseUpsells.length})</span>
+                        <span className="font-semibold text-slate-900 font-mono whitespace-nowrap shrink-0">
                             +{currency === "EUR" ? `${nonFranchiseUpsellsTotalEur} €` : `${nonFranchiseUpsellsTotalMad} MAD`}
                         </span>
                     </div>
                 )}
 
-                <div className="flex justify-between text-slate-600 pt-1 border-t border-slate-200/60">
-                    <span>{t.bookingWidget.depositAtCounter}</span>
-                    <span className="font-bold text-slate-900 font-mono">
+                <div className="flex items-baseline justify-between gap-3 text-slate-600 pt-1 border-t border-slate-200/60">
+                    <span className="min-w-0 pr-1">{t.bookingWidget.depositAtCounter}</span>
+                    <span className="font-bold text-slate-900 font-mono whitespace-nowrap shrink-0">
                         {hasFranchiseZero ? t.bookingWidget.zeroDepositActive : "300 €"}
                     </span>
                 </div>
 
                 {/* 20% Deposit Today */}
-                <div className="pt-2 border-t border-slate-200/80 flex items-baseline justify-between">
-                    <div>
+                <div className="pt-2 border-t border-slate-200/80 flex items-baseline justify-between gap-3">
+                    <div className="min-w-0 pr-1">
                         <div className="font-black text-slate-900 text-sm">
                             {t.bookingWidget.payTodayStripe}
                         </div>
@@ -438,14 +460,14 @@ return (
                             {t.bookingWidget.payTodayNote}
                         </div>
                     </div>
-                    <div className="text-xl font-black text-[#C9572C] font-mono">
+                    <div className="text-xl font-black text-[#C9572C] font-mono whitespace-nowrap shrink-0">
                         {currency === "EUR" ? `${depositAcompteEur} €` : `${depositAcompteMad} MAD`}
                     </div>
                 </div>
 
-                <div className="flex justify-between text-slate-500 text-[11px]">
-                    <span>{t.bookingWidget.balanceOnSite}</span>
-                    <span className="font-bold text-slate-800 font-mono">
+                <div className="flex items-baseline justify-between gap-3 text-slate-500 text-[11px]">
+                    <span className="min-w-0 pr-1">{t.bookingWidget.balanceOnSite}</span>
+                    <span className="font-bold text-slate-800 font-mono whitespace-nowrap shrink-0">
                         {currency === "EUR" ? `${balanceOnSiteEur} €` : `${balanceOnSiteMad} MAD`} (~{balanceOnSiteMad} DH)
                     </span>
                 </div>
