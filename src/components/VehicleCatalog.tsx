@@ -353,23 +353,31 @@ export default function VehicleCatalog({
 
                                 {/* Dual Price Display & Action Buttons */}
                                 <div>
-                                    {/* Market Comparison Strike-through */}
-                                    <div className="flex items-center gap-1.5 text-[11px] text-slate-400 mb-1">
-                                        <span className="line-through font-mono">
-                                            {formatPrice(vehicle.marketPriceEur, vehicle.marketPriceMad)}
-                                        </span>
-                                        <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-1.5 py-0.2 rounded">
-                                            -{discountPct}%
-                                        </span>
-                                        <span className="text-[10px] text-slate-400 hidden sm:inline">
-                                            ({t.catalog.airportCounterBenchmark})
-                                        </span>
+                                    {/* High-Impact Deal Header */}
+                                    <div className="bg-[#FAF7F2] border border-[#E7DFD5] rounded-2xl p-2.5 mb-3">
+                                        <div className="flex items-center justify-between gap-1 mb-1">
+                                            <span className="text-[11px] font-semibold text-slate-500">
+                                                {t.catalog.airportCounterBenchmark}
+                                            </span>
+                                            <div className="flex items-center gap-1.5">
+                                                <span className="text-xs font-bold text-slate-400 line-through decoration-[#C9572C] decoration-2 font-mono">
+                                                    {formatPrice(vehicle.marketPriceEur, vehicle.marketPriceMad)}
+                                                </span>
+                                                <span className="bg-[#C9572C] text-white text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider shadow-xs">
+                                                    -{discountPct}%
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div className="flex items-center justify-between text-[11px] font-bold text-emerald-700 pt-1 border-t border-[#EAE3D6]">
+                                            <span>✓ {t.catalog.savingsTotalTrip.replace("{amount}", formatPrice((vehicle.marketPriceEur - vehicle.dailyPriceEur) * days, (vehicle.marketPriceMad - vehicle.dailyPriceMad) * days))}</span>
+                                            <span className="text-[10px] text-slate-500 font-medium">({days} {t.search.daysCount})</span>
+                                        </div>
                                     </div>
 
                                     <div className="flex items-baseline justify-between mb-3.5">
                                         <div>
                                             <div className="flex items-baseline gap-1.5">
-                                                <span className="text-2xl font-black text-slate-900">
+                                                <span className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
                                                     {formatPrice(vehicle.dailyPriceEur, vehicle.dailyPriceMad)}
                                                 </span>
                                                 <span className="text-xs text-slate-600 font-medium">/ {t.bookingWidget.perDay}</span>
@@ -379,10 +387,10 @@ export default function VehicleCatalog({
                                             </div>
                                         </div>
                                         <div className="text-right">
-                                            <div className="text-[11px] font-semibold text-slate-700">
-                                                {activeLocale === "en" ? "Airport delivery included" : activeLocale === "es" ? "Entrega en aeropuerto incluida" : activeLocale === "nl" ? "Luchthavenbezorging inbegrepen" : "Livraison aéroport incluse"}
+                                            <div className="text-[10px] sm:text-[11px] font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 rounded-full inline-block">
+                                                {t.catalog.freeDeliveryIncluded}
                                             </div>
-                                            <div className="text-[10px] text-slate-500 mt-0.5 font-mono">
+                                            <div className="text-[10px] text-slate-500 mt-1 font-mono">
                                                 {days}{activeLocale === "en" ? "d" : activeLocale === "es" ? "d" : activeLocale === "nl" ? "d" : "j"} : ~{formatPrice(totalEst, totalEst * 11)}
                                             </div>
                                         </div>

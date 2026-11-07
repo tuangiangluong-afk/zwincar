@@ -68,6 +68,9 @@ export const TRANSLATIONS: Record<
             orEquivalent: string;
             airportCounterBenchmark: string;
             freeUpgradeGuaranteed: string;
+            freeDeliveryIncluded: string;
+            savingsTotalTrip: string;
+            longStayDiscountTag: string;
         };
         bookingWidget: {
             guaranteedRate: string;
@@ -211,6 +214,9 @@ export const TRANSLATIONS: Record<
             orEquivalent: "ou modèle équivalent même catégorie",
             airportCounterBenchmark: "Tarif moyen comptoir aéroport",
             freeUpgradeGuaranteed: "Modèle garanti ou surclassement offert",
+            freeDeliveryIncluded: "Livraison aéroport & riad offerte (Valeur 100 DH incluse)",
+            savingsTotalTrip: "Économisez ~{amount} vs comptoir aéroport",
+            longStayDiscountTag: "Remise Long Séjour ({discount}%)",
         },
         bookingWidget: {
             guaranteedRate: "Tarif Garanti Partenaire",
@@ -353,6 +359,9 @@ export const TRANSLATIONS: Record<
             orEquivalent: "or equivalent model in same category",
             airportCounterBenchmark: "Airport counter average rate",
             freeUpgradeGuaranteed: "Guaranteed model or free upgrade",
+            freeDeliveryIncluded: "Free airport & riad delivery (100 MAD value included)",
+            savingsTotalTrip: "Save ~{amount} vs airport counter",
+            longStayDiscountTag: "Long Stay Discount ({discount}%)",
         },
         bookingWidget: {
             guaranteedRate: "Guaranteed Partner Price",
@@ -495,6 +504,9 @@ export const TRANSLATIONS: Record<
             orEquivalent: "o modelo equivalente misma categoría",
             airportCounterBenchmark: "Tarifa media mostrador aeropuerto",
             freeUpgradeGuaranteed: "Modelo garantizado o mejora gratis",
+            freeDeliveryIncluded: "Entrega gratis en aeropuerto y riad (Valor 100 DH incluido)",
+            savingsTotalTrip: "Ahorre ~{amount} vs mostrador aeropuerto",
+            longStayDiscountTag: "Descuento Larga Estancia ({discount}%)",
         },
         bookingWidget: {
             guaranteedRate: "Tarifa Garantizada de Socio",
@@ -637,6 +649,9 @@ export const TRANSLATIONS: Record<
             orEquivalent: "of gelijkwaardig model zelfde categorie",
             airportCounterBenchmark: "Gemiddelde luchthavenbalie prijs",
             freeUpgradeGuaranteed: "Gegarandeerd model of gratis upgrade",
+            freeDeliveryIncluded: "Gratis levering luchthaven & riad (Waarde 100 DH inbegrepen)",
+            savingsTotalTrip: "Bespaar ~{amount} vs luchthavenbalie",
+            longStayDiscountTag: "Lang Verblijf Korting ({discount}%)",
         },
         bookingWidget: {
             guaranteedRate: "Gegarandeerde Partnerprijs",

@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { VehicleModel, MOROCCAN_HUBS, UPSELL_OPTIONS, getHubMeetingPoint, getLocalizedAirportName } from "@/lib/morocco-data";
 import { DEFAULT_HUB_DISTRIBUTION, DEFAULT_VEHICLE_STOCK } from "@/lib/affiliate";
 import { Locale, getTranslation } from "@/lib/i18n";
+import { seasonFor, longStayDiscount } from "@/lib/booking-engine";
 import UpsellSelector from "@/components/UpsellSelector";
 import { BookingCheckoutModal } from "@/components/BookingCheckoutModal";
 import { AffiliateExitDrawer } from "@/components/AffiliateExitDrawer";
@@ -21,6 +22,7 @@ import {
     Compass,
     Info,
     ExternalLink,
+    Sparkles,
 } from "lucide-react";
 
 interface VehicleBookingCardProps {
@@ -68,9 +70,24 @@ export default function VehicleBookingCard({
     const diffTime = Math.abs(d2.getTime() - d1.getTime());
     const days = Math.max(1, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
 
-    // Split Accounting Logic: Platform (100% Stripe) vs Vendor (20% com / 80% solde sur place)
-    const baseRentalEur = vehicle.dailyPriceEur * days;
-    const baseRentalMad = vehicle.dailyPriceMad * days;
+    // Dynamic Seasonality & Duration Discount Logic
+    const season = seasonFor(pickupDate);
+    const durationDiscount = longStayDiscount(days);
+
+    // Daily price adjusted by season and duration discount
+    const effectiveDailyPriceEur = Math.round(vehicle.dailyPriceEur * season.multiplier * (1 - durationDiscount));
+    const effectiveDailyPriceMad = Math.round(vehicle.dailyPriceMad * season.multiplier * (1 - durationDiscount));
+
+    const baseRentalEur = effectiveDailyPriceEur * days;
+    const baseRentalMad = effectiveDailyPriceMad * days;
+
+    const baseWithoutDiscountEur = Math.round(vehicle.dailyPriceEur * season.multiplier) * days;
+    const baseWithoutDiscountMad = Math.round(vehicle.dailyPriceMad * season.multiplier) * days;
+    const durationSavingsEur = baseWithoutDiscountEur - baseRentalEur;
+    const durationSavingsMad = baseWithoutDiscountMad - baseRentalMad;
+
+    const totalSavingsVsAirportEur = (vehicle.marketPriceEur * days) - baseRentalEur;
+    const totalSavingsVsAirportMad = (vehicle.marketPriceMad * days) - baseRentalMad;
 
     let platformUpsellsEur = 0;
     let platformUpsellsMad = 0;
@@ -144,51 +161,83 @@ export default function VehicleBookingCard({
                 </div>
             )}
 
-            {/* Top Pricing Header (Dual Currency & Airport Counter Strike-through) */}
-            <div className="flex items-baseline justify-between pb-4 border-b border-slate-100">
-                <div>
-                    <div className="flex items-center gap-1.5 text-xs text-slate-400 mb-0.5">
-                        <span className="line-through font-mono">
-                            {currency === "EUR" ? `${vehicle.marketPriceEur} €` : `${vehicle.marketPriceMad} MAD`}
+            {/* Top Pricing Header (Enhanced Strikethrough & Savings) */}
+            <div className="pb-4 border-b border-slate-100">
+                <div className="bg-[#FAF7F2] border border-[#E7DFD5] rounded-2xl p-3 mb-3">
+                    <div className="flex items-center justify-between gap-1 mb-1.5">
+                        <span className="text-[11px] font-semibold text-slate-500">
+                            {t.catalog.airportCounterBenchmark} :
                         </span>
-                        <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-1.5 py-0.2 rounded">
-                            -{Math.round(((vehicle.marketPriceEur - vehicle.dailyPriceEur) / vehicle.marketPriceEur) * 100)}%
-                        </span>
-                        <span className="text-[10px] text-slate-400">
-                            ({t.catalog.airportCounterBenchmark})
-                        </span>
+                        <div className="flex items-center gap-2">
+                            <span className="text-sm font-bold text-slate-400 line-through decoration-[#C9572C] decoration-2 font-mono">
+                                {currency === "EUR" ? `${vehicle.marketPriceEur} €` : `${vehicle.marketPriceMad} MAD`}
+                            </span>
+                            <span className="bg-[#C9572C] text-white text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider shadow-xs">
+                                -{Math.round(((vehicle.marketPriceEur - effectiveDailyPriceEur) / vehicle.marketPriceEur) * 100)}%
+                            </span>
+                        </div>
                     </div>
-                    <div className="flex items-baseline gap-2 mt-0.5">
-                        <span className="text-3xl font-black text-slate-900">
-                            {currency === "EUR" ? `${vehicle.dailyPriceEur} €` : `${vehicle.dailyPriceMad} MAD`}
-                        </span>
-                        <span className="text-xs text-slate-500 font-medium">/ {t.bookingWidget.perDay}</span>
-                        <span className="text-xs font-mono text-slate-400 ml-1">
-                            ({currency === "EUR" ? `${vehicle.dailyPriceMad} MAD` : `${vehicle.dailyPriceEur} €`})
-                        </span>
+                    <div className="flex items-center justify-between text-xs font-bold text-emerald-700 pt-1.5 border-t border-[#EAE3D6]">
+                        <span>✓ Économisez ~{currency === "EUR" ? `${totalSavingsVsAirportEur} €` : `${totalSavingsVsAirportMad} MAD`} vs aéroport</span>
+                        <span className="text-[10px] text-slate-500 font-medium">({days} {t.search.daysCount})</span>
                     </div>
                 </div>
 
-                {/* Currency switch */}
-                <div className="inline-flex rounded-full bg-[#FAF7F2] p-1 border border-[#E7DFD5] text-xs font-bold">
-                    <button
-                        type="button"
-                        onClick={() => setCurrency("EUR")}
-                        className={`px-2.5 py-1 rounded-full transition cursor-pointer ${
-                            currency === "EUR" ? "bg-slate-900 text-white" : "text-slate-600"
-                        }`}
-                    >
-                        EUR (€)
-                    </button>
-                    <button
-                        type="button"
-                        onClick={() => setCurrency("MAD")}
-                        className={`px-2.5 py-1 rounded-full transition cursor-pointer ${
-                            currency === "MAD" ? "bg-[#C9572C] text-white" : "text-slate-600"
-                        }`}
-                    >
-                        MAD (DH)
-                    </button>
+                {/* Season & Duration Badges */}
+                {(season.multiplier !== 1 || durationDiscount > 0) && (
+                    <div className="flex flex-wrap items-center gap-1.5 mb-3">
+                        {season.multiplier !== 1 && (
+                            <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full border ${
+                                season.multiplier > 1
+                                    ? "bg-amber-50 text-amber-800 border-amber-200"
+                                    : "bg-blue-50 text-blue-800 border-blue-200"
+                            }`}>
+                                📅 {season.label}
+                            </span>
+                        )}
+                        {durationDiscount > 0 && (
+                            <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-center gap-1">
+                                <Sparkles size={12} className="text-emerald-600" />
+                                <span>Remise Long Séjour : -{Math.round(durationDiscount * 100)}% ({days} jours)</span>
+                            </span>
+                        )}
+                    </div>
+                )}
+
+                <div className="flex items-baseline justify-between">
+                    <div>
+                        <div className="flex items-baseline gap-2 mt-0.5">
+                            <span className="text-3xl font-black text-slate-900 tracking-tight">
+                                {currency === "EUR" ? `${effectiveDailyPriceEur} €` : `${effectiveDailyPriceMad} MAD`}
+                            </span>
+                            <span className="text-xs text-slate-500 font-medium">/ {t.bookingWidget.perDay}</span>
+                        </div>
+                        <div className="text-[11px] font-semibold text-emerald-700 mt-1 flex items-center gap-1">
+                            <span>✓ {t.catalog.freeDeliveryIncluded}</span>
+                        </div>
+                    </div>
+
+                    {/* Currency switch */}
+                    <div className="inline-flex rounded-full bg-[#FAF7F2] p-1 border border-[#E7DFD5] text-xs font-bold">
+                        <button
+                            type="button"
+                            onClick={() => setCurrency("EUR")}
+                            className={`px-2.5 py-1 rounded-full transition cursor-pointer ${
+                                currency === "EUR" ? "bg-slate-900 text-white" : "text-slate-600"
+                            }`}
+                        >
+                            EUR (€)
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setCurrency("MAD")}
+                            className={`px-2.5 py-1 rounded-full transition cursor-pointer ${
+                                currency === "MAD" ? "bg-[#C9572C] text-white" : "text-slate-600"
+                            }`}
+                        >
+                            MAD (DH)
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -291,11 +340,23 @@ export default function VehicleBookingCard({
             {/* Split Financial Breakdown (Transparency & Max Cash Flow) */}
             <div className="rounded-2xl bg-[#FAF7F2] border border-[#ECE5D9] p-4 space-y-2.5 text-xs">
                 <div className="flex justify-between text-slate-600">
-                    <span>{vehicle.name} ({days} {t.search.daysCount} x {currency === "EUR" ? `${vehicle.dailyPriceEur} €` : `${vehicle.dailyPriceMad} MAD`})</span>
+                    <span>{vehicle.name} ({days} {t.search.daysCount} x {currency === "EUR" ? `${effectiveDailyPriceEur} €` : `${effectiveDailyPriceMad} MAD`})</span>
                     <span className="font-semibold text-slate-900 font-mono">
                         {currency === "EUR" ? `${baseRentalEur} €` : `${baseRentalMad} MAD`}
                     </span>
                 </div>
+
+                {durationDiscount > 0 && (
+                    <div className="flex justify-between text-emerald-700 font-medium">
+                        <span className="flex items-center gap-1">
+                            <Sparkles size={12} />
+                            <span>Remise Long Séjour ({days} j. : -{Math.round(durationDiscount * 100)}%)</span>
+                        </span>
+                        <span className="font-semibold font-mono">
+                            {currency === "EUR" ? `-${durationSavingsEur} €` : `-${durationSavingsMad} MAD`}
+                        </span>
+                    </div>
+                )}
 
                 {(vendorUpsellsEur > 0 || platformUpsellsEur > 0) && (
                     <div className="flex justify-between text-slate-600">
