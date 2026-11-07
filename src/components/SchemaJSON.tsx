@@ -39,7 +39,7 @@ export default function SchemaJSON({
             "@id": canonicalUrl,
             name: hub ? `ZwinCar — Location Voiture ${hub.name} Sans Caution CB` : "ZwinCar — Location de Voiture au Maroc Sans Caution",
             url: canonicalUrl,
-            telephone: "+212522000000",
+            telephone: "+212720794046",
             email: "hello@zwincar.com",
             image: hub?.heroImage || `${baseUrl}/og-cover.jpg`,
             priceRange: "20€ - 110€",
@@ -127,7 +127,7 @@ export default function SchemaJSON({
             ],
             contactPoint: {
                 "@type": "ContactPoint",
-                telephone: "+212522000000",
+                telephone: "+212720794046",
                 contactType: "customer service",
                 areaServed: "MA",
                 availableLanguage: ["French", "English", "Spanish", "Arabic"],

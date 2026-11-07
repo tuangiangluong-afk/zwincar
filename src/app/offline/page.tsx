@@ -65,7 +65,7 @@ export default function OfflinePage() {
                     Réessayer la connexion
                 </Link>
                 <a
-                    href="https://wa.me/212600000000"
+                    href="https://wa.me/212720794046"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="rounded-xl border border-[#E7DFD5] bg-white hover:bg-slate-50 px-5 py-2.5 text-sm font-bold text-slate-800 transition active:scale-95"

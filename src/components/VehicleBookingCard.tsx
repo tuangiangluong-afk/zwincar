@@ -523,7 +523,7 @@ export default function VehicleBookingCard({
                 )}
 
                 <a
-                    href={`https://wa.me/212600000000?text=${encodeURIComponent(
+                    href={`https://wa.me/212720794046?text=${encodeURIComponent(
                         activeLocale === "en"
                             ? `Hello ZwinCar, I would like to book the ${vehicle.name} from ${pickupDate} to ${returnDate} in ${currentHub.name} with options: ${selectedUpsells.join(', ')}.`
                             : activeLocale === "es"

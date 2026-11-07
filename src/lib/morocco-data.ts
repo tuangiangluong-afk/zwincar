@@ -5,6 +5,11 @@
 
 import type { Locale } from "./i18n";
 
+export const ZWINCAR_PHONE = "+212 7 20 79 40 46";
+export const ZWINCAR_PHONE_TEL = "+212720794046";
+export const ZWINCAR_WHATSAPP_NUMBER = "212720794046";
+export const ZWINCAR_WHATSAPP_LINK = "https://wa.me/212720794046";
+
 export interface CityHub {
     slug: string;
     name: string;

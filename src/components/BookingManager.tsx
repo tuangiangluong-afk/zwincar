@@ -5,6 +5,7 @@ import { Calendar, AlertCircle, CheckCircle2, Loader2, XCircle } from "lucide-re
 
 interface BookingManagerProps {
     refId: string;
+    locale?: string;
 }
 
 interface ServerBooking {
@@ -29,15 +30,47 @@ const HALF_HOUR_SLOTS = [
     "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30",
 ];
 
-const STATUS_LABEL: Record<string, string> = {
-    awaiting_payment: "En attente de paiement",
-    confirmed: "Confirmée",
-    checked_in: "Véhicule remis",
-    checked_out: "Restituée",
-    completed: "Terminée",
-    cancelled: "Annulée",
-    no_show: "Non présentée",
-    expired: "Expirée",
+const STATUS_LABELS: Record<string, Record<string, string>> = {
+    fr: {
+        awaiting_payment: "En attente de paiement",
+        confirmed: "Confirmée",
+        checked_in: "Véhicule remis",
+        checked_out: "Restituée",
+        completed: "Terminée",
+        cancelled: "Annulée",
+        no_show: "Non présentée",
+        expired: "Expirée",
+    },
+    en: {
+        awaiting_payment: "Awaiting payment",
+        confirmed: "Confirmed",
+        checked_in: "Vehicle handed over",
+        checked_out: "Vehicle returned",
+        completed: "Completed",
+        cancelled: "Cancelled",
+        no_show: "No show",
+        expired: "Expired",
+    },
+    es: {
+        awaiting_payment: "Pendiente de pago",
+        confirmed: "Confirmada",
+        checked_in: "Vehículo entregado",
+        checked_out: "Vehículo devuelto",
+        completed: "Completada",
+        cancelled: "Cancelada",
+        no_show: "No presentado",
+        expired: "Expirada",
+    },
+    nl: {
+        awaiting_payment: "Wachten op betaling",
+        confirmed: "Bevestigd",
+        checked_in: "Voertuig overhandigd",
+        checked_out: "Voertuig geretourneerd",
+        completed: "Voltooid",
+        cancelled: "Geannuleerd",
+        no_show: "Niet opgekomen",
+        expired: "Verlopen",
+    },
 };
 
 function readToken(refId: string): string | null {
@@ -54,7 +87,8 @@ function readToken(refId: string): string | null {
     }
 }
 
-export default function BookingManager({ refId }: BookingManagerProps) {
+export default function BookingManager({ refId, locale = "fr" }: BookingManagerProps) {
+    const activeLabels = STATUS_LABELS[locale] || STATUS_LABELS.fr;
     const [token, setToken] = useState<string | null>(null);
     const [booking, setBooking] = useState<ServerBooking | null>(null);
     const [loading, setLoading] = useState(true);
@@ -177,20 +211,22 @@ export default function BookingManager({ refId }: BookingManagerProps) {
         <div className="rounded-3xl border border-[#ECE5D9] bg-white p-6 shadow-sm sm:p-8">
             <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
-                    <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Statut du dossier</div>
+                    <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                        {locale === "en" ? "Booking status" : locale === "es" ? "Estado de la reserva" : locale === "nl" ? "Boekingsstatus" : "Statut du dossier"}
+                    </div>
                     <div className="mt-1 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-bold text-slate-800">
                         {booking.status === "cancelled" ? (
                             <XCircle size={14} className="text-red-500" />
                         ) : (
                             <CheckCircle2 size={14} className="text-emerald-600" />
                         )}
-                        {STATUS_LABEL[booking.status] ?? booking.status}
+                        {activeLabels[booking.status] ?? booking.status}
                     </div>
                 </div>
 
                 <div className="text-right text-xs text-slate-500">
-                    <div>Acompte réglé : <strong className="text-slate-900">{booking.paidEur} €</strong></div>
-                    <div>Solde au comptoir : <strong className="text-slate-900">{booking.quote.balanceEur} €</strong></div>
+                    <div>{locale === "en" ? "Deposit paid : " : locale === "es" ? "Anticipo pagado : " : locale === "nl" ? "Aanbetaling voldaan : " : "Acompte réglé : "}<strong className="text-slate-900">{booking.paidEur} €</strong></div>
+                    <div>{locale === "en" ? "Balance at counter : " : locale === "es" ? "Saldo en mostrador : " : locale === "nl" ? "Restbedrag aan balie : " : "Solde au comptoir : "}<strong className="text-slate-900">{booking.quote.balanceEur} €</strong></div>
                 </div>
             </div>
 
@@ -212,19 +248,19 @@ export default function BookingManager({ refId }: BookingManagerProps) {
                     <button
                         type="button"
                         onClick={() => setOpen((value) => !value)}
-                        className="inline-flex h-10 items-center gap-2 rounded-xl bg-slate-900 px-4 text-xs font-bold text-white"
+                        className="inline-flex h-10 items-center gap-2 rounded-xl bg-slate-900 px-4 text-xs font-bold text-white cursor-pointer"
                     >
                         <Calendar size={14} />
-                        Modifier mes dates
+                        {locale === "en" ? "Modify dates" : locale === "es" ? "Modificar fechas" : locale === "nl" ? "Data wijzigen" : "Modifier mes dates"}
                     </button>
                     <button
                         type="button"
                         onClick={cancel}
                         disabled={busy === "cancel"}
-                        className="inline-flex h-10 items-center gap-2 rounded-xl border border-red-200 bg-red-50 px-4 text-xs font-bold text-red-700 disabled:opacity-50"
+                        className="inline-flex h-10 items-center gap-2 rounded-xl border border-red-200 bg-red-50 px-4 text-xs font-bold text-red-700 disabled:opacity-50 cursor-pointer"
                     >
                         {busy === "cancel" ? <Loader2 size={14} className="animate-spin" /> : <XCircle size={14} />}
-                        Annuler la réservation
+                        {locale === "en" ? "Cancel booking" : locale === "es" ? "Cancelar reserva" : locale === "nl" ? "Boeking annuleren" : "Annuler la réservation"}
                     </button>
                 </div>
             )}

@@ -446,7 +446,7 @@ export default function BookingVoucherPage() {
 
                     {/* Booking Manager: status, cancel, modify dates */}
                     <div className="print:hidden">
-                        <BookingManager refId={ref} />
+                        <BookingManager refId={ref} locale={locale} />
                     </div>
 
                     {/* GAMIFIED PROGRESS BAR & FRICTIONLESS KYC ONBOARDING */}
@@ -520,7 +520,7 @@ export default function BookingVoucherPage() {
 
                                         {/* Option B: Direct WhatsApp Send */}
                                         <a
-                                            href={`https://wa.me/212600000000?text=${encodeURIComponent(kycWhatsappMessage)}`}
+                                            href={`https://wa.me/212720794046?text=${encodeURIComponent(kycWhatsappMessage)}`}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             onClick={() => setKycUploaded(true)}
@@ -664,7 +664,7 @@ export default function BookingVoucherPage() {
                                             {t.voucher.customsAlertPrompt}
                                         </span>
                                         <a
-                                            href={`https://wa.me/212600000000?text=${encodeURIComponent(customsWhatsappMessage)}`}
+                                            href={`https://wa.me/212720794046?text=${encodeURIComponent(customsWhatsappMessage)}`}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-bold shadow-xs transition cursor-pointer active:scale-95"
@@ -913,7 +913,7 @@ export default function BookingVoucherPage() {
                                     </p>
                                 </div>
                                 <a
-                                    href={`https://wa.me/212600000000?text=${encodeURIComponent(`Salam, je souhaite ajouter l'eSIM Maroc 20 Go (19 €) à ma réservation ${ref}`)}`}
+                                    href={`https://wa.me/212720794046?text=${encodeURIComponent(`Salam, je souhaite ajouter l'eSIM Maroc 20 Go (19 €) à ma réservation ${ref}`)}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="shrink-0 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-[#C9572C] text-white text-xs font-bold transition shadow-xs cursor-pointer active:scale-95"
@@ -1037,7 +1037,7 @@ export default function BookingVoucherPage() {
 
                             <div className="flex items-center gap-3">
                                 <a
-                                    href={`https://wa.me/212600000000?text=${encodeURIComponent(
+                                    href={`https://wa.me/212720794046?text=${encodeURIComponent(
                                         locale === "en"
                                             ? `Hello Youssef, I am the customer for booking #${ref} (${rental.vehicleName}). Confirming arrival on flight ${client.flightNumber}.`
                                             : locale === "es"
@@ -1055,7 +1055,7 @@ export default function BookingVoucherPage() {
                                 </a>
 
                                 <a
-                                    href="tel:+212600000000"
+                                    href="tel:+212720794046"
                                     className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-900 text-xs font-bold transition flex items-center gap-2"
                                 >
                                     <Phone size={15} />

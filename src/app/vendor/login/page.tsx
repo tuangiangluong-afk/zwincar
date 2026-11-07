@@ -160,7 +160,7 @@ export default function VendorLoginPage() {
                                     required
                                     value={identifier}
                                     onChange={(e) => setIdentifier(e.target.value)}
-                                    placeholder="contact@agence.ma ou +212600000000"
+                                    placeholder="contact@agence.ma ou +212720794046"
                                     className="w-full h-11 pl-10 pr-4 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none focus:border-[#C9572C]"
                                 />
                                 <Mail size={16} className="absolute left-3.5 top-3.5 text-slate-400 pointer-events-none" />
@@ -173,7 +173,7 @@ export default function VendorLoginPage() {
                                     Mot de passe
                                 </label>
                                 <a
-                                    href="https://wa.me/212600000000?text=Bonjour%20ZwinCar,%20j%27ai%20oubli%C3%A9%20mon%20mot%20de%20passe%20agence"
+                                    href="https://wa.me/212720794046?text=Bonjour%20ZwinCar,%20j%27ai%20oubli%C3%A9%20mon%20mot%20de%20passe%20agence"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="text-[11px] font-semibold text-[#C9572C] hover:underline"
@@ -280,12 +280,12 @@ export default function VendorLoginPage() {
                     <MessageCircle size={14} className="text-emerald-600" />
                     <span>Assistance technique loueurs WhatsApp : </span>
                     <a
-                        href="https://wa.me/212600000000"
+                        href="https://wa.me/212720794046"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="font-bold text-slate-800 hover:underline"
                     >
-                        +212 6 00 00 00 00
+                        +212 7 20 79 40 46
                     </a>
                 </div>
             </footer>

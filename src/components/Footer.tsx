@@ -125,7 +125,7 @@ export default function Footer({ config, locale: propLocale }: FooterProps = {})
                     </div>
 
                     <a
-                        href={`https://wa.me/212600000000?text=${waText}`}
+                        href={`https://wa.me/212720794046?text=${waText}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="px-6 py-3 rounded-2xl bg-[#C9572C] hover:bg-[#B24922] text-white text-xs font-bold tracking-wide transition-all shrink-0 flex items-center gap-2"

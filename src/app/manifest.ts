@@ -27,7 +27,7 @@ export default function manifest(): MetadataRoute.Manifest {
         shortcuts: [
             { name: "Voir les véhicules", short_name: "Véhicules", url: "/maroc/marrakech" },
             { name: "Mon voucher", short_name: "Voucher", url: "/booking" },
-            { name: "WhatsApp 24/7", short_name: "WhatsApp", url: "https://wa.me/212600000000" },
+            { name: "WhatsApp 24/7", short_name: "WhatsApp", url: "https://wa.me/212720794046" },
         ],
     };
 }

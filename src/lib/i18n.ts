@@ -427,7 +427,7 @@ export const TRANSLATIONS: Record<
             medicalDetail: "Secours médical & pompiers",
             conciergeTitle: "Astreinte Conciergerie ZwinCar 24/7",
             conciergeDesc: "Un voyant moteur, une clé égarée, un pneu crevé ou une question sur votre contrat ? Notre équipe locale intervient immédiatement.",
-            conciergeBtn: "Contacter l'astreinte WhatsApp (+212 6 00 00 00 00)",
+            conciergeBtn: "Contacter l'astreinte WhatsApp (+212 7 20 79 40 46)",
             closeBtn: "Fermer",
         },
         footer: {
@@ -675,7 +675,7 @@ export const TRANSLATIONS: Record<
             medicalDetail: "Emergency paramedic & fire rescue",
             conciergeTitle: "24/7 ZwinCar Concierge On-Call",
             conciergeDesc: "A dashboard warning light, a flat tire, misplaced keys or an insurance question? Our local team assists you immediately.",
-            conciergeBtn: "Open WhatsApp Support (+212 6 00 00 00 00)",
+            conciergeBtn: "Open WhatsApp Support (+212 7 20 79 40 46)",
             closeBtn: "Close",
         },
         footer: {
@@ -923,7 +923,7 @@ export const TRANSLATIONS: Record<
             medicalDetail: "Emergencias sanitarias y bomberos",
             conciergeTitle: "Guardia de Conserjería ZwinCar 24/7",
             conciergeDesc: "¿Un testigo en el panel, una rueda pinchada, llaves extraviadas o una duda del seguro? Nuestro equipo local responde de inmediato.",
-            conciergeBtn: "Contactar por WhatsApp (+212 6 00 00 00 00)",
+            conciergeBtn: "Contactar por WhatsApp (+212 7 20 79 40 46)",
             closeBtn: "Cerrar",
         },
         footer: {
@@ -1171,7 +1171,7 @@ export const TRANSLATIONS: Record<
             medicalDetail: "Medische noodgevallen",
             conciergeTitle: "24/7 ZwinCar Conciërge Bereikbaar",
             conciergeDesc: "Een waarschuwingslampje, lekke band, verloren sleutels of een vraag over de verzekering? Ons lokale team helpt u direct.",
-            conciergeBtn: "Open WhatsApp Klantenservice (+212 6 00 00 00 00)",
+            conciergeBtn: "Open WhatsApp Klantenservice (+212 7 20 79 40 46)",
             closeBtn: "Sluiten",
         },
         footer: {

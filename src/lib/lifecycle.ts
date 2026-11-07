@@ -340,7 +340,7 @@ export function emailDataFromRecord(record: BookingRecord, siteUrl = "https://zw
         depositEur: record.quote.depositEur,
         zeroDeposit: record.quote.hasZeroDeposit,
         voucherUrl: `${siteUrl}/booking/${record.ref}?t=${record.accessToken}`,
-        whatsappUrl: `https://wa.me/212600000000?text=${encodeURIComponent(`ZwinCar ${record.ref}`)}`,
+        whatsappUrl: `https://wa.me/212720794046?text=${encodeURIComponent(`ZwinCar ${record.ref}`)}`,
         reviewUrl: `${siteUrl}/booking/${record.ref}/avis?t=${record.accessToken}`,
         rebookUrl: `${siteUrl}/maroc/${record.rental.pickupHub}?promo=LOYALTY10`,
     };

@@ -246,7 +246,7 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
 
                         {/* WhatsApp Direct Concierge */}
                         <a
-                            href={`https://wa.me/212600000000?text=${waText}`}
+                            href={`https://wa.me/212720794046?text=${waText}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             onClick={() => trackWhatsAppClick("header_desktop")}
@@ -429,7 +429,7 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
 
                         <div className="pt-2 flex flex-col gap-2">
                             <a
-                                href={`https://wa.me/212600000000?text=${waText}`}
+                                href={`https://wa.me/212720794046?text=${waText}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 onClick={() => {

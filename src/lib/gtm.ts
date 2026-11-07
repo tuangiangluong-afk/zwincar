@@ -143,7 +143,7 @@ export function trackWhatsAppClick(source: string, hub?: string): void {
     pushDataLayer("click_whatsapp", {
         source,
         hub: hub || "maroc",
-        click_url: "https://wa.me/212600000000",
+        click_url: "https://wa.me/212720794046",
     });
 }
 

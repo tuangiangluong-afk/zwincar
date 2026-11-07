@@ -392,7 +392,7 @@ export default function ContactPage({ locale: propLocale }: { locale?: Locale } 
                             <h3 className="font-bold text-slate-900 text-sm mb-1">{t.whatsappTitle}</h3>
                             <p className="text-xs text-slate-500 mb-3">{t.whatsappDesc}</p>
                             <a
-                                href={`https://wa.me/212600000000?text=${waText}`}
+                                href={`https://wa.me/212720794046?text=${waText}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 hover:text-emerald-800"

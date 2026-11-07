@@ -38,7 +38,7 @@ function createMockBooking(ref: string, pickupHub: string, returnHub: string, pi
         createdAt: now,
         updatedAt: now,
         accessToken: `tok_test_${ref.toLowerCase()}_abcdef0123456789`,
-        client: { fullName: `Client ${ref}`, email: `${ref.toLowerCase()}@test.ma`, phone: "+212600000000" },
+        client: { fullName: `Client ${ref}`, email: `${ref.toLowerCase()}@test.ma`, phone: "+212720794046" },
         rental: {
             vehicleId: duster.id,
             vehicleName: duster.name,

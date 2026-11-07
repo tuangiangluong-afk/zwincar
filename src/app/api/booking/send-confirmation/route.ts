@@ -51,7 +51,7 @@ const EMAIL_I18N: Record<
         arrivalNoteBody:
             "Notre agent d'astreinte vous attendra directement à la sortie du terminal avec une pancarte à votre nom. Aucun passage en guichet, pas de file d'attente.",
         btnVoucher: "Voir mon Bon de Réservation (Voucher)",
-        footerHelp: "Assistance VIP WhatsApp & SOS 24/7 : +212 6 00 00 00 00",
+        footerHelp: "Assistance VIP WhatsApp & SOS 24/7 : +212 7 20 79 40 46",
         footerRights: `© ${new Date().getFullYear()} ZwinCar.com • Location de voiture sereine au Maroc`,
     },
     en: {
@@ -76,7 +76,7 @@ const EMAIL_I18N: Record<
         arrivalNoteBody:
             "Our on-duty agent will welcome you right outside the arrivals gate with a sign displaying your name. No rental counters, zero waiting lines.",
         btnVoucher: "View My Official Voucher",
-        footerHelp: "24/7 Dedicated WhatsApp Support: +212 6 00 00 00 00",
+        footerHelp: "24/7 Dedicated WhatsApp Support: +212 7 20 79 40 46",
         footerRights: `© ${new Date().getFullYear()} ZwinCar.com • Worry-free car rental in Morocco`,
     },
     es: {
@@ -101,7 +101,7 @@ const EMAIL_I18N: Record<
         arrivalNoteBody:
             "Nuestro agente le esperará a la salida de llegadas con un cartel con su nombre. Sin mostrador, sin colas de espera.",
         btnVoucher: "Ver mi Voucher Oficial",
-        footerHelp: "Asistencia VIP WhatsApp & SOS 24/7: +212 6 00 00 00 00",
+        footerHelp: "Asistencia VIP WhatsApp & SOS 24/7: +212 7 20 79 40 46",
         footerRights: `© ${new Date().getFullYear()} ZwinCar.com • Alquiler de coches sin sorpresas en Marruecos`,
     },
     nl: {
@@ -126,7 +126,7 @@ const EMAIL_I18N: Record<
         arrivalNoteBody:
             "Onze medewerker wacht op u direct bij de uitgang van de terminal met een bordje met uw naam. Geen balies, geen wachttijden.",
         btnVoucher: "Bekijk mijn officiële voucher",
-        footerHelp: "24/7 WhatsApp Klantenservice: +212 6 00 00 00 00",
+        footerHelp: "24/7 WhatsApp Klantenservice: +212 7 20 79 40 46",
         footerRights: `© ${new Date().getFullYear()} ZwinCar.com • Zorgeloze autoverhuur in Marokko`,
     },
 };

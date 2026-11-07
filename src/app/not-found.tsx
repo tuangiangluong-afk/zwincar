@@ -44,7 +44,7 @@ export default function NotFound() {
                         Voir les voitures disponibles
                     </Link>
                     <a
-                        href="https://wa.me/212600000000?text=Bonjour%20ZwinCar,%20je%20cherche%20une%20information%20sur%20le%20site"
+                        href="https://wa.me/212720794046?text=Bonjour%20ZwinCar,%20je%20cherche%20une%20information%20sur%20le%20site"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-white hover:bg-slate-50 border border-[#E7DFD5] text-slate-800 font-bold text-sm shadow-xs transition-all"
