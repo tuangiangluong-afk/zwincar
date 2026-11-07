@@ -23,7 +23,6 @@ import {
     Info,
     ExternalLink,
     Sparkles,
-    Star,
 } from "lucide-react";
 
 interface VehicleBookingCardProps {
@@ -163,11 +162,9 @@ return (
             {/* 1. Header: Social Proof & Clean Pricing */}
             <div className="pb-3 border-b border-slate-100">
                 <div className="flex items-center justify-between gap-2 mb-2">
-                    <div className="flex items-center gap-1.5 text-xs text-amber-700 font-bold">
-                        <Star size={13} className="fill-amber-400 text-amber-400 shrink-0" />
-                        <span>4.9/5</span>
-                        <span className="text-slate-300 font-normal">•</span>
-                        <span className="text-slate-500 font-medium truncate">140+ avis vérifiés ({currentHub.name})</span>
+                    <div className="flex items-center gap-1.5 text-xs text-emerald-800 font-bold">
+                        <ShieldCheck size={13} className="text-[#C9572C] shrink-0" />
+                        <span className="truncate">{t.bookingWidget.verifiedReviews}</span>
                     </div>
 
                     {/* Currency switch */}
@@ -296,16 +293,16 @@ return (
                     </div>
                 </div>
                 <div className="pt-2 border-t border-[#EAE3D6] flex flex-wrap items-center justify-between text-[10px] text-slate-600 gap-1 font-medium">
-                    <span>⛽ Same-to-Same (photo au départ)</span>
-                    <span>🧭 Pistes d'auberges autorisées</span>
+                    <span>{t.bookingWidget.fuelPolicyCompact}</span>
+                    <span>{t.bookingWidget.pistePolicyCompact}</span>
                 </div>
             </div>
 
             {/* 4. Protection & Deposit Formule Toggle */}
             <div className="space-y-2">
                 <div className="flex items-center justify-between text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-500">
-                    <span>{activeLocale === "en" ? "Protection & Deposit" : "Caution & Assurance"}</span>
-                    <span className="text-emerald-700 font-semibold normal-case">Cartes de débit acceptées</span>
+                    <span>{t.bookingWidget.protectionTitle}</span>
+                    <span className="text-emerald-700 font-semibold normal-case">{t.bookingWidget.debitAccepted}</span>
                 </div>
                 <div className="grid grid-cols-2 gap-2 sm:gap-3">
                     {/* Tier 1: Standard */}
@@ -323,14 +320,14 @@ return (
                         }`}
                     >
                         <div className="font-bold text-xs text-slate-900 flex items-center justify-between">
-                            <span>Standard</span>
+                            <span>{t.bookingWidget.standardLabel}</span>
                             {!hasFranchiseZero && <span className="w-2 h-2 rounded-full bg-slate-900"></span>}
                         </div>
                         <div className="text-[11px] font-black text-slate-800 font-mono mt-0.5">
-                            Caution 300 €
+                            {t.bookingWidget.standardDeposit}
                         </div>
                         <div className="text-[10px] text-slate-500 mt-0.5 leading-tight">
-                            Restituée au retour
+                            {t.bookingWidget.standardDepositNote}
                         </div>
                     </button>
 
@@ -349,14 +346,14 @@ return (
                         }`}
                     >
                         <div className="font-bold text-xs text-[#C9572C] flex items-center justify-between">
-                            <span>Pack Sérénité</span>
+                            <span>{t.bookingWidget.serenityLabel}</span>
                             {hasFranchiseZero && <span className="w-2 h-2 rounded-full bg-[#C9572C]"></span>}
                         </div>
                         <div className="text-[11px] font-black text-[#C9572C] font-mono mt-0.5">
-                            Caution 0 €
+                            {t.bookingWidget.serenityDeposit}
                         </div>
                         <div className="text-[10px] text-slate-600 mt-0.5 leading-tight font-medium">
-                            +{currency === "EUR" ? "8 €" : "90 MAD"}/j • Zéro blocage
+                            +{currency === "EUR" ? "8 €" : "90 MAD"}/j • {t.bookingWidget.serenityZeroBlock}
                         </div>
                     </button>
                 </div>
@@ -371,7 +368,7 @@ return (
                 >
                     <span className="flex items-center gap-1.5 truncate pr-2">
                         <Sparkles size={13} className="text-[#C9572C] shrink-0" />
-                        <span className="truncate">{activeLocale === "en" ? "Travel Options (eSIM, Child Seat, Jawaz...)" : "Options voyage (eSIM, Télépéage, Siège bébé...)"}</span>
+                        <span className="truncate">{t.bookingWidget.optionsTitle}</span>
                         {nonFranchiseUpsells.length > 0 && (
                             <span className="px-1.5 py-0.5 rounded-full bg-[#C9572C] text-white text-[10px] font-bold shrink-0">
                                 {nonFranchiseUpsells.length}
@@ -407,7 +404,7 @@ return (
                 {/* Explicit Franchise Zéro Line */}
                 {hasFranchiseZero && (
                     <div className="flex justify-between text-slate-700 font-medium">
-                        <span>Pack Sérénité (Caution 0 € • 8 €/j)</span>
+                        <span>{t.bookingWidget.serenityLabel} ({t.bookingWidget.serenityDeposit} • 8 €/j)</span>
                         <span className="font-semibold text-[#C9572C] font-mono">
                             +{currency === "EUR" ? `${franchiseZeroPriceEur} €` : `${franchiseZeroPriceMad} MAD`}
                         </span>
@@ -417,7 +414,7 @@ return (
                 {/* Non-Franchise Extra Upsells */}
                 {nonFranchiseUpsells.length > 0 && (
                     <div className="flex justify-between text-slate-600">
-                        <span>Options complémentaires ({nonFranchiseUpsells.length})</span>
+                        <span>{t.bookingWidget.optionsExtra} ({nonFranchiseUpsells.length})</span>
                         <span className="font-semibold text-slate-900 font-mono">
                             +{currency === "EUR" ? `${nonFranchiseUpsellsTotalEur} €` : `${nonFranchiseUpsellsTotalMad} MAD`}
                         </span>
@@ -454,8 +451,8 @@ return (
                 </div>
 
                 <div className="pt-1.5 border-t border-slate-200/60 flex flex-wrap items-center justify-between gap-1 text-[10px] text-emerald-800 font-semibold">
-                    <span>✓ {activeLocale === "en" ? "Deposit 100% refundable (48h)" : "Acompte 100% remboursable (48h)"}</span>
-                    <span>✓ {activeLocale === "en" ? "80% on delivery after inspection" : "80% payés après état des lieux"}</span>
+                    <span>✓ {t.bookingWidget.refund48h}</span>
+                    <span>✓ {t.bookingWidget.inspection80}</span>
                 </div>
             </div>
 
@@ -482,6 +479,7 @@ return (
                 )}
 
                 <a
+                    onClick={() => { try { fetch("/api/leads", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ vehicle: vehicle.id, hub: pickupHub, pickupDate, returnDate, days, price: currency === "EUR" ? grandTotalEur : grandTotalMad, currency, upsells: selectedUpsells, ts: new Date().toISOString() }) }).catch(() => {}) } catch {} }}
                     href={`https://wa.me/212720794046?text=${encodeURIComponent(
                         activeLocale === "en"
                             ? `Hello ZwinCar, I would like to book the ${vehicle.name} from ${pickupDate} to ${returnDate} in ${currentHub.name} with options: ${selectedUpsells.join(", ")}.`
@@ -496,7 +494,7 @@ return (
                 </a>
 
                 <div className="text-center text-[10px] text-slate-400 font-medium">
-                    ⚡ Réponse garantie en moins de 5 min sur WhatsApp
+                    ⚡ {t.bookingWidget.whatsappSpeed}
                 </div>
 
                 {!isAffiliate && (
@@ -506,9 +504,7 @@ return (
                         className="w-full py-1 text-[11px] font-semibold text-slate-400 hover:text-[#C9572C] transition flex items-center justify-center gap-1 cursor-pointer"
                     >
                         <span>
-                            {activeLocale === "en"
-                                ? `Or compare live ${currentHub.airportCode} terminal counters (Localrent / DiscoverCars)`
-                                : `Ou comparer les comptoirs du terminal ${currentHub.airportCode} (Localrent / DiscoverCars)`}
+                            {t.bookingWidget.brokerComparisonTitle} ({currentHub.airportCode})
                         </span>
                         <ExternalLink size={11} className="shrink-0" />
                     </button>

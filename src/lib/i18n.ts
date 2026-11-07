@@ -103,6 +103,21 @@ export const TRANSLATIONS: Record<
             ctaProceed: string;
             lockVehicleBtn: string;
             whatsappAvailabilityBtn: string;
+            fuelPolicyCompact: string;
+            pistePolicyCompact: string;
+            debitAccepted: string;
+            protectionTitle: string;
+            standardLabel: string;
+            standardDeposit: string;
+            standardDepositNote: string;
+            serenityLabel: string;
+            serenityDeposit: string;
+            serenityZeroBlock: string;
+            optionsExtra: string;
+            refund48h: string;
+            inspection80: string;
+            whatsappSpeed: string;
+            verifiedReviews: string;
             freeCancellationNotice: string;
             stripeNotice: string;
             longStayDiscountBadge: string;
@@ -352,6 +367,21 @@ export const TRANSLATIONS: Record<
             ctaProceed: "Continuer vers la Réservation",
             lockVehicleBtn: "Bloquer ce véhicule • Acompte {amount}",
             whatsappAvailabilityBtn: "Demander disponibilité sur WhatsApp",
+            fuelPolicyCompact: "⛽ Same-to-Same (photo au départ)",
+            pistePolicyCompact: "🧭 Pistes d'auberges autorisées",
+            debitAccepted: "Cartes de débit acceptées",
+            protectionTitle: "Caution & Assurance",
+            standardLabel: "Standard",
+            standardDeposit: "Caution 300 €",
+            standardDepositNote: "Restituée au retour",
+            serenityLabel: "Pack Sérénité",
+            serenityDeposit: "Caution 0 €",
+            serenityZeroBlock: "Zéro blocage",
+            optionsExtra: "Options complémentaires",
+            refund48h: "Acompte 100% remboursable (48h)",
+            inspection80: "80% payés après état des lieux",
+            whatsappSpeed: "Réponse garantie en moins de 5 min sur WhatsApp",
+            verifiedReviews: "Modèle garanti ou surclassement offert",
             freeCancellationNotice: "Annulation sans frais jusqu'à 48h",
             stripeNotice: "Paiement sécurisé par Stripe",
             longStayDiscountBadge: "Remise Long Séjour : -{pct}% ({days} {daysCount})",
@@ -600,6 +630,21 @@ export const TRANSLATIONS: Record<
             ctaProceed: "Continue to Booking",
             lockVehicleBtn: "Lock this vehicle • Deposit {amount}",
             whatsappAvailabilityBtn: "Check availability on WhatsApp",
+            fuelPolicyCompact: "⛽ Same-to-Same (photo at pickup)",
+            pistePolicyCompact: "🧭 Off-road lodge tracks allowed",
+            debitAccepted: "Debit cards accepted",
+            protectionTitle: "Protection & Deposit",
+            standardLabel: "Standard",
+            standardDeposit: "Deposit €300",
+            standardDepositNote: "Returned on drop-off",
+            serenityLabel: "Zero Excess",
+            serenityDeposit: "Deposit €0",
+            serenityZeroBlock: "Zero card hold",
+            optionsExtra: "Extra options",
+            refund48h: "Deposit 100% refundable (48h)",
+            inspection80: "80% paid after inspection",
+            whatsappSpeed: "Guaranteed reply within 5 min on WhatsApp",
+            verifiedReviews: "Guaranteed model or free upgrade",
             freeCancellationNotice: "Free cancellation up to 48h",
             stripeNotice: "Secure payment powered by Stripe",
             longStayDiscountBadge: "Long Stay Discount: -{pct}% ({days} {daysCount})",
@@ -848,6 +893,21 @@ export const TRANSLATIONS: Record<
             ctaProceed: "Continuar con la Reserva",
             lockVehicleBtn: "Reservar este coche • Anticipo {amount}",
             whatsappAvailabilityBtn: "Consultar disponibilidad por WhatsApp",
+            fuelPolicyCompact: "⛽ Same-to-Same (foto al inicio)",
+            pistePolicyCompact: "🧭 Pistas de albergues autorizadas",
+            debitAccepted: "Tarjetas de débito aceptadas",
+            protectionTitle: "Caución y Seguro",
+            standardLabel: "Estándar",
+            standardDeposit: "Caución 300 €",
+            standardDepositNote: "Devuelta al regreso",
+            serenityLabel: "Pack Serenidad",
+            serenityDeposit: "Caución 0 €",
+            serenityZeroBlock: "Sin bloqueo",
+            optionsExtra: "Opciones adicionales",
+            refund48h: "Depósito 100% reembolsable (48h)",
+            inspection80: "80% pagado tras inspección",
+            whatsappSpeed: "Respuesta garantizada en menos de 5 min por WhatsApp",
+            verifiedReviews: "Modelo garantizado o upgrade gratis",
             freeCancellationNotice: "Cancelación gratuita hasta 48h",
             stripeNotice: "Pago seguro con Stripe",
             longStayDiscountBadge: "Descuento Larga Estancia: -{pct}% ({days} {daysCount})",
@@ -1096,6 +1156,21 @@ export const TRANSLATIONS: Record<
             ctaProceed: "Verder naar Reservering",
             lockVehicleBtn: "Auto reserveren • Aanbetaling {amount}",
             whatsappAvailabilityBtn: "Beschikbaarheid vragen via WhatsApp",
+            fuelPolicyCompact: "⛽ Same-to-Same (foto bij ophalen)",
+            pistePolicyCompact: "🧭 Onverharde wegen naar lodges toegestaan",
+            debitAccepted: "Debitkaarten geaccepteerd",
+            protectionTitle: "Borg & Verzekering",
+            standardLabel: "Standaard",
+            standardDeposit: "Borg €300",
+            standardDepositNote: "Terugbetaald bij inlevering",
+            serenityLabel: "Zero Eigen Risico",
+            serenityDeposit: "Borg €0",
+            serenityZeroBlock: "Geen blokkering",
+            optionsExtra: "Extra opties",
+            refund48h: "Aanbetaling 100% restitueerbaar (48u)",
+            inspection80: "80% betaald na inspectie",
+            whatsappSpeed: "Gegarandeerd antwoord binnen 5 min op WhatsApp",
+            verifiedReviews: "Gegarandeerd model of gratis upgrade",
             freeCancellationNotice: "Gratis annuleren tot 48 uur",
             stripeNotice: "Veilige betaling via Stripe",
             longStayDiscountBadge: "Lang Verblijf Korting: -{pct}% ({days} {daysCount})",
