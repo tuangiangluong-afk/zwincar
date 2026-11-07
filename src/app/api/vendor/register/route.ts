@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { registerVendorAgency } from "@/lib/vendor-store";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { getClientIp, jsonError, readJson, tooManyRequests } from "@/lib/api-helpers";
+import { sendWhatsAppDirectText } from "@/lib/whatsapp";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -41,9 +42,13 @@ export async function POST(request: Request) {
             cityHub,
             iceNumber,
             rcNumber: typeof body.rcNumber === "string" ? body.rcNumber : undefined,
+            ifNumber: typeof body.ifNumber === "string" ? body.ifNumber : undefined,
+            ministryLicenseNumber: typeof body.ministryLicenseNumber === "string" ? body.ministryLicenseNumber : undefined,
+            ribNumber: typeof body.ribNumber === "string" ? body.ribNumber : undefined,
             address: typeof body.address === "string" ? body.address : undefined,
             managerName,
             managerPhone,
+            dispatchPhone247: typeof body.dispatchPhone247 === "string" ? body.dispatchPhone247 : undefined,
             managerEmail,
             password,
             fleetSizeEstimate: typeof body.fleetSizeEstimate === "string" ? body.fleetSizeEstimate : undefined,
@@ -89,7 +94,11 @@ export async function POST(request: Request) {
                         <p><strong>ICE :</strong> ${iceNumber}</p>
                         <p><strong>Gérant :</strong> ${managerName}</p>
                         <p><strong>Téléphone / WhatsApp :</strong> ${managerPhone}</p>
+                        <p><strong>Astreinte 24/7 :</strong> ${body.dispatchPhone247 || managerPhone}</p>
                         <p><strong>Email :</strong> ${managerEmail}</p>
+                        <p><strong>Agrément Ministère :</strong> ${body.ministryLicenseNumber || "Non spécifié"}</p>
+                        <p><strong>Identifiant Fiscal (IF) :</strong> ${body.ifNumber || "Non spécifié"}</p>
+                        <p><strong>RIB 24 Chiffres :</strong> ${body.ribNumber || "Non spécifié"}</p>
                         <p><strong>Véhicule déclaré :</strong> ${model} (${plate})</p>
                     `,
                 }),
@@ -117,6 +126,12 @@ export async function POST(request: Request) {
                 }),
             }).catch((err) => console.error("Vendor welcome email error:", err));
         }
+
+        // WhatsApp de bienvenue automatique vers le gérant
+        sendWhatsAppDirectText({
+            toPhone: managerPhone,
+            message: `Salam ${managerName} ! Bienvenue sur le réseau ZwinCar Pro (${agencyName}).\nVotre compte loueur est actif pour le Hub ${cityHub.toUpperCase()}.\nAccédez à votre espace flotte et réservez vos arrivées : https://zwincar.com/vendor/dashboard`,
+        }).catch((err) => console.error("Vendor welcome WhatsApp error:", err));
 
         return res;
     } catch (e: any) {

@@ -33,9 +33,13 @@ export interface VendorAgencyRecord {
     cityHub: string;
     iceNumber: string;
     rcNumber: string;
+    ifNumber?: string;
+    ministryLicenseNumber?: string;
+    ribNumber?: string;
     address: string;
     managerName: string;
     managerPhone: string;
+    dispatchPhone247?: string;
     managerEmail: string;
     passwordHash: string;
     salt: string;
@@ -237,9 +241,13 @@ export interface RegisterAgencyInput {
     cityHub: string;
     iceNumber: string;
     rcNumber?: string;
+    ifNumber?: string;
+    ministryLicenseNumber?: string;
+    ribNumber?: string;
     address?: string;
     managerName: string;
     managerPhone: string;
+    dispatchPhone247?: string;
     managerEmail: string;
     password: string;
     fleetSizeEstimate?: string;
@@ -279,9 +287,13 @@ export async function registerVendorAgency(input: RegisterAgencyInput): Promise<
         cityHub: input.cityHub.trim().toLowerCase(),
         iceNumber: input.iceNumber.trim(),
         rcNumber: input.rcNumber?.trim() || "En cours",
+        ifNumber: input.ifNumber?.trim() || "Non spécifié",
+        ministryLicenseNumber: input.ministryLicenseNumber?.trim() || "En cours de validation",
+        ribNumber: input.ribNumber?.trim() || "Non spécifié",
         address: input.address?.trim() || "Aéroport / Centre-ville",
         managerName: input.managerName.trim(),
         managerPhone: input.managerPhone.trim(),
+        dispatchPhone247: input.dispatchPhone247?.trim() || input.managerPhone.trim(),
         managerEmail: input.managerEmail.trim(),
         passwordHash,
         salt,

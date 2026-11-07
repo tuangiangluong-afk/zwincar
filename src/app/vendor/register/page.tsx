@@ -43,11 +43,15 @@ export default function VendorRegisterPage() {
     const [cityHub, setCityHub] = useState("marrakech");
     const [iceNumber, setIceNumber] = useState("");
     const [rcNumber, setRcNumber] = useState("");
+    const [ifNumber, setIfNumber] = useState("");
+    const [ministryLicenseNumber, setMinistryLicenseNumber] = useState("");
+    const [ribNumber, setRibNumber] = useState("");
     const [address, setAddress] = useState("");
 
     // Step 2: Manager credentials
     const [managerName, setManagerName] = useState("");
     const [managerPhone, setManagerPhone] = useState("+212 ");
+    const [dispatchPhone247, setDispatchPhone247] = useState("");
     const [managerEmail, setManagerEmail] = useState("");
     const [password, setPassword] = useState("");
     const [passwordConfirm, setPasswordConfirm] = useState("");
@@ -94,8 +98,8 @@ export default function VendorRegisterPage() {
             return;
         }
 
-        if (password.length < 6) {
-            setError("Le mot de passe doit comporter au moins 6 caractères.");
+        if (password.length < 12) {
+            setError("Le mot de passe doit comporter au moins 12 caractères pour la sécurité de votre flotte.");
             return;
         }
 
@@ -132,9 +136,13 @@ export default function VendorRegisterPage() {
                     cityHub,
                     iceNumber,
                     rcNumber,
+                    ifNumber,
+                    ministryLicenseNumber,
+                    ribNumber,
                     address,
                     managerName,
                     managerPhone,
+                    dispatchPhone247: dispatchPhone247.trim() || managerPhone.trim(),
                     managerEmail,
                     password,
                     fleetSizeEstimate,
@@ -330,6 +338,32 @@ export default function VendorRegisterPage() {
 
                                 <div>
                                     <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
+                                        N° Agrément Ministère des Transports
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={ministryLicenseNumber}
+                                        onChange={(e) => setMinistryLicenseNumber(e.target.value)}
+                                        placeholder="Ex: 24/DRTR/2021 (ou En cours)"
+                                        className="w-full h-11 px-4 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none focus:border-[#C9572C]"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
+                                        Identifiant Fiscal (IF) / Patente
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={ifNumber}
+                                        onChange={(e) => setIfNumber(e.target.value)}
+                                        placeholder="Ex: 40182934"
+                                        className="w-full h-11 px-4 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none focus:border-[#C9572C]"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
                                         Taille Estimée de votre Parc
                                     </label>
                                     <select
@@ -342,6 +376,22 @@ export default function VendorRegisterPage() {
                                         <option value="30 à 60 véhicules">30 à 60 véhicules</option>
                                         <option value="+ de 60 véhicules">+ de 60 véhicules</option>
                                     </select>
+                                </div>
+
+                                <div className="sm:col-span-2">
+                                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
+                                        RIB Bancaire Marocain (24 Chiffres — Pour les Règlements)
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={ribNumber}
+                                        onChange={(e) => setRibNumber(e.target.value)}
+                                        placeholder="Ex: 011 780 0000 123456789012 34 (Attijariwafa, CIH, BCP...)"
+                                        className="w-full h-11 px-4 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs sm:text-sm font-mono font-semibold text-slate-900 focus:outline-none focus:border-[#C9572C]"
+                                    />
+                                    <span className="text-[10px] text-slate-400 mt-0.5 block">
+                                        Sert au versement automatique des soldes et suppléments perçus en ligne
+                                    </span>
                                 </div>
 
                                 <div className="sm:col-span-2">
@@ -401,7 +451,7 @@ export default function VendorRegisterPage() {
 
                                 <div>
                                     <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
-                                        Numéro WhatsApp Direct (Opérationnel Parking) *
+                                        Numéro WhatsApp Direct (Gérant / Responsable) *
                                     </label>
                                     <input
                                         type="tel"
@@ -412,11 +462,27 @@ export default function VendorRegisterPage() {
                                         className="w-full h-11 px-4 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs sm:text-sm font-mono font-semibold text-slate-900 focus:outline-none focus:border-[#C9572C]"
                                     />
                                     <span className="text-[10px] text-slate-400 mt-0.5 block">
-                                        Utilisé pour synchroniser les fiches clients et numéros de vol
+                                        Reçoit les alertes WhatsApp instantanées à chaque résa
                                     </span>
                                 </div>
 
                                 <div>
+                                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
+                                        Ligne d'Astreinte 24/7 / Agent de Piste Aéroport
+                                    </label>
+                                    <input
+                                        type="tel"
+                                        value={dispatchPhone247}
+                                        onChange={(e) => setDispatchPhone247(e.target.value)}
+                                        placeholder="+212 7 20 79 40 46 (si différent du gérant)"
+                                        className="w-full h-11 px-4 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs sm:text-sm font-mono font-semibold text-slate-900 focus:outline-none focus:border-[#C9572C]"
+                                    />
+                                    <span className="text-[10px] text-slate-400 mt-0.5 block">
+                                        Agent sur le parking pour les vols de nuit ou retards
+                                    </span>
+                                </div>
+
+                                <div className="sm:col-span-2">
                                     <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
                                         Email Professionnel de Connexion *
                                     </label>
@@ -439,7 +505,7 @@ export default function VendorRegisterPage() {
                                         required
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
-                                        placeholder="Min 6 caractères"
+                                        placeholder="Min 12 caractères sécurisés"
                                         className="w-full h-11 px-4 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none focus:border-[#C9572C]"
                                     />
                                 </div>
