@@ -226,36 +226,27 @@ export function BookingCheckoutModal({
     };
 
     if (leadConfirmation) {
-        const localrentUrl = buildAffiliateRentalUrl({
-            provider: "localrent",
-            hubCode: currentHub.airportCode,
-            citySlug: currentHub.slug,
-            pickupDate,
-            returnDate,
-        });
-
-        const discoverCarsUrl = buildAffiliateRentalUrl({
-            provider: "discovercars",
-            hubCode: currentHub.airportCode,
-            citySlug: currentHub.slug,
-            pickupDate,
-            returnDate,
-        });
+        const waLeadText = encodeURIComponent(
+            locale === "en"
+                ? `Hello ZwinCar, I just booked the ${vehicle.name} (Ref #${leadConfirmation.bookingRef}) from ${pickupDate} to ${returnDate} in ${currentHub.name}. My name is ${fullName}, phone: ${phone}. Please confirm availability.`
+                : `Bonjour ZwinCar, je viens de réserver la ${vehicle.name} (Réf #${leadConfirmation.bookingRef}) du ${pickupDate} au ${returnDate} à ${currentHub.name}. Mon nom : ${fullName}, tél : ${phone}. Merci de confirmer la prise en charge.`
+        );
 
         return (
-            <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 md:p-6 bg-black/65 backdrop-blur-xs">
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 md:p-6 bg-black/75 backdrop-blur-xs">
                 <div className="w-full max-w-lg max-h-[92dvh] bg-white rounded-3xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+                    {/* Header */}
                     <div className="shrink-0 bg-[#12161E] text-white p-4 sm:p-5 flex items-center justify-between">
                         <div className="flex items-center gap-3">
                             <div className="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center font-bold">
-                                <CheckCircle2 size={20} />
+                                <CheckCircle2 size={22} />
                             </div>
                             <div>
                                 <div className="text-[10px] uppercase font-bold tracking-wider text-emerald-400">
-                                    {t.checkoutModal.leadTransmitted.replace("{ref}", leadConfirmation.bookingRef)}
+                                    Demande #{leadConfirmation.bookingRef} Transmise
                                 </div>
                                 <h3 className="text-base sm:text-lg font-black tracking-tight text-white">
-                                    {t.checkoutModal.whatsappVerification}
+                                    Réservation Enregistrée !
                                 </h3>
                             </div>
                         </div>
@@ -269,61 +260,37 @@ export function BookingCheckoutModal({
                     </div>
 
                     <div className="flex-1 overflow-y-auto overscroll-contain p-4 sm:p-6 space-y-4">
-                        <div className="rounded-2xl bg-emerald-50 border border-emerald-200 p-4 space-y-1.5 text-xs text-emerald-950">
-                            <div className="font-bold flex items-center gap-1.5 text-emerald-900">
-                                <MessageCircle size={15} />
-                                <span>{t.checkoutModal.agentAlertTitle.replace("{hub}", currentHub.name)}</span>
+                        {/* Direct Booking Confirmed Card */}
+                        <div className="rounded-2xl bg-emerald-50 border border-emerald-200 p-4 space-y-2 text-xs text-emerald-950">
+                            <div className="font-bold flex items-center gap-1.5 text-emerald-900 text-sm">
+                                <Check size={16} className="text-emerald-600 shrink-0" />
+                                <span>Votre véhicule est bloqué pour vous</span>
                             </div>
-                            <p className="text-[11px] text-emerald-900/80 leading-relaxed">
-                                {t.checkoutModal.agentAlertDesc
-                                    .replace("{vehicle}", vehicle.name)
-                                    .replace("{hub}", currentHub.name)
-                                    .replace("{pickupDate}", pickupDate)
-                                    .replace("{returnDate}", returnDate)
-                                    .replace("{phone}", phone)}
+                            <p className="text-[11px] text-emerald-900/90 leading-relaxed">
+                                Votre dossier pour la <strong>{vehicle.name}</strong> à <strong>{currentHub.name}</strong> ({pickupDate} au {returnDate}) a bien été transmis à nos agents locaux.
                             </p>
+                            <div className="pt-2 border-t border-emerald-200/80 flex items-center justify-between text-[11px]">
+                                <span>Acompte de blocage : <strong>{currency === "EUR" ? `${depositAcompteEur} €` : `${depositAcompteMad} MAD`}</strong></span>
+                                <span>Caution : <strong>{hasFranchiseZero ? "0 € (Franchise Zéro)" : "300 €"}</strong></span>
+                            </div>
                         </div>
 
-                        {/* Partner Instant Bridge */}
-                        <div className="rounded-2xl bg-linear-to-b from-[#FAF7F2] to-amber-500/10 border-2 border-amber-500/30 p-4 space-y-3">
-                            <div>
-                                <div className="text-[10px] font-bold uppercase text-amber-800 tracking-wider">
-                                    {t.checkoutModal.instantBridgeTitle}
-                                </div>
-                                <p className="text-xs text-slate-700 mt-1 leading-relaxed">
-                                    {t.checkoutModal.instantBridgeDesc.replace("{code}", currentHub.airportCode)}
-                                </p>
+                        {/* WhatsApp Priority Action */}
+                        <div className="rounded-2xl bg-[#FAF7F2] border border-[#E7DFD5] p-4 space-y-2.5">
+                            <div className="text-xs text-slate-700 leading-relaxed font-medium">
+                                Pour accélérer la remise des clés et finaliser votre bon, ouvrez directement l&apos;échange avec votre agent WhatsApp dédié :
                             </div>
-
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
-                                <a
-                                    href={localrentUrl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="min-h-[50px] py-2 px-3 rounded-xl bg-[#C9572C] hover:bg-[#B24922] text-white transition flex items-center justify-center shadow-sm active:scale-95 text-center"
-                                >
-                                    <div className="flex flex-col items-center leading-tight">
-                                        <div className="flex items-center gap-1 font-black text-xs sm:text-sm">
-                                            <span>Localrent</span>
-                                            <ExternalLink size={12} className="shrink-0 opacity-80" />
-                                        </div>
-                                        <span className="text-[10px] font-semibold opacity-90">{t.affiliateDrawer.localrentSub}</span>
-                                    </div>
-                                </a>
-                                <a
-                                    href={discoverCarsUrl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="min-h-[50px] py-2 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white transition flex items-center justify-center shadow-sm active:scale-95 text-center"
-                                >
-                                    <div className="flex flex-col items-center leading-tight">
-                                        <div className="flex items-center gap-1 font-black text-xs sm:text-sm">
-                                            <span>DiscoverCars</span>
-                                            <ExternalLink size={12} className="shrink-0 opacity-80" />
-                                        </div>
-                                        <span className="text-[10px] font-semibold opacity-90">{t.affiliateDrawer.discoverCarsSub}</span>
-                                    </div>
-                                </a>
+                            <a
+                                href={`https://wa.me/212720794046?text=${waLeadText}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="w-full py-3.5 px-4 rounded-2xl bg-[#25D366] hover:bg-[#20BD5A] text-white font-black text-xs sm:text-sm tracking-wide transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer active:scale-98"
+                            >
+                                <MessageCircle size={18} />
+                                <span>Valider sur WhatsApp en 1-clic</span>
+                            </a>
+                            <div className="text-center text-[10px] text-slate-400 font-medium">
+                                ⚡ Réponse garantie en moins de 5 min (7j/7 24h/24)
                             </div>
                         </div>
 
@@ -335,9 +302,9 @@ export function BookingCheckoutModal({
                                     onClose();
                                     router.push(`/booking/${leadConfirmation.bookingRef}?t=${leadConfirmation.token}`);
                                 }}
-                                className="w-full h-11 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-1.5 cursor-pointer"
+                                className="w-full h-11 rounded-xl bg-slate-900 hover:bg-[#C9572C] text-white font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
                             >
-                                <span>{t.checkoutModal.viewVoucherBtn.replace("{ref}", leadConfirmation.bookingRef)}</span>
+                                <span>Consulter mon bon de réservation #{leadConfirmation.bookingRef}</span>
                                 <ArrowRight size={14} />
                             </button>
                         </div>
@@ -387,113 +354,92 @@ export function BookingCheckoutModal({
                     <div className="grid grid-cols-1 md:grid-cols-12 gap-5 items-start">
                         {/* Left Column: Recap, Split, Trust & Perks */}
                         <div className="md:col-span-5 space-y-3.5 order-2 md:order-1">
-                            {/* Recap Row */}
-                    <div className="rounded-2xl bg-[#FAF7F2] border border-[#ECE5D9] p-3.5 grid grid-cols-2 gap-3 text-xs">
-                        <div>
-                            <span className="text-slate-400 text-[10px] uppercase font-bold block">
-                                {t.checkoutModal.pickupLabel}
-                            </span>
-                            <span className="font-bold text-slate-900 block truncate">
-                                {getLocalizedAirportName(currentHub, locale)} ({currentHub.airportCode})
-                            </span>
-                            <span className="text-[11px] text-slate-500">{pickupDate}</span>
-                        </div>
-                        <div>
-                            <span className="text-slate-400 text-[10px] uppercase font-bold block">
-                                {t.checkoutModal.returnLabel}
-                            </span>
-                            <span className="font-bold text-slate-900 block truncate">
-                                {currentHub.name}
-                            </span>
-                            <span className="text-[11px] text-slate-500">{returnDate} ({days} {t.search.daysCount})</span>
-                        </div>
-                    </div>
-                            {/* Financial Split Box */}
-                    <div className="rounded-2xl bg-[#FAF7F2] border border-[#ECE5D9] p-4 space-y-2 text-xs">
-                        <div className="flex justify-between items-center text-slate-700">
-                            <span>{t.bookingWidget.payTodayStripe} :</span>
-                            <span className="text-base font-black text-[#C9572C] font-mono">
-                                {currency === "EUR" ? `${depositAcompteEur} €` : `${depositAcompteMad} MAD`}
-                            </span>
-                        </div>
-                        <div className="flex justify-between items-center text-slate-500 text-[11px]">
-                            <span>{t.bookingWidget.balanceOnSite}</span>
-                            <span className="font-bold text-slate-900 font-mono">
-                                {currency === "EUR" ? `${balanceOnSiteEur} €` : `${balanceOnSiteMad} MAD`} (~{balanceOnSiteMad} DH)
-                            </span>
-                        </div>
-                        <div className="flex justify-between items-center text-slate-500 text-[11px] pt-1 border-t border-slate-200/80">
-                            <span>{t.bookingWidget.depositAtCounter} :</span>
-                            <span className="font-bold text-slate-900 font-mono">
-                                {hasFranchiseZero ? t.bookingWidget.zeroDepositActive : "300 €"}
-                            </span>
-                        </div>
-                        <div className="pt-2 border-t border-emerald-200/60 flex flex-wrap items-center justify-between gap-1 text-[10px] font-bold text-emerald-800">
-                            <span>
-                                {locale === "en"
-                                    ? "✓ 20% Deposit 100% refundable up to 48h prior"
-                                    : locale === "es"
-                                    ? "✓ Anticipo 20% 100% reembolsable hasta 48h antes"
-                                    : locale === "nl"
-                                    ? "✓ 20% Aanbetaling 100% terugbetaalbaar tot 48u vooraf"
-                                    : "✓ Acompte 20% remboursable à 100% jusqu'à 48h avant"}
-                            </span>
-                            <span>
-                                {locale === "en"
-                                    ? "✓ 80% paid after airport car inspection"
-                                    : locale === "es"
-                                    ? "✓ 80% al recibir e inspeccionar el coche"
-                                    : locale === "nl"
-                                    ? "✓ 80% pas na auto-inspectie op luchthaven"
-                                    : "✓ Solde 80% après inspection du véhicule"}
-                            </span>
-                        </div>
-                        <div className="pt-1.5 border-t border-slate-200/60 flex flex-wrap items-center justify-between gap-1 text-[10px] font-medium text-slate-600">
-                            <span>
-                                {locale === "en"
-                                    ? "✈️ Flight delay guarantee: live tracking on FlightRadar, zero late fees"
-                                    : locale === "es"
-                                    ? "✈️ Garantía vuelo retrasado: rastreo en vivo, sin gastos por retraso"
-                                    : locale === "nl"
-                                    ? "✈️ Vluchtvertraging garantie: live tracking, geen no-show kosten"
-                                    : "✈️ Garantie vol retardé : suivi en direct FlightRadar, zéro frais de retard"}
-                            </span>
-                            <span>
-                                {locale === "en"
-                                    ? "⛽ Same-to-Same fuel policy (photo check-in)"
-                                    : locale === "es"
-                                    ? "⛽ Combustible Mismo-a-Mismo (foto en entrega)"
-                                    : locale === "nl"
-                                    ? "⛽ Zelfde brandstofniveau retour (foto bij check-in)"
-                                    : "⛽ Carburant Niveau Identique (photo au départ)"}
-                            </span>
-                        </div>
-                    </div>
-                            {/* 4 Guaranteed Free Perks reminder */}
-                    <div className="rounded-2xl bg-emerald-50/80 border border-emerald-200/80 p-3 text-[11px] text-emerald-950 font-medium">
-                        <div className="font-bold text-[11px] text-emerald-900 mb-1.5 flex items-center gap-1.5">
-                            <Sparkles size={12} className="text-emerald-600" />
-                            <span>{t.pricingTiers.includedPerksTitle}</span>
-                        </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-[10px] sm:text-[11px] text-emerald-800">
-                            <div className="flex items-start gap-1.5">
-                                <span className="font-bold text-emerald-600 shrink-0">✓</span>
-                                <span className="leading-snug break-words">{t.pricingTiers.perkDelivery}</span>
+                            {/* Trip Summary Card */}
+                            <div className="rounded-2xl bg-[#FAF7F2] border border-[#ECE5D9] p-3.5 space-y-2 text-xs">
+                                <div className="flex items-center justify-between pb-2 border-b border-slate-200/70">
+                                    <div>
+                                        <span className="text-slate-400 text-[10px] uppercase font-bold block">
+                                            {t.checkoutModal.pickupLabel}
+                                        </span>
+                                        <span className="font-bold text-slate-900 text-xs block">
+                                            {currentHub.name} ({currentHub.airportCode})
+                                        </span>
+                                    </div>
+                                    <div className="text-right">
+                                        <span className="text-slate-400 text-[10px] uppercase font-bold block">
+                                            Durée
+                                        </span>
+                                        <span className="font-bold text-slate-900 text-xs font-mono">
+                                            {days} {t.search.daysCount}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div className="flex items-center justify-between text-[11px] text-slate-600 font-medium">
+                                    <span>Du <strong>{pickupDate}</strong></span>
+                                    <span>Au <strong>{returnDate}</strong></span>
+                                </div>
                             </div>
-                            <div className="flex items-start gap-1.5">
-                                <span className="font-bold text-emerald-600 shrink-0">✓</span>
-                                <span className="leading-snug break-words">{t.pricingTiers.perkMileage}</span>
+
+                            {/* Financial Split Box - Perfectly Aligned Table */}
+                            <div className="rounded-2xl bg-[#FAF7F2] border border-[#ECE5D9] p-4 space-y-3 text-xs">
+                                {/* Row 1: Acompte */}
+                                <div className="flex items-baseline justify-between gap-3">
+                                    <div className="min-w-0 pr-1">
+                                        <div className="font-bold text-slate-900 text-xs">
+                                            Acompte de réservation (20%)
+                                        </div>
+                                        <div className="text-[10px] text-slate-500">
+                                            Bloque fermement votre véhicule
+                                        </div>
+                                    </div>
+                                    <div className="text-lg font-black text-[#C9572C] font-mono whitespace-nowrap shrink-0">
+                                        {currency === "EUR" ? `${depositAcompteEur} €` : `${depositAcompteMad} MAD`}
+                                    </div>
+                                </div>
+
+                                {/* Row 2: Solde */}
+                                <div className="flex items-baseline justify-between gap-3 pt-2.5 border-t border-slate-200/70 text-[11px]">
+                                    <div className="min-w-0 pr-1">
+                                        <div className="font-bold text-slate-800">
+                                            Solde à la remise des clés (80%)
+                                        </div>
+                                        <div className="text-[10px] text-slate-500">
+                                            Espèces ou carte débit après état des lieux
+                                        </div>
+                                    </div>
+                                    <div className="font-bold text-slate-900 font-mono whitespace-nowrap shrink-0">
+                                        {currency === "EUR" ? `${balanceOnSiteEur} €` : `${balanceOnSiteMad} MAD`}
+                                    </div>
+                                </div>
+
+                                {/* Row 3: Caution */}
+                                <div className="flex items-baseline justify-between gap-3 pt-2.5 border-t border-slate-200/70 text-[11px]">
+                                    <div className="text-slate-700 font-medium">
+                                        Caution à la remise des clés
+                                    </div>
+                                    <div className="font-bold text-slate-900 font-mono whitespace-nowrap shrink-0">
+                                        {hasFranchiseZero ? "0 € (Franchise Zéro)" : "300 € (Standard)"}
+                                    </div>
+                                </div>
+
+                                {/* Guarantees */}
+                                <div className="pt-2.5 border-t border-emerald-200/60 flex flex-col gap-1 text-[10px] text-emerald-800 font-semibold">
+                                    <div className="flex items-center gap-1.5">
+                                        <Check size={12} className="text-emerald-600 shrink-0" />
+                                        <span>Acompte 100% remboursable jusqu&apos;à 48h avant</span>
+                                    </div>
+                                    <div className="flex items-center gap-1.5">
+                                        <Check size={12} className="text-emerald-600 shrink-0" />
+                                        <span>Solde 80% réglé après vérification du véhicule</span>
+                                    </div>
+                                </div>
                             </div>
-                            <div className="flex items-start gap-1.5">
-                                <span className="font-bold text-emerald-600 shrink-0">✓</span>
-                                <span className="leading-snug break-words">{t.pricingTiers.perkModel}</span>
+
+                            {/* Trust badges strip */}
+                            <div className="flex flex-wrap items-center justify-between text-[10px] text-slate-500 font-medium px-1">
+                                <span>✈️ Suivi de vol direct FlightRadar</span>
+                                <span>⛽ Same-to-same carburant</span>
                             </div>
-                            <div className="flex items-start gap-1.5">
-                                <span className="font-bold text-emerald-600 shrink-0">✓</span>
-                                <span className="leading-snug break-words">{t.pricingTiers.perkSupport}</span>
-                            </div>
-                        </div>
-                    </div>
                         </div>
 
                         {/* Right Column: Passenger Inputs & Payment Action */}
