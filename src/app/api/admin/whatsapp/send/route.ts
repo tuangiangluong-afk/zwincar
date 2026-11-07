@@ -41,9 +41,23 @@ export async function POST(request: Request) {
         });
 
         if (!sendResult.success) {
+            // Enregistre quand même le message en statut 'failed' pour garder l'historique
+            recordWhatsAppMessage({
+                phone: cleanPhone,
+                sender: "admin",
+                text: cleanMessage,
+                status: "failed",
+            });
+
+            const isAuthError = sendResult.errorCode === 190 || sendResult.error?.includes("Authentication");
+            const userFriendlyError = isAuthError
+                ? "Token Meta expiré (OAuth code 190). Veuillez renouveler votre WHATSAPP_ACCESS_TOKEN dans Meta Business Manager."
+                : (sendResult.error || "Échec de l'envoi WhatsApp via Meta");
+
             return NextResponse.json(
                 {
-                    error: sendResult.error || "Échec de l'envoi WhatsApp via Meta",
+                    error: userFriendlyError,
+                    errorCode: sendResult.errorCode,
                     details: sendResult.details,
                 },
                 { status: 502 }

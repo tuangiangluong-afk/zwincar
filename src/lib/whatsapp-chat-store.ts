@@ -17,7 +17,7 @@ export interface WhatsAppChatMessage {
     sender: "customer" | "admin" | "system";
     text: string;
     timestamp: string;
-    status?: "sent" | "delivered" | "read" | "received";
+    status?: "sent" | "delivered" | "read" | "received" | "failed";
     rawMetadata?: Record<string, unknown>;
 }
 
@@ -146,7 +146,7 @@ export function recordWhatsAppMessage({
     text: string;
     customerName?: string;
     cityHub?: string;
-    status?: "sent" | "delivered" | "read" | "received";
+    status?: "sent" | "delivered" | "read" | "received" | "failed";
     messageId?: string;
 }): { thread: WhatsAppChatThread; message: WhatsAppChatMessage } {
     const store = getStore();

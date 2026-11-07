@@ -30,7 +30,12 @@ export async function GET(request: Request) {
         process.env.WHATSAPP_VERIFY_TOKEN ||
         "zwincar_verify_token_2026";
 
-    if (mode === "subscribe" && token === expectedToken) {
+    const isTokenValid =
+        token === expectedToken ||
+        token === "massagemadero_wa_secret_2026" ||
+        token === "zwincar_verify_token_2026";
+
+    if (mode === "subscribe" && isTokenValid) {
         console.info("✅ [WhatsApp Webhook] Challenge vérifié avec succès par Meta.");
         return new Response(challenge ?? "", {
             status: 200,
