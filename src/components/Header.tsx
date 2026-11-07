@@ -258,12 +258,12 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
                     </div>
 
                     {/* Mobile Controls & Hamburger Button */}
-                    <div className="flex lg:hidden items-center gap-1.5 sm:gap-2">
-                        {/* Quick Mon Bon button for mobile header */}
+                    <div className="flex lg:hidden items-center gap-1 sm:gap-2 shrink-0">
+                        {/* Quick Mon Bon button - shown on tablets/desktop-adjacent where space permits */}
                         <button
                             type="button"
                             onClick={() => setLookupModalOpen(true)}
-                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 text-[11px] font-bold transition cursor-pointer active:scale-95 shrink-0"
+                            className="hidden sm:inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 text-[11px] font-bold transition cursor-pointer active:scale-95 shrink-0"
                             title={t.nav.findBooking}
                             aria-label={t.nav.findBooking}
                         >
@@ -275,19 +275,20 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
                         <button
                             type="button"
                             onClick={() => setSosModalOpen(true)}
-                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-red-50 text-red-700 border border-red-200 text-[11px] font-bold shrink-0"
+                            className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 text-[11px] font-bold shrink-0 transition cursor-pointer"
                         >
-                            <ShieldAlert size={13} className="text-red-600" />
+                            <ShieldAlert size={13} className="text-red-600 shrink-0" />
                             <span>SOS</span>
                         </button>
 
+                        {/* Hamburger Button - High visibility & Guaranteed shrink-0 */}
                         <button
                             type="button"
                             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                            className="text-slate-800 p-2 rounded-xl hover:bg-slate-100 cursor-pointer"
-                            aria-label="Menu"
+                            className="text-slate-900 p-2 -mr-1 rounded-xl hover:bg-slate-100 active:bg-slate-200 cursor-pointer shrink-0 transition-colors"
+                            aria-label={mobileMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
                         >
-                            {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+                            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
                         </button>
                     </div>
                 </div>

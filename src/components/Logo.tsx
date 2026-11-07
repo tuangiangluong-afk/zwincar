@@ -30,7 +30,7 @@ export default function Logo({
     
     const textSizes = {
         sm: "text-lg",
-        md: "text-2xl",
+        md: "text-xl sm:text-2xl",
         lg: "text-3xl",
     };
 
