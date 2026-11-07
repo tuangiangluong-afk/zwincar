@@ -79,6 +79,13 @@ export default function RootLayout({
   return (
     <html lang="fr" className="scroll-smooth">
       <head>
+        <Script
+          id="html-lang-detect"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `(function(){var p=window.location.pathname;var l='fr';if(p.startsWith('/en'))l='en';else if(p.startsWith('/es'))l='es';else if(p.startsWith('/nl'))l='nl';document.documentElement.lang=l;})();`,
+          }}
+        />
         <link
           rel="preload"
           as="image"

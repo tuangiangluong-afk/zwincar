@@ -84,7 +84,9 @@ export async function generateMetadata({
         alternates: {
             canonical: `${baseUrl}/guides/${guide.slug}`,
             languages: {
+                fr: `${baseUrl}/guides/${guide.slug}`,
                 "fr-FR": `${baseUrl}/guides/${guide.slug}`,
+                en: enUrl,
                 "en-US": enUrl,
                 "x-default": enUrl,
             },

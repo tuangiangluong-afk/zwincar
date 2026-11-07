@@ -56,9 +56,14 @@ export function getLocalizedMetadata(
             alternates: {
                 canonical: `${baseUrl}/${locale}/${hub.slug}/${intent.slugs[locale]}`,
                 languages: {
+                    fr: `${baseUrl}/maroc/${hub.slug}/${intent.slugs.fr}`,
                     "fr-FR": `${baseUrl}/maroc/${hub.slug}/${intent.slugs.fr}`,
+                    en: `${baseUrl}/en/${hub.slug}/${intent.slugs.en}`,
                     "en-US": `${baseUrl}/en/${hub.slug}/${intent.slugs.en}`,
+                    "en-GB": `${baseUrl}/en/${hub.slug}/${intent.slugs.en}`,
+                    es: `${baseUrl}/es/${hub.slug}/${intent.slugs.es}`,
                     "es-ES": `${baseUrl}/es/${hub.slug}/${intent.slugs.es}`,
+                    nl: `${baseUrl}/nl/${hub.slug}/${intent.slugs.nl}`,
                     "nl-NL": `${baseUrl}/nl/${hub.slug}/${intent.slugs.nl}`,
                     "x-default": `${baseUrl}/en/${hub.slug}/${intent.slugs.en}`,
                 },
@@ -102,9 +107,14 @@ export function getLocalizedMetadata(
             alternates: {
                 canonical: `${baseUrl}/${locale}/${hub.slug}/${vehicle.id}`,
                 languages: {
+                    fr: `${baseUrl}/maroc/${hub.slug}/${vehicle.id}`,
                     "fr-FR": `${baseUrl}/maroc/${hub.slug}/${vehicle.id}`,
+                    en: `${baseUrl}/en/${hub.slug}/${vehicle.id}`,
                     "en-US": `${baseUrl}/en/${hub.slug}/${vehicle.id}`,
+                    "en-GB": `${baseUrl}/en/${hub.slug}/${vehicle.id}`,
+                    es: `${baseUrl}/es/${hub.slug}/${vehicle.id}`,
                     "es-ES": `${baseUrl}/es/${hub.slug}/${vehicle.id}`,
+                    nl: `${baseUrl}/nl/${hub.slug}/${vehicle.id}`,
                     "nl-NL": `${baseUrl}/nl/${hub.slug}/${vehicle.id}`,
                     "x-default": `${baseUrl}/en/${hub.slug}/${vehicle.id}`,
                 },

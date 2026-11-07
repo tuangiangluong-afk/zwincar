@@ -29,9 +29,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         alternates: {
             canonical: `${baseUrl}/en/${hub.slug}`,
             languages: {
+                fr: `${baseUrl}/maroc/${hub.slug}`,
                 "fr-FR": `${baseUrl}/maroc/${hub.slug}`,
+                en: `${baseUrl}/en/${hub.slug}`,
                 "en-US": `${baseUrl}/en/${hub.slug}`,
+                "en-GB": `${baseUrl}/en/${hub.slug}`,
+                es: `${baseUrl}/es/${hub.slug}`,
                 "es-ES": `${baseUrl}/es/${hub.slug}`,
+                nl: `${baseUrl}/nl/${hub.slug}`,
                 "nl-NL": `${baseUrl}/nl/${hub.slug}`,
                 "x-default": `${baseUrl}/en/${hub.slug}`,
             },

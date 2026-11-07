@@ -17,6 +17,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
             priority: 1.0,
         },
         {
+            url: `${baseUrl}/en`,
+            lastModified: now,
+            changeFrequency: "daily",
+            priority: 1.0,
+        },
+        {
+            url: `${baseUrl}/es`,
+            lastModified: now,
+            changeFrequency: "daily",
+            priority: 0.95,
+        },
+        {
+            url: `${baseUrl}/nl`,
+            lastModified: now,
+            changeFrequency: "daily",
+            priority: 0.95,
+        },
+        {
             url: `${baseUrl}/guides`,
             lastModified: now,
             changeFrequency: "weekly",
@@ -30,6 +48,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
         },
         {
             url: `${baseUrl}/contact`,
+            lastModified: now,
+            changeFrequency: "monthly",
+            priority: 0.7,
+        },
+        {
+            url: `${baseUrl}/en/contact`,
+            lastModified: now,
+            changeFrequency: "monthly",
+            priority: 0.7,
+        },
+        {
+            url: `${baseUrl}/es/contact`,
+            lastModified: now,
+            changeFrequency: "monthly",
+            priority: 0.7,
+        },
+        {
+            url: `${baseUrl}/nl/contact`,
             lastModified: now,
             changeFrequency: "monthly",
             priority: 0.7,

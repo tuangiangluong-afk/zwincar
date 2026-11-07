@@ -9,9 +9,14 @@ export const metadata: Metadata = {
     alternates: {
         canonical: "https://zwincar.com/nl",
         languages: {
+            fr: "https://zwincar.com",
             "fr-FR": "https://zwincar.com",
+            en: "https://zwincar.com/en",
             "en-US": "https://zwincar.com/en",
+            "en-GB": "https://zwincar.com/en",
+            es: "https://zwincar.com/es",
             "es-ES": "https://zwincar.com/es",
+            nl: "https://zwincar.com/nl",
             "nl-NL": "https://zwincar.com/nl",
             "x-default": "https://zwincar.com/en",
         },

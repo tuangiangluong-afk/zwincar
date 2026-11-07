@@ -1462,9 +1462,14 @@ export function getHreflangAlternates(canonicalPath: {
     return {
         canonical: `${baseUrl}${canonicalPath.fr}`,
         languages: {
+            fr: `${baseUrl}${canonicalPath.fr}`,
             "fr-FR": `${baseUrl}${canonicalPath.fr}`,
+            en: `${baseUrl}${canonicalPath.en}`,
             "en-US": `${baseUrl}${canonicalPath.en}`,
+            "en-GB": `${baseUrl}${canonicalPath.en}`,
+            es: `${baseUrl}${canonicalPath.es}`,
             "es-ES": `${baseUrl}${canonicalPath.es}`,
+            nl: `${baseUrl}${canonicalPath.nl}`,
             "nl-NL": `${baseUrl}${canonicalPath.nl}`,
             "x-default": `${baseUrl}${canonicalPath.en}`, // Default to English for international searchers
         },
