@@ -147,7 +147,10 @@ export function BookingCheckoutModal({
             if (!createRes.ok || !created?.booking) {
                 setErrorMessage(
                     created?.error ??
-                        "Réservation impossible. Vérifiez vos informations et réessayez."
+                        (locale === "en" ? "Booking failed. Please check your information and try again."
+                        : locale === "es" ? "Reserva imposible. Verifique su información e inténtelo de nuevo."
+                        : locale === "nl" ? "Boeking mislukt. Controleer uw gegevens en probeer het opnieuw."
+                        : "Réservation impossible. Vérifiez vos informations et réessayez.")
                 );
                 setIsSubmitting(false);
                 return;

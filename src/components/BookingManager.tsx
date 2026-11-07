@@ -138,7 +138,7 @@ export default function BookingManager({ refId, locale = "fr" }: BookingManagerP
         return (
             <div className="rounded-3xl border border-[#ECE5D9] bg-white p-5 text-xs text-slate-500">
                 <Loader2 size={14} className="mr-2 inline animate-spin" />
-                Vérification du dossier...
+                {locale === "en" ? "Verifying booking…" : locale === "es" ? "Verificando reserva…" : locale === "nl" ? "Boeking controleren…" : "Vérification du dossier…"}
             </div>
         );
     }
@@ -149,7 +149,9 @@ export default function BookingManager({ refId, locale = "fr" }: BookingManagerP
 
     const cancel = async () => {
         if (!canCancel) return;
-        if (typeof window !== "undefined" && !window.confirm("Confirmer l'annulation de cette réservation ?")) return;
+        if (typeof window !== "undefined" && !window.confirm(
+            locale === "en" ? "Confirm cancellation of this booking?" : locale === "es" ? "¿Confirmar la cancelación de esta reserva?" : locale === "nl" ? "Annulering van deze boeking bevestigen?" : "Confirmer l'annulation de cette réservation ?"
+        )) return;
 
         setBusy("cancel");
         setMessage(null);
@@ -161,18 +163,22 @@ export default function BookingManager({ refId, locale = "fr" }: BookingManagerP
             });
             const data = await response.json();
             if (!response.ok) {
-                setMessage({ kind: "error", text: data?.error ?? "Annulation impossible." });
+                setMessage({ kind: "error", text: data?.error ?? (locale === "en" ? "Cancellation failed." : locale === "es" ? "Cancelación imposible." : locale === "nl" ? "Annulering mislukt." : "Annulation impossible.") });
             } else {
                 setMessage({
                     kind: "ok",
-                    text: `Réservation annulée. Remboursement : ${data.refundEur} €${
-                        data.creditNoteEur && data.refundEur === 0 ? ` (avoir de ${data.creditNoteEur} €)` : ""
-                    }.`,
+                    text: locale === "en"
+                        ? `Booking cancelled. Refund: ${data.refundEur} €${data.creditNoteEur && data.refundEur === 0 ? ` (credit note: ${data.creditNoteEur} €)` : ""}.`
+                        : locale === "es"
+                        ? `Reserva cancelada. Reembolso: ${data.refundEur} €${data.creditNoteEur && data.refundEur === 0 ? ` (nota de crédito: ${data.creditNoteEur} €)` : ""}.`
+                        : locale === "nl"
+                        ? `Boeking geannuleerd. Terugbetaling: ${data.refundEur} €${data.creditNoteEur && data.refundEur === 0 ? ` (tegoed: ${data.creditNoteEur} €)` : ""}.`
+                        : `Réservation annulée. Remboursement : ${data.refundEur} €${data.creditNoteEur && data.refundEur === 0 ? ` (avoir de ${data.creditNoteEur} €)` : ""}.`,
                 });
                 await load();
             }
         } catch {
-            setMessage({ kind: "error", text: "Connexion interrompue." });
+            setMessage({ kind: "error", text: locale === "en" ? "Connection lost." : locale === "es" ? "Conexión interrumpida." : locale === "nl" ? "Verbinding verbroken." : "Connexion interrompue." });
         } finally {
             setBusy(null);
         }
@@ -189,19 +195,21 @@ export default function BookingManager({ refId, locale = "fr" }: BookingManagerP
             });
             const data = await response.json();
             if (!response.ok) {
-                setMessage({ kind: "error", text: data?.error ?? "Modification impossible." });
+                setMessage({ kind: "error", text: data?.error ?? (locale === "en" ? "Modification failed." : locale === "es" ? "Modificación imposible." : locale === "nl" ? "Wijziging mislukt." : "Modification impossible.") });
             } else {
                 setMessage({
                     kind: "ok",
                     text: `${data.message} ${
-                        data.amountToPayNowEur > 0 ? `Complément à régler : ${data.amountToPayNowEur} €.` : ""
-                    } Nouveau solde au comptoir : ${data.newBalanceEur} €.`,
+                        data.amountToPayNowEur > 0
+                            ? (locale === "en" ? `Extra to pay: ${data.amountToPayNowEur} €.` : locale === "es" ? `Complemento a pagar: ${data.amountToPayNowEur} €.` : locale === "nl" ? `Bijbetaling: ${data.amountToPayNowEur} €.` : `Complément à régler : ${data.amountToPayNowEur} €.`)
+                            : ""
+                    } ${locale === "en" ? `New balance at counter: ${data.newBalanceEur} €.` : locale === "es" ? `Nuevo saldo en mostrador: ${data.newBalanceEur} €.` : locale === "nl" ? `Nieuw restbedrag aan balie: ${data.newBalanceEur} €.` : `Nouveau solde au comptoir : ${data.newBalanceEur} €.`}`,
                 });
                 setOpen(false);
                 await load();
             }
         } catch {
-            setMessage({ kind: "error", text: "Connexion interrompue." });
+            setMessage({ kind: "error", text: locale === "en" ? "Connection lost." : locale === "es" ? "Conexión interrumpida." : locale === "nl" ? "Verbinding verbroken." : "Connexion interrompue." });
         } finally {
             setBusy(null);
         }
@@ -268,7 +276,7 @@ export default function BookingManager({ refId, locale = "fr" }: BookingManagerP
             {open && canCancel && (
                 <div className="mt-4 grid grid-cols-1 gap-3 rounded-2xl border border-[#E7DFD5] bg-[#FAF7F2] p-4 sm:grid-cols-2">
                     <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
-                        Nouvelle prise en charge
+                        {locale === "en" ? "New pick-up date" : locale === "es" ? "Nueva fecha de recogida" : locale === "nl" ? "Nieuwe ophaaldatum" : "Nouvelle prise en charge"}
                         <input
                             type="date"
                             value={pickupDate}
@@ -277,7 +285,7 @@ export default function BookingManager({ refId, locale = "fr" }: BookingManagerP
                         />
                     </label>
                     <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
-                        Heure
+                        {locale === "en" ? "Time" : locale === "es" ? "Hora" : locale === "nl" ? "Tijd" : "Heure"}
                         <select
                             value={pickupTime}
                             onChange={(event) => setPickupTime(event.target.value)}
@@ -289,7 +297,7 @@ export default function BookingManager({ refId, locale = "fr" }: BookingManagerP
                         </select>
                     </label>
                     <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
-                        Nouvelle restitution
+                        {locale === "en" ? "New return date" : locale === "es" ? "Nueva fecha de devolución" : locale === "nl" ? "Nieuwe retourdatum" : "Nouvelle restitution"}
                         <input
                             type="date"
                             value={returnDate}
@@ -298,7 +306,7 @@ export default function BookingManager({ refId, locale = "fr" }: BookingManagerP
                         />
                     </label>
                     <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
-                        Heure
+                        {locale === "en" ? "Time" : locale === "es" ? "Hora" : locale === "nl" ? "Tijd" : "Heure"}
                         <select
                             value={returnTime}
                             onChange={(event) => setReturnTime(event.target.value)}
@@ -311,7 +319,7 @@ export default function BookingManager({ refId, locale = "fr" }: BookingManagerP
                     </label>
                     <div className="sm:col-span-2 flex items-center justify-between gap-3">
                         <p className="text-[11px] text-slate-500">
-                            Gratuit jusqu&apos;à 48h avant le départ, puis 25 € de frais de dossier.
+                            {locale === "en" ? "Free up to 48h before departure, then €25 admin fee." : locale === "es" ? "Gratis hasta 48h antes de la salida, luego 25 € de gastos." : locale === "nl" ? "Gratis tot 48u voor vertrek, daarna €25 administratiekosten." : "Gratuit jusqu\u0027à 48h avant le départ, puis 25 € de frais de dossier."}
                         </p>
                         <button
                             type="button"
@@ -320,7 +328,7 @@ export default function BookingManager({ refId, locale = "fr" }: BookingManagerP
                             className="inline-flex h-10 items-center gap-2 rounded-xl bg-[#C9572C] px-4 text-xs font-bold text-white disabled:opacity-50"
                         >
                             {busy === "modify" && <Loader2 size={14} className="animate-spin" />}
-                            Enregistrer
+                            {locale === "en" ? "Save" : locale === "es" ? "Guardar" : locale === "nl" ? "Opslaan" : "Enregistrer"}
                         </button>
                     </div>
                 </div>
