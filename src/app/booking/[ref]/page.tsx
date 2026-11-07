@@ -42,6 +42,7 @@ import { MOROCCAN_HUBS, VEHICLE_FLEET } from "@/lib/morocco-data";
 import { trackPurchase } from "@/lib/gtm";
 import { buildAffiliateRentalUrl, buildAffiliateEsimUrl } from "@/lib/affiliate";
 import { Locale, getTranslation, SUPPORTED_LOCALES, LOCALE_LABELS } from "@/lib/i18n";
+import { localizeVehicleName, localizeMeetingPointText } from "@/lib/booking-engine";
 
 const HUB_EXCURSIONS: Record<string, { title: string; duration: string; tag: string; viatorQuery: string }[]> = {
     marrakech: [
@@ -629,7 +630,7 @@ export default function BookingVoucherPage() {
 
                             <div className="md:col-span-2 space-y-3">
                                 <h2 className="text-xl sm:text-2xl font-black text-slate-900">
-                                    {rental.vehicleName}
+                                    {localizeVehicleName(rental.vehicleName, locale)}
                                 </h2>
 
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-slate-600">
@@ -659,7 +660,7 @@ export default function BookingVoucherPage() {
                                         <MapPin size={16} className="text-[#C9572C] shrink-0 mt-0.5" />
                                         <div>
                                             <strong>{t.voucher.meetingPointTitle} </strong>
-                                            <span>{rental.meetingPointDetail}</span>
+                                            <span>{localizeMeetingPointText(rental.meetingPointDetail, rental.pickupHub, locale)}</span>
                                         </div>
                                     </div>
 

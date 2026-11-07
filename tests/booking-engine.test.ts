@@ -19,6 +19,8 @@ import {
     toPublicBooking,
     validateCheckIn,
     validateCreateBooking,
+    localizeVehicleName,
+    localizeMeetingPointText,
     type BookingRecord,
     type CheckInInput,
     type VehicleRate,
@@ -392,4 +394,50 @@ test("buildVoucher propage fidèlement la locale et applique le masquage PII qua
     assert.equal(maskedVoucher.client.phone.includes("0612345678"), false);
     assert.equal(maskedVoucher.rental.vehicleName, record.rental.vehicleName);
     assert.equal(maskedVoucher.financials.depositAcompteEur, record.quote.acompteEur);
+});
+
+test("i18n: localizeVehicleName et localizeMeetingPointText traduisent intégralement sans fuite de français", () => {
+    // 1. Noms de véhicules
+    assert.equal(localizeVehicleName("Dacia Jogger (7 Places)", "en"), "Dacia Jogger (7-Seater)");
+    assert.equal(localizeVehicleName("Dacia Jogger (7 Places)", "es"), "Dacia Jogger (7 Plazas)");
+    assert.equal(localizeVehicleName("Dacia Jogger (7 Places)", "nl"), "Dacia Jogger (7 Zitplaatsen)");
+    assert.equal(localizeVehicleName("Dacia Jogger (7 Places)", "fr"), "Dacia Jogger (7 Places)");
+
+    assert.equal(localizeVehicleName("Hyundai Staria (9 Places)", "en"), "Hyundai Staria (9-Seater)");
+    assert.equal(localizeVehicleName("Renault Clio 5 Automatique", "en"), "Renault Clio 5 Automatic");
+
+    // 2. Point de rendez-vous
+    const frMeeting = "Terminal 1 Arrivées, sortie principale, Parking P2 (l'agent vous attend avec pancarte nominative)";
+    const enMeeting = localizeMeetingPointText(frMeeting, "marrakech", "en");
+    assert.equal(enMeeting.includes("Arrivées"), false);
+    assert.equal(enMeeting.includes("l'agent vous attend"), false);
+    assert.equal(enMeeting, "Terminal 1 Arrivals, main exit, Parking P2 (representative waiting with name sign)");
+
+    const esMeeting = localizeMeetingPointText(frMeeting, "marrakech", "es");
+    assert.equal(esMeeting.includes("Arrivées"), false);
+    assert.equal(esMeeting, "Terminal 1 Llegadas, salida principal, Parking P2 (agente con cartel nominativo)");
+
+    // 3. buildVoucher traduit automatiquement les champs du voucher
+    const record = makeRecord({
+        locale: "en",
+        rental: {
+            vehicleId: "dacia-jogger-7places",
+            vehicleName: "Dacia Jogger (7 Places)",
+            transmission: "Manuelle",
+            pickupHub: "marrakech",
+            hubName: "Marrakech",
+            returnHub: "marrakech",
+            pickupDate: "2026-03-10",
+            pickupTime: "10:00",
+            returnDate: "2026-03-13",
+            returnTime: "10:00",
+            days: 3,
+            meetingPointDetail: frMeeting,
+        },
+    });
+
+    const voucher = buildVoucher(record);
+    assert.equal(voucher.rental.vehicleName, "Dacia Jogger (7-Seater)");
+    assert.equal(voucher.rental.meetingPointDetail, "Terminal 1 Arrivals, main exit, Parking P2 (representative waiting with name sign)");
+    assert.equal(voucher.rental.meetingPointDetail.includes("Arrivées"), false);
 });

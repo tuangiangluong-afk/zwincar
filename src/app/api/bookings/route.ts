@@ -7,6 +7,8 @@ import {
     quoteBooking,
     toPublicBooking,
     validateCreateBooking,
+    localizeVehicleName,
+    localizeMeetingPointText,
     type BookingRecord,
 } from "@/lib/booking-engine";
 import { getBookingStore } from "@/lib/booking-store";
@@ -80,7 +82,7 @@ export async function POST(request: Request) {
         client: input.client,
         rental: {
             vehicleId: vehicle.id,
-            vehicleName: vehicle.name,
+            vehicleName: localizeVehicleName(vehicle.name, input.locale),
             vehicleCategory: vehicle.category,
             vehicleImage: vehicle.image,
             transmission: vehicle.transmission,
@@ -88,7 +90,7 @@ export async function POST(request: Request) {
             hubName: hub.name,
             returnHub: returnHub.slug,
             airportCode: hub.airportCode,
-            meetingPointDetail: hub.meetingPointDetail,
+            meetingPointDetail: localizeMeetingPointText(hub.meetingPointDetail, hub.slug, input.locale),
             pickupDate: input.pickupDate,
             pickupTime: input.pickupTime,
             returnDate: input.returnDate,

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getBookingStore } from "@/lib/booking-store";
+import { localizeVehicleName, localizeMeetingPointText } from "@/lib/booking-engine";
 
 type Locale = "fr" | "en" | "es" | "nl";
 
@@ -184,6 +185,10 @@ export async function POST(request: NextRequest) {
         const t = EMAIL_I18N[locale] || EMAIL_I18N.fr;
         const resendApiKey = process.env.RESEND_API_KEY;
 
+        const hubSlug = record?.rental?.pickupHub || "";
+        const localizedCar = localizeVehicleName(vehicleName || "Véhicule", locale);
+        const localizedMeeting = localizeMeetingPointText(meetingPointDetail || t.defaultMeeting, hubSlug, locale);
+
         const emailHtml = `
             <!DOCTYPE html>
             <html lang="${locale}">
@@ -210,13 +215,13 @@ export async function POST(request: NextRequest) {
                     </div>
                     <div class="content">
                         <p>${t.greeting(clientName || "Voyageur")}</p>
-                        <p>${t.lead(vehicleName || "Véhicule", hubName || "Maroc", airportCode || "Hub")}</p>
+                        <p>${t.lead(localizedCar, hubName || "Maroc", airportCode || "Hub")}</p>
                         
                         <div class="recap-box">
-                            <div class="row"><span><strong>${t.vehicle}</strong></span><span>${vehicleName}</span></div>
+                            <div class="row"><span><strong>${t.vehicle}</strong></span><span>${localizedCar}</span></div>
                             <div class="row"><span><strong>${t.dates}</strong></span><span>${t.datesVal(pickupDate || "", returnDate || "", days || 1)}</span></div>
                             <div class="row"><span><strong>${t.pickup}</strong></span><span>${hubName} (${airportCode})</span></div>
-                            <div class="row"><span><strong>${t.meetingPoint}</strong></span><span>${meetingPointDetail || t.defaultMeeting}</span></div>
+                            <div class="row"><span><strong>${t.meetingPoint}</strong></span><span>${localizedMeeting}</span></div>
                             <div class="row" style="border-top: 1px solid #ECE5D9; padding-top: 8px; margin-top: 8px;">
                                 <span><strong>${t.depositPaid}</strong></span>
                                 <span style="color: #C9572C; font-weight: bold;">${depositAcompteEur} €</span>
@@ -262,7 +267,7 @@ export async function POST(request: NextRequest) {
                     from: fromEmail,
                     reply_to: "hello@zwincar.com",
                     to: [clientEmail],
-                    subject: t.subject(bookingRef, vehicleName || "Véhicule", hubName || "Maroc"),
+                    subject: t.subject(bookingRef, localizedCar, hubName || "Maroc"),
                     html: emailHtml,
                 }),
             });
@@ -276,7 +281,7 @@ export async function POST(request: NextRequest) {
             success: true,
             simulated: true,
             locale,
-            subject: t.subject(bookingRef, vehicleName || "Véhicule", hubName || "Maroc"),
+            subject: t.subject(bookingRef, localizedCar, hubName || "Maroc"),
             message: `Email de confirmation prêt (${locale.toUpperCase()}) pour ${clientEmail}`,
             bookingRef,
         });

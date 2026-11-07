@@ -1069,6 +1069,90 @@ export function toPublicBooking(record: BookingRecord, options?: { maskPii?: boo
     };
 }
 
+export function localizeVehicleName(name: string, locale: Locale): string {
+    if (!name || locale === "fr") return name;
+    if (locale === "en") {
+        return name
+            .replace(/\(7 Places\)/gi, "(7-Seater)")
+            .replace(/\(9 Places\)/gi, "(9-Seater)")
+            .replace(/\bAutomatique\b/gi, "Automatic")
+            .replace(/\bManuelle\b/gi, "Manual");
+    }
+    if (locale === "es") {
+        return name
+            .replace(/\(7 Places\)/gi, "(7 Plazas)")
+            .replace(/\(9 Places\)/gi, "(9 Plazas)")
+            .replace(/\bAutomatique\b/gi, "Automático")
+            .replace(/\bManuelle\b/gi, "Manual");
+    }
+    if (locale === "nl") {
+        return name
+            .replace(/\(7 Places\)/gi, "(7 Zitplaatsen)")
+            .replace(/\(9 Places\)/gi, "(9 Zitplaatsen)")
+            .replace(/\bAutomatique\b/gi, "Automaat")
+            .replace(/\bManuelle\b/gi, "Handgeschakeld");
+    }
+    return name;
+}
+
+export function localizeMeetingPointText(meeting: string, hubSlug: string, locale: Locale): string {
+    if (!meeting || locale === "fr") return meeting;
+    const meetingMap: Record<string, Record<"en" | "es" | "nl", string>> = {
+        marrakech: {
+            en: "Terminal 1 Arrivals, main exit, Parking P2 (representative waiting with name sign)",
+            es: "Terminal 1 Llegadas, salida principal, Parking P2 (agente con cartel nominativo)",
+            nl: "Terminal 1 Aankomst, hoofduitgang, Parking P2 (agent wacht met naambordje)",
+        },
+        agadir: {
+            en: "Al Massira Arrivals Hall, facing drop-off area (key handover in 3 min)",
+            es: "Hall de Llegadas Al Massira, frente a la zona de parada rápida (llaves en 3 min)",
+            nl: "Aankomsthal Al Massira, tegenover de kiss & ride (sleuteloverdracht in 3 min)",
+        },
+        casablanca: {
+            en: "Terminal 1 & 2 Arrivals area, meeting point facing ONCF / Official Taxis counter",
+            es: "Terminal 1 y 2 zona llegadas, punto de encuentro frente al mostrador ONCF / Taxis",
+            nl: "Terminal 1 & 2 Aankomstzone, ontmoetingspunt tegenover ONCF / Officiële taxi balie",
+        },
+        tanger: {
+            en: "Ibn Battouta Departures/Arrivals parking or Tanger-Ville Port ferry pier",
+            es: "Parking Salidas/Llegadas Ibn Battouta o muelle del Puerto Tanger-Ville",
+            nl: "Parkeerplaats Vertrek/Aankomst Ibn Battouta of havenkade Tanger-Ville",
+        },
+        fes: {
+            en: "Saïss Terminal Exit, designated parking for verified partner agencies",
+            es: "Salida Terminal Saïss, parking reservado para agencias verificadas",
+            nl: "Uitgang Saïss Terminal, gereserveerde parkeerplaats geverifieerde partners",
+        },
+        rabat: {
+            en: "Rabat-Salé Terminal, express drop-off area",
+            es: "Terminal Rabat-Salé, zona de parada exprés",
+            nl: "Terminal Rabat-Salé, express drop-off zone",
+        },
+        ouarzazate: {
+            en: "Ouarzazate OZZ main single arrivals hall",
+            es: "Hall único de Llegadas Ouarzazate OZZ",
+            nl: "Centrale Aankomsthal Ouarzazate OZZ",
+        },
+        nador: {
+            en: "Al Aroui parking facing arrivals or Beni Ensar ferry pier",
+            es: "Parking Al Aroui frente a llegadas o muelle ferry Beni Ensar",
+            nl: "Parkeerplaats Al Aroui tegenover aankomst of ferrykade Beni Ensar",
+        },
+    };
+
+    const slug = hubSlug?.toLowerCase();
+    if (slug && meetingMap[slug]?.[locale as "en" | "es" | "nl"]) {
+        return meetingMap[slug][locale as "en" | "es" | "nl"];
+    }
+
+    if (meeting.includes("pancarte nominative") || meeting.includes("l'agent vous attend") || meeting.includes("Arrivées")) {
+        if (locale === "en") return "Terminal Arrivals, Parking P2 (representative waiting with name sign)";
+        if (locale === "es") return "Terminal Llegadas, Parking P2 (agente con cartel nominativo)";
+        if (locale === "nl") return "Terminal Aankomst, Parking P2 (agent wacht met naambordje)";
+    }
+    return meeting;
+}
+
 /** Adaptateur vers le format "voucher" consommé par /booking/[ref]. */
 export function buildVoucher(record: BookingRecord, options?: { maskPii?: boolean }) {
     const { rental, quote } = record;
@@ -1113,14 +1197,14 @@ export function buildVoucher(record: BookingRecord, options?: { maskPii?: boolea
         client,
         rental: {
             vehicleId: rental.vehicleId,
-            vehicleName: rental.vehicleName,
+            vehicleName: localizeVehicleName(rental.vehicleName, locale),
             vehicleCategory: rental.vehicleCategory ?? "",
             vehicleImage: rental.vehicleImage ?? "",
             pickupHub: rental.pickupHub,
             hubName: rental.hubName,
             airportName: rental.hubName,
             airportCode: rental.airportCode ?? "",
-            meetingPointDetail: rental.meetingPointDetail ?? "",
+            meetingPointDetail: localizeMeetingPointText(rental.meetingPointDetail ?? "", rental.pickupHub ?? "", locale),
             pickupDate: rental.pickupDate,
             returnDate: rental.returnDate,
             days: rental.days,
