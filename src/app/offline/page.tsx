@@ -37,6 +37,15 @@ export default function OfflinePage() {
                         <strong>Point de Rendez-vous Loueur :</strong> Votre agent partenaire local vous attend directement après la sortie des douanes avec une pancarte à votre nom. Le contrat physique papier et l&apos;état des lieux contradictoire sont établis directement au véhicule.
                     </li>
                     <li>
+                        <strong>Achat de Carte SIM et Retrait Dirhams :</strong> Des kiosques d&apos;opérateurs marocains (Maroc Telecom, Inwi, Orange) ainsi que des distributeurs automatiques (GAB) sont situés dans le hall des arrivées immédiatement après la récupération des bagages pour activer votre connexion Internet 4G en 3 minutes.
+                    </li>
+                    <li>
+                        <strong>Navigation GPS Hors Ligne :</strong> Si vous n&apos;avez pas de forfait data international, pensez à utiliser Google Maps en téléchargeant la zone Maroc en mode hors-ligne, ou installez l&apos;application gratuite Maps.me ou Organic Maps avec la carte du Maroc déjà enregistrée.
+                    </li>
+                    <li>
+                        <strong>Vol Retardé ou Arrivée Décalée :</strong> Grâce au numéro de vol renseigné dans votre réservation, votre agent local suit l&apos;atterrissage réel de votre avion sur FlightRadar24 et maintient votre véhicule sans surcoût même en cas de retard de plusieurs heures.
+                    </li>
+                    <li>
                         <strong>Numéros d&apos;Urgence Maroc (Appels GSM gratuits sans data) :</strong>
                         <div className="grid grid-cols-2 gap-2 mt-2 font-mono text-[11px] text-slate-800">
                             <span className="p-2 rounded-lg bg-[#FAF7F2] border border-[#E7DFD5]">Gendarmerie Royale : <strong>177</strong></span>

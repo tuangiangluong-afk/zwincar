@@ -34,9 +34,11 @@ interface VehicleCatalogProps {
 
 export default function VehicleCatalog({
     days = 6,
-    pickupCity = "Marrakech",
+    pickupCity: propPickupCity,
     locale: propLocale,
 }: VehicleCatalogProps) {
+    const isNational = !propPickupCity;
+    const pickupCity = propPickupCity || "Marrakech";
     const pathname = usePathname() || "";
     let activeLocale: Locale = propLocale || "fr";
     if (!propLocale) {
@@ -150,13 +152,23 @@ export default function VehicleCatalog({
                                 : "Flotte Réelle • Modèle Garanti"}
                         </div>
                         <h2 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">
-                            {activeLocale === "en"
-                                ? `Vehicles available in ${pickupCity}`
-                                : activeLocale === "es"
-                                ? `Vehículos disponibles en ${pickupCity}`
-                                : activeLocale === "nl"
-                                ? `Beschikbare auto's in ${pickupCity}`
-                                : `Véhicules disponibles à ${pickupCity}`}
+                            {isNational ? (
+                                activeLocale === "en"
+                                    ? "Our Vehicle Fleet in Morocco"
+                                    : activeLocale === "es"
+                                    ? "Nuestra Flota de Vehículos en Marruecos"
+                                    : activeLocale === "nl"
+                                    ? "Onze Vloot Huurauto's in Marokko"
+                                    : "Notre Flotte de Véhicules au Maroc"
+                            ) : (
+                                activeLocale === "en"
+                                    ? `Vehicles available in ${pickupCity}`
+                                    : activeLocale === "es"
+                                    ? `Vehículos disponibles en ${pickupCity}`
+                                    : activeLocale === "nl"
+                                    ? `Beschikbare auto's in ${pickupCity}`
+                                    : `Véhicules disponibles à ${pickupCity}`
+                            )}
                         </h2>
                         <p className="text-sm text-slate-600 mt-1">
                             {activeLocale === "en"

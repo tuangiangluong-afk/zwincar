@@ -257,9 +257,9 @@ export default function Footer({ config, locale: propLocale }: FooterProps = {})
                         <span>
                             Créé par{" "}
                             <a
-                                href="https://propulselab.fr"
+                                href="https://www.propulselab.fr/"
                                 target="_blank"
-                                rel="noopener noreferrer"
+                                rel="noopener noreferrer nofollow"
                                 className="text-slate-400 hover:text-white underline underline-offset-2 transition"
                             >
                                 Propulse

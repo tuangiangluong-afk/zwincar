@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import HomePage from "./home/page";
+import HomePage from "@/components/HomePage";
 
 export const revalidate = 3600;
 
