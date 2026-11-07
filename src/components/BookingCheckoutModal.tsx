@@ -349,7 +349,7 @@ export function BookingCheckoutModal({
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-2.5 sm:p-4 md:p-6 bg-black/70 backdrop-blur-xs">
-            <div className="w-full max-w-xl max-h-[92dvh] bg-white rounded-3xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+            <div className="w-full max-w-xl md:max-w-4xl max-h-[94dvh] bg-white rounded-3xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150">
                 {/* Header (pinned) */}
                 <div className="shrink-0 bg-[#12161E] text-white p-4 sm:p-5 flex items-center justify-between">
                     <div className="flex items-center gap-3">
@@ -383,8 +383,93 @@ export function BookingCheckoutModal({
                     <span className="text-[11px] text-slate-500">{t.checkoutModal.acceptedCardsNotice}</span>
                 </div>
 
-                <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto overscroll-contain p-4 sm:p-6 space-y-4">
-                    {/* 4 Guaranteed Free Perks reminder */}
+                <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto overscroll-contain p-4 sm:p-6">
+                    <div className="grid grid-cols-1 md:grid-cols-12 gap-5 items-start">
+                        {/* Left Column: Recap, Split, Trust & Perks */}
+                        <div className="md:col-span-5 space-y-3.5 order-2 md:order-1">
+                            {/* Recap Row */}
+                    <div className="rounded-2xl bg-[#FAF7F2] border border-[#ECE5D9] p-3.5 grid grid-cols-2 gap-3 text-xs">
+                        <div>
+                            <span className="text-slate-400 text-[10px] uppercase font-bold block">
+                                {t.checkoutModal.pickupLabel}
+                            </span>
+                            <span className="font-bold text-slate-900 block truncate">
+                                {getLocalizedAirportName(currentHub, locale)} ({currentHub.airportCode})
+                            </span>
+                            <span className="text-[11px] text-slate-500">{pickupDate}</span>
+                        </div>
+                        <div>
+                            <span className="text-slate-400 text-[10px] uppercase font-bold block">
+                                {t.checkoutModal.returnLabel}
+                            </span>
+                            <span className="font-bold text-slate-900 block truncate">
+                                {currentHub.name}
+                            </span>
+                            <span className="text-[11px] text-slate-500">{returnDate} ({days} {t.search.daysCount})</span>
+                        </div>
+                    </div>
+                            {/* Financial Split Box */}
+                    <div className="rounded-2xl bg-[#FAF7F2] border border-[#ECE5D9] p-4 space-y-2 text-xs">
+                        <div className="flex justify-between items-center text-slate-700">
+                            <span>{t.bookingWidget.payTodayStripe} :</span>
+                            <span className="text-base font-black text-[#C9572C] font-mono">
+                                {currency === "EUR" ? `${depositAcompteEur} €` : `${depositAcompteMad} MAD`}
+                            </span>
+                        </div>
+                        <div className="flex justify-between items-center text-slate-500 text-[11px]">
+                            <span>{t.bookingWidget.balanceOnSite}</span>
+                            <span className="font-bold text-slate-900 font-mono">
+                                {currency === "EUR" ? `${balanceOnSiteEur} €` : `${balanceOnSiteMad} MAD`} (~{balanceOnSiteMad} DH)
+                            </span>
+                        </div>
+                        <div className="flex justify-between items-center text-slate-500 text-[11px] pt-1 border-t border-slate-200/80">
+                            <span>{t.bookingWidget.depositAtCounter} :</span>
+                            <span className="font-bold text-slate-900 font-mono">
+                                {hasFranchiseZero ? t.bookingWidget.zeroDepositActive : "300 €"}
+                            </span>
+                        </div>
+                        <div className="pt-2 border-t border-emerald-200/60 flex flex-wrap items-center justify-between gap-1 text-[10px] font-bold text-emerald-800">
+                            <span>
+                                {locale === "en"
+                                    ? "✓ 20% Deposit 100% refundable up to 48h prior"
+                                    : locale === "es"
+                                    ? "✓ Anticipo 20% 100% reembolsable hasta 48h antes"
+                                    : locale === "nl"
+                                    ? "✓ 20% Aanbetaling 100% terugbetaalbaar tot 48u vooraf"
+                                    : "✓ Acompte 20% remboursable à 100% jusqu'à 48h avant"}
+                            </span>
+                            <span>
+                                {locale === "en"
+                                    ? "✓ 80% paid after airport car inspection"
+                                    : locale === "es"
+                                    ? "✓ 80% al recibir e inspeccionar el coche"
+                                    : locale === "nl"
+                                    ? "✓ 80% pas na auto-inspectie op luchthaven"
+                                    : "✓ Solde 80% après inspection du véhicule"}
+                            </span>
+                        </div>
+                        <div className="pt-1.5 border-t border-slate-200/60 flex flex-wrap items-center justify-between gap-1 text-[10px] font-medium text-slate-600">
+                            <span>
+                                {locale === "en"
+                                    ? "✈️ Flight delay guarantee: live tracking on FlightRadar, zero late fees"
+                                    : locale === "es"
+                                    ? "✈️ Garantía vuelo retrasado: rastreo en vivo, sin gastos por retraso"
+                                    : locale === "nl"
+                                    ? "✈️ Vluchtvertraging garantie: live tracking, geen no-show kosten"
+                                    : "✈️ Garantie vol retardé : suivi en direct FlightRadar, zéro frais de retard"}
+                            </span>
+                            <span>
+                                {locale === "en"
+                                    ? "⛽ Same-to-Same fuel policy (photo check-in)"
+                                    : locale === "es"
+                                    ? "⛽ Combustible Mismo-a-Mismo (foto en entrega)"
+                                    : locale === "nl"
+                                    ? "⛽ Zelfde brandstofniveau retour (foto bij check-in)"
+                                    : "⛽ Carburant Niveau Identique (photo au départ)"}
+                            </span>
+                        </div>
+                    </div>
+                            {/* 4 Guaranteed Free Perks reminder */}
                     <div className="rounded-2xl bg-emerald-50/80 border border-emerald-200/80 p-3 text-[11px] text-emerald-950 font-medium">
                         <div className="font-bold text-[11px] text-emerald-900 mb-1.5 flex items-center gap-1.5">
                             <Sparkles size={12} className="text-emerald-600" />
@@ -409,30 +494,11 @@ export function BookingCheckoutModal({
                             </div>
                         </div>
                     </div>
-
-                    {/* Recap Row */}
-                    <div className="rounded-2xl bg-[#FAF7F2] border border-[#ECE5D9] p-3.5 grid grid-cols-2 gap-3 text-xs">
-                        <div>
-                            <span className="text-slate-400 text-[10px] uppercase font-bold block">
-                                {t.checkoutModal.pickupLabel}
-                            </span>
-                            <span className="font-bold text-slate-900 block truncate">
-                                {getLocalizedAirportName(currentHub, locale)} ({currentHub.airportCode})
-                            </span>
-                            <span className="text-[11px] text-slate-500">{pickupDate}</span>
                         </div>
-                        <div>
-                            <span className="text-slate-400 text-[10px] uppercase font-bold block">
-                                {t.checkoutModal.returnLabel}
-                            </span>
-                            <span className="font-bold text-slate-900 block truncate">
-                                {currentHub.name}
-                            </span>
-                            <span className="text-[11px] text-slate-500">{returnDate} ({days} {t.search.daysCount})</span>
-                        </div>
-                    </div>
 
-                    {/* Form Fields */}
+                        {/* Right Column: Passenger Inputs & Payment Action */}
+                        <div className="md:col-span-7 space-y-3.5 order-1 md:order-2">
+                            {/* Form Fields */}
                     <div className="space-y-3.5">
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <div>
@@ -518,76 +584,12 @@ export function BookingCheckoutModal({
                             />
                         </div>
                     </div>
-
-                    {/* Financial Split Box */}
-                    <div className="rounded-2xl bg-[#FAF7F2] border border-[#ECE5D9] p-4 space-y-2 text-xs">
-                        <div className="flex justify-between items-center text-slate-700">
-                            <span>{t.bookingWidget.payTodayStripe} :</span>
-                            <span className="text-base font-black text-[#C9572C] font-mono">
-                                {currency === "EUR" ? `${depositAcompteEur} €` : `${depositAcompteMad} MAD`}
-                            </span>
-                        </div>
-                        <div className="flex justify-between items-center text-slate-500 text-[11px]">
-                            <span>{t.bookingWidget.balanceOnSite}</span>
-                            <span className="font-bold text-slate-900 font-mono">
-                                {currency === "EUR" ? `${balanceOnSiteEur} €` : `${balanceOnSiteMad} MAD`} (~{balanceOnSiteMad} DH)
-                            </span>
-                        </div>
-                        <div className="flex justify-between items-center text-slate-500 text-[11px] pt-1 border-t border-slate-200/80">
-                            <span>{t.bookingWidget.depositAtCounter} :</span>
-                            <span className="font-bold text-slate-900 font-mono">
-                                {hasFranchiseZero ? t.bookingWidget.zeroDepositActive : "300 €"}
-                            </span>
-                        </div>
-                        <div className="pt-2 border-t border-emerald-200/60 flex flex-wrap items-center justify-between gap-1 text-[10px] font-bold text-emerald-800">
-                            <span>
-                                {locale === "en"
-                                    ? "✓ 20% Deposit 100% refundable up to 48h prior"
-                                    : locale === "es"
-                                    ? "✓ Anticipo 20% 100% reembolsable hasta 48h antes"
-                                    : locale === "nl"
-                                    ? "✓ 20% Aanbetaling 100% terugbetaalbaar tot 48u vooraf"
-                                    : "✓ Acompte 20% remboursable à 100% jusqu'à 48h avant"}
-                            </span>
-                            <span>
-                                {locale === "en"
-                                    ? "✓ 80% paid after airport car inspection"
-                                    : locale === "es"
-                                    ? "✓ 80% al recibir e inspeccionar el coche"
-                                    : locale === "nl"
-                                    ? "✓ 80% pas na auto-inspectie op luchthaven"
-                                    : "✓ Solde 80% après inspection du véhicule"}
-                            </span>
-                        </div>
-                        <div className="pt-1.5 border-t border-slate-200/60 flex flex-wrap items-center justify-between gap-1 text-[10px] font-medium text-slate-600">
-                            <span>
-                                {locale === "en"
-                                    ? "✈️ Flight delay guarantee: live tracking on FlightRadar, zero late fees"
-                                    : locale === "es"
-                                    ? "✈️ Garantía vuelo retrasado: rastreo en vivo, sin gastos por retraso"
-                                    : locale === "nl"
-                                    ? "✈️ Vluchtvertraging garantie: live tracking, geen no-show kosten"
-                                    : "✈️ Garantie vol retardé : suivi en direct FlightRadar, zéro frais de retard"}
-                            </span>
-                            <span>
-                                {locale === "en"
-                                    ? "⛽ Same-to-Same fuel policy (photo check-in)"
-                                    : locale === "es"
-                                    ? "⛽ Combustible Mismo-a-Mismo (foto en entrega)"
-                                    : locale === "nl"
-                                    ? "⛽ Zelfde brandstofniveau retour (foto bij check-in)"
-                                    : "⛽ Carburant Niveau Identique (photo au départ)"}
-                            </span>
-                        </div>
-                    </div>
-
-                    {errorMessage && (
+                            {errorMessage && (
                         <div className="rounded-xl border border-red-200 bg-red-50 px-3.5 py-2.5 text-xs font-semibold text-red-700">
                             {errorMessage}
                         </div>
                     )}
-
-                    {/* Submit Button */}
+                            {/* Submit Button */}
                     <div className="space-y-2.5 pt-1">
                         <button
                             type="submit"
@@ -621,6 +623,8 @@ export function BookingCheckoutModal({
                         </div>
                         <div className="text-center text-[10px] text-slate-400">
                             {t.checkoutModal.cancelFreeNotice} • {t.checkoutModal.securePaymentNotice}
+                        </div>
+                    </div>
                         </div>
                     </div>
                 </form>

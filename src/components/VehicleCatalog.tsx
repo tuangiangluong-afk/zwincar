@@ -342,9 +342,8 @@ export default function VehicleCatalog({
 
                                     {/* Title & Category Equivalent Notice */}
                                     <Link href={vehicleLocalUrl} aria-label={`${vehicle.name} - ${currentHub.name}`}>
-                                        <h3 className="text-lg font-black text-slate-900 tracking-tight group-hover:text-[#C9572C] transition-colors flex items-center justify-between">
-                                            <span>{vehicle.name}</span>
-                                            <ExternalLink size={15} className="text-slate-300 group-hover:text-[#C9572C] transition-colors shrink-0 ml-1" />
+                                        <h3 className="text-lg font-black text-slate-900 tracking-tight group-hover:text-[#C9572C] transition-colors">
+                                            {vehicle.name}
                                         </h3>
                                     </Link>
                                     <p className="text-[11px] font-medium text-slate-500 mt-0.5 line-clamp-1">
@@ -361,7 +360,7 @@ export default function VehicleCatalog({
                                     </p>
 
                                     {/* Specs Pills */}
-                                    <div className="grid grid-cols-4 gap-2 my-4 py-3 border-y border-slate-100 text-xs text-slate-600">
+                                    <div className="grid grid-cols-4 gap-2 my-3 py-2.5 border-y border-slate-100 text-xs text-slate-600">
                                         <div className="flex flex-col items-center">
                                             <Users size={14} className="text-slate-400 mb-1" />
                                             <span className="font-semibold">{seatsLabel}</span>
@@ -383,46 +382,33 @@ export default function VehicleCatalog({
 
                                 {/* Dual Price Display & Action Buttons */}
                                 <div>
-                                    {/* High-Impact Deal Header */}
-                                    <div className="bg-[#FAF7F2] border border-[#E7DFD5] rounded-2xl p-2.5 mb-3">
-                                        <div className="flex items-center justify-between gap-1 mb-1">
-                                            <span className="text-[11px] font-semibold text-slate-500">
-                                                {t.catalog.airportCounterBenchmark}
-                                            </span>
-                                            <div className="flex items-center gap-1.5">
-                                                <span className="text-xs font-bold text-slate-400 line-through decoration-[#C9572C] decoration-2 font-mono">
-                                                    {formatPrice(vehicle.marketPriceEur, vehicle.marketPriceMad)}
-                                                </span>
-                                                <span className="bg-[#C9572C] text-white text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider shadow-xs">
-                                                    -{discountPct}%
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div className="flex items-center justify-between text-[11px] font-bold text-emerald-700 pt-1 border-t border-[#EAE3D6]">
-                                            <span>✓ {t.catalog.savingsTotalTrip.replace("{amount}", formatPrice((vehicle.marketPriceEur - vehicle.dailyPriceEur) * days, (vehicle.marketPriceMad - vehicle.dailyPriceMad) * days))}</span>
-                                            <span className="text-[10px] text-slate-500 font-medium">({days} {t.search.daysCount})</span>
-                                        </div>
-                                    </div>
-
-                                    <div className="flex items-baseline justify-between mb-3.5">
+                                    {/* Clean, Non-Slop Pricing Block */}
+                                    <div className="py-2.5 px-3 bg-[#FAF7F2] border border-[#ECE5D9] rounded-2xl mb-3 flex items-center justify-between">
                                         <div>
                                             <div className="flex items-baseline gap-1.5">
-                                                <span className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+                                                <span className="text-2xl font-black text-slate-900 tracking-tight">
                                                     {formatPrice(vehicle.dailyPriceEur, vehicle.dailyPriceMad)}
                                                 </span>
-                                                <span className="text-xs text-slate-600 font-medium">/ {t.bookingWidget.perDay}</span>
-                                                <span className="text-xs font-mono text-slate-500 font-semibold ml-0.5">
-                                                    ({currency === "EUR" ? `${vehicle.dailyPriceMad} MAD` : `${vehicle.dailyPriceEur} €`})
-                                                </span>
+                                                <span className="text-xs text-slate-500 font-medium">/ {t.bookingWidget.perDay}</span>
+                                                {discountPct > 0 && (
+                                                    <span className="text-xs font-semibold text-slate-400 line-through font-mono ml-0.5">
+                                                        {formatPrice(vehicle.marketPriceEur, vehicle.marketPriceMad)}
+                                                    </span>
+                                                )}
+                                            </div>
+                                            <div className="text-[11px] text-slate-500 font-medium mt-0.5 flex items-center gap-1">
+                                                <span>{days}{activeLocale === "en" ? "d" : activeLocale === "es" ? "d" : activeLocale === "nl" ? "d" : "j"} : ~{formatPrice(totalEst, totalEst * 11)}</span>
+                                                <span className="text-slate-300">•</span>
+                                                <span className="text-emerald-700 font-semibold">{t.catalog.freeDeliveryIncluded}</span>
                                             </div>
                                         </div>
-                                        <div className="text-right">
-                                            <div className="text-[10px] sm:text-[11px] font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 rounded-full inline-block">
-                                                {t.catalog.freeDeliveryIncluded}
-                                            </div>
-                                            <div className="text-[10px] text-slate-500 mt-1 font-mono">
-                                                {days}{activeLocale === "en" ? "d" : activeLocale === "es" ? "d" : activeLocale === "nl" ? "d" : "j"} : ~{formatPrice(totalEst, totalEst * 11)}
-                                            </div>
+                                        <div className="text-right pl-2 border-l border-slate-200/60">
+                                            <span className="text-[9px] uppercase font-bold tracking-wider text-slate-400 block">
+                                                {activeLocale === "en" ? "20% Deposit" : activeLocale === "es" ? "Anticipo 20%" : activeLocale === "nl" ? "20% Aanbetaling" : "Acompte 20%"}
+                                            </span>
+                                            <span className="text-sm font-black text-[#C9572C] font-mono">
+                                                {formatPrice(Math.round(totalEst * 0.2), Math.round(totalEst * 0.2 * 11))}
+                                            </span>
                                         </div>
                                     </div>
 
