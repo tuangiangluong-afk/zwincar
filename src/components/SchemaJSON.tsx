@@ -10,6 +10,17 @@ interface SchemaJSONProps {
     faqs?: { q: string; a: string }[];
 }
 
+const HUB_WIKIDATA: Record<string, { city: string; airport: string }> = {
+    marrakech: { city: "https://www.wikidata.org/wiki/Q101625", airport: "https://www.wikidata.org/wiki/Q1364506" },
+    casablanca: { city: "https://www.wikidata.org/wiki/Q7903", airport: "https://www.wikidata.org/wiki/Q500132" },
+    agadir: { city: "https://www.wikidata.org/wiki/Q170516", airport: "https://www.wikidata.org/wiki/Q548816" },
+    tanger: { city: "https://www.wikidata.org/wiki/Q126148", airport: "https://www.wikidata.org/wiki/Q1417088" },
+    fes: { city: "https://www.wikidata.org/wiki/Q80985", airport: "https://www.wikidata.org/wiki/Q1431326" },
+    rabat: { city: "https://www.wikidata.org/wiki/Q3551", airport: "https://www.wikidata.org/wiki/Q1369324" },
+    ouarzazate: { city: "https://www.wikidata.org/wiki/Q505232", airport: "https://www.wikidata.org/wiki/Q1432289" },
+    nador: { city: "https://www.wikidata.org/wiki/Q849492", airport: "https://www.wikidata.org/wiki/Q1432144" },
+};
+
 export default function SchemaJSON({
     type = "Custom",
     schema: providedSchema,
@@ -51,6 +62,13 @@ export default function SchemaJSON({
             priceRange: "26€ - 95€",
             currenciesAccepted: "EUR, MAD, USD, GBP",
             paymentAccepted: "Cash, Debit Card, Credit Card, Stripe",
+            knowsAbout: [
+                "https://www.wikidata.org/wiki/Q1107",
+                "https://www.wikidata.org/wiki/Q1025",
+                "No-deposit car rental",
+                "Moroccan highway police checkpoints",
+                "High Atlas Tizi n'Tichka driving protocols",
+            ],
             address: {
                 "@type": "PostalAddress",
                 streetAddress: hub ? hub.airportName : "Aéroport Marrakech-Ménara (RAK)",
@@ -65,8 +83,17 @@ export default function SchemaJSON({
                           longitude: hub.lng,
                       },
                       areaServed: [
-                          { "@type": "City", name: hub.name },
-                          { "@type": "Airport", name: hub.airportName, iataCode: hub.airportCode },
+                          {
+                              "@type": "City",
+                              name: hub.name,
+                              ...(HUB_WIKIDATA[hub.slug]?.city ? { sameAs: HUB_WIKIDATA[hub.slug].city } : {}),
+                          },
+                          {
+                              "@type": "Airport",
+                              name: hub.airportName,
+                              iataCode: hub.airportCode,
+                              ...(HUB_WIKIDATA[hub.slug]?.airport ? { sameAs: HUB_WIKIDATA[hub.slug].airport } : {}),
+                          },
                       ],
                   }
                 : {}),

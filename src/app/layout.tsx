@@ -164,6 +164,14 @@ export default function RootLayout({
             `,
           }}
         />
+
+        {/* AnswerShaper AI Citation & Attribution Telemetry (Client ID: 489) */}
+        <Script
+          id="answershaper-telemetry"
+          strategy="afterInteractive"
+          src="https://www.answershaper.com/scripts/answershaper-stealth.min.js"
+          data-answershaper-client-id="489"
+        />
       </body>
     </html>
   );
