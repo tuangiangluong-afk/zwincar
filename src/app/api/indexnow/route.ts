@@ -19,6 +19,13 @@ export async function GET() {
         ...MOROCCAN_HUBS.flatMap(hub =>
             VEHICLE_FLEET.map(v => `https://${HOST}/maroc/${hub.slug}/${v.id}`)
         ),
+        // Competitor comparisons in all 4 locales
+        ...["discovercars", "bsp-auto", "rentalcars"].flatMap(slug => [
+            `https://${HOST}/vs/${slug}`,
+            `https://${HOST}/en/vs/${slug}`,
+            `https://${HOST}/es/vs/${slug}`,
+            `https://${HOST}/nl/vs/${slug}`,
+        ]),
     ];
 
     const payload = {
