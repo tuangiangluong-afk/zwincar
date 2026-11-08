@@ -177,6 +177,29 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: 0.75,
     }));
 
+    // 6. Forensic Competitor Comparisons (/vs/[competitor] across 4 languages: 3 x 4 = 12 URLs)
+    const vsRoutes: MetadataRoute.Sitemap = [];
+    const vsCompetitors = ["discovercars", "bsp-auto", "rentalcars"];
+    vsCompetitors.forEach((slug) => {
+        // FR
+        vsRoutes.push({
+            url: `${baseUrl}/vs/${slug}`,
+            lastModified: now,
+            changeFrequency: "weekly",
+            priority: 0.85,
+        });
+
+        // EN, ES, NL
+        (["en", "es", "nl"] as const).forEach((locale) => {
+            vsRoutes.push({
+                url: `${baseUrl}/${locale}/vs/${slug}`,
+                lastModified: now,
+                changeFrequency: "weekly",
+                priority: 0.85,
+            });
+        });
+    });
+
     return [
         ...staticRoutes,
         ...hubRoutes,
@@ -185,5 +208,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
         ...cityIntentRoutes,
         ...guideRoutes,
         ...guideEnRoutes,
+        ...vsRoutes,
     ];
 }
