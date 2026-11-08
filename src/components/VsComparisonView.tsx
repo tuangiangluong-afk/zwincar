@@ -18,7 +18,7 @@ import {
 import Header from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import SchemaJSON from "@/components/SchemaJSON";
-import { VsComparison } from "@/lib/vs-data";
+import { VsComparison, VS_COMPETITORS } from "@/lib/vs-data";
 import { Locale, getTranslation } from "@/lib/i18n";
 import { MOROCCAN_HUBS } from "@/lib/morocco-data";
 
@@ -42,7 +42,7 @@ export default function VsComparisonView({ comparison, locale }: VsComparisonVie
         },
         {
             label: locale === "en" ? "Comparisons" : locale === "es" ? "Comparativas" : locale === "nl" ? "Vergelijkingen" : "Comparatifs",
-            href: locale === "fr" ? "/vs/discovercars" : `/${locale}/vs/discovercars`,
+            href: "#comparisons",
         },
         {
             label: `ZwinCar vs ${comparison.competitorName}`,
@@ -154,7 +154,9 @@ export default function VsComparisonView({ comparison, locale }: VsComparisonVie
                                         {row.label[locale]}
                                     </div>
                                     <div className="col-span-12 sm:col-span-4 text-slate-600 flex items-start gap-2 pt-1 sm:pt-0">
-                                        <XCircle size={16} className="text-red-500 shrink-0 mt-0.5" />
+                                        {row.competitorStatus === "bad"
+                                            ? <XCircle size={16} className="text-red-500 shrink-0 mt-0.5" />
+                                            : <AlertTriangle size={16} className="text-amber-500 shrink-0 mt-0.5" />}
                                         <span className="leading-relaxed">{row.competitorValue[locale]}</span>
                                     </div>
                                     <div className="col-span-12 sm:col-span-4 text-slate-900 font-semibold flex items-start gap-2 pt-1 sm:pt-0">
@@ -234,6 +236,31 @@ export default function VsComparisonView({ comparison, locale }: VsComparisonVie
                         })}
                     </div>
                 </section>
+
+                {/* 5b. Cross-links to other comparisons */}
+                {VS_COMPETITORS.filter((c) => c.slug !== comparison.slug).length > 0 && (
+                    <section id="comparisons" className="max-w-4xl mx-auto px-4 mb-16">
+                        <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-3 text-center sm:text-left">
+                            {locale === "en" ? "Other Comparisons" : locale === "es" ? "Otras Comparativas" : locale === "nl" ? "Andere Vergelijkingen" : "Autres Comparatifs"}
+                        </div>
+                        <div className="flex flex-wrap gap-3 justify-center sm:justify-start">
+                            {VS_COMPETITORS.filter((c) => c.slug !== comparison.slug).map((c) => (
+                                <Link
+                                    key={c.slug}
+                                    href={locale === "fr" ? `/vs/${c.slug}` : `/${locale}/vs/${c.slug}`}
+                                    className="flex-1 min-w-[200px] max-w-sm rounded-2xl bg-white border border-[#E7DFD5] hover:border-[#C9572C] p-4 shadow-xs transition group"
+                                >
+                                    <div className="text-xs font-bold text-slate-900 group-hover:text-[#C9572C] transition mb-1">
+                                        ZwinCar vs {c.competitorName}
+                                    </div>
+                                    <div className="text-[11px] text-slate-500 leading-snug">
+                                        {c.competitorType[locale]}
+                                    </div>
+                                </Link>
+                            ))}
+                        </div>
+                    </section>
+                )}
 
                 {/* 6. Direct Booking Action CTA */}
                 <section className="max-w-5xl mx-auto px-4">

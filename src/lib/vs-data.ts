@@ -1,4 +1,4 @@
-import { Locale } from "./i18n";
+import type { Locale } from "./i18n.ts";
 
 export interface VsComparison {
     slug: string;
