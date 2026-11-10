@@ -34,8 +34,8 @@ export default function VendorLoginPage() {
             return;
         }
 
-        if (password.length < 6) {
-            setError("Le mot de passe doit comporter au moins 6 caractères.");
+        if (password.length < 8) {
+            setError("Le mot de passe doit comporter au moins 8 caractères.");
             return;
         }
 

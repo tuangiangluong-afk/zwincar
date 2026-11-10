@@ -60,7 +60,7 @@ export default function VendorRegisterPage() {
     const [firstCarModel, setFirstCarModel] = useState("Dacia Sandero Stepway");
     const [firstCarPlate, setFirstCarPlate] = useState("");
     const [firstCarPriceMad, setFirstCarPriceMad] = useState("280");
-    const [agreedCharter, setAgreedCharter] = useState(true);
+    const [agreedCharter, setAgreedCharter] = useState(false);
 
     const handleNextStep1 = (e: React.FormEvent) => {
         e.preventDefault();
@@ -395,6 +395,7 @@ export default function VendorRegisterPage() {
                                     <button
                                         type="button"
                                         onClick={() => setShowAdvanced(!showAdvanced)}
+                                        aria-expanded={showAdvanced}
                                         className="text-[11px] font-bold text-slate-500 hover:text-[#C9572C] transition-colors inline-flex items-center gap-1 cursor-pointer"
                                     >
                                         {showAdvanced ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
