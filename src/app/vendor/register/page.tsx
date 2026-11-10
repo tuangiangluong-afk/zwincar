@@ -13,57 +13,52 @@ import {
     CheckCircle2,
     ArrowRight,
     ArrowLeft,
-    FileText,
-    MapPin,
     AlertCircle,
-    Check,
-    Plus,
-    Compass,
-    Fuel,
-    Cog,
+    Eye,
+    EyeOff,
+    ChevronDown,
+    ChevronUp,
+    Loader2,
 } from "lucide-react";
 import Logo from "@/components/Logo";
-import { MOROCCAN_HUBS, VEHICLE_FLEET } from "@/lib/morocco-data";
-import {
-    saveVendorProfile,
-    saveVendorFleet,
-    VendorProfile,
-    VendorVehicle,
-    INITIAL_VENDOR_FLEET,
-} from "@/lib/vendor-auth";
+import { MOROCCAN_HUBS } from "@/lib/morocco-data";
+import { saveVendorProfile } from "@/lib/vendor-auth";
+
+// Modèles populaires au Maroc avec tarifs moyens indicatifs
+const POPULAR_FLEET_MODELS = [
+    { name: "Dacia Sandero Stepway", defaultPrice: 280, tag: "Le plus loué" },
+    { name: "Renault Clio 5 Automatique", defaultPrice: 330, tag: "Automatique" },
+    { name: "Dacia Duster 4x4 Prestige", defaultPrice: 390, tag: "SUV Pistes" },
+    { name: "Peugeot 208 PureTech", defaultPrice: 270, tag: "Économique" },
+    { name: "Hyundai Tucson BVA Luxe", defaultPrice: 590, tag: "SUV Premium" },
+    { name: "Autre véhicule", defaultPrice: 300, tag: "" },
+];
 
 export default function VendorRegisterPage() {
     const router = useRouter();
-    const [step, setStep] = useState<1 | 2 | 3>(1);
+    const [step, setStep] = useState<1 | 2>(1);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showAdvanced, setShowAdvanced] = useState(false);
 
-    // Step 1: Agency legal identity
+    // Étape 1 : Agence & Accès
     const [agencyName, setAgencyName] = useState("");
     const [cityHub, setCityHub] = useState("marrakech");
     const [iceNumber, setIceNumber] = useState("");
-    const [rcNumber, setRcNumber] = useState("");
-    const [ifNumber, setIfNumber] = useState("");
-    const [ministryLicenseNumber, setMinistryLicenseNumber] = useState("");
-    const [ribNumber, setRibNumber] = useState("");
-    const [address, setAddress] = useState("");
-
-    // Step 2: Manager credentials
     const [managerName, setManagerName] = useState("");
-    const [managerPhone, setManagerPhone] = useState("+212 ");
-    const [dispatchPhone247, setDispatchPhone247] = useState("");
+    const [managerPhone, setManagerPhone] = useState("");
     const [managerEmail, setManagerEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [passwordConfirm, setPasswordConfirm] = useState("");
 
-    // Step 3: Fleet & First vehicle
-    const [fleetSizeEstimate, setFleetSizeEstimate] = useState("10 à 25 véhicules");
+    // Champs fiscaux optionnels (repliés par défaut)
+    const [rcNumber, setRcNumber] = useState("");
+    const [ifNumber, setIfNumber] = useState("");
+    const [ribNumber, setRibNumber] = useState("");
+
+    // Étape 2 : 1er Véhicule
     const [firstCarModel, setFirstCarModel] = useState("Dacia Sandero Stepway");
     const [firstCarPlate, setFirstCarPlate] = useState("");
-    const [firstCarYear, setFirstCarYear] = useState("2024");
-    const [firstCarColor, setFirstCarColor] = useState("Gris Comète");
-    const [firstCarTransmission, setFirstCarTransmission] = useState<"Manuelle" | "Automatique">("Manuelle");
-    const [firstCarFuel, setFirstCarFuel] = useState<"Diesel" | "Essence">("Diesel");
     const [firstCarPriceMad, setFirstCarPriceMad] = useState("280");
     const [agreedCharter, setAgreedCharter] = useState(true);
 
@@ -72,43 +67,38 @@ export default function VendorRegisterPage() {
         setError(null);
 
         if (!agencyName.trim()) {
-            setError("Veuillez renseigner la raison sociale de votre agence.");
+            setError("Veuillez renseigner le nom de votre agence.");
             return;
         }
 
-        if (iceNumber.trim().length < 9) {
-            setError("Veuillez renseigner un numéro ICE valide (15 chiffres au Maroc).");
+        const cleanIce = iceNumber.trim().replace(/\s/g, "");
+        if (cleanIce.length < 8) {
+            setError("Numéro ICE invalide (au moins 8 chiffres requis au Maroc).");
             return;
         }
-
-        setStep(2);
-    };
-
-    const handleNextStep2 = (e: React.FormEvent) => {
-        e.preventDefault();
-        setError(null);
 
         if (!managerName.trim()) {
-            setError("Veuillez renseigner le nom du gérant ou responsable d'exploitation.");
+            setError("Veuillez renseigner le nom du gérant ou responsable.");
             return;
         }
 
-        if (!managerPhone.trim() || managerPhone.length < 9) {
-            setError("Le numéro WhatsApp direct est indispensable pour la conciergerie aéroport.");
+        const cleanPhone = managerPhone.trim().replace(/[\s.-]/g, "");
+        if (cleanPhone.length < 8) {
+            setError("Numéro WhatsApp valide requis pour recevoir les alertes de réservation.");
+            return;
+        }
+
+        if (!managerEmail.trim() || !managerEmail.includes("@")) {
+            setError("Veuillez renseigner un email professionnel valide.");
             return;
         }
 
         if (password.length < 12) {
-            setError("Le mot de passe doit comporter au moins 12 caractères pour la sécurité de votre flotte.");
+            setError("Le mot de passe doit comporter au moins 12 caractères.");
             return;
         }
 
-        if (password !== passwordConfirm) {
-            setError("Les deux mots de passe ne correspondent pas.");
-            return;
-        }
-
-        setStep(3);
+        setStep(2);
     };
 
     const handleFinalSubmit = async (e: React.FormEvent) => {
@@ -116,12 +106,12 @@ export default function VendorRegisterPage() {
         setError(null);
 
         if (!firstCarPlate.trim()) {
-            setError("Veuillez renseigner la plaque d'immatriculation du premier véhicule.");
+            setError("Veuillez renseigner l'immatriculation du premier véhicule.");
             return;
         }
 
         if (!agreedCharter) {
-            setError("Vous devez accepter la charte de transparence ZwinCar.");
+            setError("Veuillez accepter la charte de transparence ZwinCar.");
             return;
         }
 
@@ -132,27 +122,20 @@ export default function VendorRegisterPage() {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    agencyName,
+                    agencyName: agencyName.trim(),
                     cityHub,
-                    iceNumber,
-                    rcNumber,
-                    ifNumber,
-                    ministryLicenseNumber,
-                    ribNumber,
-                    address,
-                    managerName,
-                    managerPhone,
-                    dispatchPhone247: dispatchPhone247.trim() || managerPhone.trim(),
-                    managerEmail,
+                    iceNumber: iceNumber.trim(),
+                    rcNumber: rcNumber.trim() || undefined,
+                    ifNumber: ifNumber.trim() || undefined,
+                    ribNumber: ribNumber.trim() || undefined,
+                    managerName: managerName.trim(),
+                    managerPhone: managerPhone.trim(),
+                    dispatchPhone247: managerPhone.trim(),
+                    managerEmail: managerEmail.trim().toLowerCase(),
                     password,
-                    fleetSizeEstimate,
                     firstCar: {
                         model: firstCarModel,
-                        plate: firstCarPlate,
-                        color: firstCarColor,
-                        year: parseInt(firstCarYear, 10) || 2024,
-                        transmission: firstCarTransmission,
-                        fuel: firstCarFuel,
+                        plate: firstCarPlate.trim(),
                         dailyPriceMad: parseInt(firstCarPriceMad, 10) || 280,
                     },
                 }),
@@ -172,6 +155,7 @@ export default function VendorRegisterPage() {
                 if (data.agency) {
                     saveVendorProfile(data.agency);
                 }
+                localStorage.setItem("zwincar_vendor_authenticated", "true");
             }
 
             router.push("/vendor/dashboard");
@@ -181,555 +165,403 @@ export default function VendorRegisterPage() {
         }
     };
 
+    const handleModelChange = (modelName: string) => {
+        setFirstCarModel(modelName);
+        const match = POPULAR_FLEET_MODELS.find((m) => m.name === modelName);
+        if (match && match.defaultPrice) {
+            setFirstCarPriceMad(match.defaultPrice.toString());
+        }
+    };
+
     return (
-        <div className="min-h-screen bg-[#FAF7F2] text-slate-900 flex flex-col justify-between font-sans">
-            {/* Top Minimal Nav */}
-            <header className="px-6 py-4 flex items-center justify-between border-b border-[#E7DFD5] bg-white/70 backdrop-blur-md">
+        <div className="min-h-screen bg-[#FAF7F2] text-slate-900 flex flex-col justify-between font-sans selection:bg-[#C9572C]/20 selection:text-[#C9572C]">
+            {/* Header épuré */}
+            <header className="px-5 sm:px-8 py-4 flex items-center justify-between border-b border-[#E7DFD5] bg-white/80 backdrop-blur-md">
                 <Logo variant="full" theme="dark" size="sm" />
-                <div className="flex items-center gap-3 text-xs font-semibold">
-                    <span className="text-slate-500 hidden sm:inline">Déjà inscrit ?</span>
+                <div className="flex items-center gap-2 text-xs">
+                    <span className="text-slate-500 hidden sm:inline">Déjà partenaire ?</span>
                     <Link
                         href="/vendor/login"
-                        className="px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-[#C9572C] text-white transition shadow-xs"
+                        className="px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-[#C9572C] text-white font-bold transition shadow-xs"
                     >
-                        Se connecter
+                        Connexion
                     </Link>
                 </div>
             </header>
 
-            {/* Stepper Progress Bar */}
-            <div className="max-w-2xl mx-auto w-full px-4 pt-6">
-                <div className="flex items-center justify-between relative mb-2">
-                    <div className="absolute left-0 top-1/2 -translate-y-1/2 h-0.5 bg-slate-200 w-full z-0"></div>
-                    <div
-                        className="absolute left-0 top-1/2 -translate-y-1/2 h-0.5 bg-[#C9572C] transition-all duration-300 z-0"
-                        style={{ width: step === 1 ? "15%" : step === 2 ? "50%" : "100%" }}
-                    ></div>
-
-                    <div className="relative z-10 flex flex-col items-center">
+            {/* Stepper minimaliste */}
+            <div className="max-w-xl mx-auto w-full px-4 pt-6">
+                <div className="flex items-center justify-center gap-3">
+                    <div className="flex items-center gap-2">
                         <div
-                            className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
-                                step >= 1 ? "bg-[#C9572C] text-white shadow-sm" : "bg-slate-200 text-slate-600"
+                            className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
+                                step === 1
+                                    ? "bg-[#C9572C] text-white shadow-xs"
+                                    : "bg-emerald-600 text-white"
                             }`}
                         >
-                            {step > 1 ? <Check size={16} /> : "1"}
+                            {step > 1 ? "✓" : "1"}
                         </div>
-                        <span className="text-[10px] font-bold text-slate-600 mt-1 uppercase tracking-wider">
-                            Agence & ICE
+                        <span
+                            className={`text-xs font-bold uppercase tracking-wider ${
+                                step === 1 ? "text-slate-900" : "text-emerald-700"
+                            }`}
+                        >
+                            Agence & Contact
                         </span>
                     </div>
 
-                    <div className="relative z-10 flex flex-col items-center">
+                    <div className="w-12 h-0.5 bg-slate-200">
                         <div
-                            className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
-                                step >= 2 ? "bg-[#C9572C] text-white shadow-sm" : "bg-white border-2 border-slate-200 text-slate-400"
+                            className={`h-full bg-[#C9572C] transition-all duration-300 ${
+                                step === 2 ? "w-full" : "w-0"
                             }`}
-                        >
-                            {step > 2 ? <Check size={16} /> : "2"}
-                        </div>
-                        <span className="text-[10px] font-bold text-slate-600 mt-1 uppercase tracking-wider">
-                            Gérant & Accès
-                        </span>
+                        />
                     </div>
 
-                    <div className="relative z-10 flex flex-col items-center">
+                    <div className="flex items-center gap-2">
                         <div
-                            className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
-                                step === 3 ? "bg-[#C9572C] text-white shadow-sm" : "bg-white border-2 border-slate-200 text-slate-400"
+                            className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
+                                step === 2
+                                    ? "bg-[#C9572C] text-white shadow-xs"
+                                    : "bg-slate-200 text-slate-500"
                             }`}
                         >
-                            3
+                            2
                         </div>
-                        <span className="text-[10px] font-bold text-slate-600 mt-1 uppercase tracking-wider">
-                            Flotte Initiale
+                        <span
+                            className={`text-xs font-bold uppercase tracking-wider ${
+                                step === 2 ? "text-slate-900" : "text-slate-400"
+                            }`}
+                        >
+                            Premier Véhicule
                         </span>
                     </div>
                 </div>
             </div>
 
-            {/* Main Form Container */}
-            <main className="flex-1 flex items-center justify-center p-4 sm:p-6 mb-8">
-                <div className="w-full max-w-2xl bg-white rounded-3xl border border-[#E7DFD5] shadow-xl p-6 sm:p-8 space-y-6">
-                    {/* Error Banner */}
+            {/* Container principal */}
+            <main className="flex-1 flex items-center justify-center px-4 py-6 sm:py-10">
+                <div className="w-full max-w-xl bg-white rounded-3xl border border-[#E7DFD5] shadow-xl p-6 sm:p-8 space-y-6">
+                    {/* Alerte Erreur */}
                     {error && (
-                        <div className="p-3.5 rounded-2xl bg-red-50 border border-red-200 text-red-700 text-xs font-semibold flex items-center gap-2">
-                            <AlertCircle size={16} className="shrink-0" />
+                        <div className="p-3.5 rounded-2xl bg-red-50 border border-red-200 text-red-700 text-xs font-semibold flex items-center gap-2 animate-in fade-in">
+                            <AlertCircle size={15} className="shrink-0 text-red-600" />
                             <span>{error}</span>
                         </div>
                     )}
 
-                    {/* STEP 1: Agence & Légalité Maroc */}
+                    {/* ÉTAPE 1 : Agence & Contact Gérant */}
                     {step === 1 && (
                         <form onSubmit={handleNextStep1} className="space-y-5 animate-in fade-in">
-                            <div>
-                                <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#C9572C]/10 text-[#C9572C] text-[11px] font-bold uppercase tracking-wider mb-1">
-                                    <Building2 size={13} />
-                                    <span>Étape 1 sur 3</span>
-                                </div>
+                            <div className="space-y-1">
                                 <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-                                    Identité de votre Agence de Location
+                                    Inscrire votre Agence
                                 </h1>
-                                <h2 className="text-xs text-slate-500 mt-0.5 font-normal">
-                                    Loueurs professionnels déclarés et certifiés au Maroc.
-                                </h2>
-                            </div>
-
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div className="sm:col-span-2">
-                                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
-                                        Raison Sociale / Nom Commercial de l'Agence *
-                                    </label>
-                                    <input
-                                        type="text"
-                                        required
-                                        value={agencyName}
-                                        onChange={(e) => setAgencyName(e.target.value)}
-                                        placeholder="Ex: Atlas Drive Cars SARL"
-                                        className="w-full h-11 px-4 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none focus:border-[#C9572C]"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
-                                        Ville Hub Principale (Aéroport) *
-                                    </label>
-                                    <select
-                                        value={cityHub}
-                                        onChange={(e) => setCityHub(e.target.value)}
-                                        className="w-full h-11 px-4 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none focus:border-[#C9572C]"
-                                    >
-                                        {MOROCCAN_HUBS.map((hub) => (
-                                            <option key={hub.slug} value={hub.slug}>
-                                                {hub.name} — {hub.airportName} ({hub.airportCode})
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-
-                                <div>
-                                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
-                                        Numéro ICE (15 Chiffres) *
-                                    </label>
-                                    <input
-                                        type="text"
-                                        required
-                                        value={iceNumber}
-                                        onChange={(e) => setIceNumber(e.target.value)}
-                                        placeholder="002847192000084"
-                                        className="w-full h-11 px-4 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs sm:text-sm font-mono font-semibold text-slate-900 focus:outline-none focus:border-[#C9572C]"
-                                    />
-                                    <span className="text-[10px] text-slate-400 mt-0.5 block">
-                                        Obligatoire au Maroc pour l'agrément légal de transport
-                                    </span>
-                                </div>
-
-                                <div>
-                                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
-                                        Registre du Commerce (RC) & Ville
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={rcNumber}
-                                        onChange={(e) => setRcNumber(e.target.value)}
-                                        placeholder="Ex: 84920 / Marrakech"
-                                        className="w-full h-11 px-4 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none focus:border-[#C9572C]"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
-                                        N° Agrément Ministère des Transports
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={ministryLicenseNumber}
-                                        onChange={(e) => setMinistryLicenseNumber(e.target.value)}
-                                        placeholder="Ex: 24/DRTR/2021 (ou En cours)"
-                                        className="w-full h-11 px-4 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none focus:border-[#C9572C]"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
-                                        Identifiant Fiscal (IF) / Patente
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={ifNumber}
-                                        onChange={(e) => setIfNumber(e.target.value)}
-                                        placeholder="Ex: 40182934"
-                                        className="w-full h-11 px-4 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none focus:border-[#C9572C]"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
-                                        Taille Estimée de votre Parc
-                                    </label>
-                                    <select
-                                        value={fleetSizeEstimate}
-                                        onChange={(e) => setFleetSizeEstimate(e.target.value)}
-                                        className="w-full h-11 px-4 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none focus:border-[#C9572C]"
-                                    >
-                                        <option value="5 à 15 véhicules">5 à 15 véhicules</option>
-                                        <option value="15 à 30 véhicules">15 à 30 véhicules</option>
-                                        <option value="30 à 60 véhicules">30 à 60 véhicules</option>
-                                        <option value="+ de 60 véhicules">+ de 60 véhicules</option>
-                                    </select>
-                                </div>
-
-                                <div className="sm:col-span-2">
-                                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
-                                        RIB Bancaire Marocain (24 Chiffres — Pour les Règlements)
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={ribNumber}
-                                        onChange={(e) => setRibNumber(e.target.value)}
-                                        placeholder="Ex: 011 780 0000 123456789012 34 (Attijariwafa, CIH, BCP...)"
-                                        className="w-full h-11 px-4 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs sm:text-sm font-mono font-semibold text-slate-900 focus:outline-none focus:border-[#C9572C]"
-                                    />
-                                    <span className="text-[10px] text-slate-400 mt-0.5 block">
-                                        Sert au versement automatique des soldes et suppléments perçus en ligne
-                                    </span>
-                                </div>
-
-                                <div className="sm:col-span-2">
-                                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
-                                        Adresse du Bureau / Garage de Préparation
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={address}
-                                        onChange={(e) => setAddress(e.target.value)}
-                                        placeholder="Ex: Avenue Mohammed V, Guéliz, Marrakech"
-                                        className="w-full h-11 px-4 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none focus:border-[#C9572C]"
-                                    />
-                                </div>
-                            </div>
-
-                            <button
-                                type="submit"
-                                className="w-full h-12 rounded-2xl bg-[#C9572C] hover:bg-[#B24922] text-white font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md mt-6"
-                            >
-                                <span>Continuer vers les Accès Gérant</span>
-                                <ArrowRight size={15} />
-                            </button>
-                        </form>
-                    )}
-
-                    {/* STEP 2: Gérant & Authentification */}
-                    {step === 2 && (
-                        <form onSubmit={handleNextStep2} className="space-y-5 animate-in fade-in">
-                            <div>
-                                <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#C9572C]/10 text-[#C9572C] text-[11px] font-bold uppercase tracking-wider mb-1">
-                                    <Phone size={13} />
-                                    <span>Étape 2 sur 3</span>
-                                </div>
-                                <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-                                    Contact Gérant & Accès Espace Pro
-                                </h2>
-                                <p className="text-xs text-slate-500 mt-0.5">
-                                    Ce numéro WhatsApp recevra instantanément les alertes d'atterrissage et de réservations.
+                                <p className="text-xs text-slate-500">
+                                    Accédez aux clients arrivant aux aéroports marocains sans intermédiaire.
                                 </p>
                             </div>
 
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div className="sm:col-span-2">
-                                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
-                                        Nom & Prénom du Responsable / Gérant *
-                                    </label>
-                                    <input
-                                        type="text"
-                                        required
-                                        value={managerName}
-                                        onChange={(e) => setManagerName(e.target.value)}
-                                        placeholder="Ex: Karim Benjelloun"
-                                        className="w-full h-11 px-4 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none focus:border-[#C9572C]"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
-                                        Numéro WhatsApp Direct (Gérant / Responsable) *
-                                    </label>
-                                    <input
-                                        type="tel"
-                                        required
-                                        value={managerPhone}
-                                        onChange={(e) => setManagerPhone(e.target.value)}
-                                        placeholder="+212 6 61 23 45 67"
-                                        className="w-full h-11 px-4 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs sm:text-sm font-mono font-semibold text-slate-900 focus:outline-none focus:border-[#C9572C]"
-                                    />
-                                    <span className="text-[10px] text-slate-400 mt-0.5 block">
-                                        Reçoit les alertes WhatsApp instantanées à chaque résa
-                                    </span>
-                                </div>
-
-                                <div>
-                                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
-                                        Ligne d'Astreinte 24/7 / Agent de Piste Aéroport
-                                    </label>
-                                    <input
-                                        type="tel"
-                                        value={dispatchPhone247}
-                                        onChange={(e) => setDispatchPhone247(e.target.value)}
-                                        placeholder="+212 7 20 79 40 46 (si différent du gérant)"
-                                        className="w-full h-11 px-4 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs sm:text-sm font-mono font-semibold text-slate-900 focus:outline-none focus:border-[#C9572C]"
-                                    />
-                                    <span className="text-[10px] text-slate-400 mt-0.5 block">
-                                        Agent sur le parking pour les vols de nuit ou retards
-                                    </span>
-                                </div>
-
-                                <div className="sm:col-span-2">
-                                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
-                                        Email Professionnel de Connexion *
-                                    </label>
-                                    <input
-                                        type="email"
-                                        required
-                                        value={managerEmail}
-                                        onChange={(e) => setManagerEmail(e.target.value)}
-                                        placeholder="karim@agence-marrakech.ma"
-                                        className="w-full h-11 px-4 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none focus:border-[#C9572C]"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
-                                        Créer un Mot de Passe *
-                                    </label>
-                                    <input
-                                        type="password"
-                                        required
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                        placeholder="Min 12 caractères sécurisés"
-                                        className="w-full h-11 px-4 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none focus:border-[#C9572C]"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
-                                        Confirmer le Mot de Passe *
-                                    </label>
-                                    <input
-                                        type="password"
-                                        required
-                                        value={passwordConfirm}
-                                        onChange={(e) => setPasswordConfirm(e.target.value)}
-                                        placeholder="••••••••••••"
-                                        className="w-full h-11 px-4 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none focus:border-[#C9572C]"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="flex items-center gap-3 pt-2">
-                                <button
-                                    type="button"
-                                    onClick={() => setStep(1)}
-                                    className="h-12 px-5 rounded-2xl border border-slate-300 text-slate-700 font-bold text-xs uppercase tracking-wider hover:bg-slate-50 transition flex items-center gap-1.5 cursor-pointer"
-                                >
-                                    <ArrowLeft size={15} />
-                                    <span>Retour</span>
-                                </button>
-                                <button
-                                    type="submit"
-                                    className="flex-1 h-12 rounded-2xl bg-[#C9572C] hover:bg-[#B24922] text-white font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md"
-                                >
-                                    <span>Continuer vers l'Ajout de Flotte</span>
-                                    <ArrowRight size={15} />
-                                </button>
-                            </div>
-                        </form>
-                    )}
-
-                    {/* STEP 3: Flotte & Premier Véhicule */}
-                    {step === 3 && (
-                        <form onSubmit={handleFinalSubmit} className="space-y-5 animate-in fade-in">
-                            <div>
-                                <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#C9572C]/10 text-[#C9572C] text-[11px] font-bold uppercase tracking-wider mb-1">
-                                    <Car size={13} />
-                                    <span>Étape 3 sur 3</span>
-                                </div>
-                                <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-                                    Ajoutez votre Premier Véhicule
-                                </h2>
-                                <p className="text-xs text-slate-500 mt-0.5">
-                                    Ce véhicule sera immédiatement visible dans votre tableau de bord avec son switch de stop-sell 1-clic.
-                                </p>
-                            </div>
-
-                            {/* First Car Card Box */}
-                            <div className="p-4 sm:p-5 rounded-2xl bg-[#FAF7F2] border border-[#E7DFD5] space-y-4">
+                            <div className="space-y-4">
+                                {/* Nom agence & Ville */}
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                                    <div className="sm:col-span-2">
+                                        <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">
+                                            Nom de l'agence *
+                                        </label>
+                                        <input
+                                            type="text"
+                                            required
+                                            value={agencyName}
+                                            onChange={(e) => setAgencyName(e.target.value)}
+                                            placeholder="Ex: Atlas Drive Cars SARL"
+                                            className="w-full h-11 px-3.5 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs sm:text-sm font-semibold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#C9572C] focus:bg-white focus:ring-2 focus:ring-[#C9572C]/10 transition-all"
+                                        />
+                                    </div>
+
                                     <div>
                                         <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">
-                                            Modèle du Véhicule *
+                                            Aéroport / Hub principal *
                                         </label>
                                         <select
-                                            value={firstCarModel}
-                                            onChange={(e) => setFirstCarModel(e.target.value)}
-                                            className="w-full h-10 px-3 rounded-xl bg-white border border-[#E7DFD5] text-xs font-semibold text-slate-900 focus:outline-none focus:border-[#C9572C]"
+                                            value={cityHub}
+                                            onChange={(e) => setCityHub(e.target.value)}
+                                            className="w-full h-11 px-3 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none focus:border-[#C9572C] focus:bg-white focus:ring-2 focus:ring-[#C9572C]/10 transition-all cursor-pointer"
                                         >
-                                            <option value="Dacia Sandero Stepway">Dacia Sandero Stepway (Citadine surélevée)</option>
-                                            <option value="Dacia Duster 4x4 Prestige">Dacia Duster 4x4 (SUV Pistes)</option>
-                                            <option value="Renault Clio 5 Automatique">Renault Clio 5 BVA (Confort)</option>
-                                            <option value="Hyundai Tucson BVA Luxe">Hyundai Tucson (SUV Premium)</option>
-                                            <option value="Peugeot 208 PureTech">Peugeot 208 (Économique)</option>
-                                            <option value="Toyota Land Cruiser Prado 7pl">Toyota Prado TX 7 places (4x4)</option>
-                                            <option value="Autre Modèle">Autre Modèle Spécifique</option>
+                                            {MOROCCAN_HUBS.map((hub) => (
+                                                <option key={hub.slug} value={hub.slug}>
+                                                    {hub.name} ({hub.airportCode})
+                                                </option>
+                                            ))}
                                         </select>
                                     </div>
 
                                     <div>
                                         <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">
-                                            Plaque d'Immatriculation Marocaine *
+                                            Numéro ICE (15 chiffres) *
+                                        </label>
+                                        <input
+                                            type="text"
+                                            required
+                                            value={iceNumber}
+                                            onChange={(e) => setIceNumber(e.target.value)}
+                                            placeholder="002847192000084"
+                                            className="w-full h-11 px-3.5 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs sm:text-sm font-mono font-semibold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#C9572C] focus:bg-white focus:ring-2 focus:ring-[#C9572C]/10 transition-all"
+                                        />
+                                    </div>
+                                </div>
+
+                                {/* Gérant, WhatsApp, Email, MDP */}
+                                <div className="pt-2 border-t border-slate-100 grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                                    <div>
+                                        <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">
+                                            Nom & Prénom du Gérant *
+                                        </label>
+                                        <input
+                                            type="text"
+                                            required
+                                            value={managerName}
+                                            onChange={(e) => setManagerName(e.target.value)}
+                                            placeholder="Karim Benjelloun"
+                                            className="w-full h-11 px-3.5 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs sm:text-sm font-semibold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#C9572C] focus:bg-white focus:ring-2 focus:ring-[#C9572C]/10 transition-all"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">
+                                            Numéro WhatsApp Direct *
+                                        </label>
+                                        <div className="relative">
+                                            <input
+                                                type="tel"
+                                                required
+                                                value={managerPhone}
+                                                onChange={(e) => setManagerPhone(e.target.value)}
+                                                placeholder="+212 6 61 23 45 67"
+                                                className="w-full h-11 pl-9 pr-3 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs sm:text-sm font-mono font-semibold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#C9572C] focus:bg-white focus:ring-2 focus:ring-[#C9572C]/10 transition-all"
+                                            />
+                                            <Phone size={15} className="absolute left-3 top-3.5 text-slate-400 pointer-events-none" />
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">
+                                            Email de Connexion *
+                                        </label>
+                                        <div className="relative">
+                                            <input
+                                                type="email"
+                                                required
+                                                autoComplete="username"
+                                                value={managerEmail}
+                                                onChange={(e) => setManagerEmail(e.target.value)}
+                                                placeholder="contact@agence.ma"
+                                                className="w-full h-11 pl-9 pr-3 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs sm:text-sm font-semibold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#C9572C] focus:bg-white focus:ring-2 focus:ring-[#C9572C]/10 transition-all"
+                                            />
+                                            <Mail size={15} className="absolute left-3 top-3.5 text-slate-400 pointer-events-none" />
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">
+                                            Mot de passe (min 12 car.) *
+                                        </label>
+                                        <div className="relative">
+                                            <input
+                                                type={showPassword ? "text" : "password"}
+                                                required
+                                                autoComplete="new-password"
+                                                value={password}
+                                                onChange={(e) => setPassword(e.target.value)}
+                                                placeholder="••••••••••••"
+                                                className="w-full h-11 pl-9 pr-9 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs sm:text-sm font-semibold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#C9572C] focus:bg-white focus:ring-2 focus:ring-[#C9572C]/10 transition-all"
+                                            />
+                                            <Lock size={15} className="absolute left-3 top-3.5 text-slate-400 pointer-events-none" />
+                                            <button
+                                                type="button"
+                                                onClick={() => setShowPassword(!showPassword)}
+                                                className="absolute right-3 top-3.5 text-slate-400 hover:text-slate-700 transition cursor-pointer"
+                                                tabIndex={-1}
+                                            >
+                                                {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Accordéon optionnel pour RC, IF, RIB */}
+                                <div className="pt-1">
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowAdvanced(!showAdvanced)}
+                                        className="text-[11px] font-bold text-slate-500 hover:text-[#C9572C] transition-colors inline-flex items-center gap-1 cursor-pointer"
+                                    >
+                                        {showAdvanced ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                                        <span>Informations fiscales & bancaires (RC, IF, RIB) • Optionnel</span>
+                                    </button>
+
+                                    {showAdvanced && (
+                                        <div className="mt-3 p-3.5 rounded-2xl bg-slate-50 border border-slate-200 grid grid-cols-1 sm:grid-cols-3 gap-3 animate-in fade-in duration-200">
+                                            <div>
+                                                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">
+                                                    RC & Ville
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    value={rcNumber}
+                                                    onChange={(e) => setRcNumber(e.target.value)}
+                                                    placeholder="94821 / Marrakech"
+                                                    className="w-full h-9 px-3 rounded-lg bg-white border border-slate-200 text-xs font-semibold text-slate-800 focus:outline-none focus:border-[#C9572C]"
+                                                />
+                                            </div>
+
+                                            <div>
+                                                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">
+                                                    Identifiant Fiscal (IF)
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    value={ifNumber}
+                                                    onChange={(e) => setIfNumber(e.target.value)}
+                                                    placeholder="40182934"
+                                                    className="w-full h-9 px-3 rounded-lg bg-white border border-slate-200 text-xs font-semibold text-slate-800 focus:outline-none focus:border-[#C9572C]"
+                                                />
+                                            </div>
+
+                                            <div>
+                                                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">
+                                                    RIB (24 Chiffres)
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    value={ribNumber}
+                                                    onChange={(e) => setRibNumber(e.target.value)}
+                                                    placeholder="011 780 0000..."
+                                                    className="w-full h-9 px-3 rounded-lg bg-white border border-slate-200 text-xs font-mono font-semibold text-slate-800 focus:outline-none focus:border-[#C9572C]"
+                                                />
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+
+                            <button
+                                type="submit"
+                                className="w-full h-11 rounded-xl bg-[#C9572C] hover:bg-[#B24922] text-white font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md shadow-[#C9572C]/20 active:scale-[0.99] mt-6"
+                            >
+                                <span>Continuer vers le premier véhicule</span>
+                                <ArrowRight size={15} />
+                            </button>
+                        </form>
+                    )}
+
+                    {/* ÉTAPE 2 : Premier Véhicule */}
+                    {step === 2 && (
+                        <form onSubmit={handleFinalSubmit} className="space-y-5 animate-in fade-in">
+                            <div className="space-y-1">
+                                <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+                                    Votre Premier Véhicule
+                                </h2>
+                                <p className="text-xs text-slate-500">
+                                    Ajoutez une première voiture pour activer instantanément votre tableau de bord.
+                                </p>
+                            </div>
+
+                            <div className="space-y-4">
+                                <div>
+                                    <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1.5">
+                                        Modèle du véhicule *
+                                    </label>
+                                    <select
+                                        value={firstCarModel}
+                                        onChange={(e) => handleModelChange(e.target.value)}
+                                        className="w-full h-11 px-3.5 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none focus:border-[#C9572C] focus:bg-white focus:ring-2 focus:ring-[#C9572C]/10 transition-all cursor-pointer"
+                                    >
+                                        {POPULAR_FLEET_MODELS.map((car) => (
+                                            <option key={car.name} value={car.name}>
+                                                {car.name} {car.tag ? `(${car.tag})` : ""}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                                    <div>
+                                        <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">
+                                            Plaque d'immatriculation *
                                         </label>
                                         <input
                                             type="text"
                                             required
                                             value={firstCarPlate}
                                             onChange={(e) => setFirstCarPlate(e.target.value)}
-                                            placeholder="Ex: 45821-B-26 ou WW-12345"
-                                            className="w-full h-10 px-3 rounded-xl bg-white border border-[#E7DFD5] text-xs font-mono font-bold text-slate-900 focus:outline-none focus:border-[#C9572C]"
+                                            placeholder="Ex: 45821-B-26 ou WW..."
+                                            className="w-full h-11 px-3.5 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs sm:text-sm font-mono font-bold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#C9572C] focus:bg-white focus:ring-2 focus:ring-[#C9572C]/10 transition-all"
                                         />
                                     </div>
 
                                     <div>
                                         <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">
-                                            Couleur de la Carrosserie
-                                        </label>
-                                        <input
-                                            type="text"
-                                            value={firstCarColor}
-                                            onChange={(e) => setFirstCarColor(e.target.value)}
-                                            placeholder="Gris Comète, Blanc Glacier..."
-                                            className="w-full h-10 px-3 rounded-xl bg-white border border-[#E7DFD5] text-xs font-semibold text-slate-900 focus:outline-none focus:border-[#C9572C]"
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">
-                                            Année de Mise en Circulation
-                                        </label>
-                                        <select
-                                            value={firstCarYear}
-                                            onChange={(e) => setFirstCarYear(e.target.value)}
-                                            className="w-full h-10 px-3 rounded-xl bg-white border border-[#E7DFD5] text-xs font-semibold text-slate-900 focus:outline-none focus:border-[#C9572C]"
-                                        >
-                                            <option value="2026">2026 (Neuf)</option>
-                                            <option value="2025">2025</option>
-                                            <option value="2024">2024</option>
-                                            <option value="2023">2023</option>
-                                            <option value="2022">2022</option>
-                                        </select>
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">
-                                            Boîte de Vitesses
-                                        </label>
-                                        <div className="grid grid-cols-2 gap-2 text-xs">
-                                            <button
-                                                type="button"
-                                                onClick={() => setFirstCarTransmission("Manuelle")}
-                                                className={`h-9 rounded-xl font-bold border transition cursor-pointer ${
-                                                    firstCarTransmission === "Manuelle"
-                                                        ? "bg-slate-900 text-white border-slate-900"
-                                                        : "bg-white text-slate-700 border-slate-200"
-                                                }`}
-                                            >
-                                                Manuelle
-                                            </button>
-                                            <button
-                                                type="button"
-                                                onClick={() => setFirstCarTransmission("Automatique")}
-                                                className={`h-9 rounded-xl font-bold border transition cursor-pointer ${
-                                                    firstCarTransmission === "Automatique"
-                                                        ? "bg-slate-900 text-white border-slate-900"
-                                                        : "bg-white text-slate-700 border-slate-200"
-                                                }`}
-                                            >
-                                                Automatique
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">
-                                            Tarif Journalier Souhaité (MAD / jour)
+                                            Tarif indicatif journalier (MAD)
                                         </label>
                                         <div className="relative">
                                             <input
                                                 type="number"
+                                                min="150"
+                                                max="3000"
                                                 value={firstCarPriceMad}
                                                 onChange={(e) => setFirstCarPriceMad(e.target.value)}
-                                                className="w-full h-10 pl-3 pr-12 rounded-xl bg-white border border-[#E7DFD5] text-xs font-mono font-bold text-slate-900 focus:outline-none focus:border-[#C9572C]"
+                                                className="w-full h-11 pl-3.5 pr-14 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs sm:text-sm font-mono font-bold text-slate-900 focus:outline-none focus:border-[#C9572C] focus:bg-white focus:ring-2 focus:ring-[#C9572C]/10 transition-all"
                                             />
-                                            <span className="absolute right-3 top-2.5 text-xs font-bold text-slate-400">
-                                                DH/j
+                                            <span className="absolute right-3.5 top-3 text-xs font-bold text-slate-400">
+                                                DH / jour
                                             </span>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            {/* Charte ZwinCar Reassurance */}
-                            <div className="p-4 rounded-2xl bg-white border border-slate-200 space-y-2 text-xs">
-                                <div className="font-bold text-slate-900 flex items-center gap-1.5">
-                                    <ShieldCheck size={16} className="text-[#C9572C]" />
-                                    <span>Charte Qualité Loueur Partenaire ZwinCar</span>
+                                {/* Accord de transparence sobre */}
+                                <div className="p-3.5 rounded-2xl bg-[#FAF7F2] border border-[#E7DFD5] space-y-2">
+                                    <label className="flex items-start gap-2.5 cursor-pointer text-slate-800 text-xs font-medium select-none">
+                                        <input
+                                            type="checkbox"
+                                            checked={agreedCharter}
+                                            onChange={(e) => setAgreedCharter(e.target.checked)}
+                                            className="w-4 h-4 rounded border-slate-300 text-[#C9572C] focus:ring-[#C9572C] mt-0.5 shrink-0"
+                                        />
+                                        <span className="text-[11px] text-slate-600 leading-relaxed">
+                                            Je certifie que mon agence est immatriculée au Maroc et m'engage à honorer les livraisons réservées avec transparence (aucun frais caché au client, véhicule conforme).
+                                        </span>
+                                    </label>
                                 </div>
-                                <ul className="space-y-1.5 text-slate-600 text-[11px]">
-                                    <li className="flex items-start gap-1.5">
-                                        <Check size={14} className="text-emerald-600 shrink-0 mt-0.5" />
-                                        <span><strong>Remise des clés aéroport ponctuelle :</strong> Vous accueillez le client à la sortie du terminal avec pancarte nominative.</span>
-                                    </li>
-                                    <li className="flex items-start gap-1.5">
-                                        <Check size={14} className="text-emerald-600 shrink-0 mt-0.5" />
-                                        <span><strong>Politique carburant Same-to-Same :</strong> Le véhicule repart avec le même niveau qu'à l'arrivée (zéro arnaque au réservoir vide).</span>
-                                    </li>
-                                    <li className="flex items-start gap-1.5">
-                                        <Check size={14} className="text-emerald-600 shrink-0 mt-0.5" />
-                                        <span><strong>Zéro forcing au comptoir :</strong> Vous respectez les conditions réservées sans obliger le client à racheter des assurances superflues.</span>
-                                    </li>
-                                </ul>
-
-                                <label className="flex items-start gap-2 pt-2 border-t border-slate-100 cursor-pointer text-slate-800 font-semibold select-none">
-                                    <input
-                                        type="checkbox"
-                                        checked={agreedCharter}
-                                        onChange={(e) => setAgreedCharter(e.target.checked)}
-                                        className="w-4 h-4 rounded border-slate-300 text-[#C9572C] focus:ring-[#C9572C] mt-0.5"
-                                    />
-                                    <span className="text-[11px]">
-                                        Je certifie que mon agence est immatriculée au Maroc et j'accepte la charte ZwinCar.
-                                    </span>
-                                </label>
                             </div>
 
+                            {/* Actions Retour & Validation */}
                             <div className="flex items-center gap-3 pt-2">
                                 <button
                                     type="button"
-                                    onClick={() => setStep(2)}
-                                    className="h-12 px-5 rounded-2xl border border-slate-300 text-slate-700 font-bold text-xs uppercase tracking-wider hover:bg-slate-50 transition flex items-center gap-1.5 cursor-pointer"
+                                    onClick={() => setStep(1)}
+                                    className="h-11 px-4 rounded-xl border border-slate-200 text-slate-700 font-bold text-xs uppercase tracking-wider hover:bg-slate-50 transition flex items-center gap-1.5 cursor-pointer"
                                 >
-                                    <ArrowLeft size={15} />
+                                    <ArrowLeft size={14} />
                                     <span>Retour</span>
                                 </button>
+
                                 <button
                                     type="submit"
                                     disabled={loading}
-                                    className="flex-1 h-12 rounded-2xl bg-[#C9572C] hover:bg-[#B24922] disabled:opacity-70 text-white font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md"
+                                    className="flex-1 h-11 rounded-xl bg-[#C9572C] hover:bg-[#B24922] disabled:opacity-70 text-white font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md shadow-[#C9572C]/20 active:scale-[0.99]"
                                 >
                                     {loading ? (
-                                        <span>Création de votre compte et de la flotte...</span>
+                                        <>
+                                            <Loader2 size={16} className="animate-spin" />
+                                            <span>Création du compte...</span>
+                                        </>
                                     ) : (
                                         <>
-                                            <CheckCircle2 size={16} />
-                                            <span>Valider et Accéder à mon Espace Pro</span>
+                                            <CheckCircle2 size={15} />
+                                            <span>Valider et Accéder à mon Espace</span>
                                         </>
                                     )}
                                 </button>
@@ -739,11 +571,11 @@ export default function VendorRegisterPage() {
                 </div>
             </main>
 
-            {/* Bottom Support Info */}
+            {/* Footer discret */}
             <footer className="py-4 text-center text-xs text-slate-500 border-t border-[#E7DFD5] bg-white/50">
                 <div className="flex items-center justify-center gap-2">
                     <ShieldCheck size={14} className="text-emerald-600" />
-                    <span>Agrément Partenaire Loueur ZwinCar Maroc • ICE vérifié</span>
+                    <span>Agrément Partenaire Loueur ZwinCar Maroc • Vérification sous 24h</span>
                 </div>
             </footer>
         </div>

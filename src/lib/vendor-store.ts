@@ -267,6 +267,28 @@ export async function registerVendorAgency(input: RegisterAgencyInput): Promise<
     agency: Omit<VendorAgencyRecord, "passwordHash" | "salt">;
     token: string;
 }> {
+    if (!input.agencyName || !input.agencyName.trim()) {
+        throw new Error("Le nom de l'agence est requis.");
+    }
+    if (!input.iceNumber || input.iceNumber.trim().length < 8) {
+        throw new Error("Numéro ICE invalide (au moins 8 chiffres requis).");
+    }
+    if (!input.managerName || !input.managerName.trim()) {
+        throw new Error("Le nom du gérant est requis.");
+    }
+    if (!input.managerPhone || input.managerPhone.trim().length < 8) {
+        throw new Error("Numéro WhatsApp valide requis.");
+    }
+    if (!input.managerEmail || !input.managerEmail.includes("@")) {
+        throw new Error("Email professionnel valide requis.");
+    }
+    if (!input.password || input.password.length < 12) {
+        throw new Error("Mot de passe trop court (min 12 caractères).");
+    }
+    if (!input.firstCar || !input.firstCar.plate || !input.firstCar.plate.trim()) {
+        throw new Error("L'immatriculation du premier véhicule est requise.");
+    }
+
     const emailLower = input.managerEmail.trim().toLowerCase();
     const phoneClean = input.managerPhone.replace(/[^0-9+]/g, "");
 
@@ -361,11 +383,11 @@ export async function authenticateVendor(
 
     let found: VendorAgencyRecord | null = null;
     for (const a of globalVendors.__zwincarAgencies!.values()) {
-        if (
-            a.managerEmail.toLowerCase() === cleanId ||
-            a.managerPhone.replace(/[^0-9+]/g, "") === cleanPhone ||
-            cleanId.includes(a.cityHub)
-        ) {
+        const emailMatch = a.managerEmail.toLowerCase() === cleanId;
+        const phoneMatch = cleanPhone.length >= 8 && a.managerPhone.replace(/[^0-9+]/g, "") === cleanPhone;
+        const exactCityOrIdMatch = cleanId === a.cityHub || cleanId === a.id;
+
+        if (emailMatch || phoneMatch || exactCityOrIdMatch) {
             found = a;
             break;
         }
