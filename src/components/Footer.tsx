@@ -262,12 +262,20 @@ export default function Footer({ config, locale: propLocale }: FooterProps = {})
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/vendor/login" rel="nofollow" className="hover:text-white transition font-medium text-slate-300">
+                                <Link
+                                    href={activeLocale === "en" ? "/en/vendor/login" : "/vendor/login"}
+                                    rel="nofollow"
+                                    className="hover:text-white transition font-medium text-slate-300"
+                                >
                                     {t.vendorSpace}
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/vendor/register" rel="nofollow" className="hover:text-white transition text-[#E58B24]">
+                                <Link
+                                    href={activeLocale === "en" ? "/en/vendor/register" : "/vendor/register"}
+                                    rel="nofollow"
+                                    className="hover:text-white transition text-[#E58B24]"
+                                >
                                     {t.vendorJoin}
                                 </Link>
                             </li>

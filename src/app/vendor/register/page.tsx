@@ -1,11 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
-    Building2,
-    Car,
     Phone,
     Mail,
     Lock,
@@ -23,19 +21,15 @@ import {
 import Logo from "@/components/Logo";
 import { MOROCCAN_HUBS } from "@/lib/morocco-data";
 import { saveVendorProfile } from "@/lib/vendor-auth";
+import { VENDOR_I18N, VendorLocale } from "@/lib/vendor-i18n";
 
-// Modèles populaires au Maroc avec tarifs moyens indicatifs
-const POPULAR_FLEET_MODELS = [
-    { name: "Dacia Sandero Stepway", defaultPrice: 280, tag: "Le plus loué" },
-    { name: "Renault Clio 5 Automatique", defaultPrice: 330, tag: "Automatique" },
-    { name: "Dacia Duster 4x4 Prestige", defaultPrice: 390, tag: "SUV Pistes" },
-    { name: "Peugeot 208 PureTech", defaultPrice: 270, tag: "Économique" },
-    { name: "Hyundai Tucson BVA Luxe", defaultPrice: 590, tag: "SUV Premium" },
-    { name: "Autre véhicule", defaultPrice: 300, tag: "" },
-];
+interface VendorRegisterPageProps {
+    initialLocale?: VendorLocale;
+}
 
-export default function VendorRegisterPage() {
+export default function VendorRegisterPage({ initialLocale = "fr" }: VendorRegisterPageProps) {
     const router = useRouter();
+    const [locale, setLocale] = useState<VendorLocale>(initialLocale);
     const [step, setStep] = useState<1 | 2>(1);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -62,39 +56,72 @@ export default function VendorRegisterPage() {
     const [firstCarPriceMad, setFirstCarPriceMad] = useState("280");
     const [agreedCharter, setAgreedCharter] = useState(false);
 
+    // Initialisation synchrone de la langue si stockée localement
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            const saved = localStorage.getItem("zwincar_lang") as VendorLocale | null;
+            if (saved && (saved === "fr" || saved === "en") && !initialLocale) {
+                setLocale(saved);
+            }
+        }
+    }, [initialLocale]);
+
+    const handleSwitchLocale = (nextLocale: VendorLocale) => {
+        setLocale(nextLocale);
+        if (typeof window !== "undefined") {
+            localStorage.setItem("zwincar_lang", nextLocale);
+        }
+    };
+
+    const t = VENDOR_I18N[locale];
+
+    // Calcul de la robustesse du mot de passe (0: court, 1: moyen, 2: robuste, 3: excellent)
+    const computePasswordStrength = (pwd: string) => {
+        if (pwd.length < 12) return { score: 0, label: t.register.strength.tooShort, color: "bg-red-400" };
+        let score = 1;
+        if (/[A-Z]/.test(pwd) && /[0-9]/.test(pwd)) score = 2;
+        if (score === 2 && (/[^A-Za-z0-9]/.test(pwd) || pwd.length >= 15)) score = 3;
+
+        if (score === 1) return { score: 1, label: t.register.strength.medium, color: "bg-amber-400" };
+        if (score === 2) return { score: 2, label: t.register.strength.strong, color: "bg-emerald-500" };
+        return { score: 3, label: t.register.strength.excellent, color: "bg-emerald-600" };
+    };
+
+    const pwdStrength = computePasswordStrength(password);
+
     const handleNextStep1 = (e: React.FormEvent) => {
         e.preventDefault();
         setError(null);
 
         if (!agencyName.trim()) {
-            setError("Veuillez renseigner le nom de votre agence.");
+            setError(t.register.errors.agencyName);
             return;
         }
 
         const cleanIce = iceNumber.trim().replace(/\s/g, "");
         if (cleanIce.length < 8) {
-            setError("Numéro ICE invalide (au moins 8 chiffres requis au Maroc).");
+            setError(t.register.errors.ice);
             return;
         }
 
         if (!managerName.trim()) {
-            setError("Veuillez renseigner le nom du gérant ou responsable.");
+            setError(t.register.errors.managerName);
             return;
         }
 
         const cleanPhone = managerPhone.trim().replace(/[\s.-]/g, "");
         if (cleanPhone.length < 8) {
-            setError("Numéro WhatsApp valide requis pour recevoir les alertes de réservation.");
+            setError(t.register.errors.whatsapp);
             return;
         }
 
         if (!managerEmail.trim() || !managerEmail.includes("@")) {
-            setError("Veuillez renseigner un email professionnel valide.");
+            setError(t.register.errors.email);
             return;
         }
 
         if (password.length < 12) {
-            setError("Le mot de passe doit comporter au moins 12 caractères.");
+            setError(t.register.errors.password);
             return;
         }
 
@@ -106,12 +133,12 @@ export default function VendorRegisterPage() {
         setError(null);
 
         if (!firstCarPlate.trim()) {
-            setError("Veuillez renseigner l'immatriculation du premier véhicule.");
+            setError(t.register.errors.plate);
             return;
         }
 
         if (!agreedCharter) {
-            setError("Veuillez accepter la charte de transparence ZwinCar.");
+            setError(t.register.errors.charter);
             return;
         }
 
@@ -143,7 +170,7 @@ export default function VendorRegisterPage() {
 
             const data = await res.json();
             if (!res.ok) {
-                setError(data.error || "Une erreur est survenue lors de l'inscription.");
+                setError(data.error || t.register.errors.generic);
                 setLoading(false);
                 return;
             }
@@ -160,32 +187,66 @@ export default function VendorRegisterPage() {
 
             router.push("/vendor/dashboard");
         } catch {
-            setError("Connexion au serveur impossible. Vérifiez votre réseau.");
+            setError(t.register.errors.network);
             setLoading(false);
         }
     };
 
     const handleModelChange = (modelName: string) => {
         setFirstCarModel(modelName);
-        const match = POPULAR_FLEET_MODELS.find((m) => m.name === modelName);
+        const match = t.register.popularModels.find((m) => m.name === modelName);
         if (match && match.defaultPrice) {
             setFirstCarPriceMad(match.defaultPrice.toString());
         }
     };
 
+    const loginHref = locale === "en" ? "/en/vendor/login" : "/vendor/login";
+
     return (
         <div className="min-h-screen bg-[#FAF7F2] text-slate-900 flex flex-col justify-between font-sans selection:bg-[#C9572C]/20 selection:text-[#C9572C]">
-            {/* Header épuré */}
+            {/* Header épuré avec sélecteur de langue */}
             <header className="px-5 sm:px-8 py-4 flex items-center justify-between border-b border-[#E7DFD5] bg-white/80 backdrop-blur-md">
                 <Logo variant="full" theme="dark" size="sm" />
-                <div className="flex items-center gap-2 text-xs">
-                    <span className="text-slate-500 hidden sm:inline">Déjà partenaire ?</span>
-                    <Link
-                        href="/vendor/login"
-                        className="px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-[#C9572C] text-white font-bold transition shadow-xs"
+                <div className="flex items-center gap-3">
+                    {/* Switcher Bilingue FR / EN */}
+                    <div
+                        role="group"
+                        aria-label={t.common.language}
+                        className="flex items-center bg-[#FAF7F2] p-1 rounded-xl border border-[#E7DFD5] text-xs font-bold"
                     >
-                        Connexion
-                    </Link>
+                        <button
+                            type="button"
+                            onClick={() => handleSwitchLocale("fr")}
+                            className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
+                                locale === "fr"
+                                    ? "bg-white text-slate-900 shadow-xs"
+                                    : "text-slate-400 hover:text-slate-700"
+                            }`}
+                        >
+                            🇫🇷 FR
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => handleSwitchLocale("en")}
+                            className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
+                                locale === "en"
+                                    ? "bg-white text-slate-900 shadow-xs"
+                                    : "text-slate-400 hover:text-slate-700"
+                            }`}
+                        >
+                            🇬🇧 EN
+                        </button>
+                    </div>
+
+                    <div className="flex items-center gap-2 text-xs">
+                        <span className="text-slate-500 hidden sm:inline">{t.common.alreadyPartner}</span>
+                        <Link
+                            href={loginHref}
+                            className="px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-[#C9572C] text-white font-bold transition shadow-xs"
+                        >
+                            {t.common.login}
+                        </Link>
+                    </div>
                 </div>
             </header>
 
@@ -207,7 +268,7 @@ export default function VendorRegisterPage() {
                                 step === 1 ? "text-slate-900" : "text-emerald-700"
                             }`}
                         >
-                            Agence & Contact
+                            {t.register.step1Badge}
                         </span>
                     </div>
 
@@ -234,7 +295,7 @@ export default function VendorRegisterPage() {
                                 step === 2 ? "text-slate-900" : "text-slate-400"
                             }`}
                         >
-                            Premier Véhicule
+                            {t.register.step2Badge}
                         </span>
                     </div>
                 </div>
@@ -245,7 +306,10 @@ export default function VendorRegisterPage() {
                 <div className="w-full max-w-xl bg-white rounded-3xl border border-[#E7DFD5] shadow-xl p-6 sm:p-8 space-y-6">
                     {/* Alerte Erreur */}
                     {error && (
-                        <div className="p-3.5 rounded-2xl bg-red-50 border border-red-200 text-red-700 text-xs font-semibold flex items-center gap-2 animate-in fade-in">
+                        <div
+                            role="alert"
+                            className="p-3.5 rounded-2xl bg-red-50 border border-red-200 text-red-700 text-xs font-semibold flex items-center gap-2 animate-in fade-in"
+                        >
                             <AlertCircle size={15} className="shrink-0 text-red-600" />
                             <span>{error}</span>
                         </div>
@@ -256,33 +320,34 @@ export default function VendorRegisterPage() {
                         <form onSubmit={handleNextStep1} className="space-y-5 animate-in fade-in">
                             <div className="space-y-1">
                                 <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-                                    Inscrire votre Agence
+                                    {t.register.step1Title}
                                 </h1>
                                 <p className="text-xs text-slate-500">
-                                    Accédez aux clients arrivant aux aéroports marocains sans intermédiaire.
+                                    {t.register.step1Subtitle}
                                 </p>
                             </div>
 
                             <div className="space-y-4">
-                                {/* Nom agence & Ville */}
+                                {/* Nom agence & Hub */}
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                                     <div className="sm:col-span-2">
                                         <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">
-                                            Nom de l'agence *
+                                            {t.register.agencyNameLabel}
                                         </label>
                                         <input
                                             type="text"
                                             required
+                                            autoFocus
                                             value={agencyName}
                                             onChange={(e) => setAgencyName(e.target.value)}
-                                            placeholder="Ex: Atlas Drive Cars SARL"
+                                            placeholder={t.register.agencyNamePlaceholder}
                                             className="w-full h-11 px-3.5 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs sm:text-sm font-semibold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#C9572C] focus:bg-white focus:ring-2 focus:ring-[#C9572C]/10 transition-all"
                                         />
                                     </div>
 
                                     <div>
                                         <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">
-                                            Aéroport / Hub principal *
+                                            {t.register.hubLabel}
                                         </label>
                                         <select
                                             value={cityHub}
@@ -299,14 +364,14 @@ export default function VendorRegisterPage() {
 
                                     <div>
                                         <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">
-                                            Numéro ICE (15 chiffres) *
+                                            {t.register.iceLabel}
                                         </label>
                                         <input
                                             type="text"
                                             required
                                             value={iceNumber}
                                             onChange={(e) => setIceNumber(e.target.value)}
-                                            placeholder="002847192000084"
+                                            placeholder={t.register.icePlaceholder}
                                             className="w-full h-11 px-3.5 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs sm:text-sm font-mono font-semibold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#C9572C] focus:bg-white focus:ring-2 focus:ring-[#C9572C]/10 transition-all"
                                         />
                                     </div>
@@ -316,21 +381,21 @@ export default function VendorRegisterPage() {
                                 <div className="pt-2 border-t border-slate-100 grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                                     <div>
                                         <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">
-                                            Nom & Prénom du Gérant *
+                                            {t.register.managerNameLabel}
                                         </label>
                                         <input
                                             type="text"
                                             required
                                             value={managerName}
                                             onChange={(e) => setManagerName(e.target.value)}
-                                            placeholder="Karim Benjelloun"
+                                            placeholder={t.register.managerNamePlaceholder}
                                             className="w-full h-11 px-3.5 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs sm:text-sm font-semibold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#C9572C] focus:bg-white focus:ring-2 focus:ring-[#C9572C]/10 transition-all"
                                         />
                                     </div>
 
                                     <div>
                                         <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">
-                                            Numéro WhatsApp Direct *
+                                            {t.register.whatsappLabel}
                                         </label>
                                         <div className="relative">
                                             <input
@@ -338,7 +403,7 @@ export default function VendorRegisterPage() {
                                                 required
                                                 value={managerPhone}
                                                 onChange={(e) => setManagerPhone(e.target.value)}
-                                                placeholder="+212 6 61 23 45 67"
+                                                placeholder={t.register.whatsappPlaceholder}
                                                 className="w-full h-11 pl-9 pr-3 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs sm:text-sm font-mono font-semibold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#C9572C] focus:bg-white focus:ring-2 focus:ring-[#C9572C]/10 transition-all"
                                             />
                                             <Phone size={15} className="absolute left-3 top-3.5 text-slate-400 pointer-events-none" />
@@ -347,7 +412,7 @@ export default function VendorRegisterPage() {
 
                                     <div>
                                         <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">
-                                            Email de Connexion *
+                                            {t.register.emailLabel}
                                         </label>
                                         <div className="relative">
                                             <input
@@ -356,7 +421,7 @@ export default function VendorRegisterPage() {
                                                 autoComplete="username"
                                                 value={managerEmail}
                                                 onChange={(e) => setManagerEmail(e.target.value)}
-                                                placeholder="contact@agence.ma"
+                                                placeholder={t.register.emailPlaceholder}
                                                 className="w-full h-11 pl-9 pr-3 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs sm:text-sm font-semibold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#C9572C] focus:bg-white focus:ring-2 focus:ring-[#C9572C]/10 transition-all"
                                             />
                                             <Mail size={15} className="absolute left-3 top-3.5 text-slate-400 pointer-events-none" />
@@ -365,7 +430,7 @@ export default function VendorRegisterPage() {
 
                                     <div>
                                         <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">
-                                            Mot de passe (min 12 car.) *
+                                            {t.register.passwordLabel}
                                         </label>
                                         <div className="relative">
                                             <input
@@ -374,7 +439,7 @@ export default function VendorRegisterPage() {
                                                 autoComplete="new-password"
                                                 value={password}
                                                 onChange={(e) => setPassword(e.target.value)}
-                                                placeholder="••••••••••••"
+                                                placeholder={t.register.passwordPlaceholder}
                                                 className="w-full h-11 pl-9 pr-9 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs sm:text-sm font-semibold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#C9572C] focus:bg-white focus:ring-2 focus:ring-[#C9572C]/10 transition-all"
                                             />
                                             <Lock size={15} className="absolute left-3 top-3.5 text-slate-400 pointer-events-none" />
@@ -383,10 +448,27 @@ export default function VendorRegisterPage() {
                                                 onClick={() => setShowPassword(!showPassword)}
                                                 className="absolute right-3 top-3.5 text-slate-400 hover:text-slate-700 transition cursor-pointer"
                                                 tabIndex={-1}
+                                                aria-label={showPassword ? t.login.hidePwd : t.login.showPwd}
                                             >
                                                 {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
                                             </button>
                                         </div>
+
+                                        {/* Jauge visuelle de robustesse du mot de passe */}
+                                        {password.length > 0 && (
+                                            <div className="mt-1.5 space-y-1">
+                                                <div className="flex gap-1 h-1">
+                                                    <div className={`flex-1 rounded-full ${password.length >= 12 ? pwdStrength.color : "bg-red-400"}`} />
+                                                    <div className={`flex-1 rounded-full ${pwdStrength.score >= 1 ? pwdStrength.color : "bg-slate-200"}`} />
+                                                    <div className={`flex-1 rounded-full ${pwdStrength.score >= 2 ? pwdStrength.color : "bg-slate-200"}`} />
+                                                    <div className={`flex-1 rounded-full ${pwdStrength.score >= 3 ? pwdStrength.color : "bg-slate-200"}`} />
+                                                </div>
+                                                <div className="flex items-center justify-between text-[10px] font-semibold text-slate-500">
+                                                    <span>{pwdStrength.label}</span>
+                                                    <span>{password.length} / 12+</span>
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
 
@@ -396,49 +478,53 @@ export default function VendorRegisterPage() {
                                         type="button"
                                         onClick={() => setShowAdvanced(!showAdvanced)}
                                         aria-expanded={showAdvanced}
+                                        aria-controls="advanced-fiscal-drawer"
                                         className="text-[11px] font-bold text-slate-500 hover:text-[#C9572C] transition-colors inline-flex items-center gap-1 cursor-pointer"
                                     >
                                         {showAdvanced ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-                                        <span>Informations fiscales & bancaires (RC, IF, RIB) • Optionnel</span>
+                                        <span>{t.register.advancedToggle}</span>
                                     </button>
 
                                     {showAdvanced && (
-                                        <div className="mt-3 p-3.5 rounded-2xl bg-slate-50 border border-slate-200 grid grid-cols-1 sm:grid-cols-3 gap-3 animate-in fade-in duration-200">
+                                        <div
+                                            id="advanced-fiscal-drawer"
+                                            className="mt-3 p-3.5 rounded-2xl bg-slate-50 border border-slate-200 grid grid-cols-1 sm:grid-cols-3 gap-3 animate-in fade-in duration-200"
+                                        >
                                             <div>
                                                 <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">
-                                                    RC & Ville
+                                                    {t.register.rcLabel}
                                                 </label>
                                                 <input
                                                     type="text"
                                                     value={rcNumber}
                                                     onChange={(e) => setRcNumber(e.target.value)}
-                                                    placeholder="94821 / Marrakech"
+                                                    placeholder={t.register.rcPlaceholder}
                                                     className="w-full h-9 px-3 rounded-lg bg-white border border-slate-200 text-xs font-semibold text-slate-800 focus:outline-none focus:border-[#C9572C]"
                                                 />
                                             </div>
 
                                             <div>
                                                 <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">
-                                                    Identifiant Fiscal (IF)
+                                                    {t.register.ifLabel}
                                                 </label>
                                                 <input
                                                     type="text"
                                                     value={ifNumber}
                                                     onChange={(e) => setIfNumber(e.target.value)}
-                                                    placeholder="40182934"
+                                                    placeholder={t.register.ifPlaceholder}
                                                     className="w-full h-9 px-3 rounded-lg bg-white border border-slate-200 text-xs font-semibold text-slate-800 focus:outline-none focus:border-[#C9572C]"
                                                 />
                                             </div>
 
                                             <div>
                                                 <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">
-                                                    RIB (24 Chiffres)
+                                                    {t.register.ribLabel}
                                                 </label>
                                                 <input
                                                     type="text"
                                                     value={ribNumber}
                                                     onChange={(e) => setRibNumber(e.target.value)}
-                                                    placeholder="011 780 0000..."
+                                                    placeholder={t.register.ribPlaceholder}
                                                     className="w-full h-9 px-3 rounded-lg bg-white border border-slate-200 text-xs font-mono font-semibold text-slate-800 focus:outline-none focus:border-[#C9572C]"
                                                 />
                                             </div>
@@ -451,7 +537,7 @@ export default function VendorRegisterPage() {
                                 type="submit"
                                 className="w-full h-11 rounded-xl bg-[#C9572C] hover:bg-[#B24922] text-white font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md shadow-[#C9572C]/20 active:scale-[0.99] mt-6"
                             >
-                                <span>Continuer vers le premier véhicule</span>
+                                <span>{t.register.btnNext}</span>
                                 <ArrowRight size={15} />
                             </button>
                         </form>
@@ -462,24 +548,24 @@ export default function VendorRegisterPage() {
                         <form onSubmit={handleFinalSubmit} className="space-y-5 animate-in fade-in">
                             <div className="space-y-1">
                                 <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-                                    Votre Premier Véhicule
+                                    {t.register.step2Title}
                                 </h2>
                                 <p className="text-xs text-slate-500">
-                                    Ajoutez une première voiture pour activer instantanément votre tableau de bord.
+                                    {t.register.step2Subtitle}
                                 </p>
                             </div>
 
                             <div className="space-y-4">
                                 <div>
                                     <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1.5">
-                                        Modèle du véhicule *
+                                        {t.register.carModelLabel}
                                     </label>
                                     <select
                                         value={firstCarModel}
                                         onChange={(e) => handleModelChange(e.target.value)}
                                         className="w-full h-11 px-3.5 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none focus:border-[#C9572C] focus:bg-white focus:ring-2 focus:ring-[#C9572C]/10 transition-all cursor-pointer"
                                     >
-                                        {POPULAR_FLEET_MODELS.map((car) => (
+                                        {t.register.popularModels.map((car) => (
                                             <option key={car.name} value={car.name}>
                                                 {car.name} {car.tag ? `(${car.tag})` : ""}
                                             </option>
@@ -490,21 +576,22 @@ export default function VendorRegisterPage() {
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                                     <div>
                                         <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">
-                                            Plaque d'immatriculation *
+                                            {t.register.plateLabel}
                                         </label>
                                         <input
                                             type="text"
                                             required
+                                            autoFocus
                                             value={firstCarPlate}
                                             onChange={(e) => setFirstCarPlate(e.target.value)}
-                                            placeholder="Ex: 45821-B-26 ou WW..."
+                                            placeholder={t.register.platePlaceholder}
                                             className="w-full h-11 px-3.5 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs sm:text-sm font-mono font-bold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#C9572C] focus:bg-white focus:ring-2 focus:ring-[#C9572C]/10 transition-all"
                                         />
                                     </div>
 
                                     <div>
                                         <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">
-                                            Tarif indicatif journalier (MAD)
+                                            {t.register.priceLabel}
                                         </label>
                                         <div className="relative">
                                             <input
@@ -516,23 +603,23 @@ export default function VendorRegisterPage() {
                                                 className="w-full h-11 pl-3.5 pr-14 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs sm:text-sm font-mono font-bold text-slate-900 focus:outline-none focus:border-[#C9572C] focus:bg-white focus:ring-2 focus:ring-[#C9572C]/10 transition-all"
                                             />
                                             <span className="absolute right-3.5 top-3 text-xs font-bold text-slate-400">
-                                                DH / jour
+                                                {t.register.priceUnit}
                                             </span>
                                         </div>
                                     </div>
                                 </div>
 
-                                {/* Accord de transparence sobre */}
+                                {/* Accord de transparence sobre (décoché par défaut) */}
                                 <div className="p-3.5 rounded-2xl bg-[#FAF7F2] border border-[#E7DFD5] space-y-2">
                                     <label className="flex items-start gap-2.5 cursor-pointer text-slate-800 text-xs font-medium select-none">
                                         <input
                                             type="checkbox"
                                             checked={agreedCharter}
                                             onChange={(e) => setAgreedCharter(e.target.checked)}
-                                            className="w-4 h-4 rounded border-slate-300 text-[#C9572C] focus:ring-[#C9572C] mt-0.5 shrink-0"
+                                            className="w-4 h-4 rounded border-slate-300 text-[#C9572C] focus:ring-[#C9572C] mt-0.5 shrink-0 cursor-pointer"
                                         />
                                         <span className="text-[11px] text-slate-600 leading-relaxed">
-                                            Je certifie que mon agence est immatriculée au Maroc et m'engage à honorer les livraisons réservées avec transparence (aucun frais caché au client, véhicule conforme).
+                                            {t.register.charterText}
                                         </span>
                                     </label>
                                 </div>
@@ -546,7 +633,7 @@ export default function VendorRegisterPage() {
                                     className="h-11 px-4 rounded-xl border border-slate-200 text-slate-700 font-bold text-xs uppercase tracking-wider hover:bg-slate-50 transition flex items-center gap-1.5 cursor-pointer"
                                 >
                                     <ArrowLeft size={14} />
-                                    <span>Retour</span>
+                                    <span>{t.register.btnBack}</span>
                                 </button>
 
                                 <button
@@ -557,12 +644,12 @@ export default function VendorRegisterPage() {
                                     {loading ? (
                                         <>
                                             <Loader2 size={16} className="animate-spin" />
-                                            <span>Création du compte...</span>
+                                            <span>{t.register.btnSubmitting}</span>
                                         </>
                                     ) : (
                                         <>
                                             <CheckCircle2 size={15} />
-                                            <span>Valider et Accéder à mon Espace</span>
+                                            <span>{t.register.btnSubmit}</span>
                                         </>
                                     )}
                                 </button>
@@ -576,7 +663,7 @@ export default function VendorRegisterPage() {
             <footer className="py-4 text-center text-xs text-slate-500 border-t border-[#E7DFD5] bg-white/50">
                 <div className="flex items-center justify-center gap-2">
                     <ShieldCheck size={14} className="text-emerald-600" />
-                    <span>Agrément Partenaire Loueur ZwinCar Maroc • Vérification sous 24h</span>
+                    <span>{t.register.footerTrust}</span>
                 </div>
             </footer>
         </div>

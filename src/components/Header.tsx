@@ -420,7 +420,7 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
                         </button>
 
                         <Link
-                            href="/vendor/login"
+                            href={currentLocale === "en" ? "/en/vendor/login" : "/vendor/login"}
                             rel="nofollow"
                             onClick={() => setMobileMenuOpen(false)}
                             className="block py-2 px-3.5 rounded-xl text-xs font-bold text-slate-400 uppercase tracking-wider hover:text-slate-600"

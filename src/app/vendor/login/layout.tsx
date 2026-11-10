@@ -9,6 +9,11 @@ export const metadata: Metadata = {
     },
     alternates: {
         canonical: "https://zwincar.com/vendor/login",
+        languages: {
+            "fr-FR": "https://zwincar.com/vendor/login",
+            "en-US": "https://zwincar.com/en/vendor/login",
+            "x-default": "https://zwincar.com/vendor/login",
+        },
     },
 };
 
