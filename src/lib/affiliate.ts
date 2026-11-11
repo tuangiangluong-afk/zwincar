@@ -148,6 +148,13 @@ export const DEFAULT_VEHICLE_STOCK: Record<string, boolean> = {
     "volkswagen-golf-8-auto": true,
     "hyundai-tucson-auto": true,
     "toyota-prado-tx-7places": true,
+    "dacia-logan": true,
+    "fiat-500-cabriolet": true,
+    "volkswagen-t-roc": true,
+    "audi-a3-sportback": true,
+    "audi-q3-sportback": true,
+    "mercedes-cla-coupe": true,
+    "porsche-macan": true,
 };
 
 /**
