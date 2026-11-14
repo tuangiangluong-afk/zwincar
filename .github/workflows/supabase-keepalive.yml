@@ -1,0 +1,97 @@
+name: Supabase Keep-Alive
+
+on:
+  schedule:
+    # 3x/day (03:00, 11:00, 19:00 UTC).
+    # Supabase Free pauses projects after 7 days of inactivity.
+    # Pinging 3x/day ensures reliable activity and leaves no risk of pausing.
+    - cron: "0 3,11,19 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: supabase-keep-alive
+  cancel-in-progress: false
+
+jobs:
+  keep-alive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Ping Supabase Database & Auth Gateway
+        id: ping
+        env:
+          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL || secrets.SUPABASE_URL || 'https://mgstrqmopyxtmgrviwds.supabase.co' }}
+          SUPABASE_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY || secrets.SUPABASE_ANON_KEY || secrets.SUPABASE_SERVICE_ROLE_KEY || '' }}
+        run: |
+          set -euo pipefail
+
+          echo "Target Supabase URL: ${SUPABASE_URL}"
+          NOW=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+          HDRS=()
+          if [ -n "${SUPABASE_KEY}" ]; then
+            HDRS+=(-H "apikey: ${SUPABASE_KEY}")
+            case "${SUPABASE_KEY}" in
+              sb_*) echo "Using publishable/secret key style" ;;
+              *)    HDRS+=(-H "Authorization: Bearer ${SUPABASE_KEY}") ;;
+            esac
+          fi
+
+          echo "--- 1. Pinging PostgREST schema / database ---"
+          HTTP_REST=$(curl -s -o /tmp/rest_out.txt -w '%{http_code}' --max-time 15 \
+            --retry 3 --retry-delay 2 --retry-all-errors \
+            "${HDRS[@]}" "${SUPABASE_URL}/rest/v1/" || echo "000")
+          echo "PostgREST /rest/v1/ returned: HTTP ${HTTP_REST}"
+
+          echo "--- 2. Pinging catalog_models table (data activity) ---"
+          HTTP_TABLE=$(curl -s -o /tmp/table_out.txt -w '%{http_code}' --max-time 15 \
+            --retry 3 --retry-delay 2 --retry-all-errors \
+            "${HDRS[@]}" "${SUPABASE_URL}/rest/v1/catalog_models?select=id&limit=1" || echo "000")
+          echo "Table /rest/v1/catalog_models returned: HTTP ${HTTP_TABLE}"
+
+          echo "--- 3. Pinging GoTrue Auth health ---"
+          HTTP_AUTH=$(curl -s -o /tmp/auth_out.txt -w '%{http_code}' --max-time 15 \
+            --retry 3 --retry-delay 2 --retry-all-errors \
+            "${HDRS[@]}" "${SUPABASE_URL}/auth/v1/health" || echo "000")
+          echo "Auth /auth/v1/health returned: HTTP ${HTTP_AUTH}"
+
+          echo "Pings completed at ${NOW}"
+
+      - name: Update keep-alive heartbeat and push
+        if: always()
+        run: |
+          set -euo pipefail
+
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          echo "Supabase Keep-Alive Heartbeat: ${TIMESTAMP}" > supabase-keep-alive.txt
+          echo "Status: Active ping registered at https://mgstrqmopyxtmgrviwds.supabase.co" >> supabase-keep-alive.txt
+
+          git add supabase-keep-alive.txt
+          if git diff --cached --exit-code; then
+            echo "No changes to commit"
+            exit 0
+          fi
+
+          git commit -m "chore: automated supabase keep-alive [${TIMESTAMP}] [skip ci]"
+
+          for attempt in 1 2 3; do
+            if git push origin main; then
+              echo "Pushed keep-alive log on attempt ${attempt}"
+              exit 0
+            fi
+            echo "Push rejected (attempt ${attempt}), rebasing on origin/main"
+            git pull --rebase origin main || true
+          done
+          echo "::error::Could not push the keep-alive log after 3 attempts"
+          exit 1
