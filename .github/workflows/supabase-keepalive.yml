@@ -2,10 +2,10 @@ name: Supabase Keep-Alive
 
 on:
   schedule:
-    # 3x/day (03:00, 11:00, 19:00 UTC).
+    # Every 6 hours (02:00, 08:00, 14:00, 20:00 UTC).
     # Supabase Free pauses projects after 7 days of inactivity.
-    # Pinging 3x/day ensures reliable activity and leaves no risk of pausing.
-    - cron: "0 3,11,19 * * *"
+    # Running 4x/day with authenticated queries guarantees continuous DB compute activity.
+    - cron: "0 2,8,14,20 * * *"
   workflow_dispatch:
 
 permissions:
@@ -25,37 +25,42 @@ jobs:
         with:
           persist-credentials: true
 
-      - name: Ping Supabase Database & Auth Gateway
+      - name: Execute Authenticated Supabase Database Queries
         id: ping
         env:
           SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL || secrets.SUPABASE_URL || 'https://mgstrqmopyxtmgrviwds.supabase.co' }}
-          SUPABASE_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY || secrets.SUPABASE_ANON_KEY || secrets.SUPABASE_SERVICE_ROLE_KEY || '' }}
+          SUPABASE_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY || secrets.SUPABASE_ANON_KEY || secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: |
           set -euo pipefail
+
+          if [ -z "${SUPABASE_KEY}" ]; then
+            echo "::error::SUPABASE_KEY secret is not set!"
+            exit 1
+          fi
 
           echo "Target Supabase URL: ${SUPABASE_URL}"
           NOW=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
-          HDRS=()
-          if [ -n "${SUPABASE_KEY}" ]; then
-            HDRS+=(-H "apikey: ${SUPABASE_KEY}")
-            case "${SUPABASE_KEY}" in
-              sb_*) echo "Using publishable/secret key style" ;;
-              *)    HDRS+=(-H "Authorization: Bearer ${SUPABASE_KEY}") ;;
-            esac
-          fi
+          HDRS=(
+            -H "apikey: ${SUPABASE_KEY}"
+            -H "Authorization: Bearer ${SUPABASE_KEY}"
+          )
 
-          echo "--- 1. Pinging PostgREST schema / database ---"
-          HTTP_REST=$(curl -s -o /tmp/rest_out.txt -w '%{http_code}' --max-time 15 \
+          echo "--- 1. Pinging catalog_models table (aggregate count query) ---"
+          HTTP_COUNT=$(curl -s -o /tmp/count_out.txt -w '%{http_code}' --max-time 15 \
             --retry 3 --retry-delay 2 --retry-all-errors \
-            "${HDRS[@]}" "${SUPABASE_URL}/rest/v1/" || echo "000")
-          echo "PostgREST /rest/v1/ returned: HTTP ${HTTP_REST}"
+            "${HDRS[@]}" "${SUPABASE_URL}/rest/v1/catalog_models?select=count" || echo "000")
+          echo "Table /rest/v1/catalog_models?select=count returned: HTTP ${HTTP_COUNT}"
+          cat /tmp/count_out.txt
+          echo ""
 
-          echo "--- 2. Pinging catalog_models table (data activity) ---"
+          echo "--- 2. Pinging catalog_models table (data fetch query) ---"
           HTTP_TABLE=$(curl -s -o /tmp/table_out.txt -w '%{http_code}' --max-time 15 \
             --retry 3 --retry-delay 2 --retry-all-errors \
-            "${HDRS[@]}" "${SUPABASE_URL}/rest/v1/catalog_models?select=id&limit=1" || echo "000")
+            "${HDRS[@]}" "${SUPABASE_URL}/rest/v1/catalog_models?select=id,brand,name&limit=1" || echo "000")
           echo "Table /rest/v1/catalog_models returned: HTTP ${HTTP_TABLE}"
+          cat /tmp/table_out.txt
+          echo ""
 
           echo "--- 3. Pinging GoTrue Auth health ---"
           HTTP_AUTH=$(curl -s -o /tmp/auth_out.txt -w '%{http_code}' --max-time 15 \
@@ -63,7 +68,12 @@ jobs:
             "${HDRS[@]}" "${SUPABASE_URL}/auth/v1/health" || echo "000")
           echo "Auth /auth/v1/health returned: HTTP ${HTTP_AUTH}"
 
-          echo "Pings completed at ${NOW}"
+          if [ "${HTTP_TABLE}" != "200" ] && [ "${HTTP_COUNT}" != "200" ]; then
+            echo "::error::Database query failed with HTTP ${HTTP_TABLE} / ${HTTP_COUNT}!"
+            exit 1
+          fi
+
+          echo "Authenticated database activity successfully recorded at ${NOW}"
 
       - name: Update keep-alive heartbeat and push
         if: always()
@@ -75,7 +85,7 @@ jobs:
 
           TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
           echo "Supabase Keep-Alive Heartbeat: ${TIMESTAMP}" > supabase-keep-alive.txt
-          echo "Status: Active ping registered at https://mgstrqmopyxtmgrviwds.supabase.co" >> supabase-keep-alive.txt
+          echo "Status: Authenticated DB queries registered at https://mgstrqmopyxtmgrviwds.supabase.co" >> supabase-keep-alive.txt
 
           git add supabase-keep-alive.txt
           if git diff --cached --exit-code; then
@@ -95,3 +105,4 @@ jobs:
           done
           echo "::error::Could not push the keep-alive log after 3 attempts"
           exit 1
+
