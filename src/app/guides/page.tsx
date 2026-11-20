@@ -9,7 +9,7 @@ import { clampTitle, clampDescription } from "@/lib/seo-meta";
 import SchemaJSON from "@/components/SchemaJSON";
 import GuidesGridWithPagination from "@/components/GuidesGridWithPagination";
 
-export const revalidate = 3600;
+export const revalidate = 604800; // 7 days ISR cache
 
 export const metadata: Metadata = {
     title: clampTitle("Guides Conduite • Conseils Location Maroc | ZwinCar"),

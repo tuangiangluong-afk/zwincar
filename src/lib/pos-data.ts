@@ -282,7 +282,7 @@ export async function fetchSerperPlaceDetails(query: string) {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({ q: `${query} Morocco`, gl: "ma", hl: "fr" }),
-            next: { revalidate: 86400 }, // Cache 24h
+            next: { revalidate: 604800 }, // Cache 7 days
         });
         if (!res.ok) return null;
         const data = await res.json();

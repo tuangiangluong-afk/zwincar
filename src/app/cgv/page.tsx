@@ -1,4 +1,4 @@
-export const revalidate = 86400; // 24h ISR cache
+export const revalidate = 604800; // 7 days ISR cache // 24h ISR cache
 import type { Metadata } from "next";
 import { CGVClientView } from "@/components/CGVClientView";
 

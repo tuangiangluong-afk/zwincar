@@ -17,7 +17,7 @@ import {
     KeyRound,
 } from "lucide-react";
 
-export const revalidate = 3600;
+export const revalidate = 604800; // 7 days ISR cache
 
 interface HomePageProps {
     locale?: Locale;

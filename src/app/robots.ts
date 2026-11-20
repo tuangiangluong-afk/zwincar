@@ -23,6 +23,21 @@ export default function robots(): MetadataRoute.Robots {
             },
             {
                 userAgent: [
+                    "AhrefsBot",
+                    "SemrushBot",
+                    "DotBot",
+                    "MJ12bot",
+                    "PetalBot",
+                    "Bytespider",
+                    "DataForSeoBot",
+                    "BLEXBot",
+                    "YandexBot",
+                    "Baiduspider",
+                ],
+                disallow: ["/"],
+            },
+            {
+                userAgent: [
                     "GPTBot",
                     "OAI-SearchBot",
                     "ClaudeBot",

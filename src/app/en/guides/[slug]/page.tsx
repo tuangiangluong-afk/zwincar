@@ -22,7 +22,7 @@ import SchemaJSON from "@/components/SchemaJSON";
 import GuideInfographic from "@/components/GuideInfographic";
 import MarkdownContent from "@/components/MarkdownContent";
 
-export const revalidate = 3600;
+export const revalidate = 604800; // 7 days ISR cache
 
 function getInfographicType(slug: string): "tpe-receipt" | "ground-clearance" | "radar-fines" | "jawaz-toll" | null {
     if (slug.includes("caution") || slug.includes("arnaque") || slug.includes("paiement-cash") || slug.includes("franchise-zero") || slug.includes("credit-card") || slug.includes("scams") || slug.includes("deposit")) {

@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import VsComparisonView from "@/components/VsComparisonView";
 import { VS_COMPETITORS, getVsComparison, getVsMetadata } from "@/lib/vs-data";
 
-export const revalidate = 3600;
+export const revalidate = 604800; // 7 days ISR cache
 
 interface PageProps {
     params: Promise<{ competitor: string }>;

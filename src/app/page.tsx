@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import HomePage from "@/components/HomePage";
 
-export const revalidate = 3600;
+export const revalidate = 604800; // 7 days ISR cache
 
 export const metadata: Metadata = {
     title: "Location de Voiture au Maroc Sans Caution CB • ZwinCar",
