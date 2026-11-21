@@ -10,6 +10,8 @@ import { clampTitle, clampDescription } from "@/lib/seo-meta";
 import VehicleBookingCard from "@/components/VehicleBookingCard";
 import IntentLandingView from "@/components/pSEO/IntentLandingView";
 import PseoGuidesCrossLinks from "@/components/pSEO/PseoGuidesCrossLinks";
+import CityVehicleFitSection from "@/components/pSEO/CityVehicleFitSection";
+import { isCityVehicleIndexable } from "@/lib/city-vehicle-fit";
 import {
     ShieldCheck,
     CheckCircle2,
@@ -106,6 +108,7 @@ export async function generateMetadata({ params }: CityVehiclePageProps): Promis
         return {
             title,
             description,
+            robots: { index: isCityVehicleIndexable(hub.slug), follow: true },
             alternates: {
                 canonical: `${baseUrl}/maroc/${hub.slug}/${vehicle.id}`,
                 languages: {
@@ -327,6 +330,8 @@ export default async function CityVehicleDetailPage({ params }: CityVehiclePageP
                                     </div>
                                 </div>
                             </div>
+
+                            <CityVehicleFitSection vehicle={vehicle} hub={hub} locale="fr" />
 
                             {/* Conditions de Prise en Charge à l'Aéroport */}
                             <div className="rounded-3xl bg-white border border-[#E7DFD5] p-6 space-y-4 shadow-2xs">

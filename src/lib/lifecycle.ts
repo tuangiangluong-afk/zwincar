@@ -45,6 +45,12 @@ type Copy = {
 
 const COPY: Record<Locale, Record<LifecycleEmailType, Copy>> = {
     fr: {
+        h1_unpaid: {
+            subject: "Votre {{vehicle}} à {{hubName}} n'est pas encore bloqué",
+            heading: "Il ne reste qu'une étape pour garantir votre véhicule",
+            paragraphs: ["Bonjour {{firstName}}, votre demande pour le {{vehicle}} du {{pickupDate}} au {{returnDate}} est bien enregistrée, mais le véhicule n'est pas encore bloqué.", "Les voitures partent vite sur ces dates. Répondez à votre agent sur WhatsApp : il confirme la disponibilité et vous envoie le lien sécurisé en 2 minutes."],
+            cta: { label: "Finaliser sur WhatsApp", hrefKey: "whatsappUrl" },
+        },
         j7_prepare: {
             subject: "Votre {{vehicle}} vous attend dans 7 jours — préparez votre arrivée",
             heading: "J-7 : tout est prêt pour votre location au Maroc",
@@ -98,6 +104,12 @@ const COPY: Record<Locale, Record<LifecycleEmailType, Copy>> = {
         },
     },
     en: {
+        h1_unpaid: {
+            subject: "Your {{vehicle}} in {{hubName}} is not locked in yet",
+            heading: "One step left to secure your car",
+            paragraphs: ["Hi {{firstName}}, your request for the {{vehicle}} from {{pickupDate}} to {{returnDate}} is saved, but the car is not locked in yet.", "Cars go fast on these dates. Reply to your agent on WhatsApp: they confirm availability and send you the secure link within 2 minutes."],
+            cta: { label: "Finish on WhatsApp", hrefKey: "whatsappUrl" },
+        },
         j7_prepare: {
             subject: "Your {{vehicle}} is ready in 7 days — plan your arrival",
             heading: "7 days to go: your Morocco rental is confirmed",
@@ -151,6 +163,12 @@ const COPY: Record<Locale, Record<LifecycleEmailType, Copy>> = {
         },
     },
     es: {
+        h1_unpaid: {
+            subject: "Su {{vehicle}} en {{hubName}} aún no está reservado",
+            heading: "Solo falta un paso para asegurar su coche",
+            paragraphs: ["Hola {{firstName}}, su solicitud del {{vehicle}} del {{pickupDate}} al {{returnDate}} está registrada, pero el coche aún no está bloqueado.", "Los coches vuelan en estas fechas. Responda a su agente por WhatsApp: confirma la disponibilidad y le envía el enlace seguro en 2 minutos."],
+            cta: { label: "Finalizar por WhatsApp", hrefKey: "whatsappUrl" },
+        },
         j7_prepare: {
             subject: "Su {{vehicle}} le espera en 7 días — prepare su llegada",
             heading: "Faltan 7 días: su alquiler en Marruecos está confirmado",
@@ -203,6 +221,12 @@ const COPY: Record<Locale, Record<LifecycleEmailType, Copy>> = {
         },
     },
     nl: {
+        h1_unpaid: {
+            subject: "Uw {{vehicle}} in {{hubName}} is nog niet vastgelegd",
+            heading: "Nog één stap om uw auto zeker te stellen",
+            paragraphs: ["Hallo {{firstName}}, uw aanvraag voor de {{vehicle}} van {{pickupDate}} tot {{returnDate}} is opgeslagen, maar de auto is nog niet vastgelegd.", "Auto's zijn snel weg op deze data. Antwoord uw agent via WhatsApp: hij bevestigt de beschikbaarheid en stuurt u binnen 2 minuten de beveiligde link."],
+            cta: { label: "Afronden via WhatsApp", hrefKey: "whatsappUrl" },
+        },
         j7_prepare: {
             subject: "Uw {{vehicle}} staat over 7 dagen klaar — plan uw aankomst",
             heading: "Nog 7 dagen: uw huurauto in Marokko is bevestigd",
@@ -341,7 +365,7 @@ export function emailDataFromRecord(record: BookingRecord, siteUrl = "https://zw
         zeroDeposit: record.quote.hasZeroDeposit,
         voucherUrl: `${siteUrl}/booking/${record.ref}?t=${record.accessToken}`,
         whatsappUrl: `https://wa.me/212720794046?text=${encodeURIComponent(`ZwinCar ${record.ref}`)}`,
-        reviewUrl: `${siteUrl}/booking/${record.ref}/avis?t=${record.accessToken}`,
+        reviewUrl: `${siteUrl}/booking/${record.ref}/avis?t=${record.accessToken}&lang=${record.locale}`,
         rebookUrl: `${siteUrl}/maroc/${record.rental.pickupHub}?promo=LOYALTY10`,
     };
 }

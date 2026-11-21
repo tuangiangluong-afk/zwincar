@@ -4,6 +4,7 @@ import { PURCHASE_INTENTS } from "@/lib/intent-data";
 import { MOROCCO_GUIDES } from "@/data/morocco-guides";
 import { MOROCCO_GUIDES_EN } from "@/data/morocco-guides-en";
 import { SUPPORTED_LOCALES } from "@/lib/i18n";
+import { isCityVehicleIndexable } from "@/lib/city-vehicle-fit";
 
 export default function sitemap(): MetadataRoute.Sitemap {
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://zwincar.com";
@@ -116,7 +117,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
     // 3. City x Vehicle Landing Pages across 4 Languages (48 x 4 = 192 URLs)
     const cityVehicleRoutes: MetadataRoute.Sitemap = [];
-    MOROCCAN_HUBS.forEach((hub) => {
+    MOROCCAN_HUBS.filter((hub) => isCityVehicleIndexable(hub.slug)).forEach((hub) => {
         VEHICLE_FLEET.forEach((vehicle) => {
             // FR
             cityVehicleRoutes.push({

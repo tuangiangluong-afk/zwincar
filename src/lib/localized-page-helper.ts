@@ -1,3 +1,4 @@
+import { isCityVehicleIndexable } from "@/lib/city-vehicle-fit";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { MOROCCAN_HUBS, VEHICLE_FLEET, CityHub, VehicleModel } from "@/lib/morocco-data";
@@ -104,6 +105,7 @@ export function getLocalizedMetadata(
         return {
             title,
             description,
+            robots: { index: isCityVehicleIndexable(hub.slug), follow: true },
             alternates: {
                 canonical: `${baseUrl}/${locale}/${hub.slug}/${vehicle.id}`,
                 languages: {

@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import type { ReviewSummary } from "@/lib/booking-engine";
 import { useRouter } from "next/navigation";
 import {
     X,
@@ -21,7 +22,7 @@ import {
 } from "lucide-react";
 import { VehicleModel, CityHub, MOROCCAN_HUBS, getLocalizedAirportName } from "@/lib/morocco-data";
 import { Locale, getTranslation } from "@/lib/i18n";
-import { trackBeginCheckout } from "@/lib/gtm";
+import { trackBeginCheckout, trackLead } from "@/lib/gtm";
 import { buildAffiliateRentalUrl } from "@/lib/affiliate";
 
 interface BookingCheckoutModalProps {
@@ -77,6 +78,12 @@ export function BookingCheckoutModal({
     const [notes, setNotes] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [reviews, setReviews] = useState<ReviewSummary | null>(null);
+
+    useEffect(() => {
+        if (!isOpen || reviews) return;
+        fetch("/api/reviews").then((r) => r.json()).then(setReviews).catch(() => {});
+    }, [isOpen, reviews]);
     const [leadConfirmation, setLeadConfirmation] = useState<{ bookingRef: string; token: string } | null>(null);
 
     const currentHub =
@@ -158,6 +165,8 @@ export function BookingCheckoutModal({
 
             const bookingRef = created.booking.ref as string;
             const voucher = created.voucher;
+            // Dossier créé = lead, qu'il finisse payé (purchase) ou en mode lead/WhatsApp.
+            trackLead({ leadType: "booking_created", city: currentHub.slug, value: depositAcompteEur + balanceOnSiteEur, currency: "EUR" });
 
             try {
                 localStorage.setItem(`zwincar_booking_${bookingRef}`, JSON.stringify(voucher));
@@ -536,6 +545,21 @@ export function BookingCheckoutModal({
                             {errorMessage && (
                         <div className="rounded-xl border border-red-200 bg-red-50 px-3.5 py-2.5 text-xs font-semibold text-red-700">
                             {errorMessage}
+                        </div>
+                    )}
+                    {/* Avis vérifiés : affichés uniquement s'il en existe (aucun chiffre inventé). */}
+                    {reviews && reviews.count > 0 && (
+                        <div className="rounded-xl border border-amber-200 bg-amber-50 px-3.5 py-2.5 text-xs text-slate-700">
+                            <div className="font-bold text-slate-900">
+                                <span className="text-amber-500">★</span> {reviews.average}/5 ·{" "}
+                                {reviews.count}{" "}
+                                {locale === "en" ? "verified reviews" : locale === "es" ? "opiniones verificadas" : locale === "nl" ? "geverifieerde reviews" : "avis clients vérifiés"}
+                            </div>
+                            {reviews.latest[0] && (
+                                <p className="mt-1 italic">
+                                    « {reviews.latest[0].comment} » — {reviews.latest[0].firstName}, {reviews.latest[0].hubName}
+                                </p>
+                            )}
                         </div>
                     )}
                             {/* Submit Button */}

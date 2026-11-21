@@ -5,7 +5,8 @@ import { usePathname } from "next/navigation";
 import { VehicleModel, MOROCCAN_HUBS, UPSELL_OPTIONS, getHubMeetingPoint, getLocalizedAirportName } from "@/lib/morocco-data";
 import { DEFAULT_HUB_DISTRIBUTION, DEFAULT_VEHICLE_STOCK, isHubInAffiliateFallback } from "@/lib/affiliate";
 import { Locale, getTranslation } from "@/lib/i18n";
-import { seasonFor, longStayDiscount, getSeasonLabel } from "@/lib/booking-engine";
+import { seasonFor, longStayDiscount, getSeasonLabel, ACOMPTE_RATE } from "@/lib/booking-engine";
+import { trackViewItem, trackWhatsAppClick, trackLead } from "@/lib/gtm";
 import UpsellSelector from "@/components/UpsellSelector";
 import { BookingCheckoutModal } from "@/components/BookingCheckoutModal";
 import { AffiliateExitDrawer } from "@/components/AffiliateExitDrawer";
@@ -65,7 +66,8 @@ export default function VehicleBookingCard({
             if (p) setPickupDate(p);
             if (r) setReturnDate(r);
         }
-    }, []);
+        trackViewItem({ id: vehicle.id, name: vehicle.name, dailyPriceEur: vehicle.dailyPriceEur }, defaultHubSlug);
+    }, [vehicle.id, vehicle.name, vehicle.dailyPriceEur, defaultHubSlug]);
     const [selectedUpsells, setSelectedUpsells] = useState<string[]>([
         "franchise-zero",
         "conducteur-additionnel",
@@ -122,20 +124,15 @@ export default function VehicleBookingCard({
         }
     });
 
-    // Commission 20% on (Car + Vendor Upsells) + 100% of Platform Upsells (eSIM, Pack Sérénité)
-    const depositAcompteEur =
-        Math.round((baseRentalEur + vendorUpsellsEur) * 0.2) + platformUpsellsEur;
-    const depositAcompteMad =
-        Math.round((baseRentalMad + vendorUpsellsMad) * 0.2) + platformUpsellsMad;
-
-    // Remaining Balance paid on site directly to the local agency (80% of Car + Vendor Upsells)
-    const balanceOnSiteEur =
-        baseRentalEur + vendorUpsellsEur - Math.round((baseRentalEur + vendorUpsellsEur) * 0.2);
-    const balanceOnSiteMad =
-        baseRentalMad + vendorUpsellsMad - Math.round((baseRentalMad + vendorUpsellsMad) * 0.2);
-
     const grandTotalEur = baseRentalEur + vendorUpsellsEur + platformUpsellsEur;
     const grandTotalMad = baseRentalMad + vendorUpsellsMad + platformUpsellsMad;
+
+    // Même règle que le moteur serveur (quoteBooking) : l'acompte affiché = l'acompte débité par Stripe.
+    const depositAcompteEur = Math.max(1, Math.round(grandTotalEur * ACOMPTE_RATE));
+    const depositAcompteMad = Math.max(1, Math.round(grandTotalMad * ACOMPTE_RATE));
+    const balanceOnSiteEur = grandTotalEur - depositAcompteEur;
+    const balanceOnSiteMad = grandTotalMad - depositAcompteMad;
+
 
     const handleToggleUpsell = (id: string) => {
         setSelectedUpsells((prev) =>
@@ -158,8 +155,19 @@ export default function VehicleBookingCard({
     const franchiseZeroPriceEur = days * 8;
     const franchiseZeroPriceMad = days * 90;
 
+    const whatsappHref = `https://wa.me/212720794046?text=${encodeURIComponent(
+                        activeLocale === "en"
+                            ? `Hello ZwinCar, I would like to book the ${vehicle.name} from ${pickupDate} to ${returnDate} in ${currentHub.name} with options: ${selectedUpsells.join(", ")}.`
+                            : `Bonjour ZwinCar, je souhaite bloquer la ${vehicle.name} du ${pickupDate} au ${returnDate} à ${currentHub.name} avec options : ${selectedUpsells.join(", ")}.`
+                    )}`;
+    const onWhatsAppClick = (source: string) => {
+        trackWhatsAppClick(source, pickupHub);
+        trackLead({ leadType: "whatsapp_booking", city: pickupHub, value: grandTotalEur, currency: "EUR" });
+        try { fetch("/api/leads", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ vehicle: vehicle.id, hub: pickupHub, pickupDate, returnDate, days, price: currency === "EUR" ? grandTotalEur : grandTotalMad, currency, upsells: selectedUpsells, ts: new Date().toISOString() }) }).catch(() => {}) } catch {}
+    };
+
 return (
-        <div className="rounded-3xl bg-white border border-[#E7DFD5] p-4 sm:p-6 shadow-xl space-y-4 sm:space-y-5">
+        <div id="booking-card" className="scroll-mt-24 rounded-3xl bg-white border border-[#E7DFD5] p-4 sm:p-6 shadow-xl space-y-4 sm:space-y-5">
             {/* 1. Header: Social Proof & Clean Pricing */}
             <div className="pb-3 border-b border-slate-100">
                 <div className="flex items-center justify-between gap-2 mb-2">
@@ -501,17 +509,13 @@ return (
                 )}
 
                 <a
-                    onClick={() => { try { fetch("/api/leads", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ vehicle: vehicle.id, hub: pickupHub, pickupDate, returnDate, days, price: currency === "EUR" ? grandTotalEur : grandTotalMad, currency, upsells: selectedUpsells, ts: new Date().toISOString() }) }).catch(() => {}) } catch {} }}
-                    href={`https://wa.me/212720794046?text=${encodeURIComponent(
-                        activeLocale === "en"
-                            ? `Hello ZwinCar, I would like to book the ${vehicle.name} from ${pickupDate} to ${returnDate} in ${currentHub.name} with options: ${selectedUpsells.join(", ")}.`
-                            : `Bonjour ZwinCar, je souhaite bloquer la ${vehicle.name} du ${pickupDate} au ${returnDate} à ${currentHub.name} avec options : ${selectedUpsells.join(", ")}.`
-                    )}`}
+                    onClick={() => onWhatsAppClick("booking_card")}
+                    href={whatsappHref}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full h-11 rounded-2xl bg-[#FAF7F2] hover:bg-slate-100 border border-[#E7DFD5] text-slate-800 font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-2xs cursor-pointer"
+                    className="w-full h-12 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer active:scale-[0.98]"
                 >
-                    <MessageCircle size={15} className="text-emerald-600" />
+                    <MessageCircle size={16} />
                     <span>{t.bookingWidget.whatsappAvailabilityBtn}</span>
                 </a>
 
@@ -566,6 +570,27 @@ return (
                     locale={activeLocale}
                 />
             )}
+            {/* Barre mobile : au Maroc on réserve d'abord sur WhatsApp, toujours à portée de pouce. */}
+            <div className="lg:hidden fixed inset-x-0 bottom-0 z-40 grid grid-cols-2 gap-2 border-t border-[#E7DFD5] bg-white/95 backdrop-blur p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+                <a
+                    onClick={() => onWhatsAppClick("mobile_sticky_bar")}
+                    href={whatsappHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="h-12 rounded-2xl bg-emerald-600 text-white font-bold text-sm flex items-center justify-center gap-2 active:scale-[0.98]"
+                >
+                    <MessageCircle size={16} />
+                    <span>WhatsApp</span>
+                </a>
+                <a
+                    href="#booking-card"
+                    className="h-12 rounded-2xl bg-[#C9572C] text-white font-black text-sm flex items-center justify-center gap-2 active:scale-[0.98]"
+                >
+                    <Lock size={15} />
+                    <span>{currency === "EUR" ? `${grandTotalEur} €` : `${grandTotalMad} MAD`} · {activeLocale === "en" ? "Book" : activeLocale === "es" ? "Reservar" : activeLocale === "nl" ? "Boeken" : "Réserver"}</span>
+                </a>
+            </div>
+            <div className="lg:hidden h-20" aria-hidden />
         </div>
     );
 }

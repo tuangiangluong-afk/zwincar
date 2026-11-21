@@ -40,7 +40,7 @@ export async function GET(request: Request) {
 
     let records;
     try {
-        records = await store.list({ status: ["confirmed", "checked_out", "completed"] });
+        records = await store.list({ status: ["awaiting_payment", "confirmed", "checked_out", "completed"] });
     } catch (error) {
         console.error("Lifecycle list error:", error);
         return NextResponse.json({ error: "Lecture des dossiers impossible" }, { status: 500 });

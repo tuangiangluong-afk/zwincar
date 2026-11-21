@@ -873,7 +873,7 @@ export function isValidBookingRef(ref: string): boolean {
 // Cycle de vie : quels emails, quand, une seule fois
 // ---------------------------------------------------------------------------
 
-export type LifecycleEmailType = "j7_prepare" | "j1_pickup" | "j0_checkin" | "j1_review" | "j30_rebook";
+export type LifecycleEmailType = "h1_unpaid" | "j7_prepare" | "j1_pickup" | "j0_checkin" | "j1_review" | "j30_rebook";
 
 export interface LifecycleEmail {
     type: LifecycleEmailType;
@@ -912,6 +912,7 @@ export function planLifecycleEmails(booking: {
 }
 
 const LIFECYCLE_STATUSES: Record<LifecycleEmailType, BookingStatus[]> = {
+    h1_unpaid: ["awaiting_payment"],
     j7_prepare: ["confirmed"],
     j1_pickup: ["confirmed"],
     j0_checkin: ["confirmed", "awaiting_payment"],
@@ -925,7 +926,13 @@ export function dueLifecycleEmails(
     alreadySent: string[] = []
 ): LifecycleEmail[] {
     const sent = new Set(alreadySent);
-    return planLifecycleEmails({ ...booking.rental, ref: booking.ref }).filter(
+    const created = Date.parse(booking.createdAt);
+    const plan = planLifecycleEmails({ ...booking.rental, ref: booking.ref });
+    // Relance d'un dossier non payé 1h après création, seulement s'il est récent (pas de rattrapage massif au déploiement).
+    if (Number.isFinite(created) && now.getTime() - created < 2 * DAY) {
+        plan.unshift({ type: "h1_unpaid", sendAt: new Date(created + 3_600_000).toISOString(), key: `${booking.ref}:h1_unpaid` });
+    }
+    return plan.filter(
         (email) =>
             !sent.has(email.key) &&
             LIFECYCLE_STATUSES[email.type].includes(booking.status) &&
@@ -1009,6 +1016,8 @@ export interface BookingRecord {
     stripeSessionId?: string;
     /** Complément à encaisser après une modification de dates (calculé serveur). */
     pendingPayment?: { kind: "acompte" | "change"; amountEur: number; createdAt: string };
+    /** Avis laissé par le client via le lien du voucher : vérifié par construction (dossier réel terminé). */
+    review?: { at: string; rating: number; comment: string };
 }
 
 /** Projection envoyée au navigateur : jamais de token ni d'événements internes. */
@@ -1344,4 +1353,49 @@ export function isVehicleEligible(vehicle: VehicleRate, driverAge?: number): boo
     if (driverAge < 21) return false;
     if (vehicle.seats >= 7 && driverAge < 25) return true;
     return true;
+}
+
+// ---------------------------------------------------------------------------
+// Avis vérifiés (uniquement issus de dossiers réels terminés)
+// ---------------------------------------------------------------------------
+
+export const REVIEWABLE_STATUSES: BookingStatus[] = ["checked_out", "completed"];
+
+/** Valide la saisie client. Renvoie un message d'erreur ou l'avis normalisé. */
+export function parseReview(input: { rating?: unknown; comment?: unknown }): { rating: number; comment: string } | string {
+    const rating = Number(input.rating);
+    if (!Number.isInteger(rating) || rating < 1 || rating > 5) return "Note invalide (1 à 5).";
+    const comment = typeof input.comment === "string" ? input.comment.trim().replace(/\s+/g, " ") : "";
+    if (comment.length > 1000) return "Commentaire trop long (1000 caractères max).";
+    return { rating, comment };
+}
+
+export interface ReviewSummary {
+    count: number;
+    average: number;
+    latest: Array<{ firstName: string; hubName: string; vehicleName: string; rating: number; comment: string; at: string }>;
+}
+
+export function summarizeReviews(records: BookingRecord[], latestCount = 3): ReviewSummary {
+    const reviewed = records
+        .filter((r) => r.review && REVIEWABLE_STATUSES.includes(r.status))
+        .sort((a, b) => b.review!.at.localeCompare(a.review!.at));
+    const count = reviewed.length;
+    const average = count ? Math.round((reviewed.reduce((sum, r) => sum + r.review!.rating, 0) / count) * 10) / 10 : 0;
+    return {
+        count,
+        average,
+        // On affiche les derniers avis avec texte, sans filtrer sur la note : pas de cherry-picking.
+        latest: reviewed
+            .filter((r) => r.review!.comment)
+            .slice(0, latestCount)
+            .map((r) => ({
+                firstName: r.client.fullName.split(" ")[0] || "Client",
+                hubName: r.rental.hubName,
+                vehicleName: r.rental.vehicleName,
+                rating: r.review!.rating,
+                comment: r.review!.comment,
+                at: r.review!.at,
+            })),
+    };
 }

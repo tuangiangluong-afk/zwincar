@@ -441,3 +441,35 @@ test("i18n: localizeVehicleName et localizeMeetingPointText traduisent intégral
     assert.equal(voucher.rental.meetingPointDetail, "Terminal 1 Arrivals, main exit, Parking P2 (representative waiting with name sign)");
     assert.equal(voucher.rental.meetingPointDetail.includes("Arrivées"), false);
 });
+
+test("relance h1_unpaid : 1h après création, dossier non payé et récent uniquement", () => {
+    const booking: BookingRecord = { ...makeRecord(), status: "awaiting_payment", createdAt: "2026-03-01T10:00:00Z" };
+    const types = (at: string, b = booking) => dueLifecycleEmails(b, new Date(at)).map((e) => e.type);
+    assert.deepEqual(types("2026-03-01T10:30:00Z"), []);
+    assert.ok(types("2026-03-01T11:05:00Z").includes("h1_unpaid"));
+    assert.ok(!types("2026-03-01T11:05:00Z", { ...booking, status: "confirmed" }).includes("h1_unpaid"));
+    assert.ok(!types("2026-03-04T11:00:00Z").includes("h1_unpaid"), "pas de rattrapage après 48h");
+    assert.equal(dueLifecycleEmails(booking, new Date("2026-03-01T11:05:00Z"), ["ZW-12345A:h1_unpaid"]).filter((e) => e.type === "h1_unpaid").length, 0);
+});
+
+test("avis vérifiés : validation et résumé sans cherry-picking", async () => {
+    const { parseReview, summarizeReviews } = await import("../src/lib/booking-engine.ts");
+    assert.equal(typeof parseReview({ rating: 0 }), "string");
+    assert.equal(typeof parseReview({ rating: 4.5 }), "string");
+    assert.equal(typeof parseReview({ rating: 5, comment: "x".repeat(1001) }), "string");
+    assert.deepEqual(parseReview({ rating: "4", comment: "  Top   agent  " }), { rating: 4, comment: "Top agent" });
+
+    const done = (ref: string, rating: number, at: string, status: BookingRecord["status"] = "completed") =>
+        makeRecord({ ref, status, review: { at, rating, comment: `avis ${ref}` } });
+    const s = summarizeReviews([
+        done("A", 5, "2026-03-01"),
+        done("B", 2, "2026-03-03"),
+        done("C", 4, "2026-03-02"),
+        done("D", 5, "2026-03-04", "confirmed"), // pas encore restitué : ignoré
+        makeRecord({ status: "completed" }),
+    ]);
+    assert.equal(s.count, 3);
+    assert.equal(s.average, 3.7);
+    assert.deepEqual(s.latest.map((r) => r.rating), [2, 4, 5], "le plus récent d'abord, même s'il est mauvais");
+    assert.deepEqual(summarizeReviews([]), { count: 0, average: 0, latest: [] });
+});

@@ -9,6 +9,7 @@ import { Locale, getTranslation } from "@/lib/i18n";
 import IntentLandingView from "@/components/pSEO/IntentLandingView";
 import VehicleBookingCard from "@/components/VehicleBookingCard";
 import PseoGuidesCrossLinks from "@/components/pSEO/PseoGuidesCrossLinks";
+import CityVehicleFitSection from "@/components/pSEO/CityVehicleFitSection";
 import {
     ShieldCheck,
     CheckCircle2,
@@ -241,6 +242,8 @@ export default function LocalizedPageRenderer({
                                         </div>
                                     </div>
                                 </div>
+
+                                <CityVehicleFitSection vehicle={vehicle} hub={hub} locale={locale} />
 
                                 {/* Airport Terminal Handover & Free Riad Delivery Protocol */}
                                 <div className="rounded-3xl bg-white border border-[#E7DFD5] p-6 space-y-3 shadow-2xs">
