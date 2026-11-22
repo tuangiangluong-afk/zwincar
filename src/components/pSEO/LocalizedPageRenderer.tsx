@@ -10,6 +10,7 @@ import IntentLandingView from "@/components/pSEO/IntentLandingView";
 import VehicleBookingCard from "@/components/VehicleBookingCard";
 import PseoGuidesCrossLinks from "@/components/pSEO/PseoGuidesCrossLinks";
 import CityVehicleFitSection from "@/components/pSEO/CityVehicleFitSection";
+import { isHubInAffiliateFallback } from "@/lib/affiliate";
 import {
     ShieldCheck,
     CheckCircle2,
@@ -250,32 +251,56 @@ export default function LocalizedPageRenderer({
                                     <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#C9572C]">
                                         <Plane size={15} />
                                         <span>
-                                            {locale === "en"
-                                                ? `VIP Handover Protocol at ${hub.name} (${hub.airportCode})`
-                                                : locale === "es"
-                                                ? `Protocolo de Entrega VIP en ${hub.name} (${hub.airportCode})`
-                                                : locale === "nl"
-                                                ? `VIP Overdracht op ${hub.name} (${hub.airportCode})`
-                                                : `Procédure de Réception à ${hub.name} (${hub.airportCode})`}
+                                            {isHubInAffiliateFallback(hub.slug)
+                                                ? (locale === "en"
+                                                    ? `Partner Counter Pickup at ${hub.name} (${hub.airportCode})`
+                                                    : locale === "es"
+                                                    ? `Recogida en Mostrador Asociado en ${hub.name} (${hub.airportCode})`
+                                                    : locale === "nl"
+                                                    ? `Partnerbalie Ophalen op ${hub.name} (${hub.airportCode})`
+                                                    : `Prise en Charge Comptoir Partenaire à ${hub.name} (${hub.airportCode})`)
+                                                : (locale === "en"
+                                                    ? `VIP Handover Protocol at ${hub.name} (${hub.airportCode})`
+                                                    : locale === "es"
+                                                    ? `Protocolo de Entrega VIP en ${hub.name} (${hub.airportCode})`
+                                                    : locale === "nl"
+                                                    ? `VIP Overdracht op ${hub.name} (${hub.airportCode})`
+                                                    : `Procédure de Réception à ${hub.name} (${hub.airportCode})`)}
                                         </span>
                                     </div>
                                     <h2 className="text-lg font-bold text-slate-900">
-                                        {locale === "en"
-                                            ? `Skip the counter queue for your ${vehicleShortName} in ${hub.name}`
-                                            : locale === "es"
-                                            ? `Recogida sin colas de su ${vehicleShortName} en ${hub.name}`
-                                            : locale === "nl"
-                                            ? `Directe sleuteloverdracht voor uw ${vehicleShortName} in ${hub.name}`
-                                            : `Remise des clés du ${vehicleShortName} à ${hub.name}`}
+                                        {isHubInAffiliateFallback(hub.slug)
+                                            ? (locale === "en"
+                                                ? `Pickup your ${vehicleShortName} at ${hub.airportName}`
+                                                : locale === "es"
+                                                ? `Recogida de su ${vehicleShortName} en ${hub.airportName}`
+                                                : locale === "nl"
+                                                ? `Uw ${vehicleShortName} ophalen op ${hub.airportName}`
+                                                : `Prise en charge de votre ${vehicleShortName} à ${hub.airportName}`)
+                                            : (locale === "en"
+                                                ? `Skip the counter queue for your ${vehicleShortName} in ${hub.name}`
+                                                : locale === "es"
+                                                ? `Recogida sin colas de su ${vehicleShortName} en ${hub.name}`
+                                                : locale === "nl"
+                                                ? `Directe sleuteloverdracht voor uw ${vehicleShortName} in ${hub.name}`
+                                                : `Remise des clés du ${vehicleShortName} à ${hub.name}`)}
                                     </h2>
                                     <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                                        {locale === "en"
-                                            ? `Your dedicated ZwinCar agent tracks your flight in real time and greets you directly outside the ${hub.airportName} (${hub.airportCode}) arrivals hall with a name sign. Photo walkaround and contract take 5 minutes on WhatsApp — zero terminal counter queues, zero credit card imprint, and free delivery to your Riad or hotel gate.`
-                                            : locale === "es"
-                                            ? `Su agente dedicado de ZwinCar sigue su vuelo en tiempo real y le recibe directamente a la salida de llegadas de ${hub.airportName} (${hub.airportCode}) con un cartel a su nombre. Revisión por fotos y contrato en 5 minutos por WhatsApp — sin colas en mostrador, sin bloqueo en tarjeta y entrega gratuita en su Riad u hotel.`
-                                            : locale === "nl"
-                                            ? `Uw persoonlijke ZwinCar-agent volgt uw vlucht realtime en wacht u direct buiten de aankomsthal van ${hub.airportName} (${hub.airportCode}) op met een naambordje. Inspectie en contract duren 5 minuten via WhatsApp — geen wachtrijen bij de balie, geen creditcardblokkering en gratis bezorging bij uw Riad of hotel.`
-                                            : `Votre agent ZwinCar suit votre vol en direct et vous accueille dès la sortie du terminal ${hub.airportName} (${hub.airportCode}) avec une pancarte nominative. État des lieux photo et contrat en 5 minutes sur WhatsApp — zéro file d'attente au guichet et livraison Riad/Hôtel offerte.`}
+                                        {isHubInAffiliateFallback(hub.slug)
+                                            ? (locale === "en"
+                                                ? `Pickup at ${hub.airportName} (${hub.airportCode}) verified partner desk with your confirmed booking voucher. Immediate vehicle handover with full transparency and 24/7 airport assistance.`
+                                                : locale === "es"
+                                                ? `Recogida en el mostrador del socio verificado en ${hub.airportName} (${hub.airportCode}) presentando su bono de reserva confirmado. Entrega rápida del vehículo y asistencia en aeropuerto.`
+                                                : locale === "nl"
+                                                ? `Ophalen bij de balie van onze geverifieerde partner op ${hub.airportName} (${hub.airportCode}) met uw boekingsvoucher. Snelle overdracht en assistentie op de luchthaven.`
+                                                : `Prise en charge directement au comptoir de notre partenaire local vérifié (DiscoverCars / Localrent) à ${hub.airportName} (${hub.airportCode}) sur présentation de votre bon de réservation.`)
+                                            : (locale === "en"
+                                                ? `Your dedicated ZwinCar agent tracks your flight in real time and greets you directly outside the ${hub.airportName} (${hub.airportCode}) arrivals hall with a name sign. Photo walkaround and contract take 5 minutes on WhatsApp — zero terminal counter queues, zero credit card imprint, and free delivery to your Riad or hotel gate.`
+                                                : locale === "es"
+                                                ? `Su agente dedicado de ZwinCar sigue su vuelo en tiempo real y le recibe directamente a la salida de llegadas de ${hub.airportName} (${hub.airportCode}) con un cartel a su nombre. Revisión por fotos y contrato en 5 minutos por WhatsApp — sin colas en mostrador, sin bloqueo en tarjeta y entrega gratuita en su Riad u hotel.`
+                                                : locale === "nl"
+                                                ? `Uw persoonlijke ZwinCar-agent volgt uw vlucht realtime en wacht u direct buiten de aankomsthal van ${hub.airportName} (${hub.airportCode}) op met een naambordje. Inspectie en contract duren 5 minuten via WhatsApp — geen wachtrijen bij de balie, geen creditcardblokkering en gratis bezorging bij uw Riad of hotel.`
+                                                : `Votre agent ZwinCar suit votre vol en direct et vous accueille dès la sortie du terminal ${hub.airportName} (${hub.airportCode}) avec une pancarte nominative. État des lieux photo et contrat en 5 minutes sur WhatsApp — zéro file d'attente au guichet et livraison Riad/Hôtel offerte.`)}
                                     </p>
                                 </div>
                             </div>

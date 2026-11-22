@@ -393,15 +393,29 @@ export default function VehicleCatalog({
                                             <div className="text-[11px] text-slate-500 font-medium mt-0.5 flex items-center gap-1">
                                                 <span>{days}{activeLocale === "en" ? "d" : activeLocale === "es" ? "d" : activeLocale === "nl" ? "d" : "j"} : ~{formatPrice(totalEst, totalEst * 11)}</span>
                                                 <span className="text-slate-300">•</span>
-                                                <span className="text-emerald-700 font-semibold">{t.catalog.freeDeliveryIncluded}</span>
+                                                <span className="text-emerald-700 font-semibold">
+                                                    {isAffiliate
+                                                        ? (activeLocale === "en"
+                                                            ? "Airport pickup included"
+                                                            : activeLocale === "es"
+                                                            ? "Recogida en aeropuerto incluida"
+                                                            : activeLocale === "nl"
+                                                            ? "Luchthaven pickup inbegrepen"
+                                                            : "Prise en charge aéroport incluse")
+                                                        : t.catalog.freeDeliveryIncluded}
+                                                </span>
                                             </div>
                                         </div>
                                         <div className="text-right pl-2 border-l border-slate-200/60">
                                             <span className="text-[9px] uppercase font-bold tracking-wider text-slate-400 block">
-                                                {activeLocale === "en" ? "20% Deposit" : activeLocale === "es" ? "Anticipo 20%" : activeLocale === "nl" ? "20% Aanbetaling" : "Acompte 20%"}
+                                                {isAffiliate
+                                                    ? (activeLocale === "en" ? "Network Rate" : activeLocale === "es" ? "Tarifa Red" : activeLocale === "nl" ? "Netwerktarief" : "Tarif Réseau")
+                                                    : (activeLocale === "en" ? "20% Deposit" : activeLocale === "es" ? "Anticipo 20%" : activeLocale === "nl" ? "20% Aanbetaling" : "Acompte 20%")}
                                             </span>
                                             <span className="text-sm font-black text-[#C9572C] font-mono">
-                                                {formatPrice(Math.round(totalEst * 0.2), Math.round(totalEst * 0.2 * 11))}
+                                                {isAffiliate
+                                                    ? formatPrice(totalEst, totalEst * 11)
+                                                    : formatPrice(Math.round(totalEst * 0.2), Math.round(totalEst * 0.2 * 11))}
                                             </span>
                                         </div>
                                     </div>

@@ -12,6 +12,7 @@ import IntentLandingView from "@/components/pSEO/IntentLandingView";
 import PseoGuidesCrossLinks from "@/components/pSEO/PseoGuidesCrossLinks";
 import CityVehicleFitSection from "@/components/pSEO/CityVehicleFitSection";
 import { isCityVehicleIndexable } from "@/lib/city-vehicle-fit";
+import { isHubInAffiliateFallback } from "@/lib/affiliate";
 import {
     ShieldCheck,
     CheckCircle2,
@@ -99,10 +100,13 @@ export async function generateMetadata({ params }: CityVehiclePageProps): Promis
     // 2. Check if it's a Vehicle
     const vehicle = VEHICLE_FLEET.find((v) => v.id === vehicleId);
     if (vehicle) {
+        const isAffiliate = isHubInAffiliateFallback(hub.slug);
         const vehicleTitleName = vehicle.id === "toyota-prado-tx-7places" ? "Toyota Prado 7 Places" : vehicle.name;
         const title = clampTitle(`Location ${vehicleTitleName} ${hub.name} (${hub.airportCode}) | ZwinCar`, 58);
         const description = clampDescription(
-            `Louez la ${vehicle.name} à ${hub.name} (${hub.airportName}). 0€ de caution avec Franchise Zéro, modèle exact garanti, livraison aéroport et riad gratuite. Dès ${vehicle.dailyPriceEur} €/j.`
+            isAffiliate
+                ? `Louez la ${vehicle.name} à ${hub.name} (${hub.airportName}). Tarifs partenaires négociés, prise en charge aéroport immédiate. Dès ${vehicle.dailyPriceEur} €/j.`
+                : `Louez la ${vehicle.name} à ${hub.name} (${hub.airportName}). 0€ de caution avec Franchise Zéro, modèle ou équivalent garanti, prise en charge aéroport incluse. Dès ${vehicle.dailyPriceEur} €/j.`
         );
 
         return {
@@ -236,7 +240,9 @@ export default async function CityVehicleDetailPage({ params }: CityVehiclePageP
                                     <span>{vehicle.equivalentCategoryFr}</span>
                                 </div>
                                 <p className="text-sm sm:text-base text-slate-600 mt-2 leading-relaxed">
-                                    {vehicle.highlight} Livrée sans attente dès votre sortie de l'avion ou directement à votre Riad à {hub.name}.
+                                    {vehicle.highlight} {isHubInAffiliateFallback(hub.slug)
+                                        ? `Prise en charge rapide au comptoir aéroport de notre partenaire vérifié à ${hub.name}.`
+                                        : `Livrée sans attente dès votre sortie de l'avion ou directement à votre Riad à ${hub.name}.`}
                                 </p>
                             </div>
 
@@ -343,7 +349,9 @@ export default async function CityVehicleDetailPage({ params }: CityVehiclePageP
                                     Remise des clés du {vehicleShortName} à {hub.name}
                                 </h2>
                                 <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                                    <strong>Point de rendez-vous : </strong>{hub.meetingPointDetail}. Un agent de notre agence partenaire locale vous attend avec une pancarte nominative à votre nom. Le tour du véhicule prend 5 minutes, vous signez le contrat sur smartphone et partez directement sans passer par un guichet.
+                                    <strong>Point de rendez-vous : </strong>{hub.meetingPointDetail}. {isHubInAffiliateFallback(hub.slug)
+                                        ? "Prise en charge directement au comptoir de notre partenaire local vérifié (DiscoverCars / Localrent) sur présentation de votre bon de réservation."
+                                        : "Un agent de notre agence partenaire locale vous attend avec une pancarte nominative à votre nom. Le tour du véhicule prend 5 minutes, vous signez le contrat sur smartphone et partez directement sans passer par un guichet."}
                                 </p>
                             </div>
 

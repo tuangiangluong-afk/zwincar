@@ -217,7 +217,17 @@ return (
                         <div className="text-[11px] text-slate-500 font-medium mt-1 flex flex-wrap items-center gap-1.5">
                             <span>{days}{activeLocale === "en" ? "d" : "j"} : ~{currency === "EUR" ? `${baseRentalEur} €` : `${baseRentalMad} MAD`}</span>
                             <span className="text-slate-300">•</span>
-                            <span className="text-emerald-700 font-semibold">{t.catalog.freeDeliveryIncluded}</span>
+                            <span className="text-emerald-700 font-semibold">
+                                {isAffiliate
+                                    ? (activeLocale === "en"
+                                        ? "Airport pickup included"
+                                        : activeLocale === "es"
+                                        ? "Recogida en aeropuerto incluida"
+                                        : activeLocale === "nl"
+                                        ? "Luchthaven pickup inbegrepen"
+                                        : "Prise en charge aéroport incluse")
+                                    : t.catalog.freeDeliveryIncluded}
+                            </span>
                             {/* Seule remise affichée : la remise longue durée réelle du moteur (pas de prix barré de référence). */}
                             {durationSavingsEur > 0 && (
                                 <>
@@ -456,28 +466,63 @@ return (
                     </span>
                 </div>
 
-                {/* 20% Deposit Today */}
-                <div className="pt-2 border-t border-slate-200/80 flex items-baseline justify-between gap-3">
-                    <div className="min-w-0 pr-1">
-                        <div className="font-black text-slate-900 text-sm">
-                            {t.bookingWidget.payTodayStripe}
+                {/* Payment Breakdown : Mode direct vs Mode affiliation */}
+                {isAffiliate ? (
+                    <div className="pt-2 border-t border-slate-200/80 space-y-1.5">
+                        <div className="flex items-baseline justify-between gap-3">
+                            <div className="min-w-0 pr-1">
+                                <div className="font-bold text-slate-900 text-xs sm:text-sm">
+                                    {activeLocale === "en" ? "Partner Network Rate" : activeLocale === "es" ? "Tarifa Red Asociada" : activeLocale === "nl" ? "Partnernetwerktarief" : "Tarif Réseau Partenaire"}
+                                </div>
+                                <div className="text-[10px] text-slate-500">
+                                    {activeLocale === "en"
+                                        ? "Comparison with verified brokers (DiscoverCars / Localrent)"
+                                        : activeLocale === "es"
+                                        ? "Comparación con corredores verificados (DiscoverCars / Localrent)"
+                                        : activeLocale === "nl"
+                                        ? "Vergelijking met geverifieerde aanbieders (DiscoverCars / Localrent)"
+                                        : "Comparé auprès des courtiers vérifiés (DiscoverCars / Localrent)"}
+                                </div>
+                            </div>
+                            <div className="text-lg sm:text-xl font-black text-[#C9572C] font-mono whitespace-nowrap shrink-0">
+                                {currency === "EUR" ? `~${baseRentalEur} €` : `~${baseRentalMad} MAD`}
+                            </div>
                         </div>
-                        <div className="text-[10px] text-slate-400">
-                            {/* Le mode lead n'encaisse rien en ligne ; sinon Stripe débite l'acompte tout de suite. */}
-                            {process.env.NEXT_PUBLIC_AFFILIATE_MODE === "true" ? t.bookingWidget.payTodayNote : t.bookingWidget.payNowNote}
+                        <div className="rounded-xl bg-slate-50 border border-slate-200/70 p-2 text-[10px] text-slate-600 leading-tight">
+                            {activeLocale === "en"
+                                ? "Direct booking not yet open in this hub. Secure payment & deposit terms handled by verified partner."
+                                : activeLocale === "es"
+                                ? "Reserva directa aún no disponible en este hub. Condiciones de pago y fianza gestionadas por el socio verificado."
+                                : activeLocale === "nl"
+                                ? "Direct boeken nog niet geopend in deze stad. Beveiligde betaling en borgvoorwaarden via geverifieerde partner."
+                                : "Réservation directe pas encore ouverte dans cette ville. Conditions de paiement et caution selon partenaire vérifié."}
                         </div>
                     </div>
-                    <div className="text-lg sm:text-xl font-black text-[#C9572C] font-mono whitespace-nowrap shrink-0">
-                        {currency === "EUR" ? `${depositAcompteEur} €` : `${depositAcompteMad} MAD`}
-                    </div>
-                </div>
+                ) : (
+                    <>
+                        {/* 20% Deposit Today */}
+                        <div className="pt-2 border-t border-slate-200/80 flex items-baseline justify-between gap-3">
+                            <div className="min-w-0 pr-1">
+                                <div className="font-black text-slate-900 text-sm">
+                                    {t.bookingWidget.payTodayStripe}
+                                </div>
+                                <div className="text-[10px] text-slate-400">
+                                    {process.env.NEXT_PUBLIC_AFFILIATE_MODE === "true" ? t.bookingWidget.payTodayNote : t.bookingWidget.payNowNote}
+                                </div>
+                            </div>
+                            <div className="text-lg sm:text-xl font-black text-[#C9572C] font-mono whitespace-nowrap shrink-0">
+                                {currency === "EUR" ? `${depositAcompteEur} €` : `${depositAcompteMad} MAD`}
+                            </div>
+                        </div>
 
-                <div className="flex items-baseline justify-between gap-3 text-slate-500 text-[11px]">
-                    <span className="min-w-0 pr-1">{t.bookingWidget.balanceOnSite}</span>
-                    <span className="font-bold text-slate-800 font-mono whitespace-nowrap shrink-0">
-                        {currency === "EUR" ? `${balanceOnSiteEur} €` : `${balanceOnSiteMad} MAD`} (~{balanceOnSiteMad} DH)
-                    </span>
-                </div>
+                        <div className="flex items-baseline justify-between gap-3 text-slate-500 text-[11px]">
+                            <span className="min-w-0 pr-1">{t.bookingWidget.balanceOnSite}</span>
+                            <span className="font-bold text-slate-800 font-mono whitespace-nowrap shrink-0">
+                                {currency === "EUR" ? `${balanceOnSiteEur} €` : `${balanceOnSiteMad} MAD`} (~{balanceOnSiteMad} DH)
+                            </span>
+                        </div>
+                    </>
+                )}
 
                 <div className="pt-1.5 border-t border-slate-200/60 flex flex-wrap items-center justify-between gap-1 text-[10px] text-emerald-800 font-semibold">
                     <span>✓ {t.bookingWidget.refund48h}</span>

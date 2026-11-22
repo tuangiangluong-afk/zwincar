@@ -84,6 +84,19 @@ export default function MentionsLegales() {
                             Conformément à la réglementation, vous bénéficiez d&apos;un droit d&apos;accès, de rectification et d&apos;effacement de vos données personnelles sur simple demande à hello@zwincar.com.
                         </p>
                     </div>
+
+                    <div className="rounded-3xl border border-[#E7DFD5] bg-white p-6 sm:p-8 shadow-xs">
+                        <h2 className="mb-4 text-xl font-bold text-slate-900">6. Crédits Photographiques & Licences</h2>
+                        <p className="text-sm text-slate-600 leading-relaxed mb-3">
+                            Certaines photographies illustrant les villes marocaines proviennent de contributeurs indépendants et sont diffusées sous licence libre Creative Commons via Wikimedia Commons :
+                        </p>
+                        <ul className="text-xs sm:text-sm text-slate-600 space-y-2">
+                            <li><strong>Essaouira :</strong> « Ramparts of Essaouira » — Licence Creative Commons CC BY-SA 3.0 via Wikimedia Commons.</li>
+                            <li><strong>Tétouan :</strong> « Tamuda and Tetouan » — Licence Creative Commons CC BY-SA 4.0 via Wikimedia Commons.</li>
+                            <li><strong>Oujda :</strong> « Bab Sidi Abdelwahab » — Licence Creative Commons CC BY-SA 4.0 via Wikimedia Commons.</li>
+                            <li><strong>Dakhla :</strong> « Sunrise in Dakhla » — Licence Creative Commons CC BY-SA 4.0 via Wikimedia Commons.</li>
+                        </ul>
+                    </div>
                 </div>
             </main>
         </div>

@@ -42,3 +42,15 @@ test("conseils locaux traduits pour chaque hub et chaque langue", async () => {
         }
     }
 });
+
+test("métadonnées et promesses d'accueil étanches entre direct et affiliation", async () => {
+    const { getLocalizedMetadata } = await import("../src/lib/localized-page-helper.ts");
+    const duster = car("dacia-duster-4x4");
+    for (const h of ["nador", "essaouira", "tetouan", "oujda", "dakhla"]) {
+        for (const l of ["en", "es", "nl"] as const) {
+            const meta = await getLocalizedMetadata(l, h, duster.id);
+            assert.ok(!meta.description?.toLowerCase().includes("riad"), `${h}/${l} promet encore le riad en affiliation`);
+            assert.ok(!meta.description?.includes("Zero credit card hold"), `${h}/${l} promet encore le 0 caution en affiliation`);
+        }
+    }
+});

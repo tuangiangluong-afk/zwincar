@@ -1,10 +1,13 @@
-import { isCityVehicleIndexable } from "@/lib/city-vehicle-fit";
+import { isCityVehicleIndexable } from "./city-vehicle-fit.ts";
+import { isHubInAffiliateFallback } from "./affiliate.ts";
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
-import { MOROCCAN_HUBS, VEHICLE_FLEET, CityHub, VehicleModel } from "@/lib/morocco-data";
-import { PURCHASE_INTENTS, PurchaseIntent, getPurchaseIntent } from "@/lib/intent-data";
-import { Locale, getTranslation, getHreflangAlternates } from "@/lib/i18n";
-import { clampTitle, clampDescription } from "@/lib/seo-meta";
+import { MOROCCAN_HUBS, VEHICLE_FLEET } from "./morocco-data.ts";
+import type { CityHub, VehicleModel } from "./morocco-data.ts";
+import { PURCHASE_INTENTS, getPurchaseIntent } from "./intent-data.ts";
+import type { PurchaseIntent } from "./intent-data.ts";
+import { getTranslation, getHreflangAlternates } from "./i18n.ts";
+import type { Locale } from "./i18n.ts";
+import { clampTitle, clampDescription } from "./seo-meta.ts";
 
 export function getLocalizedStaticParams(locale: Locale) {
     const paramsList: { hub: string; subslug: string }[] = [];
@@ -94,12 +97,19 @@ export function getLocalizedMetadata(
             58
         );
 
+        const isAffiliate = isHubInAffiliateFallback(hub.slug);
         const description = clampDescription(
-            locale === "en"
-                ? `Rent a guaranteed ${vehicle.name} in ${hub.name} (${hub.airportName}). Zero credit card hold, free delivery to airport or riad. From ${vehicle.dailyPriceEur} €/day.`
-                : locale === "es"
-                ? `Alquile un ${vehicle.name} garantizado en ${hub.name} (${hub.airportName}). Sin bloqueo en tarjeta, entrega gratis en aeropuerto o riad. Desde ${vehicle.dailyPriceEur} €/día.`
-                : `Huur een gegarandeerde ${vehicle.name} in ${hub.name} (${hub.airportName}). Geen creditcard borg, gratis levering op luchthaven of riad. Vanaf ${vehicle.dailyPriceEur} €/dag.`
+            isAffiliate
+                ? (locale === "en"
+                    ? `Compare ${vehicle.name} rental rates at ${hub.name} (${hub.airportName}). Verified local partner fleet, transparent terms. From ${vehicle.dailyPriceEur} €/day.`
+                    : locale === "es"
+                    ? `Compare tarifas de alquiler para ${vehicle.name} en ${hub.name} (${hub.airportName}). Flota de socios verificados, precios transparentes. Desde ${vehicle.dailyPriceEur} €/día.`
+                    : `Vergelijk huurprijzen voor ${vehicle.name} in ${hub.name} (${hub.airportName}). Geverifieerde partnerbedrijven, transparante voorwaarden. Vanaf ${vehicle.dailyPriceEur} €/dag.`)
+                : (locale === "en"
+                    ? `Rent a ${vehicle.name} in ${hub.name} (${hub.airportName}). Low deposit with Zero Excess, model or equivalent guaranteed, airport pickup included. From ${vehicle.dailyPriceEur} €/day.`
+                    : locale === "es"
+                    ? `Alquile un ${vehicle.name} en ${hub.name} (${hub.airportName}). Fianza reducida con Franquicia Cero, modelo o equivalente garantizado. Desde ${vehicle.dailyPriceEur} €/día.`
+                    : `Huur een ${vehicle.name} in ${hub.name} (${hub.airportName}). Lage borg met Nul Eigen Risico, model of gelijkwaardig gegarandeerd. Vanaf ${vehicle.dailyPriceEur} €/dag.`)
         );
 
         return {

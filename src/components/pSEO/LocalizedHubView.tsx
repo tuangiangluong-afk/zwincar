@@ -9,6 +9,7 @@ import PseoGuidesCrossLinks from "@/components/pSEO/PseoGuidesCrossLinks";
 import { CityHub, MOROCCAN_HUBS } from "@/lib/morocco-data";
 import { PURCHASE_INTENTS } from "@/lib/intent-data";
 import { PointOfService, getPosForHub } from "@/lib/pos-data";
+import { isHubInAffiliateFallback } from "@/lib/affiliate";
 import { Locale, getTranslation } from "@/lib/i18n";
 import {
     ShieldCheck,
@@ -158,14 +159,31 @@ export default function LocalizedHubView({ hub, locale }: LocalizedHubViewProps)
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         {localPosList.map((pos) => {
+                            const isAffiliate = isHubInAffiliateFallback(hub.slug);
                             let meetingDetailText = pos.meetingDetail;
-                            if (locale !== "fr") {
+                            if (pos.type === "airport" && isAffiliate) {
+                                meetingDetailText = locale === "en"
+                                    ? `${hub.airportName} (${hub.airportCode}) Arrivals. Verified partner desk pickup with your confirmed booking voucher.`
+                                    : locale === "es"
+                                    ? `Llegadas de ${hub.airportName} (${hub.airportCode}). Recogida en mostrador del socio verificado con su bono de reserva.`
+                                    : locale === "nl"
+                                    ? `${hub.airportName} (${hub.airportCode}) Aankomst. Ophalen bij de partnerbalie met uw reserveringsvoucher.`
+                                    : "Prise en charge au comptoir de notre partenaire local vérifié (DiscoverCars / Localrent) sur présentation de votre bon de réservation.";
+                            } else if (locale !== "fr") {
                                 if (pos.type === "airport") {
-                                    meetingDetailText = locale === "en"
-                                        ? "Terminal 1 & 2 Arrivals Hall. Meet & Greet agent with personalized ZwinCar name board in front of Café Paul, key handover at Parking P2."
-                                        : locale === "es"
-                                        ? "Hall de Llegadas Terminal 1 y 2. Agente con cartel nominativo ZwinCar frente al Café Paul, entrega de llaves en Parking P2."
-                                        : "Aankomsthal Terminal 1 & 2. Agent met gepersonaliseerd ZwinCar naambordje voor Café Paul, sleuteloverdracht op Parking P2.";
+                                    if (hub.slug === "marrakech") {
+                                        meetingDetailText = locale === "en"
+                                            ? "Terminal 1 & 2 Arrivals Hall. Meet & Greet agent with personalized ZwinCar name board in front of Café Paul, key handover at Parking P2."
+                                            : locale === "es"
+                                            ? "Hall de Llegadas Terminal 1 y 2. Agente con cartel nominativo ZwinCar frente al Café Paul, entrega de llaves en Parking P2."
+                                            : "Aankomsthal Terminal 1 & 2. Agent met gepersonaliseerd ZwinCar naambordje voor Café Paul, sleuteloverdracht op Parking P2.";
+                                    } else {
+                                        meetingDetailText = locale === "en"
+                                            ? `${hub.airportName} Arrivals. Meet & Greet agent with personalized name board, key handover on parking.`
+                                            : locale === "es"
+                                            ? `Llegadas de ${hub.airportName}. Agente con cartel a su nombre, entrega de llaves en el aparcamiento.`
+                                            : `Aankomsthal ${hub.airportName}. Agent met naambordje, sleuteloverdracht op de parkeerplaats.`;
+                                    }
                                 } else if (pos.type === "train_station") {
                                     meetingDetailText = locale === "en"
                                         ? "Main ONCF train station forecourt, directly in front of Starbucks coffee."
