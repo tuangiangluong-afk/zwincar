@@ -14,6 +14,10 @@ const HUB_TERRAIN: Record<string, Record<Road, number>> = {
     rabat: { highway: 0.5, mountainAtlas: 0.05, medinaParking: 0.45, desertPiste: 0 },
     ouarzazate: { highway: 0.2, mountainAtlas: 0.4, medinaParking: 0, desertPiste: 0.4 },
     nador: { highway: 0.5, mountainAtlas: 0.2, medinaParking: 0.3, desertPiste: 0 },
+    essaouira: { highway: 0.35, mountainAtlas: 0.15, medinaParking: 0.35, desertPiste: 0.15 },
+    tetouan: { highway: 0.35, mountainAtlas: 0.3, medinaParking: 0.35, desertPiste: 0 },
+    oujda: { highway: 0.55, mountainAtlas: 0.15, medinaParking: 0.25, desertPiste: 0.05 },
+    dakhla: { highway: 0.3, mountainAtlas: 0, medinaParking: 0.2, desertPiste: 0.5 },
 };
 const DEFAULT_TERRAIN: Record<Road, number> = { highway: 0.4, mountainAtlas: 0.2, medinaParking: 0.3, desertPiste: 0.1 };
 

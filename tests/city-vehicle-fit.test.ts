@@ -32,3 +32,13 @@ test("hub 100 % affiliation non indexé", () => {
     assert.equal(isCityVehicleIndexable("nador"), false);
     assert.equal(isCityVehicleIndexable("marrakech"), true);
 });
+
+test("conseils locaux traduits pour chaque hub et chaque langue", async () => {
+    const { hubLocalTips } = await import("../src/lib/hub-local-i18n.ts");
+    for (const h of MOROCCAN_HUBS) {
+        for (const l of ["fr", "en", "es", "nl"] as const) {
+            const t = hubLocalTips(h, l);
+            assert.ok(t && t.parking && t.traps && t.taxi, `${h.slug}/${l} manquant`);
+        }
+    }
+});

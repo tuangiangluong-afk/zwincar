@@ -3,6 +3,14 @@ import { MapPin } from "lucide-react";
 import type { CityHub, VehicleModel } from "@/lib/morocco-data";
 import type { Locale } from "@/lib/i18n";
 import { cityVehicleFit } from "@/lib/city-vehicle-fit";
+import { hubLocalTips } from "@/lib/hub-local-i18n";
+
+const TIP_LABELS: Record<Locale, { parking: string; traps: string; taxi: string }> = {
+    fr: { parking: "Stationnement :", traps: "Pièges de la route :", taxi: "Taxi ou location ?" },
+    en: { parking: "Parking:", traps: "Road traps:", taxi: "Taxi or rental?" },
+    es: { parking: "Aparcamiento:", traps: "Trampas en la carretera:", taxi: "¿Taxi o alquiler?" },
+    nl: { parking: "Parkeren:", traps: "Valkuilen onderweg:", taxi: "Taxi of huurauto?" },
+};
 
 const ROAD_LABEL: Record<Locale, Record<string, string>> = {
     fr: { highway: "autoroute", mountainAtlas: "routes de montagne", medinaParking: "ville et stationnement en médina", desertPiste: "pistes du Sud" },
@@ -14,6 +22,7 @@ const ROAD_LABEL: Record<Locale, Record<string, string>> = {
 /** Bloc propre à chaque couple ville × véhicule : classement terrain, prix vs marché local, conseils locaux. */
 export default function CityVehicleFitSection({ vehicle, hub, locale }: { vehicle: VehicleModel; hub: CityHub; locale: Locale }) {
     const f = cityVehicleFit(vehicle, hub);
+    const tips = hubLocalTips(hub, locale);
     const road = ROAD_LABEL[locale][f.dominantRoad];
     const delta = Math.abs(f.priceDeltaVsHubEur);
     const cheaper = f.priceDeltaVsHubEur <= 0;
@@ -70,12 +79,11 @@ export default function CityVehicleFitSection({ vehicle, hub, locale }: { vehicl
                     ✓ {copy.pick} : {hub.recommendedItinerary.stops.join(" → ")}
                 </p>
             )}
-            {/* Savoir-terrain rédigé en français uniquement : on ne l'affiche pas sur les autres langues. */}
-            {locale === "fr" && (
+            {tips && (
                 <ul className="text-sm text-slate-600 leading-relaxed space-y-2 list-disc pl-5">
-                    <li><strong>Stationnement : </strong>{hub.parkingAdvice}</li>
-                    <li><strong>Pièges de la route : </strong>{hub.localRoadTraps}</li>
-                    <li><strong>Taxi ou location ? </strong>{hub.taxiComparisonText}</li>
+                    <li><strong>{TIP_LABELS[locale].parking} </strong>{tips.parking}</li>
+                    <li><strong>{TIP_LABELS[locale].traps} </strong>{tips.traps}</li>
+                    <li><strong>{TIP_LABELS[locale].taxi} </strong>{tips.taxi}</li>
                 </ul>
             )}
         </section>

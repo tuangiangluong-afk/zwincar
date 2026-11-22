@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://zwincar.com";
     const title = clampTitle(`Car Rental ${hub.name} (${hub.airportCode}) No Card Hold • ZwinCar`);
     const description = clampDescription(
-        `Rent a car in ${hub.name} (${hub.airportName}) with zero credit card block. Debit cards & cash accepted, exact model guaranteed. Fast airport & riad delivery.`
+        `Rent a car in ${hub.name} (${hub.airportName}) with zero credit card block. Debit cards & cash accepted, model or equivalent guaranteed. Fast airport & riad delivery.`
     );
 
     return {

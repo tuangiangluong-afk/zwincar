@@ -55,7 +55,7 @@ export const VS_COMPETITORS: VsComparison[] = [
         },
         metaDescriptions: {
             fr: "Pourquoi DiscoverCars bloque 1 500 € à 2 400 € sur carte de crédit à l'aéroport au Maroc ? Comparez avec ZwinCar : 0 € caution, cartes de débit acceptées, modèle garanti.",
-            en: "Why DiscoverCars forces a €1,500-€2,400 credit card block at Morocco airport desks? Compare with ZwinCar: €0 deposit waiver, debit cards accepted, guaranteed exact models.",
+            en: "Why DiscoverCars forces a €1,500-€2,400 credit card block at Morocco airport desks? Compare with ZwinCar: €0 deposit waiver, debit cards accepted, guaranteed models or free upgrade.",
             es: "¿Por qué DiscoverCars bloquea 1.500 € a 2.400 € en tarjeta de crédito en Marruecos? Compare con ZwinCar: 0 € fianza, tarjetas de débito aceptadas, modelo garantizado.",
             nl: "Waarom blokkeert DiscoverCars €1.500 tot €2.400 op creditcard in Marokko? Vergelijk met ZwinCar: €0 borg, pinpassen geaccepteerd, gegarandeerd model.",
         },
@@ -118,10 +118,10 @@ export const VS_COMPETITORS: VsComparison[] = [
                 zwincarHighlight: true,
             },
             {
-                label: { fr: "Garantie du modèle réservé", en: "Exact vehicle model guarantee", es: "Garantía del modelo reservado", nl: "Garantie op exact model" },
+                label: { fr: "Garantie du modèle réservé", en: "Booked model guarantee", es: "Garantía del modelo reservado", nl: "Garantie op geboekt model" },
                 competitorValue: { fr: "« Ou similaire » (modèle souvent déclassé)", en: "'Or similar' (generic unpredictable tier)", es: "'O similar' (modelo no asegurado)", nl: "'Of vergelijkbaar' (onzeker model)" },
                 competitorStatus: "warning",
-                zwincarValue: { fr: "Modèle exact garanti ou surclassement offert", en: "Guaranteed exact model or free upgrade", es: "Modelo exacto garantizado o mejora gratis", nl: "Gegarandeerd exact model of gratis upgrade" },
+                zwincarValue: { fr: "Modèle réservé, sinon équivalent même catégorie et même boîte, ou surclassement offert", en: "Booked model, else same-category equivalent with same gearbox, or free upgrade", es: "Modelo reservado, si no equivalente de la misma categoría y caja, o mejora gratis", nl: "Geboekt model, anders gelijkwaardig in dezelfde categorie en versnellingsbak, of gratis upgrade" },
                 zwincarHighlight: true,
             },
             {
@@ -211,7 +211,7 @@ export const VS_COMPETITORS: VsComparison[] = [
                 },
                 a: {
                     fr: "ZwinCar contractualise directement avec des agences marocaines triées sur le volet. Vous connaissez exactement le modèle que vous allez conduire, la caution est de 0 € avec la Franchise Zéro, un agent vous remet les clés en main propre au parking P2 sans file d'attente, et vous avez une assistance WhatsApp locale 24/7 en cas de problème sur la route.",
-                    en: "ZwinCar contracts directly with vetted local Moroccan agencies. You receive the exact model chosen, enjoy €0 deposit with Zero Excess, get greeted outside the terminal by an agent with your keys ready, and have 24/7 direct WhatsApp concierge assistance on the road.",
+                    en: "ZwinCar contracts directly with vetted local Moroccan agencies. You receive the model you booked (or a same-category equivalent), enjoy €0 deposit with Zero Excess, get greeted outside the terminal by an agent with your keys ready, and have 24/7 direct WhatsApp concierge assistance on the road.",
                     es: "ZwinCar trabaja directamente con agencias locales seleccionadas. El modelo reservado es exacto, la fianza es de 0 € con el Pack Sin Franquicia, un agente le entrega las llaves en mano en el Parking P2 y dispone de soporte WhatsApp local las 24 horas.",
                     nl: "ZwinCar werkt rechtstreeks samen met gecontroleerde lokale verhuurders. U krijgt het exacte gekozen model, betaalt € 0 borg met Geen Eigen Risico, wordt persoonlijk opgewacht bij Parking P2 en heeft 24/7 WhatsApp-hulp onderweg.",
                 },
@@ -235,9 +235,9 @@ export const VS_COMPETITORS: VsComparison[] = [
         },
         metaDescriptions: {
             fr: "BSP Auto au Maroc : attention au refus des cartes de débit et à la caution bloquée de 1 500 € au comptoir. Comparez avec ZwinCar : caution 0€, modèle garanti, WhatsApp 24/7.",
-            en: "BSP Auto Morocco review: beware of debit card rejections and €1,500+ deposits at airport counters. Compare with ZwinCar: €0 deposit, exact model guaranteed, 24/7 WhatsApp.",
+            en: "BSP Auto Morocco review: beware of debit card rejections and €1,500+ deposits at airport counters. Compare with ZwinCar: €0 deposit option, model guaranteed or free upgrade, 24/7 WhatsApp.",
             es: "BSP Auto en Marruecos: atención al rechazo de tarjetas de débito y fianzas de 1.500 €. Compare con ZwinCar: fianza 0€, modelo garantizado y WhatsApp local 24/7.",
-            nl: "BSP Auto in Marokko: pas op voor geweigerde pinpassen en borgsommen van € 1.500+. Vergelijk met ZwinCar: € 0 borg, exact model gegarandeerd, 24/7 WhatsApp.",
+            nl: "BSP Auto in Marokko: pas op voor geweigerde pinpassen en borgsommen van € 1.500+. Vergelijk met ZwinCar: € 0 borg-optie, model gegarandeerd of gratis upgrade, 24/7 WhatsApp.",
         },
         heroH1: {
             fr: "ZwinCar vs BSP Auto au Maroc : Courtier Centralisé vs Flotte Locale Directe",

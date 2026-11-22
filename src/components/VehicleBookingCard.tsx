@@ -6,6 +6,7 @@ import { VehicleModel, MOROCCAN_HUBS, UPSELL_OPTIONS, getHubMeetingPoint, getLoc
 import { DEFAULT_HUB_DISTRIBUTION, DEFAULT_VEHICLE_STOCK, isHubInAffiliateFallback } from "@/lib/affiliate";
 import { Locale, getTranslation } from "@/lib/i18n";
 import { seasonFor, longStayDiscount, getSeasonLabel, ACOMPTE_RATE } from "@/lib/booking-engine";
+import type { ReviewSummary } from "@/lib/booking-engine";
 import { trackViewItem, trackWhatsAppClick, trackLead } from "@/lib/gtm";
 import UpsellSelector from "@/components/UpsellSelector";
 import { BookingCheckoutModal } from "@/components/BookingCheckoutModal";
@@ -76,6 +77,11 @@ export default function VehicleBookingCard({
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [isAffiliateDrawerOpen, setIsAffiliateDrawerOpen] = useState(false);
     const [isOptionsOpen, setIsOptionsOpen] = useState(false);
+    const [reviews, setReviews] = useState<ReviewSummary | null>(null);
+
+    useEffect(() => {
+        fetch("/api/reviews").then((r) => r.json()).then(setReviews).catch(() => {});
+    }, []);
 
     // Calculate duration in days
     const d1 = new Date(pickupDate);
@@ -99,9 +105,6 @@ export default function VehicleBookingCard({
     const durationSavingsEur = baseWithoutDiscountEur - baseRentalEur;
     const durationSavingsMad = baseWithoutDiscountMad - baseRentalMad;
 
-    const totalSavingsVsAirportEur = (vehicle.marketPriceEur * days) - baseRentalEur;
-    const totalSavingsVsAirportMad = (vehicle.marketPriceMad * days) - baseRentalMad;
-    const discountPct = Math.round(((vehicle.marketPriceEur - effectiveDailyPriceEur) / vehicle.marketPriceEur) * 100);
 
     let platformUpsellsEur = 0;
     let platformUpsellsMad = 0;
@@ -173,7 +176,11 @@ return (
                 <div className="flex items-center justify-between gap-2 mb-2">
                     <div className="flex items-center gap-1.5 text-xs text-emerald-800 font-bold">
                         <ShieldCheck size={13} className="text-[#C9572C] shrink-0" />
-                        <span className="truncate">{t.bookingWidget.verifiedReviews}</span>
+                        <span className="truncate">
+                            {reviews && reviews.count > 0
+                                ? `★ ${reviews.average}/5 · ${reviews.count} ${activeLocale === "en" ? "verified reviews" : activeLocale === "es" ? "opiniones verificadas" : activeLocale === "nl" ? "geverifieerde reviews" : "avis vérifiés"}`
+                                : t.bookingWidget.verifiedReviews}
+                        </span>
                     </div>
 
                     {/* Currency switch */}
@@ -206,32 +213,23 @@ return (
                                 {currency === "EUR" ? `${effectiveDailyPriceEur} €` : `${effectiveDailyPriceMad} MAD`}
                             </span>
                             <span className="text-xs text-slate-500 font-medium">/ {t.bookingWidget.perDay}</span>
-                            {discountPct > 0 && (
-                                <div className="inline-flex items-center gap-1.5 ml-1">
-                                    <span className="text-sm font-bold text-red-400 line-through decoration-red-500 decoration-2 font-mono whitespace-nowrap">
-                                        {currency === "EUR" ? `${vehicle.marketPriceEur} €` : `${vehicle.marketPriceMad} MAD`}
-                                    </span>
-                                    <span className="px-2 py-0.5 rounded-full bg-red-100 text-red-700 text-[10px] font-black uppercase tracking-wider whitespace-nowrap shadow-xs">
-                                        -{discountPct}%
-                                    </span>
-                                </div>
-                            )}
                         </div>
                         <div className="text-[11px] text-slate-500 font-medium mt-1 flex flex-wrap items-center gap-1.5">
                             <span>{days}{activeLocale === "en" ? "d" : "j"} : ~{currency === "EUR" ? `${baseRentalEur} €` : `${baseRentalMad} MAD`}</span>
                             <span className="text-slate-300">•</span>
                             <span className="text-emerald-700 font-semibold">{t.catalog.freeDeliveryIncluded}</span>
-                            {totalSavingsVsAirportEur > 0 && (
+                            {/* Seule remise affichée : la remise longue durée réelle du moteur (pas de prix barré de référence). */}
+                            {durationSavingsEur > 0 && (
                                 <>
                                     <span className="text-slate-300">•</span>
                                     <span className="text-[#C9572C] font-bold">
                                         {activeLocale === "en"
-                                            ? `Save ~€${totalSavingsVsAirportEur} vs airport counters`
+                                            ? `-${Math.round(durationDiscount * 100)}% long stay: €${durationSavingsEur} saved`
                                             : activeLocale === "es"
-                                            ? `Ahorro ~${totalSavingsVsAirportEur} € frente al mostrador`
+                                            ? `-${Math.round(durationDiscount * 100)} % larga duración: ${durationSavingsEur} € de ahorro`
                                             : activeLocale === "nl"
-                                            ? `Bespaar ~€${totalSavingsVsAirportEur} t.o.v. balie`
-                                            : `Économie ~${totalSavingsVsAirportEur} € vs guichet`}
+                                            ? `-${Math.round(durationDiscount * 100)}% lange huur: €${durationSavingsEur} bespaard`
+                                            : `-${Math.round(durationDiscount * 100)} % longue durée : ${durationSavingsEur} € économisés`}
                                     </span>
                                 </>
                             )}
@@ -453,7 +451,7 @@ return (
 
                 <div className="flex items-baseline justify-between gap-3 text-slate-600 pt-1 border-t border-slate-200/60">
                     <span className="min-w-0 pr-1">{t.bookingWidget.depositAtCounter}</span>
-                    <span className="font-bold text-slate-900 font-mono whitespace-nowrap shrink-0">
+                    <span className="font-bold text-slate-900 font-mono text-right max-w-[55%]">
                         {hasFranchiseZero ? t.bookingWidget.zeroDepositActive : "300 €"}
                     </span>
                 </div>
@@ -465,7 +463,8 @@ return (
                             {t.bookingWidget.payTodayStripe}
                         </div>
                         <div className="text-[10px] text-slate-400">
-                            {t.bookingWidget.payTodayNote}
+                            {/* Le mode lead n'encaisse rien en ligne ; sinon Stripe débite l'acompte tout de suite. */}
+                            {process.env.NEXT_PUBLIC_AFFILIATE_MODE === "true" ? t.bookingWidget.payTodayNote : t.bookingWidget.payNowNote}
                         </div>
                     </div>
                     <div className="text-lg sm:text-xl font-black text-[#C9572C] font-mono whitespace-nowrap shrink-0">
@@ -485,6 +484,27 @@ return (
                     <span>✓ {t.bookingWidget.inspection80}</span>
                 </div>
             </div>
+
+            {/* Urgence réelle : règle saisonnière du moteur de prix, rien d'inventé. */}
+            {season.multiplier !== 1 && (
+                <div className={`rounded-xl px-3 py-2 text-[11px] font-semibold ${season.multiplier > 1 ? "bg-amber-50 border border-amber-200 text-amber-900" : "bg-emerald-50 border border-emerald-200 text-emerald-900"}`}>
+                    {season.multiplier > 1
+                        ? activeLocale === "en"
+                            ? `${getSeasonLabel(season, "en")}: rates +${Math.round(Math.abs(season.multiplier - 1) * 100)}% on these dates. Your price is locked when you book, free cancellation up to 48h.`
+                            : activeLocale === "es"
+                            ? `${getSeasonLabel(season, "es")}: tarifas +${Math.round(Math.abs(season.multiplier - 1) * 100)}% en estas fechas. Su precio queda fijado al reservar, cancelación gratuita hasta 48 h.`
+                            : activeLocale === "nl"
+                            ? `${getSeasonLabel(season, "nl")}: tarieven +${Math.round(Math.abs(season.multiplier - 1) * 100)}% op deze data. Uw prijs ligt vast bij boeking, gratis annuleren tot 48 u.`
+                            : `${getSeasonLabel(season, "fr")} : tarifs +${Math.round(Math.abs(season.multiplier - 1) * 100)} % sur ces dates. Votre prix est figé dès la réservation, annulation gratuite jusqu'à 48 h.`
+                        : activeLocale === "en"
+                        ? `${getSeasonLabel(season, "en")}: -${Math.round(Math.abs(season.multiplier - 1) * 100)}% already applied on these dates.`
+                        : activeLocale === "es"
+                        ? `${getSeasonLabel(season, "es")}: -${Math.round(Math.abs(season.multiplier - 1) * 100)}% ya aplicado en estas fechas.`
+                        : activeLocale === "nl"
+                        ? `${getSeasonLabel(season, "nl")}: -${Math.round(Math.abs(season.multiplier - 1) * 100)}% al toegepast op deze data.`
+                        : `${getSeasonLabel(season, "fr")} : -${Math.round(Math.abs(season.multiplier - 1) * 100)} % déjà appliqués sur ces dates.`}
+                </div>
+            )}
 
             {/* 7. Action Buttons */}
             <div className="space-y-2">

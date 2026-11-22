@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://zwincar.com";
     const title = clampTitle(`Autoverhuur ${hub.name} (${hub.airportCode}) Zonder Borg • ZwinCar`);
     const description = clampDescription(
-        `Huur een auto in ${hub.name} (${hub.airportName}) zonder creditcard borg. Betaalpas & contant geaccepteerd, exact model gegarandeerd. Snelle levering op vliegveld of riad.`
+        `Huur een auto in ${hub.name} (${hub.airportName}) zonder creditcard borg. Betaalpas & contant geaccepteerd, model of gelijkwaardig gegarandeerd. Snelle levering op vliegveld of riad.`
     );
 
     return {

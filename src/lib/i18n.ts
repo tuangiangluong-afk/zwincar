@@ -99,6 +99,7 @@ export const TRANSLATIONS: Record<
             zeroDepositActive: string;
             payTodayStripe: string;
             payTodayNote: string;
+            payNowNote: string;
             balanceOnSite: string;
             ctaProceed: string;
             lockVehicleBtn: string;
@@ -383,8 +384,9 @@ export const TRANSLATIONS: Record<
             depositAtCounter: "Caution à la remise des clés",
             depositReturnedNote: "restituée immédiatement au retour",
             zeroDepositActive: "0 € (Option Franchise Zéro active)",
-            payTodayStripe: "Acompte de réservation (après validation WhatsApp)",
+            payTodayStripe: "Acompte de réservation (payé en ligne)",
             payTodayNote: "Aucun débit immédiat — Vous réglez l'acompte par lien Stripe sécurisé uniquement après confirmation agent.",
+            payNowNote: "Acompte payé maintenant par paiement sécurisé Stripe, remboursé à 100 % si vous annulez jusqu'à 48 h avant. Le solde se règle à la remise des clés.",
             balanceOnSite: "Solde à régler à l'agence (remise des clés) :",
             ctaProceed: "Continuer vers la Réservation",
             lockVehicleBtn: "Bloquer ce véhicule • Acompte {amount}",
@@ -668,8 +670,9 @@ export const TRANSLATIONS: Record<
             depositAtCounter: "Security deposit on arrival",
             depositReturnedNote: "returned immediately in cash on drop-off",
             zeroDepositActive: "€0 (Zero Excess option active)",
-            payTodayStripe: "Reservation deposit (after WhatsApp confirmation)",
+            payTodayStripe: "Reservation deposit (paid online)",
             payTodayNote: "No immediate charge — Pay via secure Stripe link only after agent confirms availability.",
+            payNowNote: "Deposit paid now via secure Stripe checkout, 100% refunded if you cancel up to 48h before. The balance is paid at key handover.",
             balanceOnSite: "Balance due on collection (to local partner):",
             ctaProceed: "Continue to Booking",
             lockVehicleBtn: "Lock this vehicle • Deposit {amount}",
@@ -953,8 +956,9 @@ export const TRANSLATIONS: Record<
             depositAtCounter: "Fianza en la entrega",
             depositReturnedNote: "devuelta en mano inmediatamente a la entrega",
             zeroDepositActive: "0 € (Opción Franquicia Cero activa)",
-            payTodayStripe: "Anticipo de reserva (tras confirmación por WhatsApp)",
+            payTodayStripe: "Anticipo de reserva (pagado en línea)",
             payTodayNote: "Sin cargo inmediato — Pago por enlace Stripe seguro tras confirmación del agente.",
+            payNowNote: "Anticipo pagado ahora con pago seguro Stripe, reembolso del 100 % si cancela hasta 48 h antes. El resto se paga al recoger las llaves.",
             balanceOnSite: "Saldo a pagar a la agencia local (en mano):",
             ctaProceed: "Continuar con la Reserva",
             lockVehicleBtn: "Reservar este coche • Anticipo {amount}",
@@ -1238,8 +1242,9 @@ export const TRANSLATIONS: Record<
             depositAtCounter: "Borg bij aflevering",
             depositReturnedNote: "direct contant geretourneerd bij inlevering",
             zeroDepositActive: "€0 (Nul-Eigen-Risico optie actief)",
-            payTodayStripe: "Reserveringsaanbetaling (na WhatsApp-bevestiging)",
+            payTodayStripe: "Reserveringsaanbetaling (online betaald)",
             payTodayNote: "Geen directe afschrijving — Betaal via beveiligde Stripe-link na bevestiging van agent.",
+            payNowNote: "Aanbetaling nu via beveiligde Stripe-betaling, 100% terugbetaald bij annulering tot 48 u vooraf. Het restant betaalt u bij de sleuteloverdracht.",
             balanceOnSite: "Restant te betalen bij aflevering (aan lokale partner):",
             ctaProceed: "Verder naar Reservering",
             lockVehicleBtn: "Auto reserveren • Aanbetaling {amount}",

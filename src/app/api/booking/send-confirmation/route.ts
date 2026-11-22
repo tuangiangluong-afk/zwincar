@@ -36,7 +36,7 @@ const EMAIL_I18N: Record<
         title: (ref) => `Réservation Confirmée : ${ref}`,
         greeting: (name) => `Bonjour <strong>${name}</strong>,`,
         lead: (car, hub, code) =>
-            `Votre réservation pour le véhicule <strong>${car}</strong> à <strong>${hub} (${code})</strong> est définitivement validée. Votre modèle exact est garanti.`,
+            `Votre réservation pour le véhicule <strong>${car}</strong> à <strong>${hub} (${code})</strong> est définitivement validée. Votre modèle est garanti (ou équivalent de même catégorie, sinon surclassement offert).`,
         vehicle: "Véhicule :",
         dates: "Dates :",
         datesVal: (p, r, d) => `Du ${p} au ${r} (${d} jours)`,
@@ -61,7 +61,7 @@ const EMAIL_I18N: Record<
         title: (ref) => `Booking Confirmed: ${ref}`,
         greeting: (name) => `Hello <strong>${name}</strong>,`,
         lead: (car, hub, code) =>
-            `Your booking for <strong>${car}</strong> at <strong>${hub} (${code})</strong> is confirmed. Your exact vehicle model is guaranteed.`,
+            `Your booking for <strong>${car}</strong> at <strong>${hub} (${code})</strong> is confirmed. Your model is guaranteed (or a same-category equivalent, otherwise a free upgrade).`,
         vehicle: "Vehicle:",
         dates: "Dates:",
         datesVal: (p, r, d) => `From ${p} to ${r} (${d} days)`,
@@ -86,7 +86,7 @@ const EMAIL_I18N: Record<
         title: (ref) => `Reserva Confirmada: ${ref}`,
         greeting: (name) => `Hola <strong>${name}</strong>,`,
         lead: (car, hub, code) =>
-            `Su reserva para el vehículo <strong>${car}</strong> en <strong>${hub} (${code})</strong> está confirmada. Su modelo exacto está garantizado.`,
+            `Su reserva para el vehículo <strong>${car}</strong> en <strong>${hub} (${code})</strong> está confirmada. Su modelo está garantizado (o equivalente de la misma categoría, si no mejora gratis).`,
         vehicle: "Vehículo:",
         dates: "Fechas:",
         datesVal: (p, r, d) => `Del ${p} al ${r} (${d} días)`,
@@ -111,7 +111,7 @@ const EMAIL_I18N: Record<
         title: (ref) => `Reservering Bevestigd: ${ref}`,
         greeting: (name) => `Hallo <strong>${name}</strong>,`,
         lead: (car, hub, code) =>
-            `Uw reservering voor het voertuig <strong>${car}</strong> in <strong>${hub} (${code})</strong> is bevestigd. Uw exacte model is gegarandeerd.`,
+            `Uw reservering voor het voertuig <strong>${car}</strong> in <strong>${hub} (${code})</strong> is bevestigd. Uw model is gegarandeerd (of gelijkwaardig in dezelfde categorie, anders gratis upgrade).`,
         vehicle: "Voertuig:",
         dates: "Data:",
         datesVal: (p, r, d) => `Van ${p} tot ${r} (${d} dagen)`,

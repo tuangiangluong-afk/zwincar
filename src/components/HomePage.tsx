@@ -294,12 +294,12 @@ export default function HomePage({ locale = "fr" }: HomePageProps = {}) {
                         </div>
                         <h2 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
                             {isEn
-                                ? "Why 9 out of 10 travelers avoid airport rental desks"
+                                ? "Why travelers skip the airport rental desks"
                                 : isEs
                                 ? "Por qué evitar los mostradores de alquiler tradicionales"
                                 : isNl
                                 ? "Waarom reizigers traditionele balies vermijden"
-                                : "Pourquoi 9 touristes sur 10 évitent les guichets d'aéroport"}
+                                : "Pourquoi éviter les guichets d'aéroport"}
                         </h2>
                         <p className="text-sm sm:text-base text-slate-600 mt-3">
                             {isEn
@@ -439,13 +439,13 @@ export default function HomePage({ locale = "fr" }: HomePageProps = {}) {
                                     <CheckCircle2 size={16} className="text-emerald-600 shrink-0 mt-0.5" />
                                     <span>
                                         {isEn ? (
-                                            <><strong>100% exact model guaranteed</strong>: Dacia Duster 4x4, Clio 5 Auto, or Sandero Stepway. You drive the vehicle you selected.</>
+                                            <><strong>Model guaranteed</strong>: you get the car you booked, or a same-category equivalent with the same gearbox, or a free upgrade.</>
                                         ) : isEs ? (
-                                            <><strong>Modelo 100% garantizado</strong>: Dacia Duster 4x4, Clio 5 BVA o Sandero Stepway. Conduce lo que eligió.</>
+                                            <><strong>Modelo garantizado</strong>: recibe el coche reservado, o un equivalente de la misma categoría y caja de cambios, o una mejora gratis.</>
                                         ) : isNl ? (
-                                            <><strong>100% gegarandeerd model</strong>: Dacia Duster 4x4, Clio 5 automaat of Sandero Stepway. U rijdt wat u kiest.</>
+                                            <><strong>Gegarandeerd model</strong>: u krijgt de geboekte auto, of een gelijkwaardige uit dezelfde categorie met dezelfde versnellingsbak, of een gratis upgrade.</>
                                         ) : (
-                                            <><strong>Modèle garanti à 100%</strong> : Dacia Duster 4x4, Clio 5 BVA ou Sandero Stepway. Vous conduisez ce que vous avez choisi.</>
+                                            <><strong>Modèle garanti</strong> : vous recevez la voiture réservée, ou une équivalente de même catégorie et même boîte, ou un surclassement offert.</>
                                         )}
                                     </span>
                                 </li>

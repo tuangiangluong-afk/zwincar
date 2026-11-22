@@ -142,7 +142,7 @@ export default function IntentLandingView({ hub, intent, locale }: IntentLanding
                                 {locale === "fr" ? `Flotte ${intent.badge.fr} à ${hub.name}` : `${intent.badge[locale]} Fleet in ${hub.name}`}
                             </h2>
                             <p className="text-xs text-slate-500 mt-1">
-                                {locale === "fr" ? "Disponibilités réelles certifiées auprès des agences partenaires locales." : "Guaranteed fleet availability with verified local partners."}
+                                {locale === "fr" ? "Flotte des agences partenaires locales, disponibilité confirmée à la réservation." : "Fleet from local partner agencies, availability confirmed at booking."}
                             </p>
                         </div>
 

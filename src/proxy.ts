@@ -98,6 +98,7 @@ export default async function middleware(req: NextRequest) {
             path.startsWith("/booking") ||
             path.startsWith("/guides") ||
             path.startsWith("/vs") ||
+            path === "/prix-location-voiture-maroc" ||
             path.startsWith("/en") ||
             path.startsWith("/es") ||
             path.startsWith("/nl")

@@ -72,6 +72,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
             priority: 0.7,
         },
         {
+            url: `${baseUrl}/prix-location-voiture-maroc`,
+            lastModified: now,
+            changeFrequency: "weekly",
+            priority: 0.9,
+        },
+        {
+            url: `${baseUrl}/en/car-rental-prices-morocco`,
+            lastModified: now,
+            changeFrequency: "weekly",
+            priority: 0.9,
+        },
+        {
             url: `${baseUrl}/cgv`,
             lastModified: now,
             changeFrequency: "monthly",

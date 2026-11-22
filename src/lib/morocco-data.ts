@@ -14,14 +14,13 @@ export const SOCIAL_LINKS = {
     facebook: "https://www.facebook.com/zwincar/",
     instagram: "https://www.instagram.com/zwincar/",
     youtube: "https://www.youtube.com/@ZwinCarcom",
-    tiktok: "https://www.tiktok.com/@zwincar",
 } as const;
 
+// Compte TikTok @zwincar inexistant (vérifié le 22/11/2026) : à rajouter une fois créé.
 export const SOCIAL_SAME_AS: string[] = [
     "https://www.facebook.com/zwincar/",
     "https://www.instagram.com/zwincar/",
     "https://www.youtube.com/@ZwinCarcom",
-    "https://www.tiktok.com/@zwincar",
 ];
 
 export interface CityHub {
@@ -397,6 +396,106 @@ export const MOROCCAN_HUBS: CityHub[] = [
             title: "Boucle Côtière Méditerranée & Falaises du Rif",
             stops: ["Lagune Marchica", "Cap des Trois Fourches", "Plage Ras El Ma", "Al Hoceïma"],
             recommendedCar: "Dacia Sandero Stepway ou Duster"
+        }
+    },
+    {
+        slug: "essaouira",
+        name: "Essaouira",
+        nameAr: "الصويرة",
+        airportCode: "ESU",
+        airportName: "Aéroport Essaouira Mogador",
+        popularSpots: ["Aéroport Mogador (ESU)", "Médina Bab Sbaa", "Plage de Tagharte", "Sidi Kaouki", "Diabat"],
+        avgDailyPriceEur: 28,
+        description: "La cité des alizés et du surf. Récupérez votre véhicule directement à l'atterrissage ou devant les remparts de la médina.",
+        heroImage: "/images/hubs/essaouira.webp",
+        lat: 31.5085,
+        lng: -9.7595,
+        localDelivery: "Gratuite Aéroport Mogador & Hôtels front de mer / Riad Bab Sbaa",
+        meetingPointDetail: "Hall unique Arrivées Mogador (ESU), remise des clés devant la sortie principale",
+        airportDistanceKm: 16,
+        airportTransitMinutes: 18,
+        taxiComparisonText: "Le Grand Taxi aéroport Mogador vers le centre historique coûte 150 MAD le jour (200 MAD la nuit). À 28 €/j (300 MAD), votre voiture est rentabilisée pour explorer Sidi Kaouki et Imsouane en totale liberté.",
+        parkingAdvice: "La Médina est 100% piétonne. Garez-vous au grand parking gardé du Port Bab El Marsa ou au Parking Bab Sbaa (20 MAD les 24h avec gardien assermenté).",
+        localRoadTraps: "Vent latéral fréquent (alizés) sur la R301 côtière et traversées régulières de troupeaux de chèvres ou d'ânes sur la route d'Argana vers Marrakech (N8/R207).",
+        recommendedItinerary: {
+            title: "Côte Sauvage & Villages Berbères d'Arganiers",
+            stops: ["Remparts d'Essaouira", "Sidi Kaouki", "Plage Iftane", "Vallée d'Argan"],
+            recommendedCar: "Dacia Sandero Stepway ou Duster"
+        }
+    },
+    {
+        slug: "tetouan",
+        name: "Tétouan",
+        nameAr: "تطوان",
+        airportCode: "TTU",
+        airportName: "Aéroport Tétouan Sania Ramel",
+        popularSpots: ["Aéroport Sania Ramel (TTU)", "Médina Unesco", "Martil", "Cabo Negro", "M'diq", "Chefchaouen"],
+        avgDailyPriceEur: 26,
+        description: "La colombe blanche du Nord, porte d'entrée de la Riviera méditerranéenne et de la cité bleue de Chefchaouen.",
+        heroImage: "/images/hubs/tetouan.webp",
+        lat: 35.5889,
+        lng: -5.3219,
+        localDelivery: "Aéroport Sania Ramel & Stations balnéaires Tamuda Bay",
+        meetingPointDetail: "Parking Dépose Express face aux arrivées Sania Ramel (TTU)",
+        airportDistanceKm: 6,
+        airportTransitMinutes: 10,
+        taxiComparisonText: "Un taxi Sania Ramel vers Martil ou Cabo Negro coûte 80 à 120 MAD, et une course vers Chefchaouen dépasse 400 MAD. Louer chez ZwinCar dès 26 €/j (280 MAD) est le moyen le plus économique de sillonner le littoral rifain.",
+        parkingAdvice: "Stationnement aisé aux abords de la Place Feddan et le long de l'Avenue Hassan II. À Cabo Negro et Martil, parkings gardés au bord des plages (10 MAD/jour).",
+        localRoadTraps: "Radars automatiques très actifs sur la voie rapide Tétouan - Martil (N16) et contrôles stricts de vitesse dans les virages montagneux de la N2 vers Chefchaouen.",
+        recommendedItinerary: {
+            title: "Riviera Méditerranéenne & Cité Bleue",
+            stops: ["Médina de Tétouan", "Marina de Cabo Negro", "Plage Marina Smir", "Chefchaouen"],
+            recommendedCar: "Renault Clio 5 ou Peugeot 208"
+        }
+    },
+    {
+        slug: "oujda",
+        name: "Oujda",
+        nameAr: "وجدة",
+        airportCode: "OUD",
+        airportName: "Aéroport Oujda Angads",
+        popularSpots: ["Aéroport Les Angads (OUD)", "Bab Sidi Abdelwahab", "Saïdia Med", "Berkane", "Grotte des Pigeons"],
+        avgDailyPriceEur: 27,
+        description: "Capitale de l'Oriental marocain, carrefour de la diaspora et porte d'accès à la station balnéaire de Saïdia.",
+        heroImage: "/images/hubs/oujda.webp",
+        lat: 34.7872,
+        lng: -1.9239,
+        localDelivery: "Aéroport Les Angads & Centre-ville Oujda / Saïdia",
+        meetingPointDetail: "Hall Arrivées Les Angads, agent dédié avec panneau nominatif (Parking P1)",
+        airportDistanceKm: 12,
+        airportTransitMinutes: 15,
+        taxiComparisonText: "Le Grand Taxi aéroport vers Oujda centre est à 100-150 MAD, et vers la station de Saïdia à plus de 350 MAD. À 27 €/j (290 MAD), une citadine ou berline familiale ZwinCar vous assure une mobilité totale sans surcoût.",
+        parkingAdvice: "Stationnement aisé au centre autour du Boulevard Mohammed V et du grand parking de la Gare ONCF. Gardiens de nuit officiels (10 MAD).",
+        localRoadTraps: "Longues lignes droites sur la voie express Oujda - Saïdia (A3/N60) avec radars mobiles fréquents de la Gendarmerie Royale : respectez les 100 et 80 km/h.",
+        recommendedItinerary: {
+            title: "Perle Bleue de l'Oriental & Oasis de Figuig",
+            stops: ["Médina d'Oujda", "Monts des Béni Snassen", "Gorges du Zegzel", "Plage Dorée de Saïdia"],
+            recommendedCar: "Dacia Logan 3 ou Stepway"
+        }
+    },
+    {
+        slug: "dakhla",
+        name: "Dakhla",
+        nameAr: "الداخلة",
+        airportCode: "VIL",
+        airportName: "Aéroport Dakhla",
+        popularSpots: ["Aéroport Dakhla (VIL)", "Lagon PK25", "Dune Blanche", "Plage Lassarga", "Port Imnoutene", "Dakhla Attitude"],
+        avgDailyPriceEur: 38,
+        description: "Le paradis mondial du kitesurf et du désert atlantique. Véhicules adaptés pour transporter vos boards et accéder aux camps du lagon.",
+        heroImage: "/images/hubs/dakhla.webp",
+        lat: 23.7183,
+        lng: -15.9322,
+        localDelivery: "Gratuite Aéroport Dakhla & Tous camps du lagon (PK25 à PK30)",
+        meetingPointDetail: "Sortie immédiate piste / tarmac Aéroport Dakhla (terminal à taille humaine)",
+        airportDistanceKm: 3,
+        airportTransitMinutes: 5,
+        taxiComparisonText: "Une navette 4x4 ou taxi vers les camps du lagon (PK25/PK28) coûte 200 à 300 MAD par trajet. Louer un SUV ZwinCar dès 38 €/j (410 MAD) amortit instantanément vos transferts quotidiens vers les spots de surf et la Dune Blanche.",
+        parkingAdvice: "Stationnement libre, gratuit et très sécurisé sur l'ensemble de la presqu'île et des camps de kite. Évitez simplement de vous garer sur le sable meuble hors des allées damées.",
+        localRoadTraps: "Bancs de sable soufflés par le vent sur la route nationale N1 longeant le lagon. Réduisez la vitesse en cas de vent fort et ne quittez jamais l'asphalte sans véhicule tout-chemin à bonne garde au sol.",
+        recommendedItinerary: {
+            title: "Lagon Atlantique & Dune Blanche",
+            stops: ["Presqu'île de Dakhla", "Spot PK25", "Dune Blanche", "Source thermale Asmaa", "Plage Lassarga"],
+            recommendedCar: "Dacia Duster 4x4 ou Toyota Hilux 4x4"
         }
     }
 ];
@@ -1589,7 +1688,7 @@ export const DIRECT_ANSWERS_AEO = {
     summary: "Au Maroc, les grands courtiers internationaux (Hertz, Avis, Sixt, Europcar) imposent une carte de CRÉDIT (et refusent les cartes de débit françaises et européennes) tout en bloquant entre 1 500 € et 2 500 € de caution bancaire. ZwinCar sélectionne exclusivement des agences locales marocaines vérifiées qui acceptent les cartes de débit, autorisent un dépôt de garantie modéré en espèces (restitué immédiatement à la remise des clés) ou proposent le rachat de franchise zéro caution. La livraison s'effectue sans attente directement à l'aéroport ou à votre hébergement (Riad, Hôtel).",
     keyFacts: [
         { label: "Caution & Garantie", value: "0 € (Franchise 0) ou 300 €", detail: "Aucun blocage de 1 500 € sur carte" },
-        { label: "Acompte de Réservation", value: "15% à 20% en ligne (Stripe)", detail: "Bloque définitivement le véhicule garanti" },
+        { label: "Acompte de Réservation", value: "20 % en ligne (Stripe)", detail: "Bloque définitivement le véhicule garanti" },
         { label: "Règlement du Solde", value: "Sur place (Dirhams, Euros ou CB)", detail: "Payez seulement à la prise en main" },
         { label: "Livraison Aéroport / Riad", value: "Gratuite et personnalisée", detail: "Accueil direct avec pancarte aux arrivées" },
         { label: "Assistance Multilingue", value: "WhatsApp 24/7 (FR, EN, ES, AR)", detail: "Traduction instantanée avec le loueur" },
@@ -1605,7 +1704,7 @@ export const DIRECT_ANSWERS_AEO = {
         },
         {
             q: "Le modèle de voiture réservé est-il garanti ?",
-            a: "Oui. Contrairement aux centrales de réservation qui vous vendent 'une catégorie ou similaire' pour vous refiler un véhicule de remplacement fatigué, nos partenaires locaux attribuent le modèle exact sélectionné (ex : Dacia Duster Prestige ou Renault Clio 5 BVA)."
+            a: "Oui. Le partenaire local prépare le modèle réservé. S'il est immobilisé (entretien, retour en retard), vous recevez un modèle équivalent de même catégorie et même boîte ; si aucun n'est disponible, un surclassement gratuit, avec les mêmes conditions de caution. C'est écrit dans nos CGV."
         },
         {
             q: "Comment se déroule la livraison à l'aéroport de Marrakech ou Casablanca ?",
@@ -1656,6 +1755,26 @@ export function getHubMeetingPoint(hub: CityHub, locale: string = "fr"): string 
             en: "Al Aroui parking facing arrivals or Beni Ensar ferry pier",
             es: "Parking Al Aroui frente a llegadas o muelle ferry Beni Ensar",
             nl: "Parkeerplaats Al Aroui tegenover aankomst of ferrykade Beni Ensar",
+        },
+        essaouira: {
+            en: "Mogador Arrivals Hall (ESU), key handover at the main exit",
+            es: "Hall de Llegadas Mogador (ESU), entrega de llaves en la salida principal",
+            nl: "Aankomsthal Mogador (ESU), sleuteloverdracht bij de hoofduitgang",
+        },
+        tetouan: {
+            en: "Sania Ramel (TTU) express drop-off area facing arrivals",
+            es: "Zona exprés Sania Ramel (TTU) frente a llegadas",
+            nl: "Express drop-off Sania Ramel (TTU) tegenover de aankomsthal",
+        },
+        oujda: {
+            en: "Les Angads (OUD) Arrivals Hall, dedicated agent with name board (Parking P1)",
+            es: "Hall de Llegadas Les Angads (OUD), agente dedicado con cartel (Parking P1)",
+            nl: "Aankomsthal Les Angads (OUD), agent met naambordje (Parking P1)",
+        },
+        dakhla: {
+            en: "Dakhla Airport (VIL) main terminal exit directly facing the tarmac",
+            es: "Salida principal del aeropuerto de Dakhla (VIL) frente a la pista",
+            nl: "Hoofduitgang luchthaven Dakhla (VIL) direct aan het platform",
         },
     };
     return meetingMap[hub.slug]?.[locale as "en" | "es" | "nl"] || hub.meetingPointDetail;

@@ -190,7 +190,7 @@ export default function VehicleCatalog({
                         </h2>
                         <p className="text-sm text-slate-600 mt-1">
                             {activeLocale === "en"
-                                ? "Guaranteed exact models, climate-serviced and delivered without wait at the airport or your riad."
+                                ? "Guaranteed models (or same-category equivalent), climate-serviced and delivered without wait at the airport or your riad."
                                 : activeLocale === "es"
                                 ? "Modelos garantizados, revisados para el clima local y entregados sin esperas en el aeropuerto o riad."
                                 : activeLocale === "nl"
@@ -296,7 +296,6 @@ export default function VehicleCatalog({
                             : activeLocale === "nl"
                             ? vehicle.equivalentCategoryNl
                             : vehicle.equivalentCategoryFr;
-                        const discountPct = Math.round(((vehicle.marketPriceEur - vehicle.dailyPriceEur) / vehicle.marketPriceEur) * 100);
 
                         return (
                             <div
@@ -390,16 +389,6 @@ export default function VehicleCatalog({
                                                     {formatPrice(vehicle.dailyPriceEur, vehicle.dailyPriceMad)}
                                                 </span>
                                                 <span className="text-xs text-slate-500 font-medium">/ {t.bookingWidget.perDay}</span>
-                                                {discountPct > 0 && (
-                                                    <div className="inline-flex items-center gap-1 ml-0.5">
-                                                        <span className="text-xs font-bold text-red-400 line-through decoration-red-500 decoration-2 font-mono whitespace-nowrap">
-                                                            {formatPrice(vehicle.marketPriceEur, vehicle.marketPriceMad)}
-                                                        </span>
-                                                        <span className="px-1.5 py-0.5 rounded-full bg-red-100 text-red-700 text-[9px] font-black uppercase tracking-wider whitespace-nowrap">
-                                                            -{discountPct}%
-                                                        </span>
-                                                    </div>
-                                                )}
                                             </div>
                                             <div className="text-[11px] text-slate-500 font-medium mt-0.5 flex items-center gap-1">
                                                 <span>{days}{activeLocale === "en" ? "d" : activeLocale === "es" ? "d" : activeLocale === "nl" ? "d" : "j"} : ~{formatPrice(totalEst, totalEst * 11)}</span>
