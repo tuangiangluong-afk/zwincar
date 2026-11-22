@@ -29,7 +29,7 @@ test("itinéraire recommandé détecté malgré un nom de modèle différent", (
 });
 
 test("hub 100 % affiliation non indexé", () => {
-    assert.equal(isCityVehicleIndexable("nador"), false);
+    for (const h of ["nador", "essaouira", "tetouan", "oujda", "dakhla"]) assert.equal(isCityVehicleIndexable(h), false, h);
     assert.equal(isCityVehicleIndexable("marrakech"), true);
 });
 

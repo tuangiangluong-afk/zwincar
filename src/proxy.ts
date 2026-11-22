@@ -38,8 +38,8 @@ export default async function middleware(req: NextRequest) {
         hostname.includes("vercel.app") ||
         (hostname.includes("localhost") && !hostname.includes(".localhost"));
 
-    const searchParams = req.nextUrl.searchParams.toString();
-    const path = `${url.pathname}${searchParams.length > 0 ? `?${searchParams}` : ""}`;
+    // Routage sur le chemin seul : avec la query (gclid, fbclid, utm…) "/?x" ne valait plus "/" et finissait en 404.
+    const path = url.pathname;
 
     // A. Sitemap & Robots
     if (path === "/sitemap.xml" || path === "/robots.txt") {
@@ -105,7 +105,7 @@ export default async function middleware(req: NextRequest) {
         ) {
             return NextResponse.next();
         } else {
-            return NextResponse.rewrite(new URL(`/home${path === "/" ? "" : path}`, req.url));
+            return NextResponse.rewrite(new URL(`/home${path === "/" ? "" : path}${url.search}`, req.url));
         }
     }
 

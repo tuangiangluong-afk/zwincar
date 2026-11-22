@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { DEFAULT_HUB_DISTRIBUTION } from "@/lib/affiliate";
 import { randomBytes } from "node:crypto";
 import {
     buildVoucher,
@@ -38,6 +39,10 @@ export async function POST(request: Request) {
 
     const hub = findHub(input.pickupHub);
     if (!hub) return jsonError("Agence de départ inconnue", 404);
+    // Ville sans agence signée : pas de réservation directe ni d'acompte encaissé, seulement l'affiliation.
+    if (DEFAULT_HUB_DISTRIBUTION[hub.slug] === "affiliate") {
+        return jsonError("Réservation directe pas encore ouverte dans cette ville.", 409);
+    }
 
     const returnHub = input.returnHub ? findHub(input.returnHub) : hub;
     if (!returnHub) return jsonError("Agence de restitution inconnue", 404);

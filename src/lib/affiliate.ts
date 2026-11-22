@@ -55,10 +55,10 @@ export const DEFAULT_HUB_DISTRIBUTION: Record<string, DistributionMode> = {
     rabat: "hybrid", // Capitale administrative
     ouarzazate: "hybrid", // Spécialiste 4x4 grand sud
     nador: "affiliate", // Pas encore de loueur signé -> 100% Affiliation
-    essaouira: "hybrid", // Spot surf et côte sauvage atlantique
-    tetouan: "hybrid", // Tamuda Bay, Martil et porte de Chefchaouen
-    oujda: "hybrid", // Hub diaspora Oriental & Saïdia Med
-    dakhla: "hybrid", // Lagon kitesurf et grand sud
+    essaouira: "affiliate", // Pas encore de loueur signé -> 100% Affiliation (Spot surf et côte sauvage atlantique)
+    tetouan: "affiliate", // Pas encore de loueur signé -> 100% Affiliation (Tamuda Bay, Martil et porte de Chefchaouen)
+    oujda: "affiliate", // Pas encore de loueur signé -> 100% Affiliation (Hub diaspora Oriental & Saïdia Med)
+    dakhla: "affiliate", // Pas encore de loueur signé -> 100% Affiliation (Lagon kitesurf et grand sud)
 };
 
 export type GlobalDistributionMode = "affiliate" | "hybrid" | "direct";
