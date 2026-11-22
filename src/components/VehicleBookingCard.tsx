@@ -337,98 +337,104 @@ return (
             </div>
 
             {/* 4. Protection & Deposit Formule Toggle */}
-            <div className="space-y-2">
-                <div className="flex items-center justify-between text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-500">
-                    <span>{t.bookingWidget.protectionTitle}</span>
-                    <span className="text-emerald-700 font-semibold normal-case">{t.bookingWidget.debitAccepted}</span>
-                </div>
-                <div className="grid grid-cols-2 gap-2 sm:gap-3">
-                    {/* Tier 1: Standard */}
-                    <button
-                        type="button"
-                        onClick={() => {
-                            if (hasFranchiseZero) {
-                                setSelectedUpsells((prev) => prev.filter((id) => id !== "franchise-zero"));
-                            }
-                        }}
-                        className={`p-3 rounded-2xl border text-left transition-all duration-150 cursor-pointer relative ${
-                            !hasFranchiseZero
-                                ? "bg-white border-slate-900 ring-2 ring-slate-900/10 shadow-xs"
-                                : "bg-[#FAF7F2] border-slate-200 hover:border-slate-300 opacity-80"
-                        }`}
-                    >
-                        <div className="font-bold text-xs text-slate-900 flex items-center justify-between">
-                            <span>{t.bookingWidget.standardLabel}</span>
-                            {!hasFranchiseZero && <span className="w-2 h-2 rounded-full bg-slate-900"></span>}
+            {/* 4 & 5. Tier Selection & Travel Options (Direct hubs only) */}
+            {!isAffiliate && (
+                <>
+                    {/* 4. Tier Selection: Standard vs Franchise Zéro */}
+                    <div className="space-y-2">
+                        <div className="flex items-center justify-between text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-500">
+                            <span>{t.bookingWidget.protectionTitle}</span>
+                            <span className="text-emerald-700 font-semibold normal-case">{t.bookingWidget.debitAccepted}</span>
                         </div>
-                        <div className="text-[11px] font-black text-slate-800 font-mono mt-0.5">
-                            {t.bookingWidget.standardDeposit}
-                        </div>
-                        <div className="text-[10px] text-slate-500 mt-0.5 leading-tight">
-                            {t.bookingWidget.standardDepositNote}
-                        </div>
-                    </button>
+                        <div className="grid grid-cols-2 gap-2 sm:gap-3">
+                            {/* Tier 1: Standard */}
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    if (hasFranchiseZero) {
+                                        setSelectedUpsells((prev) => prev.filter((id) => id !== "franchise-zero"));
+                                    }
+                                }}
+                                className={`p-3 rounded-2xl border text-left transition-all duration-150 cursor-pointer relative ${
+                                    !hasFranchiseZero
+                                        ? "bg-white border-slate-900 ring-2 ring-slate-900/10 shadow-xs"
+                                        : "bg-[#FAF7F2] border-slate-200 hover:border-slate-300 opacity-80"
+                                }`}
+                            >
+                                <div className="font-bold text-xs text-slate-900 flex items-center justify-between">
+                                    <span>{t.bookingWidget.standardLabel}</span>
+                                    {!hasFranchiseZero && <span className="w-2 h-2 rounded-full bg-slate-900"></span>}
+                                </div>
+                                <div className="text-[11px] font-black text-slate-800 font-mono mt-0.5">
+                                    {t.bookingWidget.standardDeposit}
+                                </div>
+                                <div className="text-[10px] text-slate-500 mt-0.5 leading-tight">
+                                    {t.bookingWidget.standardDepositNote}
+                                </div>
+                            </button>
 
-                    {/* Tier 2: Pack Sérénité Franchise Zéro */}
-                    <button
-                        type="button"
-                        onClick={() => {
-                            if (!hasFranchiseZero) {
-                                setSelectedUpsells((prev) => [...prev, "franchise-zero"]);
-                            }
-                        }}
-                        className={`p-3 rounded-2xl border text-left transition-all duration-150 cursor-pointer relative ${
-                            hasFranchiseZero
-                                ? "bg-amber-50/60 border-[#C9572C] ring-2 ring-[#C9572C]/20 shadow-xs"
-                                : "bg-[#FAF7F2] border-slate-200 hover:border-slate-300 opacity-80"
-                        }`}
-                    >
-                        <div className="font-bold text-xs text-[#C9572C] flex items-center justify-between">
-                            <span>{t.bookingWidget.serenityLabel}</span>
-                            {hasFranchiseZero && <span className="w-2 h-2 rounded-full bg-[#C9572C]"></span>}
+                            {/* Tier 2: Pack Sérénité Franchise Zéro */}
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    if (!hasFranchiseZero) {
+                                        setSelectedUpsells((prev) => [...prev, "franchise-zero"]);
+                                    }
+                                }}
+                                className={`p-3 rounded-2xl border text-left transition-all duration-150 cursor-pointer relative ${
+                                    hasFranchiseZero
+                                        ? "bg-amber-50/60 border-[#C9572C] ring-2 ring-[#C9572C]/20 shadow-xs"
+                                        : "bg-[#FAF7F2] border-slate-200 hover:border-slate-300 opacity-80"
+                                }`}
+                            >
+                                <div className="font-bold text-xs text-[#C9572C] flex items-center justify-between">
+                                    <span>{t.bookingWidget.serenityLabel}</span>
+                                    {hasFranchiseZero && <span className="w-2 h-2 rounded-full bg-[#C9572C]"></span>}
+                                </div>
+                                <div className="text-[11px] font-black text-[#C9572C] font-mono mt-0.5">
+                                    {t.bookingWidget.serenityDeposit}
+                                </div>
+                                <div className="text-[10px] text-slate-600 mt-0.5 leading-tight font-medium">
+                                    +{currency === "EUR" ? "8 €" : "90 MAD"}/j • {t.bookingWidget.serenityZeroBlock}
+                                </div>
+                            </button>
                         </div>
-                        <div className="text-[11px] font-black text-[#C9572C] font-mono mt-0.5">
-                            {t.bookingWidget.serenityDeposit}
-                        </div>
-                        <div className="text-[10px] text-slate-600 mt-0.5 leading-tight font-medium">
-                            +{currency === "EUR" ? "8 €" : "90 MAD"}/j • {t.bookingWidget.serenityZeroBlock}
-                        </div>
-                    </button>
-                </div>
-            </div>
-
-            {/* 5. Travel Options Accordion (Collapsible 1-click) */}
-            <div className="space-y-2">
-                <button
-                    type="button"
-                    onClick={() => setIsOptionsOpen((v) => !v)}
-                    className="w-full flex items-center justify-between py-2.5 px-3 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs font-semibold text-slate-700 hover:border-[#C9572C]/40 transition cursor-pointer"
-                >
-                    <span className="flex items-center gap-1.5 truncate pr-2">
-                        <Sparkles size={13} className="text-[#C9572C] shrink-0" />
-                        <span className="truncate">{t.bookingWidget.optionsTitle}</span>
-                        {nonFranchiseUpsells.length > 0 && (
-                            <span className="px-1.5 py-0.5 rounded-full bg-[#C9572C] text-white text-[10px] font-bold shrink-0">
-                                {nonFranchiseUpsells.length}
-                            </span>
-                        )}
-                    </span>
-                    <ChevronDown size={14} className={`transform transition-transform shrink-0 ${isOptionsOpen ? "rotate-180" : ""}`} />
-                </button>
-
-                {isOptionsOpen && (
-                    <div className="pt-1 animate-in fade-in duration-150">
-                        <UpsellSelector
-                            days={days}
-                            selectedUpsells={selectedUpsells}
-                            onToggle={handleToggleUpsell}
-                            currency={currency}
-                            locale={activeLocale}
-                            hideFranchiseZero={true}
-                        />
                     </div>
-                )}
-            </div>
+
+                    {/* 5. Travel Options Accordion (Collapsible 1-click) */}
+                    <div className="space-y-2">
+                        <button
+                            type="button"
+                            onClick={() => setIsOptionsOpen((v) => !v)}
+                            className="w-full flex items-center justify-between py-2.5 px-3 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs font-semibold text-slate-700 hover:border-[#C9572C]/40 transition cursor-pointer"
+                        >
+                            <span className="flex items-center gap-1.5 truncate pr-2">
+                                <Sparkles size={13} className="text-[#C9572C] shrink-0" />
+                                <span className="truncate">{t.bookingWidget.optionsTitle}</span>
+                                {nonFranchiseUpsells.length > 0 && (
+                                    <span className="px-1.5 py-0.5 rounded-full bg-[#C9572C] text-white text-[10px] font-bold shrink-0">
+                                        {nonFranchiseUpsells.length}
+                                    </span>
+                                )}
+                            </span>
+                            <ChevronDown size={14} className={`transform transition-transform shrink-0 ${isOptionsOpen ? "rotate-180" : ""}`} />
+                        </button>
+
+                        {isOptionsOpen && (
+                            <div className="pt-1 animate-in fade-in duration-150">
+                                <UpsellSelector
+                                    days={days}
+                                    selectedUpsells={selectedUpsells}
+                                    onToggle={handleToggleUpsell}
+                                    currency={currency}
+                                    locale={activeLocale}
+                                    hideFranchiseZero={true}
+                                />
+                            </div>
+                        )}
+                    </div>
+                </>
+            )}
 
             {/* 6. Clarified Financial Split (No More Mystery +24€) */}
             <div className="rounded-2xl bg-[#FAF7F2] border border-[#ECE5D9] p-3.5 space-y-2 text-xs">
@@ -439,32 +445,35 @@ return (
                     </span>
                 </div>
 
-                {/* Explicit Franchise Zéro Line */}
-                {hasFranchiseZero && (
-                    <div className="flex items-baseline justify-between gap-3 text-slate-700 font-medium">
-                        <span className="min-w-0 pr-1">{t.bookingWidget.serenityLabel} ({t.bookingWidget.serenityDeposit} • 8 €/j)</span>
-                        <span className="font-semibold text-[#C9572C] font-mono whitespace-nowrap shrink-0">
-                            +{currency === "EUR" ? `${franchiseZeroPriceEur} €` : `${franchiseZeroPriceMad} MAD`}
-                        </span>
-                    </div>
-                )}
+                {/* Explicit Franchise Zéro & Options & Deposit (Direct hubs only) */}
+                {!isAffiliate && (
+                    <>
+                        {hasFranchiseZero && (
+                            <div className="flex items-baseline justify-between gap-3 text-slate-700 font-medium">
+                                <span className="min-w-0 pr-1">{t.bookingWidget.serenityLabel} ({t.bookingWidget.serenityDeposit} • 8 €/j)</span>
+                                <span className="font-semibold text-[#C9572C] font-mono whitespace-nowrap shrink-0">
+                                    +{currency === "EUR" ? `${franchiseZeroPriceEur} €` : `${franchiseZeroPriceMad} MAD`}
+                                </span>
+                            </div>
+                        )}
 
-                {/* Non-Franchise Extra Upsells */}
-                {nonFranchiseUpsells.length > 0 && (
-                    <div className="flex items-baseline justify-between gap-3 text-slate-600">
-                        <span className="min-w-0 pr-1">{t.bookingWidget.optionsExtra} ({nonFranchiseUpsells.length})</span>
-                        <span className="font-semibold text-slate-900 font-mono whitespace-nowrap shrink-0">
-                            +{currency === "EUR" ? `${nonFranchiseUpsellsTotalEur} €` : `${nonFranchiseUpsellsTotalMad} MAD`}
-                        </span>
-                    </div>
-                )}
+                        {nonFranchiseUpsells.length > 0 && (
+                            <div className="flex items-baseline justify-between gap-3 text-slate-600">
+                                <span className="min-w-0 pr-1">{t.bookingWidget.optionsExtra} ({nonFranchiseUpsells.length})</span>
+                                <span className="font-semibold text-slate-900 font-mono whitespace-nowrap shrink-0">
+                                    +{currency === "EUR" ? `${nonFranchiseUpsellsTotalEur} €` : `${nonFranchiseUpsellsTotalMad} MAD`}
+                                </span>
+                            </div>
+                        )}
 
-                <div className="flex items-baseline justify-between gap-3 text-slate-600 pt-1 border-t border-slate-200/60">
-                    <span className="min-w-0 pr-1">{t.bookingWidget.depositAtCounter}</span>
-                    <span className="font-bold text-slate-900 font-mono text-right max-w-[55%]">
-                        {hasFranchiseZero ? t.bookingWidget.zeroDepositActive : "300 €"}
-                    </span>
-                </div>
+                        <div className="flex items-baseline justify-between gap-3 text-slate-600 pt-1 border-t border-slate-200/60">
+                            <span className="min-w-0 pr-1">{t.bookingWidget.depositAtCounter}</span>
+                            <span className="font-bold text-slate-900 font-mono text-right max-w-[55%]">
+                                {hasFranchiseZero ? t.bookingWidget.zeroDepositActive : "300 €"}
+                            </span>
+                        </div>
+                    </>
+                )}
 
                 {/* Payment Breakdown : Mode direct vs Mode affiliation */}
                 {isAffiliate ? (
@@ -525,13 +534,27 @@ return (
                 )}
 
                 <div className="pt-1.5 border-t border-slate-200/60 flex flex-wrap items-center justify-between gap-1 text-[10px] text-emerald-800 font-semibold">
-                    <span>✓ {t.bookingWidget.refund48h}</span>
-                    <span>✓ {t.bookingWidget.inspection80}</span>
+                    {isAffiliate ? (
+                        <span>
+                            {activeLocale === "en"
+                                ? "✓ Verified partners (DiscoverCars / Localrent)"
+                                : activeLocale === "es"
+                                ? "✓ Socios verificados (DiscoverCars / Localrent)"
+                                : activeLocale === "nl"
+                                ? "✓ Geverifieerde partners (DiscoverCars / Localrent)"
+                                : "✓ Courtiers vérifiés (DiscoverCars / Localrent)"}
+                        </span>
+                    ) : (
+                        <>
+                            <span>✓ {t.bookingWidget.refund48h}</span>
+                            <span>✓ {t.bookingWidget.inspection80}</span>
+                        </>
+                    )}
                 </div>
             </div>
 
             {/* Urgence réelle : règle saisonnière du moteur de prix, rien d'inventé. */}
-            {season.multiplier !== 1 && (
+            {!isAffiliate && season.multiplier !== 1 && (
                 <div className={`rounded-xl px-3 py-2 text-[11px] font-semibold ${season.multiplier > 1 ? "bg-amber-50 border border-amber-200 text-amber-900" : "bg-emerald-50 border border-emerald-200 text-emerald-900"}`}>
                     {season.multiplier > 1
                         ? activeLocale === "en"

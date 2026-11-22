@@ -173,6 +173,7 @@ export function buildAffiliateRentalUrl({
     pickupTime = "11:00",
     returnTime = "11:00",
     marker = process.env.NEXT_PUBLIC_TRAVELPAYOUTS_MARKER || "596733",
+    locale = "fr",
 }: {
     provider?: "discovercars" | "localrent" | "economybookings";
     hubCode: string;
@@ -182,12 +183,14 @@ export function buildAffiliateRentalUrl({
     pickupTime?: string;
     returnTime?: string;
     marker?: string;
+    locale?: "fr" | "en" | "es" | "nl";
 }): string {
     const cleanMarker = marker || "zwincar";
 
     if (provider === "localrent") {
         // Deep-link Localrent via Travelpayouts ou direct
-        const targetUrl = `https://localrent.com/fr/morocco/${citySlug}/?date_from=${pickupDate}&date_to=${returnDate}`;
+        const lrLang = locale === "fr" || locale === "es" ? locale : "en";
+        const targetUrl = `https://localrent.com/${lrLang}/morocco/${citySlug}/?date_from=${pickupDate}&date_to=${returnDate}`;
         // Priorité Travelpayouts si configuré (permet de centraliser les revenus sur un seul compte)
         if (process.env.NEXT_PUBLIC_LOCALRENT_TPX_URL) {
             return process.env.NEXT_PUBLIC_LOCALRENT_TPX_URL;
@@ -199,12 +202,13 @@ export function buildAffiliateRentalUrl({
     }
 
     if (provider === "economybookings") {
-        return `https://www.economybookings.com/fr?pick_up_airport=${hubCode}&pick_up_date=${pickupDate}&drop_off_date=${returnDate}&marker=${cleanMarker}`;
+        const ebLang = locale === "en" ? "" : `/${locale}`;
+        return `https://www.economybookings.com${ebLang}?pick_up_airport=${hubCode}&pick_up_date=${pickupDate}&drop_off_date=${returnDate}&marker=${cleanMarker}`;
     }
 
     // Default: DiscoverCars Travelpayouts Deep Link avec IATA et dates
-    // Exemple d'URL trackée DiscoverCars:
-    return `https://www.discovercars.com/?iata=${hubCode}&pick_date=${pickupDate}&pick_time=${pickupTime}&drop_date=${returnDate}&drop_time=${returnTime}&a_aid=${cleanMarker}&data1=zwincar_fallback`;
+    const dcLang = locale === "en" ? "" : `/${locale}`;
+    return `https://www.discovercars.com${dcLang}?iata=${hubCode}&pick_date=${pickupDate}&pick_time=${pickupTime}&drop_date=${returnDate}&drop_time=${returnTime}&a_aid=${cleanMarker}&data1=zwincar_fallback`;
 }
 
 /**

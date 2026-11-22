@@ -76,6 +76,7 @@ export function AffiliateExitDrawer({
         citySlug: hub.slug,
         pickupDate,
         returnDate,
+        locale: activeLocale,
     });
 
     const discoverCarsUrl = buildAffiliateRentalUrl({
@@ -84,6 +85,7 @@ export function AffiliateExitDrawer({
         citySlug: hub.slug,
         pickupDate,
         returnDate,
+        locale: activeLocale,
     });
 
     const handleProceed = (targetUrl: string) => {

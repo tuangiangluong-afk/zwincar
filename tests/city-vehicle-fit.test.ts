@@ -54,3 +54,21 @@ test("métadonnées et promesses d'accueil étanches entre direct et affiliation
         }
     }
 });
+
+test("buildAffiliateRentalUrl respecte la locale sans forcer /fr/ pour EN/ES/NL", async () => {
+    const { buildAffiliateRentalUrl } = await import("../src/lib/affiliate.ts");
+    const base = { hubCode: "VIL", citySlug: "dakhla", pickupDate: "2026-12-01", returnDate: "2026-12-05" };
+
+    for (const locale of ["en", "es", "nl"] as const) {
+        const dc = buildAffiliateRentalUrl({ ...base, provider: "discovercars", locale });
+        const eb = buildAffiliateRentalUrl({ ...base, provider: "economybookings", locale });
+        const lr = buildAffiliateRentalUrl({ ...base, provider: "localrent", locale });
+        assert.ok(!dc.includes("discovercars.com/fr"), `discovercars force /fr pour ${locale}: ${dc}`);
+        assert.ok(!eb.includes("economybookings.com/fr"), `economybookings force /fr pour ${locale}: ${eb}`);
+        assert.ok(!decodeURIComponent(lr).includes("localrent.com/fr/"), `localrent force /fr/ pour ${locale}: ${lr}`);
+    }
+
+    assert.ok(buildAffiliateRentalUrl({ ...base, provider: "discovercars", locale: "fr" }).includes("discovercars.com/fr?"));
+    assert.ok(buildAffiliateRentalUrl({ ...base, provider: "economybookings", locale: "fr" }).includes("economybookings.com/fr?"));
+    assert.ok(decodeURIComponent(buildAffiliateRentalUrl({ ...base, provider: "localrent", locale: "fr" })).includes("localrent.com/fr/"));
+});

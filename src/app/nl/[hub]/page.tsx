@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { MOROCCAN_HUBS } from "@/lib/morocco-data";
 import LocalizedHubView from "@/components/pSEO/LocalizedHubView";
 import { clampTitle, clampDescription } from "@/lib/seo-meta";
+import { isHubInAffiliateFallback } from "@/lib/affiliate";
 
 interface PageProps {
     params: Promise<{ hub: string }>;
@@ -18,9 +19,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     if (!hub) return { title: "Luchthaven niet gevonden" };
 
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://zwincar.com";
-    const title = clampTitle(`Autoverhuur ${hub.name} (${hub.airportCode}) Zonder Borg • ZwinCar`);
+    const isAffiliate = isHubInAffiliateFallback(hub.slug);
+    const title = clampTitle(
+        isAffiliate
+            ? `Autoverhuur ${hub.name} (${hub.airportCode}) | ZwinCar`
+            : `Autoverhuur ${hub.name} (${hub.airportCode}) Zonder Borg • ZwinCar`
+    );
     const description = clampDescription(
-        `Huur een auto in ${hub.name} (${hub.airportName}) zonder creditcard borg. Betaalpas & contant geaccepteerd, model of gelijkwaardig gegarandeerd. Snelle levering op vliegveld of riad.`
+        isAffiliate
+            ? `Vergelijk geverifieerde huurprijzen in ${hub.name} (${hub.airportName}). Transparant ophalen bij de partnerbalie op de luchthaven.`
+            : `Huur een auto in ${hub.name} (${hub.airportName}) zonder creditcard borg. Betaalpas & contant geaccepteerd, model of gelijkwaardig gegarandeerd. Snelle levering op vliegveld of riad.`
     );
 
     return {

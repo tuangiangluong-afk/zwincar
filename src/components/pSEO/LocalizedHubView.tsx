@@ -30,6 +30,7 @@ interface LocalizedHubViewProps {
 export default function LocalizedHubView({ hub, locale }: LocalizedHubViewProps) {
     const t = getTranslation(locale);
     const localPosList = getPosForHub(hub.slug);
+    const isAffiliate = isHubInAffiliateFallback(hub.slug);
 
     const getIntentUrl = (intentId: string) => {
         const intent = PURCHASE_INTENTS.find((i) => i.id === intentId);
@@ -75,25 +76,43 @@ export default function LocalizedHubView({ hub, locale }: LocalizedHubViewProps)
                             </div>
 
                             <h1 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">
-                                {locale === "en"
-                                    ? `Car Rental in ${hub.name} with Zero Credit Card Deposit`
-                                    : locale === "es"
-                                    ? `Alquiler de Coches en ${hub.name} Sin Fianza en Tarjeta`
-                                    : `Autoverhuur in ${hub.name} Zonder Creditcard Borg`}
+                                {isAffiliate
+                                    ? (locale === "en"
+                                        ? `Car Rental in ${hub.name} (${hub.airportCode})`
+                                        : locale === "es"
+                                        ? `Alquiler de Coches en ${hub.name} (${hub.airportCode})`
+                                        : `Autoverhuur in ${hub.name} (${hub.airportCode})`)
+                                    : (locale === "en"
+                                        ? `Car Rental in ${hub.name} with Zero Credit Card Deposit`
+                                        : locale === "es"
+                                        ? `Alquiler de Coches en ${hub.name} Sin Fianza en Tarjeta`
+                                        : `Autoverhuur in ${hub.name} Zonder Creditcard Borg`)}
                             </h1>
 
                             <p className="text-sm md:text-base text-slate-600 leading-relaxed max-w-2xl">
-                                {locale === "en"
-                                    ? `Rent directly from verified local agencies in ${hub.name}. Fast terminal meet & greet, debit cards & cash fully accepted, guaranteed models.`
-                                    : locale === "es"
-                                    ? `Alquile directamente de agencias locales verificadas en ${hub.name}. Entrega en terminal o riad, tarjetas de débito y efectivo aceptados.`
-                                    : `Huur rechtstreeks bij geverifieerde lokale partners in ${hub.name}. Snelle terminalontmoeting, pin & contant geaccepteerd.`}
+                                {isAffiliate
+                                    ? (locale === "en"
+                                        ? `Compare available rental cars in ${hub.name} (${hub.airportName}) with verified airport partner desks (DiscoverCars / Localrent).`
+                                        : locale === "es"
+                                        ? `Compare coches disponibles en ${hub.name} (${hub.airportName}) con entrega en mostradores de socios verificados en el aeropuerto.`
+                                        : `Vergelijk beschikbare huurauto's in ${hub.name} (${hub.airportName}) via geverifieerde partnerbalies op de luchthaven.`)
+                                    : (locale === "en"
+                                        ? `Rent directly from verified local agencies in ${hub.name}. Fast terminal meet & greet, debit cards & cash fully accepted, model or equivalent guaranteed.`
+                                        : locale === "es"
+                                        ? `Alquile directamente de agencias locales verificadas en ${hub.name}. Entrega rápida en terminal, tarjetas de débito y efectivo aceptados.`
+                                        : `Huur rechtstreeks bij geverifieerde lokale partners in ${hub.name}. Snelle terminalontmoeting, pin & contant geaccepteerd.`)}
                             </p>
 
                             {/* Intent Quick Links (pSEO Bridge) */}
                             <div className="pt-2">
                                 <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-2">
-                                    {locale === "en" ? "Popular Categories & Intents:" : "Categorías Populares:"}
+                                    {locale === "en"
+                                        ? "Popular Categories & Intents:"
+                                        : locale === "es"
+                                        ? "Categorías Populares:"
+                                        : locale === "nl"
+                                        ? "Populaire categorieën:"
+                                        : "Catégories Populaires :"}
                                 </span>
                                 <div className="flex flex-wrap gap-2">
                                     {PURCHASE_INTENTS.map((intent) => (
@@ -159,7 +178,6 @@ export default function LocalizedHubView({ hub, locale }: LocalizedHubViewProps)
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         {localPosList.map((pos) => {
-                            const isAffiliate = isHubInAffiliateFallback(hub.slug);
                             let meetingDetailText = pos.meetingDetail;
                             if (pos.type === "airport" && isAffiliate) {
                                 meetingDetailText = locale === "en"

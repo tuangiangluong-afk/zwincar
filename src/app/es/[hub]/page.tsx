@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { MOROCCAN_HUBS } from "@/lib/morocco-data";
 import LocalizedHubView from "@/components/pSEO/LocalizedHubView";
 import { clampTitle, clampDescription } from "@/lib/seo-meta";
+import { isHubInAffiliateFallback } from "@/lib/affiliate";
 
 interface PageProps {
     params: Promise<{ hub: string }>;
@@ -18,9 +19,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     if (!hub) return { title: "Aeropuerto no encontrado" };
 
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://zwincar.com";
-    const title = clampTitle(`Alquiler Coche ${hub.name} (${hub.airportCode}) Sin Fianza Tarjeta • ZwinCar`);
+    const isAffiliate = isHubInAffiliateFallback(hub.slug);
+    const title = clampTitle(
+        isAffiliate
+            ? `Alquiler Coche ${hub.name} (${hub.airportCode}) | ZwinCar`
+            : `Alquiler Coche ${hub.name} (${hub.airportCode}) Sin Fianza Tarjeta • ZwinCar`
+    );
     const description = clampDescription(
-        `Alquile coche en ${hub.name} (${hub.airportName}) sin bloqueo de tarjeta de crédito. Tarjetas de débito y efectivo aceptados. Entrega rápida en aeropuerto y riad.`
+        isAffiliate
+            ? `Compare tarifas verificadas de alquiler de coches en ${hub.name} (${hub.airportName}). Recogida en mostrador asociado del aeropuerto.`
+            : `Alquile coche en ${hub.name} (${hub.airportName}) sin bloqueo de tarjeta de crédito. Tarjetas de débito y efectivo aceptados. Entrega rápida en aeropuerto y riad.`
     );
 
     return {

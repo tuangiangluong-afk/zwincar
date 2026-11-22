@@ -97,6 +97,7 @@ export function BookingWidget({
                     returnDate: state.returnDate,
                     pickupTime: state.pickupTime,
                     returnTime: state.returnTime,
+                    locale: activeLocale,
                 });
                 window.open(affiliateUrl, "_blank", "noopener,noreferrer");
             } catch {

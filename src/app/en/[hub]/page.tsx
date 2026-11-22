@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { MOROCCAN_HUBS } from "@/lib/morocco-data";
 import LocalizedHubView from "@/components/pSEO/LocalizedHubView";
 import { clampTitle, clampDescription } from "@/lib/seo-meta";
+import { isHubInAffiliateFallback } from "@/lib/affiliate";
 
 interface PageProps {
     params: Promise<{ hub: string }>;
@@ -18,9 +19,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     if (!hub) return { title: "Airport not found" };
 
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://zwincar.com";
-    const title = clampTitle(`Car Rental ${hub.name} (${hub.airportCode}) No Card Hold • ZwinCar`);
+    const isAffiliate = isHubInAffiliateFallback(hub.slug);
+    const title = clampTitle(
+        isAffiliate
+            ? `Car Rental ${hub.name} (${hub.airportCode}) | ZwinCar`
+            : `Car Rental ${hub.name} (${hub.airportCode}) No Card Hold • ZwinCar`
+    );
     const description = clampDescription(
-        `Rent a car in ${hub.name} (${hub.airportName}) with zero credit card block. Debit cards & cash accepted, model or equivalent guaranteed. Fast airport & riad delivery.`
+        isAffiliate
+            ? `Compare verified car rental rates at ${hub.name} (${hub.airportName}). Transparent airport partner desk pickup.`
+            : `Rent a car in ${hub.name} (${hub.airportName}) with zero credit card block. Debit cards & cash accepted, model or equivalent guaranteed. Fast airport & riad delivery.`
     );
 
     return {

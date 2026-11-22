@@ -10,6 +10,7 @@ import SchemaJSON from "@/components/SchemaJSON";
 import PseoGuidesCrossLinks from "@/components/pSEO/PseoGuidesCrossLinks";
 import { MOROCCAN_HUBS, DIRECT_ANSWERS_AEO } from "@/lib/morocco-data";
 import { clampTitle, clampDescription } from "@/lib/seo-meta";
+import { isHubInAffiliateFallback } from "@/lib/affiliate";
 import {
     ShieldCheck,
     MapPin,
@@ -38,9 +39,16 @@ export async function generateMetadata({ params }: CityPageProps): Promise<Metad
     const hub = MOROCCAN_HUBS.find((h) => h.slug === slug);
     if (!hub) return { title: "Ville non trouvée" };
 
-    const title = clampTitle(`Location Voiture ${hub.name} Sans Caution CB • ZwinCar`);
+    const isAffiliate = isHubInAffiliateFallback(hub.slug);
+    const title = clampTitle(
+        isAffiliate
+            ? `Location Voiture ${hub.name} (${hub.airportCode}) • ZwinCar`
+            : `Location Voiture ${hub.name} Sans Caution CB • ZwinCar`
+    );
     const description = clampDescription(
-        `Louez votre voiture à ${hub.name} (${hub.airportCode}) sans empreinte de carte de crédit. Agences locales vérifiées, livraison aéroport et riad gratuite, modèle garanti.`
+        isAffiliate
+            ? `Comparez les locations de voiture à ${hub.name} (${hub.airportName}). Tarifs négociés auprès de nos partenaires locaux vérifiés à l'aéroport.`
+            : `Louez votre voiture à ${hub.name} (${hub.airportCode}) sans empreinte de carte de crédit. Agences locales vérifiées, livraison aéroport et riad gratuite, modèle ou équivalent garanti.`
     );
 
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://zwincar.com";
@@ -80,6 +88,8 @@ export default async function CityHubPage({ params }: CityPageProps) {
         notFound();
     }
 
+    const isAffiliate = isHubInAffiliateFallback(hub.slug);
+
     return (
         <div className="min-h-screen bg-[#FAF7F2] text-[#12161E]">
             {/* Schema.org AEO & LocalBusiness */}
@@ -110,21 +120,24 @@ export default async function CityHubPage({ params }: CityPageProps) {
                             <h1 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight leading-tight mb-4">
                                 Location de Voiture à{" "}
                                 <span className="text-[#C9572C]">{hub.name}</span>{" "}
-                                Sans Caution CB
+                                {isAffiliate ? `(${hub.airportCode})` : "Sans Caution CB"}
                             </h1>
 
                             <p className="text-base sm:text-lg text-slate-600 leading-relaxed mb-6">
-                                {hub.description} Profitez de nos agences partenaires certifiées avec remise des clés immédiate à l'arrivée.
+                                {hub.description}{" "}
+                                {isAffiliate
+                                    ? "Comparez les offres disponibles au comptoir aéroport de nos partenaires vérifiés."
+                                    : "Profitez de nos agences partenaires certifiées avec remise des clés immédiate à l'arrivée."}
                             </p>
 
                             <div className="flex flex-wrap items-center gap-3 text-xs sm:text-sm font-semibold text-slate-700">
                                 <span className="flex items-center gap-1.5 bg-[#FAF7F2] px-3 py-1.5 rounded-full border border-[#E7DFD5]">
                                     <ShieldCheck size={15} className="text-[#C9572C]" />
-                                    Caution 0 € ou 300 €
+                                    {isAffiliate ? "Partenaires vérifiés" : "Caution 0 € ou 300 €"}
                                 </span>
                                 <span className="flex items-center gap-1.5 bg-[#FAF7F2] px-3 py-1.5 rounded-full border border-[#E7DFD5]">
                                     <Clock size={15} className="text-[#C9572C]" />
-                                    Zéro attente au guichet
+                                    {isAffiliate ? `Comptoir aéroport ${hub.airportCode}` : "Zéro attente au guichet"}
                                 </span>
                                 <span className="flex items-center gap-1.5 bg-[#FAF7F2] px-3 py-1.5 rounded-full border border-[#E7DFD5]">
                                     <MapPin size={15} className="text-slate-600" />
