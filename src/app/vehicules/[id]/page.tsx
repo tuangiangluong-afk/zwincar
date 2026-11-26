@@ -4,6 +4,7 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SchemaJSON from "@/components/SchemaJSON";
+import { getVerifiedReviewSummary } from "@/lib/booking-store";
 import { VEHICLE_FLEET, MOROCCAN_HUBS, VehicleModel } from "@/lib/morocco-data";
 import { clampTitle, clampDescription } from "@/lib/seo-meta";
 import VehicleBookingCard from "@/components/VehicleBookingCard";
@@ -67,12 +68,15 @@ export default async function VehicleDetailPage({ params }: VehiclePageProps) {
         notFound();
     }
 
+    const reviewSummary = await getVerifiedReviewSummary();
+
     return (
         <div className="min-h-screen bg-[#FAF7F2] text-[#12161E]">
             {/* Structured Data */}
             <SchemaJSON
                 type="Vehicle"
                 vehicle={vehicle}
+                reviewSummary={reviewSummary}
                 faqs={vehicle.faqs}
                 breadcrumbItems={[
                     { name: "Accueil", item: "https://zwincar.com" },

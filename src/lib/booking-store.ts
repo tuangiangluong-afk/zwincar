@@ -12,7 +12,7 @@
  */
 
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
-import type { BookingRecord } from "./booking-engine";
+import { REVIEWABLE_STATUSES, summarizeReviews, type BookingRecord, type ReviewSummary } from "./booking-engine.ts";
 
 export interface BookingStore {
     readonly kind: "supabase" | "memory";
@@ -200,4 +200,23 @@ export function getBookingStore(): BookingStore {
 export function __resetBookingStoreForTests(): void {
     singleton = null;
     memoryMap().clear();
+    cachedReviewSummary = null;
+}
+
+let cachedReviewSummary: { value: ReviewSummary; expiresAt: number } | null = null;
+
+/** Récupère le résumé des avis clients vérifiés (avec cache 5 min pour le SSG/ISR). */
+export async function getVerifiedReviewSummary(): Promise<ReviewSummary> {
+    const now = Date.now();
+    if (cachedReviewSummary && now < cachedReviewSummary.expiresAt) {
+        return cachedReviewSummary.value;
+    }
+    try {
+        const records = await getBookingStore().list({ status: REVIEWABLE_STATUSES });
+        const summary = summarizeReviews(records);
+        cachedReviewSummary = { value: summary, expiresAt: now + 5 * 60 * 1000 };
+        return summary;
+    } catch {
+        return { count: 0, average: 0, latest: [] };
+    }
 }

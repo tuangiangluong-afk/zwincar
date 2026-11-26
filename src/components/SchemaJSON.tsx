@@ -1,11 +1,13 @@
-import { speakableSpecification } from "@/lib/seo-meta";
+import { speakableSpecification, buildVehicleProductSchema } from "@/lib/seo-meta";
 import { CityHub, VehicleModel, SOCIAL_SAME_AS } from "@/lib/morocco-data";
+import type { ReviewSummary } from "@/lib/booking-engine";
 
 interface SchemaJSONProps {
     type?: "AutoRental" | "LocalBusiness" | "Vehicle" | "Breadcrumb" | "FAQPage" | "Organization" | "Custom";
     schema?: Record<string, unknown>;
     hub?: CityHub;
     vehicle?: VehicleModel;
+    reviewSummary?: ReviewSummary;
     breadcrumbItems?: { name: string; item: string }[];
     faqs?: { q: string; a: string }[];
 }
@@ -26,6 +28,7 @@ export default function SchemaJSON({
     schema: providedSchema,
     hub,
     vehicle,
+    reviewSummary,
     breadcrumbItems,
     faqs,
 }: SchemaJSONProps) {
@@ -127,41 +130,7 @@ export default function SchemaJSON({
     }
 
     if (type === "Vehicle" && vehicle) {
-        const productUrl = hub
-            ? `${baseUrl}/maroc/${hub.slug}/${vehicle.id}`
-            : `${baseUrl}/vehicules/${vehicle.id}`;
-        const skuCode = `ZWIN-${vehicle.id.toUpperCase()}${hub ? `-${hub.airportCode}` : ""}`;
-
-        graph.push({
-            "@type": "Product",
-            "@id": `${productUrl}#product`,
-            name: hub
-                ? `Location ${vehicle.name} — ${hub.name} (${hub.airportCode})`
-                : `Location ${vehicle.name} au Maroc Sans Caution CB`,
-            image: [toAbsoluteUrl(vehicle.image)],
-            description: `${vehicle.highlight} ${vehicle.idealFor} Caution 0€ avec l'option Franchise Zéro (sinon 300 €), livraison aéroport et riad offerte, kilométrage illimité.`,
-            sku: skuCode,
-            mpn: skuCode,
-            brand: {
-                "@type": "Brand",
-                name: vehicle.brand || vehicle.name.split(" ")[0],
-            },
-            offers: {
-                "@type": "Offer",
-                url: productUrl,
-                price: vehicle.dailyPriceEur,
-                priceCurrency: "EUR",
-                priceValidUntil: "2027-12-31",
-                availability: "https://schema.org/InStock",
-                seller: {
-                    "@type": "Organization",
-                    name: "ZwinCar",
-                    url: baseUrl,
-                    sameAs: SOCIAL_SAME_AS,
-                },
-            },
-            speakable: speakableSpecification(["h1", "[data-speakable]"]),
-        });
+        graph.push(buildVehicleProductSchema(vehicle, hub, reviewSummary));
     }
 
     if (type === "Organization") {

@@ -11,6 +11,7 @@ import VehicleBookingCard from "@/components/VehicleBookingCard";
 import PseoGuidesCrossLinks from "@/components/pSEO/PseoGuidesCrossLinks";
 import CityVehicleFitSection from "@/components/pSEO/CityVehicleFitSection";
 import { isHubInAffiliateFallback } from "@/lib/affiliate";
+import { getVerifiedReviewSummary } from "@/lib/booking-store";
 import {
     ShieldCheck,
     CheckCircle2,
@@ -30,7 +31,7 @@ interface LocalizedPageRendererProps {
     subslug: string;
 }
 
-export default function LocalizedPageRenderer({
+export default async function LocalizedPageRenderer({
     locale,
     hubSlug,
     subslug,
@@ -76,6 +77,7 @@ export default function LocalizedPageRenderer({
         const vehicleShortName = vehicle.id === "toyota-prado-tx-7places"
             ? (locale === "en" ? "Toyota Prado 7-Seater" : locale === "es" ? "Toyota Prado 7 Plazas" : "Toyota Prado 7 Places")
             : vehicle.name;
+        const reviewSummary = await getVerifiedReviewSummary();
 
         return (
             <div className="min-h-screen bg-[#FAF7F2] text-[#12161E]">
@@ -83,6 +85,7 @@ export default function LocalizedPageRenderer({
                     type="Vehicle"
                     hub={hub}
                     vehicle={vehicle}
+                    reviewSummary={reviewSummary}
                     faqs={vehicle.faqs}
                     breadcrumbItems={[
                         { name: locale === "fr" ? "Accueil" : "Home", item: "https://zwincar.com" },

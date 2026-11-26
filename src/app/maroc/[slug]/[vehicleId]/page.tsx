@@ -13,6 +13,7 @@ import PseoGuidesCrossLinks from "@/components/pSEO/PseoGuidesCrossLinks";
 import CityVehicleFitSection from "@/components/pSEO/CityVehicleFitSection";
 import { isCityVehicleIndexable } from "@/lib/city-vehicle-fit";
 import { isHubInAffiliateFallback } from "@/lib/affiliate";
+import { getVerifiedReviewSummary } from "@/lib/booking-store";
 import {
     ShieldCheck,
     CheckCircle2,
@@ -177,6 +178,7 @@ export default async function CityVehicleDetailPage({ params }: CityVehiclePageP
     if (!vehicle) notFound();
 
     const vehicleShortName = vehicle.id === "toyota-prado-tx-7places" ? "Toyota Prado 7 Places" : vehicle.name;
+    const reviewSummary = await getVerifiedReviewSummary();
 
     return (
         <div className="min-h-screen bg-[#FAF7F2] text-[#12161E]">
@@ -185,6 +187,7 @@ export default async function CityVehicleDetailPage({ params }: CityVehiclePageP
                 type="Vehicle"
                 hub={hub}
                 vehicle={vehicle}
+                reviewSummary={reviewSummary}
                 faqs={vehicle.faqs}
                 breadcrumbItems={[
                     { name: "Accueil", item: "https://zwincar.com" },

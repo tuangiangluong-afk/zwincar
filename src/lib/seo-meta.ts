@@ -2,6 +2,10 @@
  * ZwinCar.com — Normes d'affichage SERP & AEO (SEO/AEO/GEO)
  * Spécifiquement calibré pour Google, Perplexity, ChatGPT et Google AI Overviews.
  */
+import { SOCIAL_SAME_AS } from "./morocco-data.ts";
+import type { CityHub, VehicleModel } from "./morocco-data.ts";
+import { isHubInAffiliateFallback } from "./affiliate.ts";
+import type { ReviewSummary } from "./booking-engine.ts";
 
 export const TITLE_MAX = 58;
 export const DESCRIPTION_MAX = 152;
@@ -63,4 +67,122 @@ export function speakableSpecification(
         "@type": "SpeakableSpecification",
         cssSelector,
     };
+}
+
+export function buildVehicleProductSchema(
+    vehicle: VehicleModel,
+    hub?: CityHub,
+    reviewSummary?: ReviewSummary
+): Record<string, unknown> {
+    const baseUrl = "https://zwincar.com";
+    const toAbsoluteUrl = (path?: string) => {
+        if (!path) return `${baseUrl}/images/hero-morocco.webp`;
+        return path.startsWith("http") ? path : `${baseUrl}${path.startsWith("/") ? path : `/${path}`}`;
+    };
+    const productUrl = hub
+        ? `${baseUrl}/maroc/${hub.slug}/${vehicle.id}`
+        : `${baseUrl}/vehicules/${vehicle.id}`;
+    const skuCode = `ZWIN-${vehicle.id.toUpperCase()}${hub ? `-${hub.airportCode}` : ""}`;
+    const isAffiliate = hub ? isHubInAffiliateFallback(hub.slug) : false;
+
+    const description = isAffiliate
+        ? `${vehicle.highlight} ${vehicle.idealFor} Comparatif et prise en charge au comptoir partenaire vérifié à l'aéroport.`
+        : `${vehicle.highlight} ${vehicle.idealFor} Caution 0€ avec l'option Franchise Zéro (sinon 300 €), prise en charge aéroport incluse, kilométrage illimité.`;
+
+    const product: Record<string, unknown> = {
+        "@type": "Product",
+        "@id": `${productUrl}#product`,
+        name: hub
+            ? `Location ${vehicle.name} — ${hub.name} (${hub.airportCode})`
+            : `Location ${vehicle.name} au Maroc Sans Caution CB`,
+        image: [toAbsoluteUrl(vehicle.image)],
+        description,
+        sku: skuCode,
+        mpn: skuCode,
+        brand: {
+            "@type": "Brand",
+            name: vehicle.brand || vehicle.name.split(" ")[0],
+        },
+        offers: {
+            "@type": "Offer",
+            url: productUrl,
+            price: vehicle.dailyPriceEur,
+            priceCurrency: "EUR",
+            validFrom: "2026-01-01T00:00:00Z",
+            priceValidUntil: "2027-12-31",
+            availability: "https://schema.org/InStock",
+            itemCondition: "https://schema.org/NewCondition",
+            shippingDetails: {
+                "@type": "OfferShippingDetails",
+                shippingRate: {
+                    "@type": "MonetaryAmount",
+                    value: 0,
+                    currency: "EUR",
+                },
+                shippingDestination: {
+                    "@type": "DefinedRegion",
+                    addressCountry: "MA",
+                },
+                deliveryTime: {
+                    "@type": "ShippingDeliveryTime",
+                    handlingTime: {
+                        "@type": "QuantitativeValue",
+                        minValue: 0,
+                        maxValue: 0,
+                        unitCode: "DAY",
+                    },
+                    transitTime: {
+                        "@type": "QuantitativeValue",
+                        minValue: 0,
+                        maxValue: 0,
+                        unitCode: "DAY",
+                    },
+                },
+            },
+            hasMerchantReturnPolicy: {
+                "@type": "MerchantReturnPolicy",
+                applicableCountry: "MA",
+                returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnWindow",
+                merchantReturnDays: 2,
+                returnMethod: "https://schema.org/ReturnInStore",
+                returnFees: "https://schema.org/FreeReturn",
+            },
+            seller: {
+                "@type": "Organization",
+                name: "ZwinCar",
+                url: baseUrl,
+                sameAs: SOCIAL_SAME_AS,
+            },
+        },
+        speakable: speakableSpecification(["h1", "[data-speakable]"]),
+    };
+
+    if (reviewSummary && reviewSummary.count > 0) {
+        product.aggregateRating = {
+            "@type": "AggregateRating",
+            ratingValue: reviewSummary.average,
+            reviewCount: reviewSummary.count,
+            bestRating: 5,
+            worstRating: 1,
+        };
+        if (reviewSummary.latest.length > 0) {
+            product.review = reviewSummary.latest.map((r) => ({
+                "@type": "Review",
+                author: {
+                    "@type": "Person",
+                    name: r.firstName,
+                },
+                datePublished: r.at.split("T")[0],
+                reviewBody: r.comment,
+                reviewRating: {
+                    "@type": "Rating",
+                    ratingValue: r.rating,
+                    bestRating: 5,
+                    worstRating: 1,
+                },
+            }));
+        }
+    }
+
+    return product;
 }

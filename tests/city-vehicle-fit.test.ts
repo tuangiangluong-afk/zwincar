@@ -72,3 +72,25 @@ test("buildAffiliateRentalUrl respecte la locale sans forcer /fr/ pour EN/ES/NL"
     assert.ok(buildAffiliateRentalUrl({ ...base, provider: "economybookings", locale: "fr" }).includes("economybookings.com/fr?"));
     assert.ok(decodeURIComponent(buildAffiliateRentalUrl({ ...base, provider: "localrent", locale: "fr" })).includes("localrent.com/fr/"));
 });
+
+test("Schema.org Product inclut validFrom, shippingDetails, hasMerchantReturnPolicy et n'invente pas d'avis", async () => {
+    const { buildVehicleProductSchema } = await import("../src/lib/seo-meta.ts");
+    const duster = car("dacia-duster-4x4");
+    const rak = hub("marrakech");
+
+    const withoutReviews = buildVehicleProductSchema(duster, rak, { count: 0, average: 0, latest: [] }) as any;
+    assert.ok(withoutReviews.offers.validFrom, "validFrom manquant");
+    assert.equal(withoutReviews.offers.shippingDetails["@type"], "OfferShippingDetails");
+    assert.equal(withoutReviews.offers.hasMerchantReturnPolicy["@type"], "MerchantReturnPolicy");
+    assert.equal(withoutReviews.aggregateRating, undefined, "aucun avis factice ne doit être émis à count=0");
+    assert.equal(withoutReviews.review, undefined);
+
+    const withRealReviews = buildVehicleProductSchema(duster, rak, {
+        count: 1,
+        average: 5,
+        latest: [{ firstName: "Yassine", hubName: "Marrakech", vehicleName: duster.name, rating: 5, comment: "Top", at: "2026-11-20T10:00:00Z" }],
+    }) as any;
+    assert.equal(withRealReviews.aggregateRating.ratingValue, 5);
+    assert.equal(withRealReviews.aggregateRating.reviewCount, 1);
+    assert.equal(withRealReviews.review[0].author.name, "Yassine");
+});
