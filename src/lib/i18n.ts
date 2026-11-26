@@ -332,7 +332,7 @@ export const TRANSLATIONS: Record<
             searchingBtn: "Recherche en cours...",
             noDepositPill: "Zéro caution CB bloquée",
             exactModelPill: "Modèle ou équivalent garanti (surclassement offert)",
-            airportDeliveryPill: "Livraison aéroport & riad offerte (Valeur 100 DH)",
+            airportDeliveryPill: "Prise en charge aéroport (riad en villes directes)",
             freeCancellationPill: "Annulation gratuite jusqu'à 48h",
         },
         catalog: {
@@ -618,7 +618,7 @@ export const TRANSLATIONS: Record<
             searchingBtn: "Searching available cars...",
             noDepositPill: "No €1,500 credit card freeze",
             exactModelPill: "Model or equivalent guaranteed (free upgrade)",
-            airportDeliveryPill: "Free airport & riad delivery (100 MAD value)",
+            airportDeliveryPill: "Airport pickup (riad delivery in direct cities)",
             freeCancellationPill: "Free cancellation up to 48h",
         },
         catalog: {
@@ -904,7 +904,7 @@ export const TRANSLATIONS: Record<
             searchingBtn: "Buscando coches disponibles...",
             noDepositPill: "Sin retención de 1.500 € en tarjeta",
             exactModelPill: "Modelo o equivalente garantizado (mejora gratis)",
-            airportDeliveryPill: "Entrega gratis en aeropuerto y riad (Valor 100 DH)",
+            airportDeliveryPill: "Recogida en aeropuerto (riad en ciudades directas)",
             freeCancellationPill: "Cancelación gratuita hasta 48h",
         },
         catalog: {
@@ -1190,7 +1190,7 @@ export const TRANSLATIONS: Record<
             searchingBtn: "Beschikbaarheid controleren...",
             noDepositPill: "Geen €1.500 creditcard blokkade",
             exactModelPill: "Model of gelijkwaardig gegarandeerd (gratis upgrade)",
-            airportDeliveryPill: "Gratis bezorging luchthaven & riad (Waarde 100 DH)",
+            airportDeliveryPill: "Ophalen op luchthaven (riad in directe steden)",
             freeCancellationPill: "Gratis annuleren tot 48 uur",
         },
         catalog: {

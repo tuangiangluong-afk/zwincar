@@ -198,7 +198,7 @@ const CONTACT_I18N: Record<
         successDesc: "Nos pondremos en contacto muy pronto. Si su vuelo aterriza en menos de 2 horas, escríbanos directamente por WhatsApp.",
         anotherBtn: "Enviar otro mensaje",
         hubsTitle: "Nuestros Hubs en Marruecos",
-        hubsDesc: "Entrega gratuita en el aparcamiento del aeropuerto o en su riad/hotel en las 6 ciudades principales:",
+        hubsDesc: "Recogida en el aeropuerto en nuestras ciudades cubiertas (entrega en riad disponible en ciudades con agencia directa):",
         faqTitle: "Preguntas Frecuentes",
         subjects: [
             { value: "Question réservation", label: "Consulta sobre una reserva" },
@@ -252,7 +252,7 @@ const CONTACT_I18N: Record<
         successDesc: "Ons team neemt spoedig contact op. Landt uw vlucht binnen 2 uur? Bericht ons direct via WhatsApp.",
         anotherBtn: "Nog een bericht sturen",
         hubsTitle: "Onze Hubs in Marokko",
-        hubsDesc: "Gratis bezorging op de luchthavenparking of bij uw riad/hotel in de 6 belangrijkste steden:",
+        hubsDesc: "Ophalen op de luchthaven in onze steden (bezorging bij riad beschikbaar in steden met direct kantoor):",
         faqTitle: "Veelgestelde Vragen",
         subjects: [
             { value: "Question réservation", label: "Vraag over een reservering" },

@@ -189,13 +189,21 @@ export default function VehicleCatalog({
                             )}
                         </h2>
                         <p className="text-sm text-slate-600 mt-1">
-                            {activeLocale === "en"
-                                ? "Guaranteed models (or same-category equivalent), climate-serviced and delivered without wait at the airport or your riad."
+                            {!isNational && hubMode === "affiliate"
+                                ? activeLocale === "en"
+                                    ? "Guaranteed models (or same-category equivalent), climate-serviced and available at the airport via verified local partners."
+                                    : activeLocale === "es"
+                                    ? "Modelos garantizados, revisados para el clima local y disponibles en el aeropuerto con socios locales verificados."
+                                    : activeLocale === "nl"
+                                    ? "Gegarandeerde modellen, gecontroleerd voor lokaal klimaat en beschikbaar op de luchthaven via geverifieerde partners."
+                                    : "Modèles garantis, révisés pour le climat local et disponibles à l'aéroport via nos partenaires vérifiés."
+                                : activeLocale === "en"
+                                ? "Guaranteed models (or same-category equivalent), climate-serviced and delivered without wait at the airport (or riad in direct cities)."
                                 : activeLocale === "es"
-                                ? "Modelos garantizados, revisados para el clima local y entregados sin esperas en el aeropuerto o riad."
+                                ? "Modelos garantizados, revisados para el clima local y entregados sin esperas en el aeropuerto (o riad en ciudades directas)."
                                 : activeLocale === "nl"
-                                ? "Gegarandeerde modellen, gecontroleerd voor lokaal klimaat en zonder wachttijd geleverd op de luchthaven of riad."
-                                : "Modèles garantis, révisés pour le climat local et livrés sans attente à l'aéroport ou à votre riad."}
+                                ? "Gegarandeerde modellen, gecontroleerd voor lokaal klimaat en zonder wachttijd geleverd op de luchthaven (of riad in directe steden)."
+                                : "Modèles garantis, révisés pour le climat local et livrés sans attente à l'aéroport (ou au riad dans nos villes directes)."}
                         </p>
                     </div>
 

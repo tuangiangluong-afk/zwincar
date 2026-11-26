@@ -9,7 +9,7 @@ export default function manifest(): MetadataRoute.Manifest {
         name: "ZwinCar — Location de voiture au Maroc",
         short_name: "ZwinCar",
         description:
-            "Location de voiture au Maroc sans caution abusive. Agences locales vérifiées, livraison aéroport et riad, assistance WhatsApp 24/7.",
+            "Location de voiture au Maroc sans caution abusive. Agences locales vérifiées, prise en charge aéroport, assistance WhatsApp 24/7.",
         start_url: "/?utm_source=pwa",
         scope: "/",
         display: "standalone",

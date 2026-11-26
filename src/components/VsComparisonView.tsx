@@ -281,12 +281,12 @@ export default function VsComparisonView({ comparison, locale }: VsComparisonVie
                             </h3>
                             <p className="text-xs sm:text-sm text-slate-400 max-w-xl">
                                 {locale === "en"
-                                    ? "Debit cards & cash accepted, free airport & Riad delivery, and 24/7 WhatsApp concierge assistance."
+                                    ? "Debit cards & cash accepted, airport pickup (riad delivery in direct cities), and 24/7 WhatsApp concierge assistance."
                                     : locale === "es"
-                                    ? "Tarjetas de débito y efectivo aceptados, entrega gratuita en aeropuerto y Riad, y soporte WhatsApp 24/7."
+                                    ? "Tarjetas de débito y efectivo aceptados, recogida en aeropuerto (entrega en riad en ciudades directas) y soporte WhatsApp 24/7."
                                     : locale === "nl"
-                                    ? "Pinpas en contant geaccepteerd, gratis levering op luchthaven en Riad, en 24/7 WhatsApp-hulp."
-                                    : "Cartes de débit et espèces acceptés, livraison gratuite à l'aéroport ou au Riad, et conciergerie WhatsApp 24/7."}
+                                    ? "Pinpas en contant geaccepteerd, ophalen op luchthaven (bezorging bij riad in directe steden) en 24/7 WhatsApp-hulp."
+                                    : "Cartes de débit et espèces acceptés, prise en charge à l'aéroport (livraison riad dans nos villes directes) et conciergerie WhatsApp 24/7."}
                             </p>
                         </div>
 

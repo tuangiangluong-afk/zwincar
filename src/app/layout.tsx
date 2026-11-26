@@ -60,7 +60,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "ZwinCar.com — Location Voiture Maroc Sans Caution",
-    description: "0€ bloqué sur carte bancaire. Agences locales vérifiées. Livraison Aéroport & Riad.",
+    description: "0€ bloqué sur carte bancaire. Agences locales vérifiées. Prise en charge aéroport directe.",
   },
 };
 
