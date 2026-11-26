@@ -285,11 +285,7 @@ export function BookingWidget({
                     )}
 
                     {/* Departure Date & Time */}
-                    <div
-                        className={
-                            state.sameReturnLocation ? "md:col-span-3" : "md:col-span-3"
-                        }
-                    >
+                    <div className="md:col-span-3">
                         <label
                             htmlFor="pickup-date-input"
                             className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5"

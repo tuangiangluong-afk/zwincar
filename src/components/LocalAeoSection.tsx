@@ -1,6 +1,7 @@
 import { ShieldCheck, CheckCircle2, AlertTriangle, Clock, MapPin, Sparkles, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { DIRECT_ANSWERS_AEO, MOROCCAN_HUBS } from "@/lib/morocco-data";
+import { isHubInAffiliateFallback } from "@/lib/affiliate";
 
 interface LocalAeoSectionProps {
     hubSlug?: string;
@@ -8,17 +9,22 @@ interface LocalAeoSectionProps {
 
 export default function LocalAeoSection({ hubSlug }: LocalAeoSectionProps) {
     const hub = MOROCCAN_HUBS.find((h) => h.slug === hubSlug) || MOROCCAN_HUBS[0];
+    const isAffiliate = isHubInAffiliateFallback(hub.slug);
 
     const comparisonRows = [
         {
             feature: "Empreinte CB / Caution",
-            zwincar: "0 € avec Franchise Zéro (ou caution standard 300 € en espèces/débit)",
+            zwincar: isAffiliate
+                ? "Tarifs négociés auprès de partenaires locaux vérifiés (caution variable selon l'agence)"
+                : "0 € avec Franchise Zéro (ou caution standard 300 € en espèces/débit)",
             competitors: "1 500 € à 2 500 € bloqués (carte de crédit obligatoire)",
             isPositive: true,
         },
         {
             feature: "Attente à l'Aéroport",
-            zwincar: "0 min (agent avec pancarte aux arrivées + clés en main)",
+            zwincar: isAffiliate
+                ? "Prise en charge au comptoir du partenaire vérifié à l'aéroport"
+                : "0 min (agent avec pancarte aux arrivées + clés en main)",
             competitors: "30 à 60 min de queue aux guichets franchisés",
             isPositive: true,
         },
@@ -30,7 +36,9 @@ export default function LocalAeoSection({ hubSlug }: LocalAeoSectionProps) {
         },
         {
             feature: "Livraison au Riad / Hôtel",
-            zwincar: "Incluse ou à la demande directement à votre hébergement",
+            zwincar: isAffiliate
+                ? "Selon les conditions du partenaire local"
+                : "Incluse ou à la demande directement à votre hébergement",
             competitors: "Impossible ou facturée 35 € à 50 € de supplément",
             isPositive: true,
         },

@@ -18,7 +18,16 @@ export function MobileHomeStickyBar({
     const [visible, setVisible] = useState(false);
 
     useEffect(() => {
-        const onScroll = () => setVisible(window.scrollY > 420);
+        let ticking = false;
+        const onScroll = () => {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    setVisible(window.scrollY > 420);
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        };
         onScroll();
         window.addEventListener("scroll", onScroll, { passive: true });
         return () => window.removeEventListener("scroll", onScroll);

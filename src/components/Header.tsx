@@ -162,12 +162,12 @@ export default function Header({ locale: propLocale }: HeaderProps = {}) {
                                     <div className="absolute top-10 left-0 w-64 bg-white border border-[#E7DFD5] rounded-2xl shadow-xl p-2 z-50 animate-in fade-in">
                                         <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-3 py-1">
                                             {currentLocale === "en"
-                                                ? "Airport & Riad delivery"
+                                                ? "Pickup hubs across Morocco"
                                                 : currentLocale === "es"
-                                                ? "Entrega en aeropuerto y riad"
+                                                ? "Puntos de recogida en Marruecos"
                                                 : currentLocale === "nl"
-                                                ? "Luchthaven & riad bezorging"
-                                                : "Livraison aéroport & riad"}
+                                                ? "Ophaallocaties in Marokko"
+                                                : "Points de prise en charge au Maroc"}
                                         </div>
                                         {MOROCCAN_HUBS.map((hub) => (
                                             <Link

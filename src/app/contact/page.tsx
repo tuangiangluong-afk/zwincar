@@ -90,7 +90,7 @@ const CONTACT_I18N: Record<
         successDesc: "Notre équipe vous recontacte dans les plus brefs délais. Si votre demande concerne un vol dans les 2 heures, contactez-nous directement sur WhatsApp.",
         anotherBtn: "Envoyer un autre message",
         hubsTitle: "Nos Hubs au Maroc",
-        hubsDesc: "Livraison offerte directement au parking aéroport ou à votre riad/hôtel dans les 6 villes principales :",
+        hubsDesc: "Prise en charge à l'aéroport dans nos villes couvertes (livraison riad disponible dans les villes avec agence directe) :",
         faqTitle: "Questions Fréquentes",
         subjects: [
             { value: "Question réservation", label: "Question sur une réservation" },
@@ -144,7 +144,7 @@ const CONTACT_I18N: Record<
         successDesc: "Our team will get back to you shortly. If your flight lands within the next 2 hours, message our VIP WhatsApp directly.",
         anotherBtn: "Send another message",
         hubsTitle: "Our Moroccan Hubs",
-        hubsDesc: "Free delivery directly at airport parking or your riad/hotel across 6 key destinations:",
+        hubsDesc: "Airport pickup across our covered cities (riad delivery available where we have a direct agency):",
         faqTitle: "Frequently Asked Questions",
         subjects: [
             { value: "Question réservation", label: "Booking inquiry" },

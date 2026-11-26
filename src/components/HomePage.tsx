@@ -517,13 +517,13 @@ export default function HomePage({ locale = "fr" }: HomePageProps = {}) {
                                     <CheckCircle2 size={16} className="text-emerald-600 shrink-0 mt-0.5" />
                                     <span>
                                         {isEn ? (
-                                            <><strong>VIP meet & greet upon arrival</strong>: an agent meets you with a personalized name board at the exit. On your way in 5 minutes.</>
+                                            <><strong>Fast airport meet & greet</strong>: in our direct cities, an agent meets you at the exit with your name. On your way in 5 minutes.</>
                                         ) : isEs ? (
-                                            <><strong>Recepción VIP a la llegada</strong>: un agente le espera con cartel nominativo a la salida. Salida en 5 minutos.</>
+                                            <><strong>Recepción rápida en el aeropuerto</strong>: en nuestras ciudades directas, un agente le recibe a la salida con su nombre. Salida en 5 minutos.</>
                                         ) : isNl ? (
-                                            <><strong>VIP ontvangst bij aankomst</strong>: een agent wacht u op met een naambordje bij de uitgang. Vertrek binnen 5 minuten.</>
+                                            <><strong>Snelle ontvangst op de luchthaven</strong>: in onze directe steden wacht een agent bij de uitgang met uw naam. Vertrek binnen 5 minuten.</>
                                         ) : (
-                                            <><strong>Accueil VIP aux arrivées</strong> : un agent vous attend avec une pancarte nominative à la sortie de l'aéroport. Départ en 5 minutes.</>
+                                            <><strong>Accueil rapide aux arrivées</strong> : dans nos villes directes, un agent vous attend avec votre nom à la sortie de l'aéroport. Départ en 5 minutes.</>
                                         )}
                                     </span>
                                 </li>
@@ -545,13 +545,13 @@ export default function HomePage({ locale = "fr" }: HomePageProps = {}) {
                                     <CheckCircle2 size={16} className="text-emerald-600 shrink-0 mt-0.5" />
                                     <span>
                                         {isEn ? (
-                                            <><strong>Free delivery to your Riad or Hotel</strong>: no need to navigate city traffic to pick up your keys.</>
+                                            <><strong>Riad or hotel delivery available</strong>: skip city traffic — keys brought to your door in our direct cities.</>
                                         ) : isEs ? (
-                                            <><strong>Entrega gratuita en su Riad u Hotel</strong>: sin desplazamientos para recoger las llaves.</>
+                                            <><strong>Entrega en Riad u Hotel disponible</strong>: sin desplazamientos para recoger las llaves en nuestras ciudades directas.</>
                                         ) : isNl ? (
-                                            <><strong>Gratis bezorging bij uw Riad of Hotel</strong>: geen gedoe om sleutels op te halen.</>
+                                            <><strong>Bezorging bij Riad of Hotel beschikbaar</strong>: geen gedoe om sleutels op te halen in onze directe steden.</>
                                         ) : (
-                                            <><strong>Livraison offerte à votre Riad ou Hôtel</strong> : pas besoin de traverser la ville pour récupérer les clés.</>
+                                            <><strong>Livraison Riad ou Hôtel disponible</strong> : pas besoin de traverser la ville — clés livrées à votre porte dans nos villes directes.</>
                                         )}
                                     </span>
                                 </li>

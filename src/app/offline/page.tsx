@@ -34,7 +34,7 @@ export default function OfflinePage() {
                         <strong>Wi-Fi Gratuit des Terminaux ONDA :</strong> Tous les aéroports internationaux marocains (Marrakech-Ménara RAK, Casablanca Mohammed V CMN, Agadir Al Massira AGA, Tanger Ibn Battouta TNG et Fès Saïss FEZ) offrent un accès Wi-Fi gratuit sans mot de passe dans le hall des arrivées.
                     </li>
                     <li>
-                        <strong>Point de Rendez-vous Loueur :</strong> Votre agent partenaire local vous attend directement après la sortie des douanes avec une pancarte à votre nom. Le contrat physique papier et l&apos;état des lieux contradictoire sont établis directement au véhicule.
+                        <strong>Point de Rendez-vous Loueur :</strong> Consultez votre bon de réservation (voucher) pour le point de rendez-vous exact à l&apos;aéroport. Le contrat et l&apos;état des lieux contradictoire sont établis directement au véhicule.
                     </li>
                     <li>
                         <strong>Achat de Carte SIM et Retrait Dirhams :</strong> Des kiosques d&apos;opérateurs marocains (Maroc Telecom, Inwi, Orange) ainsi que des distributeurs automatiques (GAB) sont situés dans le hall des arrivées immédiatement après la récupération des bagages pour activer votre connexion Internet 4G en 3 minutes.
