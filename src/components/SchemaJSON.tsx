@@ -1,5 +1,6 @@
 import { speakableSpecification, buildVehicleProductSchema } from "@/lib/seo-meta";
 import { CityHub, VehicleModel, SOCIAL_SAME_AS } from "@/lib/morocco-data";
+import { isHubInAffiliateFallback } from "@/lib/affiliate";
 import type { ReviewSummary } from "@/lib/booking-engine";
 
 interface SchemaJSONProps {
@@ -51,11 +52,14 @@ export default function SchemaJSON({
 
     if (type === "AutoRental" || type === "LocalBusiness" || (type === "Vehicle" && hub)) {
         const canonicalUrl = hub ? `${baseUrl}/maroc/${hub.slug}` : baseUrl;
+        const isAffiliate = hub ? isHubInAffiliateFallback(hub.slug) : false;
         graph.push({
             "@type": ["AutoRental", "LocalBusiness"],
             "@id": `${canonicalUrl}#autorental`,
             name: hub
-                ? `ZwinCar — Location Voiture ${hub.name} (${hub.airportCode}) Sans Caution CB`
+                ? isAffiliate
+                    ? `ZwinCar — Location Voiture ${hub.name} (${hub.airportCode})`
+                    : `ZwinCar — Location Voiture ${hub.name} (${hub.airportCode}) Sans Caution CB`
                 : "ZwinCar — Location de Voiture au Maroc Sans Caution CB",
             url: canonicalUrl,
             telephone: "+212720794046",
@@ -64,7 +68,7 @@ export default function SchemaJSON({
             image: toAbsoluteUrl(hub?.heroImage),
             priceRange: "26€ - 95€",
             currenciesAccepted: "EUR, MAD, USD, GBP",
-            paymentAccepted: "Cash, Debit Card, Credit Card, Stripe",
+            paymentAccepted: isAffiliate ? "Credit Card, Debit Card, Partner Terms" : "Cash, Debit Card, Credit Card, Stripe",
             knowsAbout: [
                 "https://www.wikidata.org/wiki/Q1107",
                 "https://www.wikidata.org/wiki/Q1025",
@@ -120,9 +124,12 @@ export default function SchemaJSON({
                 "@type": "Offer",
                 itemOffered: {
                     "@type": "Service",
-                    name: "Location de véhicule sans empreinte de carte de crédit au Maroc",
-                    description:
-                        "Mise à disposition de véhicules récents avec Pack Franchise Zéro (0€ de caution bloquée), cartes de débit et espèces acceptées, livraison aéroport et riad incluse.",
+                    name: isAffiliate
+                        ? `Comparatif de location de voiture à ${hub?.name ?? "l'aéroport"}`
+                        : "Location de véhicule sans empreinte de carte de crédit au Maroc",
+                    description: isAffiliate
+                        ? "Comparatif et prise en charge au comptoir de nos partenaires locaux vérifiés à l'aéroport."
+                        : "Mise à disposition de véhicules récents avec Pack Franchise Zéro (0€ de caution bloquée), cartes de débit et espèces acceptées, livraison aéroport et riad incluse.",
                 },
             },
             speakable: speakableSpecification(["h1", "[data-speakable]", "article p:first-of-type"]),

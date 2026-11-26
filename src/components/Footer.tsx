@@ -107,7 +107,7 @@ export default function Footer({ config, locale: propLocale }: FooterProps = {})
     );
 
     return (
-        <footer className="bg-[#12161E] text-slate-300 pt-16 pb-12 border-t border-slate-800">
+        <footer className="bg-[#12161E] text-slate-300 pt-16 pb-24 lg:pb-12 border-t border-slate-800">
             <div className="container mx-auto px-4 max-w-6xl">
                 {/* Top Value Banner */}
                 <div className="rounded-3xl bg-slate-900/80 border border-slate-800 p-6 md:p-8 mb-12 flex flex-col md:flex-row items-center justify-between gap-6">
