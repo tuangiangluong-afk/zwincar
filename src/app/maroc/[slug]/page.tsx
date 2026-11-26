@@ -8,6 +8,7 @@ import VehicleCatalog from "@/components/VehicleCatalog";
 import LocalAeoSection from "@/components/LocalAeoSection";
 import SchemaJSON from "@/components/SchemaJSON";
 import PseoGuidesCrossLinks from "@/components/pSEO/PseoGuidesCrossLinks";
+import { MobileHomeStickyBar } from "@/components/MobileHomeStickyBar";
 import { MOROCCAN_HUBS, DIRECT_ANSWERS_AEO } from "@/lib/morocco-data";
 import { clampTitle, clampDescription } from "@/lib/seo-meta";
 import { isHubInAffiliateFallback } from "@/lib/affiliate";
@@ -287,6 +288,8 @@ export default async function CityHubPage({ params }: CityPageProps) {
 
             {/* Skyscraper Authority Guides Inbound Cross-Links */}
             <PseoGuidesCrossLinks hubSlug={hub.slug} hubName={hub.name} locale="fr" />
+
+            <MobileHomeStickyBar locale="fr" minPriceEur={hub.avgDailyPriceEur} isAffiliate={isAffiliate} />
 
             {/* Footer */}
             <Footer />

@@ -5,6 +5,7 @@ import BookingWidget from "@/components/BookingWidget";
 import VehicleCatalog from "@/components/VehicleCatalog";
 import LocalAeoSection from "@/components/LocalAeoSection";
 import SchemaJSON from "@/components/SchemaJSON";
+import { MobileHomeStickyBar } from "@/components/MobileHomeStickyBar";
 import { MOROCCAN_HUBS, DIRECT_ANSWERS_AEO } from "@/lib/morocco-data";
 import { Locale } from "@/lib/i18n";
 import {
@@ -284,6 +285,97 @@ export default function HomePage({ locale = "fr" }: HomePageProps = {}) {
             {/* VEHICLE CATALOG SECTION */}
             <VehicleCatalog locale={locale} />
 
+            {/* HOW IT WORKS — 3 SIMPLE STEPS */}
+            <section className="py-16 bg-[#FAF7F2] border-t border-[#E7DFD5]">
+                <div className="container mx-auto px-4 max-w-6xl">
+                    <div className="text-center max-w-2xl mx-auto mb-10">
+                        <span className="text-xs font-bold uppercase tracking-wider text-[#C9572C] block mb-2">
+                            {isEn ? "3-Step Handover" : isEs ? "Proceso en 3 Pasos" : isNl ? "In 3 Stappen" : "Parcours en 3 Étapes"}
+                        </span>
+                        <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+                            {isEn
+                                ? "How ZwinCar works at the airport"
+                                : isEs
+                                ? "Cómo funciona ZwinCar en el aeropuerto"
+                                : isNl
+                                ? "Hoe ZwinCar werkt op de luchthaven"
+                                : "Comment ça marche dès votre arrivée"}
+                        </h2>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                        {[
+                            {
+                                step: "01",
+                                title: isEn
+                                    ? "Book in 2 minutes"
+                                    : isEs
+                                    ? "Reserve en 2 minutos"
+                                    : isNl
+                                    ? "Boek in 2 minuten"
+                                    : "Réservez en 2 minutes",
+                                body: isEn
+                                    ? "Pick your city, dates and vehicle. Lock your price with a 20% deposit (or compare verified partner rates) and receive your voucher immediately."
+                                    : isEs
+                                    ? "Elija ciudad, fechas y vehículo. Fije su precio con un 20 % de anticipo (o compare socios verificados) y reciba su bono al instante."
+                                    : isNl
+                                    ? "Kies stad, data en auto. Zet uw prijs vast met 20% aanbetaling (of vergelijk partnerdeals) en ontvang direct uw voucher."
+                                    : "Choisissez votre ville, vos dates et votre modèle. Bloquez votre tarif avec 20 % d'acompte (ou comparez nos partenaires vérifiés) et recevez votre bon.",
+                            },
+                            {
+                                step: "02",
+                                title: isEn
+                                    ? "5-minute key handover"
+                                    : isEs
+                                    ? "Entrega de llaves en 5 min"
+                                    : isNl
+                                    ? "Sleuteloverdracht in 5 min"
+                                    : "Remise des clés en 5 min",
+                                body: isEn
+                                    ? "Your flight is tracked live. Meet your local agent at arrivals, inspect the car together on smartphone and skip the terminal queues."
+                                    : isEs
+                                    ? "Seguimos su vuelo en directo. Encuentre a su agente a la salida de llegadas, revise el coche en móvil y evite colas en mostrador."
+                                    : isNl
+                                    ? "Uw vlucht wordt live gevolgd. Ontmoet de lokale agent bij aankomst, doe de snelle inspectie en sla de balierij over."
+                                    : "Votre vol est suivi en direct. Retrouvez l'agent à la sortie du terminal, faites le tour du véhicule sur mobile et évitez la queue au guichet.",
+                            },
+                            {
+                                step: "03",
+                                title: isEn
+                                    ? "Drive free, express return"
+                                    : isEs
+                                    ? "Conduzca libre, devolución rápida"
+                                    : isNl
+                                    ? "Rijd vrij, snelle retour"
+                                    : "Roulez librement, retour express",
+                                body: isEn
+                                    ? "Unlimited mileage across Morocco, no €1,500 card hold, 7/7 WhatsApp assistance and fast check-out before your flight."
+                                    : isEs
+                                    ? "Kilometraje ilimitado por Marruecos, sin bloqueo de 1.500 €, asistencia WhatsApp 7/7 y devolución rápida antes de su vuelo."
+                                    : isNl
+                                    ? "Onbeperkte kilometers in Marokko, geen € 1.500 blokkade, 7/7 WhatsApp-support en snelle check-out voor uw vlucht."
+                                    : "Kilométrage illimité partout au Maroc, zéro blocage de 1 500 €, assistance WhatsApp 7j/7 et restitution rapide avant votre vol.",
+                            },
+                        ].map((item) => (
+                            <div
+                                key={item.step}
+                                className="rounded-3xl bg-white border border-[#E7DFD5] p-6 shadow-2xs space-y-2.5"
+                            >
+                                <span className="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-[#FAF7F2] border border-[#E7DFD5] text-xs font-black font-mono text-[#C9572C]">
+                                    {item.step}
+                                </span>
+                                <h3 className="text-base font-black text-slate-900">
+                                    {item.title}
+                                </h3>
+                                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                                    {item.body}
+                                </p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
             {/* WHY ZWINCAR / CONTRAST SECTION (ZERO AI SLOP, HIGH TASTE) */}
             <section id="zero-caution" className="py-20 bg-white border-y border-[#E7DFD5]">
                 <div className="container mx-auto px-4 max-w-6xl">
@@ -539,9 +631,51 @@ export default function HomePage({ locale = "fr" }: HomePageProps = {}) {
                 </div>
             </section>
 
+            {/* PARTNER ACQUISITION STRIP */}
+            <section className="py-10 bg-white border-t border-[#E7DFD5]">
+                <div className="container mx-auto px-4 max-w-6xl">
+                    <div className="rounded-3xl bg-[#12161E] text-white p-6 sm:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                        <div className="space-y-1.5 max-w-2xl">
+                            <span className="text-[11px] font-bold uppercase tracking-wider text-[#E58B24]">
+                                {isEn ? "Partner Agencies" : isEs ? "Agencias Asociadas" : isNl ? "Partnerbedrijven" : "Loueurs Partenaires"}
+                            </span>
+                            <h2 className="text-xl sm:text-2xl font-black tracking-tight">
+                                {isEn
+                                    ? "Own a local rental fleet in Morocco?"
+                                    : isEs
+                                    ? "¿Tiene una flota de alquiler en Marruecos?"
+                                    : isNl
+                                    ? "Heeft u een lokale autoverhuurvloot in Marokko?"
+                                    : "Vous gérez une flotte de location au Maroc ?"}
+                            </h2>
+                            <p className="text-xs sm:text-sm text-white/75 leading-relaxed">
+                                {isEn
+                                    ? "Receive pre-qualified European bookings directly on WhatsApp with 20% guaranteed deposit."
+                                    : isEs
+                                    ? "Reciba reservas europeas precalificadas directamente por WhatsApp con anticipo garantizado."
+                                    : isNl
+                                    ? "Ontvang gekwalificeerde Europese boekingen rechtstreeks via WhatsApp met aanbetaling."
+                                    : "Recevez des réservations européennes qualifiées directement sur WhatsApp avec acompte de 20 % sécurisé."}
+                            </p>
+                        </div>
+                        <Link
+                            href={isEn ? "/en/vendor/register" : "/vendor/register"}
+                            className="shrink-0 h-11 px-5 rounded-2xl bg-[#C9572C] hover:bg-[#B24922] text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition"
+                        >
+                            <span>
+                                {isEn ? "Join ZwinCar" : isEs ? "Unirse a ZwinCar" : isNl ? "Word partner" : "Devenir partenaire"}
+                            </span>
+                            <ArrowRight size={14} />
+                        </Link>
+                    </div>
+                </div>
+            </section>
+
             {/* AEO / GEO ADVANCED DIRECT ANSWER SECTION */}
             <LocalAeoSection hubSlug="marrakech" />
             </main>
+
+            <MobileHomeStickyBar locale={locale} minPriceEur={26} />
 
             {/* Footer */}
             <Footer locale={locale} />

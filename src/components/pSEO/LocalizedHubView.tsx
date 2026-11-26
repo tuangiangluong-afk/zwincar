@@ -6,6 +6,7 @@ import SchemaJSON from "@/components/SchemaJSON";
 import BookingWidget from "@/components/BookingWidget";
 import VehicleCatalog from "@/components/VehicleCatalog";
 import PseoGuidesCrossLinks from "@/components/pSEO/PseoGuidesCrossLinks";
+import { MobileHomeStickyBar } from "@/components/MobileHomeStickyBar";
 import { CityHub, MOROCCAN_HUBS } from "@/lib/morocco-data";
 import { PURCHASE_INTENTS } from "@/lib/intent-data";
 import { PointOfService, getPosForHub } from "@/lib/pos-data";
@@ -246,6 +247,8 @@ export default function LocalizedHubView({ hub, locale }: LocalizedHubViewProps)
 
             {/* Skyscraper Authority Guides Inbound Cross-Links */}
             <PseoGuidesCrossLinks hubSlug={hub.slug} hubName={hub.name} locale={locale} />
+
+            <MobileHomeStickyBar locale={locale} minPriceEur={hub.avgDailyPriceEur} isAffiliate={isAffiliate} />
 
             <Footer locale={locale} />
         </div>

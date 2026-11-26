@@ -318,9 +318,23 @@ export function BookingWidget({
                                     aria-label={t.search.pickupDate || "Date de prise en charge"}
                                     value={state.pickupDate}
                                     min={formatDateInput(today)}
-                                    onChange={(e) =>
-                                        setState((prev) => ({ ...prev, pickupDate: e.target.value }))
-                                    }
+                                    onChange={(e) => {
+                                        const nextPickup = e.target.value;
+                                        setState((prev) => {
+                                            let nextReturn = prev.returnDate;
+                                            if (nextPickup && (!nextReturn || nextReturn < nextPickup)) {
+                                                const d = new Date(nextPickup);
+                                                d.setDate(d.getDate() + 3);
+                                                nextReturn = d.toISOString().split("T")[0];
+                                            }
+                                            return { ...prev, pickupDate: nextPickup, returnDate: nextReturn };
+                                        });
+                                        // Enchaîne naturellement vers la date de retour
+                                        const returnEl = document.getElementById("return-date-input") as HTMLInputElement | null;
+                                        if (returnEl) {
+                                            returnEl.focus();
+                                        }
+                                    }}
                                     className="w-full min-w-0 bg-transparent text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none cursor-pointer [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-60 hover:[&::-webkit-calendar-picker-indicator]:opacity-100"
                                 />
                             </div>
@@ -428,6 +442,32 @@ export function BookingWidget({
                         <Search size={16} />
                         <span>{isSearching ? t.search.searchingBtn : t.search.ctaButton}</span>
                     </button>
+                </div>
+
+                {/* Payment & Trust Strip */}
+                <div className="mt-3 pt-3 border-t border-slate-100/80 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-500">
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                        <span className="font-semibold text-slate-600">
+                            {activeLocale === "en" ? "Accepted:" : activeLocale === "es" ? "Pagos:" : activeLocale === "nl" ? "Betaalmethoden:" : "Paiements :"}
+                        </span>
+                        {["Visa", "Mastercard", "Apple Pay", "Google Pay", activeLocale === "en" ? "Debit & Cash" : activeLocale === "es" ? "Débito & Efectivo" : activeLocale === "nl" ? "Pin & Contant" : "Débit & Espèces"].map((label) => (
+                            <span
+                                key={label}
+                                className="px-2 py-0.5 rounded-md bg-[#FAF7F2] border border-[#E7DFD5] text-[10px] font-semibold text-slate-700"
+                            >
+                                {label}
+                            </span>
+                        ))}
+                    </div>
+                    <span className="text-[10px] font-medium text-slate-400">
+                        {activeLocale === "en"
+                            ? "Stripe 3D Secure • 7/7 WhatsApp support"
+                            : activeLocale === "es"
+                            ? "Stripe 3D Secure • Soporte WhatsApp 7/7"
+                            : activeLocale === "nl"
+                            ? "Stripe 3D Secure • 7/7 WhatsApp-support"
+                            : "Stripe 3D Secure • Assistance WhatsApp 7j/7"}
+                    </span>
                 </div>
             </div>
         </div>
